@@ -1,10 +1,11 @@
-import { apispec, createClient } from "../_shared.ts";
+import { createClient } from "../_shared.ts";
+import { models } from "../../src/apispec_compat.ts";
 
 async function main() {
   const client = createClient();
   const sandbox = await client.sandboxes.claim("default", {
     hardTtl: 600,
-    network: { mode: apispec.TplSandboxNetworkPolicyModeEnum.AllowAll },
+    network: { mode: models.TplSandboxNetworkPolicyModeEnum.AllowAll },
   });
 
   try {
@@ -17,13 +18,13 @@ async function main() {
     process.stdout.write(resp.outputRaw);
 
     await sandbox.updateNetworkPolicy({
-      mode: apispec.TplSandboxNetworkPolicyModeEnum.BlockAll,
+      mode: models.TplSandboxNetworkPolicyModeEnum.BlockAll,
     });
     resp = await sandbox.cmd(shell);
     process.stdout.write(resp.outputRaw);
 
     await sandbox.updateNetworkPolicy({
-      mode: apispec.TplSandboxNetworkPolicyModeEnum.BlockAll,
+      mode: models.TplSandboxNetworkPolicyModeEnum.BlockAll,
       egress: { allowedDomains: ["github.com"] },
     });
     resp = await sandbox.cmd(shell);

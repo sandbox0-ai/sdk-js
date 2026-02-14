@@ -41,7 +41,7 @@ async function main() {
     const watch = await sandbox.watchFiles(dir, true);
     await sandbox.writeFile(path, "hello from file\nsecond line\n");
 
-    const event = await waitForFirstEvent(watch.events(), 10000);
+    const event = await waitForFirstEvent(watch.events(), 5000);
     if (event) {
       console.log(
         `watch event: type=${event.type} path=${event.path ?? ""} event=${event.event ?? ""}`,

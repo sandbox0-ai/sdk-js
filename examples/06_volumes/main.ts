@@ -1,4 +1,5 @@
-import { apispec, createClient } from "../_shared.ts";
+import { createClient } from "../_shared.ts";
+import { models } from "../../src/apispec_compat.ts";
 
 async function main() {
   const client = createClient();
@@ -6,7 +7,7 @@ async function main() {
 
   try {
     const volume = await client.volumes.create({
-      accessMode: apispec.VolumeAccessMode.Rwx,
+      accessMode: models.VolumeAccessMode.Rwx,
     });
     const volumeId = volume.id;
     console.log(`volume created: ${volumeId}`);

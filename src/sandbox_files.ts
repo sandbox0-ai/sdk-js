@@ -1,4 +1,3 @@
-import WebSocket from "ws";
 import type {
   FileContentResponse,
   FileInfo,
@@ -9,11 +8,12 @@ import type {
   SuccessMovedResponse,
   SuccessWrittenResponse,
 } from "./apispec/src/models/index";
-import { FileContentResponseEncodingEnum } from "./apispec/src/models/index";
+import { models } from "./apispec_compat";
 import type { Client } from "./client";
 import { APIError, wrapApiCall } from "./errors";
 import { ensureData, ensureModel } from "./response";
 import { FileWatchStream, Sandbox } from "./sandbox";
+import { WebSocketClient, type WebSocketRawData } from "./ws_client";
 
 function getClient(sandbox: Sandbox): Client {
   return (sandbox as any).client as Client;
@@ -49,7 +49,7 @@ Sandbox.prototype.readFile = async function (
     const data = ensureData(payload, "read file returned empty response");
     const content = (data as FileContentResponse).content ?? "";
     const encoding = (data as FileContentResponse).encoding;
-    if (encoding && encoding !== FileContentResponseEncodingEnum.Base64) {
+    if (encoding && encoding !== models.FileContentResponseEncodingEnum.Base64) {
       throw new APIError({
         statusCode: response.raw.status,
         code: "unsupported_encoding",
@@ -164,14 +164,14 @@ Sandbox.prototype.watchFiles = async function (
   const client = getClient(this);
   const wsUrl = client.websocketUrl(`/api/v1/sandboxes/${this.id}/files/watch`);
   const headers = await client.wsHeaders();
-  const socket = new WebSocket(wsUrl, { headers });
-  const stream = new FileWatchStream(socket);
-  socket.send(
-    JSON.stringify({ action: "subscribe", path, recursive: !!recursive }),
-  );
-  const first = await waitForWsMessage(socket);
+  const socket = new WebSocketClient(wsUrl, { headers });
+  await socket.waitForOpen();
+  socket.send(JSON.stringify({ action: "subscribe", path, recursive: !!recursive }));
+
+  const firstRaw = await socket.waitForMessage();
+  const first = firstRaw ? parseWsMessage(firstRaw) : null;
   if (!first) {
-    stream.close();
+    socket.close();
     throw new APIError({
       statusCode: 0,
       code: "watch_failed",
@@ -179,7 +179,7 @@ Sandbox.prototype.watchFiles = async function (
     });
   }
   if (first.type === "error") {
-    stream.close();
+    socket.close();
     throw new APIError({
       statusCode: 0,
       code: "watch_failed",
@@ -187,18 +187,19 @@ Sandbox.prototype.watchFiles = async function (
     });
   }
   if (first.type !== "subscribed" || !first.watch_id) {
-    stream.close();
+    socket.close();
     throw new APIError({
       statusCode: 0,
       code: "watch_failed",
       message: `unexpected watch response: ${first.type ?? ""}`,
     });
   }
+  const stream = new FileWatchStream(socket);
   stream.watchId = String(first.watch_id);
   return stream;
 };
 
-function parseWsMessage(data: WebSocket.RawData): any | null {
+function parseWsMessage(data: WebSocketRawData): any | null {
   try {
     let text: string;
     if (typeof data === "string") {
@@ -218,12 +219,3 @@ function parseWsMessage(data: WebSocket.RawData): any | null {
   }
 }
 
-async function waitForWsMessage(socket: WebSocket): Promise<any | null> {
-  return new Promise((resolve) => {
-    const handler = (data: WebSocket.RawData) => {
-      socket.off("message", handler);
-      resolve(parseWsMessage(data));
-    };
-    socket.once("message", handler);
-  });
-}

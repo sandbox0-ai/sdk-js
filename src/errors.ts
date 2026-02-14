@@ -1,5 +1,5 @@
 import type { ErrorEnvelope } from "./apispec/src/models/index";
-import { ResponseError } from "./apispec/src/runtime";
+import { runtime } from "./apispec_compat";
 
 export class APIError extends Error {
   statusCode: number;
@@ -72,7 +72,7 @@ export async function wrapApiCall<T>(fn: () => Promise<T>): Promise<T> {
   try {
     return await fn();
   } catch (err) {
-    if (err instanceof ResponseError) {
+    if (err instanceof runtime.ResponseError) {
       throw await apiErrorFromResponse(err.response);
     }
     throw err;

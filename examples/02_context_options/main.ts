@@ -7,7 +7,7 @@ async function main() {
   try {
     const runResult = await sandbox.run(
       "python",
-      "import os, pathlib\nprint(pathlib.Path.cwd())\nprint(os.getenv('GREETING'))",
+      `import os, pathlib; print(pathlib.Path.cwd()); print(os.getenv("GREETING"))`,
       {
         cwd: "/workspace",
         envVars: { GREETING: "hello from repl" },

@@ -1,5 +1,4 @@
-import WebSocket from "ws";
-import { parse as shellParse } from "shell-quote";
+import { split } from "shlex";
 import type {
   CreateCMDContextRequest,
   CreateContextRequest,
@@ -7,7 +6,7 @@ import type {
   PTYSize,
   ProcessType,
 } from "./apispec/src/models/index";
-import { ProcessType as ProcessTypeEnum } from "./apispec/src/models/ProcessType";
+import { models } from "./apispec_compat";
 import type { Client } from "./client";
 import { APIError } from "./errors";
 import type {
@@ -17,11 +16,7 @@ import type {
   StreamInput,
   StreamOutput,
 } from "./models";
-import "./sandbox_contexts";
-import "./sandbox_files";
-import "./sandbox_network";
-import "./sandbox_exposed_ports";
-import "./sandbox_volumes";
+import { WebSocketClient, type WebSocketRawData } from "./ws_client";
 
 export interface RunOptions {
   contextId?: string;
@@ -65,11 +60,11 @@ export class ContextStream {
   private error?: Error;
 
   constructor(
-    private readonly socket: WebSocket,
+    private readonly socket: WebSocketClient,
     private readonly sandboxId: string,
     private readonly contextId: string,
   ) {
-    this.socket.on("message", (data: WebSocket.RawData) => {
+    this.socket.onMessage((data: WebSocketRawData) => {
       const payload = parseWsMessage(data);
       if (!payload) {
         return;
@@ -82,11 +77,11 @@ export class ContextStream {
       });
       this.flush();
     });
-    this.socket.on("close", () => {
+    this.socket.onClose(() => {
       this.closed = true;
       this.flush();
     });
-    this.socket.on("error", (err: Error) => {
+    this.socket.onError((err: Error) => {
       this.error = err instanceof Error ? err : new Error("websocket error");
       this.closed = true;
       this.flush();
@@ -149,6 +144,7 @@ export class ContextStream {
       this.waiters.push({ resolve, reject });
     });
   }
+
 }
 
 export class FileWatchStream {
@@ -158,8 +154,8 @@ export class FileWatchStream {
   private error?: Error;
   watchId?: string;
 
-  constructor(private readonly socket: WebSocket) {
-    this.socket.on("message", (data: WebSocket.RawData) => {
+  constructor(private readonly socket: WebSocketClient) {
+    this.socket.onMessage((data: WebSocketRawData) => {
       const payload = parseWsMessage(data);
       if (!payload) {
         return;
@@ -173,11 +169,11 @@ export class FileWatchStream {
       });
       this.flush();
     });
-    this.socket.on("close", () => {
+    this.socket.onClose(() => {
       this.closed = true;
       this.flush();
     });
-    this.socket.on("error", (err: Error) => {
+    this.socket.onError((err: Error) => {
       this.error = err instanceof Error ? err : new Error("websocket error");
       this.closed = true;
       this.flush();
@@ -255,7 +251,7 @@ export class Sandbox {
       });
     }
     const contextId = await this.ensureReplContext(language, options);
-    const execResp = await this.contextExec(contextId, input);
+    const execResp = await this.contextExec(contextId, normalizeReplInput(input));
     return {
       sandboxId: this.id,
       contextId,
@@ -281,7 +277,7 @@ export class Sandbox {
     }
     const waitUntilDone = options?.wait ?? true;
     const request: CreateContextRequest = {
-      type: ProcessTypeEnum.Cmd as ProcessType,
+      type: models.ProcessType.Cmd as ProcessType,
       cmd: { command: cmdArgs } as CreateCMDContextRequest,
       waitUntilDone,
       cwd: options?.cwd,
@@ -321,7 +317,7 @@ export class Sandbox {
     }
     const waitUntilDone = options?.wait ?? false;
     const request: CreateContextRequest = {
-      type: ProcessTypeEnum.Cmd as ProcessType,
+      type: models.ProcessType.Cmd as ProcessType,
       cmd: { command: cmdArgs } as CreateCMDContextRequest,
       waitUntilDone,
       cwd: options?.cwd,
@@ -339,7 +335,7 @@ export class Sandbox {
       `/api/v1/sandboxes/${this.id}/contexts/${contextId}/ws`,
     );
     const headers = await this.client.wsHeaders();
-    const socket = new WebSocket(wsUrl, { headers });
+    const socket = new WebSocketClient(wsUrl, { headers });
     return new ContextStream(socket, this.id, contextId);
   }
 
@@ -361,7 +357,7 @@ export class Sandbox {
     }
     const promise = (async () => {
       const request: CreateContextRequest = {
-        type: ProcessTypeEnum.Repl as ProcessType,
+        type: models.ProcessType.Repl as ProcessType,
         repl: { language: normalized } as CreateREPLContextRequest,
         cwd: options?.cwd,
         envVars: options?.envVars,
@@ -397,9 +393,12 @@ function buildPty(rows?: number, cols?: number): PTYSize | undefined {
 }
 
 function parseCommand(input: string): string[] {
-  const parsed = shellParse(input);
-  const command = parsed.filter((item): item is string => typeof item === "string");
-  return command;
+  return split(input);
+}
+
+function normalizeReplInput(input: string): string {
+  // Ensure REPL input is terminated so the backend executes the final line.
+  return input.endsWith("\n") ? input : `${input}\n`;
 }
 
 function normalizeStreamInput(input: StreamInput): StreamInput {
@@ -435,7 +434,7 @@ function normalizeStreamInput(input: StreamInput): StreamInput {
   return normalized;
 }
 
-function parseWsMessage(data: WebSocket.RawData): any | null {
+function parseWsMessage(data: WebSocketRawData): any | null {
   try {
     let text: string;
     if (typeof data === "string") {

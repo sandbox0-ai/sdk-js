@@ -1,16 +1,6 @@
-import {
-  Configuration,
-  type FetchAPI,
-  type Middleware,
-} from "./apispec/src/runtime";
-import {
-  ContextsApi,
-  FilesApi,
-  SandboxesApi,
-  SandboxVolumesApi,
-  SnapshotsApi,
-  TemplatesApi,
-} from "./apispec/src/apis/index";
+import type * as runtimeTypes from "./apispec/src/runtime";
+import type * as apisTypes from "./apispec/src/apis/index";
+import { apis, runtime } from "./apispec_compat";
 import { normalizeNullMapMiddleware } from "./response_normalize";
 import { Sandboxes } from "./resources/sandboxes";
 import { Volumes } from "./resources/volumes";
@@ -27,8 +17,8 @@ export interface ClientOptions {
   baseUrl?: string;
   userAgent?: string;
   headers?: Record<string, string>;
-  fetch?: FetchAPI;
-  middleware?: Middleware[];
+  fetch?: runtimeTypes.FetchAPI;
+  middleware?: runtimeTypes.Middleware[];
 }
 
 function resolveToken(provider: TokenProvider): () => Promise<string> {
@@ -42,17 +32,17 @@ function resolveToken(provider: TokenProvider): () => Promise<string> {
 }
 
 export class Client {
-  private readonly configuration: Configuration;
+  private readonly configuration: runtimeTypes.Configuration;
   private readonly accessToken: () => Promise<string>;
   private readonly baseUrl: string;
 
   readonly apispec: {
-    sandboxes: SandboxesApi;
-    contexts: ContextsApi;
-    files: FilesApi;
-    sandboxVolumes: SandboxVolumesApi;
-    snapshots: SnapshotsApi;
-    templates: TemplatesApi;
+    sandboxes: apisTypes.SandboxesApi;
+    contexts: apisTypes.ContextsApi;
+    files: apisTypes.FilesApi;
+    sandboxVolumes: apisTypes.SandboxVolumesApi;
+    snapshots: apisTypes.SnapshotsApi;
+    templates: apisTypes.TemplatesApi;
   };
 
   readonly sandboxes: Sandboxes;
@@ -68,7 +58,7 @@ export class Client {
     this.baseUrl = options.baseUrl ?? DEFAULT_BASE_URL;
     this.accessToken = resolveToken(options.token);
 
-    this.configuration = new Configuration({
+    this.configuration = new runtime.Configuration({
       basePath: this.baseUrl,
       accessToken: this.accessToken,
       headers,
@@ -77,12 +67,12 @@ export class Client {
     });
 
     this.apispec = {
-      sandboxes: new SandboxesApi(this.configuration),
-      contexts: new ContextsApi(this.configuration),
-      files: new FilesApi(this.configuration),
-      sandboxVolumes: new SandboxVolumesApi(this.configuration),
-      snapshots: new SnapshotsApi(this.configuration),
-      templates: new TemplatesApi(this.configuration),
+      sandboxes: new apis.SandboxesApi(this.configuration),
+      contexts: new apis.ContextsApi(this.configuration),
+      files: new apis.FilesApi(this.configuration),
+      sandboxVolumes: new apis.SandboxVolumesApi(this.configuration),
+      snapshots: new apis.SnapshotsApi(this.configuration),
+      templates: new apis.TemplatesApi(this.configuration),
     };
 
     this.sandboxes = new Sandboxes(this);

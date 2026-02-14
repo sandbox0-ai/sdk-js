@@ -1,0 +1,42 @@
+{
+  "name": "sandbox0",
+  "version": "0.1.0",
+  "description": "Sandbox0 JavaScript/TypeScript SDK",
+  "license": "Apache-2.0",
+  "author": "Sandbox0 Team",
+  "keywords": [
+    "sandbox",
+    "sdk",
+    "sandbox0"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "generate:apispec": "openapi-generator-cli generate -i openapi.yaml -g typescript-fetch -o src/apispec -c openapi-generator-config.yaml",
+    "test": "echo \"no tests yet\""
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.28.3",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sandbox0-ai/sdk-js"
+  }
+}

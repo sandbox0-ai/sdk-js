@@ -1,0 +1,5 @@
+additionalProperties:
+  npmName: sandbox0
+  npmVersion: 0.1.0
+  supportsES6: true
+  useSingleRequestParameter: true

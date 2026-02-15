@@ -48,177 +48,229 @@ type SandboxParams = {
   status?: string;
 };
 
-type QueueWaiter = {
-  resolve: () => void;
-  reject: (err: Error) => void;
-};
-
+/**
+ * ContextStream provides a duplex stream interface for sandbox context communication.
+ *
+ * Uses Web Streams API for:
+ * - Native backpressure control
+ * - Standardized error handling
+ * - Composability with other streams
+ *
+ * @example
+ * ```typescript
+ * const stream = await sandbox.runStream("python");
+ *
+ * // Option 1: Use async generator (convenient for simple cases)
+ * for await (const output of stream.outputs()) {
+ *   console.log(output.data);
+ * }
+ *
+ * // Option 2: Use ReadableStream directly (for advanced use)
+ * const reader = stream.readable.getReader();
+ * while (true) {
+ *   const { done, value } = await reader.read();
+ *   if (done) break;
+ *   console.log(value.data);
+ * }
+ *
+ * // Option 3: Use WritableStream for input with backpressure
+ * const writer = stream.writable.getWriter();
+ * await writer.write({ type: "input", data: "print(1)\n" });
+ * await writer.close();
+ * ```
+ */
 export class ContextStream {
-  private readonly queue: StreamOutput[] = [];
-  private readonly waiters: QueueWaiter[] = [];
-  private closed = false;
-  private error?: Error;
+  readonly readable: ReadableStream<StreamOutput>;
+  readonly writable: WritableStream<StreamInput>;
+  private readonly socket: WebSocketClient;
+  private readonly _contextId: string;
+  private readonly _sandboxId: string;
 
-  constructor(
-    private readonly socket: WebSocketClient,
-    private readonly sandboxId: string,
-    private readonly contextId: string,
-  ) {
-    this.socket.onMessage((data: WebSocketRawData) => {
-      const payload = parseWsMessage(data);
-      if (!payload) {
-        return;
-      }
-      this.queue.push({
-        sandboxId: this.sandboxId,
-        contextId: this.contextId,
-        source: String(payload.source ?? ""),
-        data: String(payload.data ?? ""),
-      });
-      this.flush();
+  constructor(socket: WebSocketClient, sandboxId: string, contextId: string) {
+    this.socket = socket;
+    this._sandboxId = sandboxId;
+    this._contextId = contextId;
+
+    // Create ReadableStream for outputs with backpressure
+    this.readable = new ReadableStream<StreamOutput>({
+      start: (controller) => {
+        socket.onMessage((data: WebSocketRawData) => {
+          const payload = parseWsMessage(data);
+          if (!payload) return;
+          controller.enqueue({
+            sandboxId: this._sandboxId,
+            contextId: this._contextId,
+            source: String(payload.source ?? ""),
+            data: String(payload.data ?? ""),
+          });
+        });
+        socket.onError((err: Error) => {
+          controller.error(err instanceof Error ? err : new Error("websocket error"));
+        });
+        socket.onClose(() => {
+          try {
+            controller.close();
+          } catch {
+            // Controller may already be closed due to error
+          }
+        });
+      },
     });
-    this.socket.onClose(() => {
-      this.closed = true;
-      this.flush();
-    });
-    this.socket.onError((err: Error) => {
-      this.error = err instanceof Error ? err : new Error("websocket error");
-      this.closed = true;
-      this.flush();
+
+    // Create WritableStream for inputs with backpressure
+    this.writable = new WritableStream<StreamInput>({
+      write: (chunk) => {
+        const normalized = normalizeStreamInput(chunk);
+        socket.send(JSON.stringify(normalized));
+      },
+      close: () => {
+        socket.close();
+      },
+      abort: () => {
+        socket.close();
+      },
     });
   }
 
   get id(): string {
-    return this.contextId;
+    return this._contextId;
   }
 
-  send(message: StreamInput): void {
-    const normalized = normalizeStreamInput(message);
+  /**
+   * Send input data.
+   */
+  sendInput(data: string, requestId?: string): void {
+    const normalized = normalizeStreamInput({ type: "input", data, requestId });
     this.socket.send(JSON.stringify(normalized));
   }
 
-  sendInput(data: string, requestId?: string): void {
-    this.send({ type: "input", data, requestId });
-  }
-
+  /**
+   * Resize PTY.
+   */
   sendResize(rows: number, cols: number): void {
-    this.send({ type: "resize", rows, cols });
+    const normalized = normalizeStreamInput({ type: "resize", rows, cols });
+    this.socket.send(JSON.stringify(normalized));
   }
 
+  /**
+   * Send a signal.
+   */
   sendSignal(signal: string): void {
-    this.send({ type: "signal", signal });
+    const normalized = normalizeStreamInput({ type: "signal", signal });
+    this.socket.send(JSON.stringify(normalized));
   }
 
+  /**
+   * Async generator for consuming outputs.
+   */
   async *outputs(): AsyncGenerator<StreamOutput> {
-    while (!this.closed || this.queue.length > 0) {
-      if (this.error) {
-        throw this.error;
+    const reader = this.readable.getReader();
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) return;
+        yield value;
       }
-      if (this.queue.length > 0) {
-        yield this.queue.shift()!;
-        continue;
-      }
-      await this.waitForMessage();
+    } finally {
+      reader.releaseLock();
     }
   }
 
+  /**
+   * Close the stream connection.
+   */
   close(): void {
     this.socket.close();
   }
-
-  private flush(): void {
-    while (this.waiters.length > 0) {
-      const waiter = this.waiters.shift();
-      if (waiter) {
-        if (this.error) {
-          waiter.reject(this.error);
-        } else {
-          waiter.resolve();
-        }
-      }
-    }
-  }
-
-  private waitForMessage(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.waiters.push({ resolve, reject });
-    });
-  }
-
 }
 
+/**
+ * FileWatchStream provides a stream interface for file system watch events.
+ *
+ * Uses Web Streams API for native backpressure control and error handling.
+ *
+ * @example
+ * ```typescript
+ * const watcher = await sandbox.watchFiles("/workspace");
+ *
+ * // Option 1: Use async generator
+ * for await (const event of watcher.events()) {
+ *   console.log(event.path, event.event);
+ * }
+ *
+ * // Option 2: Use ReadableStream directly
+ * const reader = watcher.readable.getReader();
+ * while (true) {
+ *   const { done, value } = await reader.read();
+ *   if (done) break;
+ *   console.log(value.path, value.event);
+ * }
+ * ```
+ */
 export class FileWatchStream {
-  private readonly queue: FileWatchResponse[] = [];
-  private readonly waiters: QueueWaiter[] = [];
-  private closed = false;
-  private error?: Error;
+  readonly readable: ReadableStream<FileWatchResponse>;
+  private readonly socket: WebSocketClient;
   watchId?: string;
 
-  constructor(private readonly socket: WebSocketClient) {
-    this.socket.onMessage((data: WebSocketRawData) => {
-      const payload = parseWsMessage(data);
-      if (!payload) {
-        return;
-      }
-      this.queue.push({
-        type: String(payload.type ?? ""),
-        watchId: payload.watch_id ?? payload.watchId,
-        event: payload.event,
-        path: payload.path,
-        error: payload.error,
-      });
-      this.flush();
-    });
-    this.socket.onClose(() => {
-      this.closed = true;
-      this.flush();
-    });
-    this.socket.onError((err: Error) => {
-      this.error = err instanceof Error ? err : new Error("websocket error");
-      this.closed = true;
-      this.flush();
+  constructor(socket: WebSocketClient) {
+    this.socket = socket;
+
+    this.readable = new ReadableStream<FileWatchResponse>({
+      start: (controller) => {
+        socket.onMessage((data: WebSocketRawData) => {
+          const payload = parseWsMessage(data);
+          if (!payload) return;
+          controller.enqueue({
+            type: String(payload.type ?? ""),
+            watchId: payload.watch_id ?? payload.watchId,
+            event: payload.event,
+            path: payload.path,
+            error: payload.error,
+          });
+        });
+        socket.onError((err: Error) => {
+          controller.error(err instanceof Error ? err : new Error("websocket error"));
+        });
+        socket.onClose(() => {
+          try {
+            controller.close();
+          } catch {
+            // Controller may already be closed due to error
+          }
+        });
+      },
     });
   }
 
+  /**
+   * Async generator for consuming events (convenience method).
+   */
   async *events(): AsyncGenerator<FileWatchResponse> {
-    while (!this.closed || this.queue.length > 0) {
-      if (this.error) {
-        throw this.error;
+    const reader = this.readable.getReader();
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) return;
+        yield value;
       }
-      if (this.queue.length > 0) {
-        yield this.queue.shift()!;
-        continue;
-      }
-      await this.waitForMessage();
+    } finally {
+      reader.releaseLock();
     }
   }
 
+  /**
+   * Unsubscribe from the watch and close the connection.
+   */
   unsubscribe(watchId: string): void {
     this.socket.send(JSON.stringify({ action: "unsubscribe", watch_id: watchId }));
     this.close();
   }
 
+  /**
+   * Close the stream connection.
+   */
   close(): void {
     this.socket.close();
-  }
-
-  private flush(): void {
-    while (this.waiters.length > 0) {
-      const waiter = this.waiters.shift();
-      if (waiter) {
-        if (this.error) {
-          waiter.reject(this.error);
-        } else {
-          waiter.resolve();
-        }
-      }
-    }
-  }
-
-  private waitForMessage(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.waiters.push({ resolve, reject });
-    });
   }
 }
 
@@ -231,7 +283,6 @@ export class Sandbox {
 
   private readonly client: Client;
   private readonly replContextByLang = new Map<string, string>();
-  private readonly pendingReplContexts = new Map<string, Promise<string>>();
 
   constructor(params: SandboxParams) {
     this.id = params.id;
@@ -294,42 +345,6 @@ export class Sandbox {
     };
   }
 
-  async runStream(language: string, options?: RunOptions): Promise<ContextStream> {
-    const contextId = await this.ensureReplContext(language, options);
-    return this.connectWsContext(contextId);
-  }
-
-  async cmdStream(command: string, options?: CmdOptions): Promise<ContextStream> {
-    if (!command.trim()) {
-      throw new APIError({
-        statusCode: 0,
-        code: "invalid_argument",
-        message: "command cannot be empty",
-      });
-    }
-    const cmdArgs = options?.command ?? parseCommand(command);
-    if (cmdArgs.length === 0) {
-      throw new APIError({
-        statusCode: 0,
-        code: "invalid_argument",
-        message: "command cannot be empty",
-      });
-    }
-    const waitUntilDone = options?.wait ?? false;
-    const request: CreateContextRequest = {
-      type: models.ProcessType.Cmd as ProcessType,
-      cmd: { command: cmdArgs } as CreateCMDContextRequest,
-      waitUntilDone,
-      cwd: options?.cwd,
-      envVars: options?.envVars,
-      ptySize: buildPty(options?.ptyRows, options?.ptyCols),
-      idleTimeoutSec: options?.idleTimeoutSec,
-      ttlSec: options?.ttlSec,
-    };
-    const contextResp = await this.createContext(request);
-    return this.connectWsContext(contextResp.id);
-  }
-
   async connectWsContext(contextId: string): Promise<ContextStream> {
     const wsUrl = this.client.websocketUrl(
       `/api/v1/sandboxes/${this.id}/contexts/${contextId}/ws`,
@@ -351,30 +366,18 @@ export class Sandbox {
     if (cached) {
       return cached;
     }
-    const pending = this.pendingReplContexts.get(normalized);
-    if (pending) {
-      return pending;
-    }
-    const promise = (async () => {
-      const request: CreateContextRequest = {
-        type: models.ProcessType.Repl as ProcessType,
-        repl: { language: normalized } as CreateREPLContextRequest,
-        cwd: options?.cwd,
-        envVars: options?.envVars,
-        ptySize: buildPty(options?.ptyRows, options?.ptyCols),
-        idleTimeoutSec: options?.idleTimeoutSec,
-        ttlSec: options?.ttlSec,
-      };
-      const response = await this.createContext(request);
-      this.replContextByLang.set(normalized, response.id);
-      return response.id;
-    })();
-    this.pendingReplContexts.set(normalized, promise);
-    try {
-      return await promise;
-    } finally {
-      this.pendingReplContexts.delete(normalized);
-    }
+    const request: CreateContextRequest = {
+      type: models.ProcessType.Repl as ProcessType,
+      repl: { language: normalized } as CreateREPLContextRequest,
+      cwd: options?.cwd,
+      envVars: options?.envVars,
+      ptySize: buildPty(options?.ptyRows, options?.ptyCols),
+      idleTimeoutSec: options?.idleTimeoutSec,
+      ttlSec: options?.ttlSec,
+    };
+    const response = await this.createContext(request);
+    this.replContextByLang.set(normalized, response.id);
+    return response.id;
   }
 }
 

@@ -26,8 +26,10 @@
     "build": "tsc -p tsconfig.build.json",
     "lint": "tsc -p tsconfig.json --noEmit",
     "lint:examples": "tsc -p tsconfig.examples.json --noEmit",
+    "lint:e2e": "tsc -p tsconfig.e2e.json --noEmit",
     "generate:apispec": "openapi-generator-cli generate -i openapi.yaml -g typescript-fetch -o src/apispec -c openapi-generator-config.yaml",
-    "test": "echo \"no tests yet\""
+    "test": "npx tsx tests/e2e/run.ts",
+    "test:e2e": "npx tsx tests/e2e/run.ts"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.28.3",

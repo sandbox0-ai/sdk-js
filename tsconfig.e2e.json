@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "types": ["node"]
+  },
+  "include": [
+    "src",
+    "tests/e2e"
+  ]
+}

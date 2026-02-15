@@ -1,0 +1,87 @@
+name: SDK-JS Infra E2E Trigger
+
+on:
+  workflow_dispatch:
+    inputs:
+      infra_repo:
+        description: "Infra repository (owner/repo)"
+        required: true
+        default: "sandbox0-ai/infra"
+      infra_ref:
+        description: "Infra workflow ref"
+        required: true
+        default: "main"
+      infra_workflow:
+        description: "Infra workflow file"
+        required: true
+        default: "sdk-e2e.yml"
+      infra_manifest:
+        description: "Infra scenario manifest"
+        required: true
+        default: "infra-operator/chart/samples/single-cluster/fullmode.yaml"
+      infra_name:
+        description: "Sandbox0Infra name from manifest"
+        required: true
+        default: "fullmode"
+      infra_namespace:
+        description: "Infra namespace"
+        required: true
+        default: "sandbox0-system"
+      sdk_test_cmd:
+        description: "SDK test command"
+        required: true
+        default: "npm install && npx tsx tests/e2e/run.ts"
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger-infra-e2e:
+    if: github.repository == 'sandbox0-ai/sdk-js'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Trigger and Wait for Infra E2E
+        env:
+          GH_TOKEN: ${{ secrets.INFRA_CI_TOKEN }}
+          INFRA_REPO: ${{ inputs.infra_repo || 'sandbox0-ai/infra' }}
+          INFRA_REF: ${{ inputs.infra_ref || 'main' }}
+          INFRA_WORKFLOW: ${{ inputs.infra_workflow || 'sdk-e2e.yml' }}
+          INFRA_MANIFEST: ${{ inputs.infra_manifest || 'infra-operator/chart/samples/single-cluster/fullmode.yaml' }}
+          INFRA_NAME: ${{ inputs.infra_name || 'fullmode' }}
+          INFRA_NAMESPACE: ${{ inputs.infra_namespace || 'sandbox0-system' }}
+          SDK_TEST_CMD: ${{ inputs.sdk_test_cmd || 'npm install && npx tsx tests/e2e/run.ts' }}
+          TRACE_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          echo "Triggering workflow in $INFRA_REPO..."
+          gh workflow run "$INFRA_WORKFLOW" --repo "$INFRA_REPO" --ref "$INFRA_REF" \
+            -f sdk_repo="${GITHUB_REPOSITORY}" \
+            -f sdk_ref="${GITHUB_SHA}" \
+            -f sdk_test_cmd="$SDK_TEST_CMD" \
+            -f infra_manifest="$INFRA_MANIFEST" \
+            -f infra_name="$INFRA_NAME" \
+            -f infra_namespace="$INFRA_NAMESPACE" \
+            -f trace_id="$TRACE_ID"
+
+          echo "Waiting for run to appear..."
+          sleep 5
+
+          RUN_ID=""
+          for i in {1..12}; do
+            LATEST_RUN=$(gh run list --repo "$INFRA_REPO" --workflow "$INFRA_WORKFLOW" --limit 1 --json databaseId,createdAt --jq '.[0]')
+            if [ -n "$LATEST_RUN" ]; then
+              RUN_ID=$(echo "$LATEST_RUN" | jq -r '.databaseId')
+              echo "Found latest run: $RUN_ID"
+              break
+            fi
+            sleep 5
+          done
+
+          if [ -z "$RUN_ID" ]; then
+            echo "Error: Could not find triggered workflow run."
+            exit 1
+          fi
+
+          echo "Watching run $RUN_ID..."
+          gh run watch "$RUN_ID" --repo "$INFRA_REPO" --exit-status

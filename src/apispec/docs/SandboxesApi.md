@@ -4,6 +4,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
+| [**apiV1SandboxesGet**](SandboxesApi.md#apiv1sandboxesget) | **GET** /api/v1/sandboxes | List sandboxes |
 | [**apiV1SandboxesIdDelete**](SandboxesApi.md#apiv1sandboxesiddelete) | **DELETE** /api/v1/sandboxes/{id} | Delete (terminate) a sandbox |
 | [**apiV1SandboxesIdExposedPortsDelete**](SandboxesApi.md#apiv1sandboxesidexposedportsdelete) | **DELETE** /api/v1/sandboxes/{id}/exposed-ports | Clear all exposed ports |
 | [**apiV1SandboxesIdExposedPortsGet**](SandboxesApi.md#apiv1sandboxesidexposedportsget) | **GET** /api/v1/sandboxes/{id}/exposed-ports | Get sandbox exposed ports |
@@ -19,6 +20,90 @@ All URIs are relative to *https://api.sandbox0.ai*
 | [**apiV1SandboxesIdStatusGet**](SandboxesApi.md#apiv1sandboxesidstatusget) | **GET** /api/v1/sandboxes/{id}/status | Get sandbox status |
 | [**apiV1SandboxesPost**](SandboxesApi.md#apiv1sandboxespost) | **POST** /api/v1/sandboxes | Create (claim) a sandbox |
 
+
+
+## apiV1SandboxesGet
+
+> SuccessSandboxListResponse apiV1SandboxesGet(status, templateId, paused, limit, offset)
+
+List sandboxes
+
+List all sandboxes for the authenticated team. In multi-cluster mode, this endpoint aggregates results from all enabled clusters.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  SandboxesApi,
+} from 'sandbox0';
+import type { ApiV1SandboxesGetRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SandboxesApi(config);
+
+  const body = {
+    // 'starting' | 'running' | 'failed' | 'completed' | Filter by sandbox status (optional)
+    status: status_example,
+    // string | Filter by template ID (optional)
+    templateId: templateId_example,
+    // boolean | Filter by paused state (optional)
+    paused: true,
+    // number | Maximum number of results per page (optional)
+    limit: 56,
+    // number | Pagination offset (optional)
+    offset: 56,
+  } satisfies ApiV1SandboxesGetRequest;
+
+  try {
+    const data = await api.apiV1SandboxesGet(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **status** | `starting`, `running`, `failed`, `completed` | Filter by sandbox status | [Optional] [Defaults to `undefined`] [Enum: starting, running, failed, completed] |
+| **templateId** | `string` | Filter by template ID | [Optional] [Defaults to `undefined`] |
+| **paused** | `boolean` | Filter by paused state | [Optional] [Defaults to `undefined`] |
+| **limit** | `number` | Maximum number of results per page | [Optional] [Defaults to `50`] |
+| **offset** | `number` | Pagination offset | [Optional] [Defaults to `0`] |
+
+### Return type
+
+[**SuccessSandboxListResponse**](SuccessSandboxListResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | List of sandboxes |  -  |
+| **400** | Invalid request |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
 ## apiV1SandboxesIdDelete

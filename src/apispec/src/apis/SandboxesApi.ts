@@ -25,6 +25,7 @@ import type {
   SuccessPauseSandboxResponse,
   SuccessRefreshResponse,
   SuccessResumeSandboxResponse,
+  SuccessSandboxListResponse,
   SuccessSandboxNetworkPolicyResponse,
   SuccessSandboxResponse,
   SuccessSandboxStatusResponse,
@@ -52,6 +53,8 @@ import {
     SuccessRefreshResponseToJSON,
     SuccessResumeSandboxResponseFromJSON,
     SuccessResumeSandboxResponseToJSON,
+    SuccessSandboxListResponseFromJSON,
+    SuccessSandboxListResponseToJSON,
     SuccessSandboxNetworkPolicyResponseFromJSON,
     SuccessSandboxNetworkPolicyResponseToJSON,
     SuccessSandboxResponseFromJSON,
@@ -63,6 +66,14 @@ import {
     UpdateExposedPortsRequestFromJSON,
     UpdateExposedPortsRequestToJSON,
 } from '../models/index';
+
+export interface ApiV1SandboxesGetRequest {
+    status?: ApiV1SandboxesGetStatusEnum;
+    templateId?: string;
+    paused?: boolean;
+    limit?: number;
+    offset?: number;
+}
 
 export interface ApiV1SandboxesIdDeleteRequest {
     id: string;
@@ -129,6 +140,65 @@ export interface ApiV1SandboxesPostRequest {
  * 
  */
 export class SandboxesApi extends runtime.BaseAPI {
+
+    /**
+     * List all sandboxes for the authenticated team. In multi-cluster mode, this endpoint aggregates results from all enabled clusters.
+     * List sandboxes
+     */
+    async apiV1SandboxesGetRaw(requestParameters: ApiV1SandboxesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxListResponse>> {
+        const queryParameters: any = {};
+
+        if (requestParameters['status'] != null) {
+            queryParameters['status'] = requestParameters['status'];
+        }
+
+        if (requestParameters['templateId'] != null) {
+            queryParameters['template_id'] = requestParameters['templateId'];
+        }
+
+        if (requestParameters['paused'] != null) {
+            queryParameters['paused'] = requestParameters['paused'];
+        }
+
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
+        }
+
+        if (requestParameters['offset'] != null) {
+            queryParameters['offset'] = requestParameters['offset'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxListResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * List all sandboxes for the authenticated team. In multi-cluster mode, this endpoint aggregates results from all enabled clusters.
+     * List sandboxes
+     */
+    async apiV1SandboxesGet(requestParameters: ApiV1SandboxesGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxListResponse> {
+        const response = await this.apiV1SandboxesGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Delete (terminate) a sandbox
@@ -806,3 +876,14 @@ export class SandboxesApi extends runtime.BaseAPI {
     }
 
 }
+
+/**
+ * @export
+ */
+export const ApiV1SandboxesGetStatusEnum = {
+    Starting: 'starting',
+    Running: 'running',
+    Failed: 'failed',
+    Completed: 'completed'
+} as const;
+export type ApiV1SandboxesGetStatusEnum = typeof ApiV1SandboxesGetStatusEnum[keyof typeof ApiV1SandboxesGetStatusEnum];

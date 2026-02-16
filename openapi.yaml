@@ -745,6 +745,59 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
   /api/v1/sandboxes:
+    get:
+      tags: [sandboxes]
+      summary: List sandboxes
+      description: List all sandboxes for the authenticated team. In multi-cluster mode, this endpoint aggregates results from all enabled clusters.
+      security:
+        - bearerAuth: []
+      x-upstream-service: scheduler
+      x-upstream-path: /api/v1/sandboxes
+      parameters:
+        - name: status
+          in: query
+          description: Filter by sandbox status
+          schema:
+            type: string
+            enum: [starting, running, failed, completed]
+        - name: template_id
+          in: query
+          description: Filter by template ID
+          schema:
+            type: string
+        - name: paused
+          in: query
+          description: Filter by paused state
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          description: Maximum number of results per page
+          schema:
+            type: integer
+            default: 50
+            minimum: 1
+            maximum: 200
+        - name: offset
+          in: query
+          description: Pagination offset
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+      responses:
+        "200":
+          description: List of sandboxes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxListResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
     post:
       tags: [sandboxes]
       summary: Create (claim) a sandbox
@@ -2674,6 +2727,57 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/SandboxStatus"
+    SandboxSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        template_id:
+          type: string
+        status:
+          type: string
+          enum: [starting, running, failed, completed]
+        paused:
+          type: boolean
+        cluster_id:
+          type: string
+          description: Cluster where sandbox runs (multi-cluster only)
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - template_id
+        - status
+        - paused
+        - created_at
+        - expires_at
+    SuccessSandboxListResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                sandboxes:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/SandboxSummary"
+                count:
+                  type: integer
+                  description: Total matching sandboxes
+                has_more:
+                  type: boolean
+                  description: More results available
+              required:
+                - sandboxes
+                - count
+                - has_more
     ResourceUsage:
       type: object
       properties:

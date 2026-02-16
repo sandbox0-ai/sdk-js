@@ -90,6 +90,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SandboxVolumesApi* | [**apiV1SandboxvolumesIdDelete**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesiddelete) | **DELETE** /api/v1/sandboxvolumes/{id} | Delete sandbox volume
 *SandboxVolumesApi* | [**apiV1SandboxvolumesIdGet**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesidget) | **GET** /api/v1/sandboxvolumes/{id} | Get sandbox volume
 *SandboxVolumesApi* | [**apiV1SandboxvolumesPost**](docs/SandboxVolumesApi.md#apiv1sandboxvolumespost) | **POST** /api/v1/sandboxvolumes | Create sandbox volume
+*SandboxesApi* | [**apiV1SandboxesGet**](docs/SandboxesApi.md#apiv1sandboxesget) | **GET** /api/v1/sandboxes | List sandboxes
 *SandboxesApi* | [**apiV1SandboxesIdDelete**](docs/SandboxesApi.md#apiv1sandboxesiddelete) | **DELETE** /api/v1/sandboxes/{id} | Delete (terminate) a sandbox
 *SandboxesApi* | [**apiV1SandboxesIdExposedPortsDelete**](docs/SandboxesApi.md#apiv1sandboxesidexposedportsdelete) | **DELETE** /api/v1/sandboxes/{id}/exposed-ports | Clear all exposed ports
 *SandboxesApi* | [**apiV1SandboxesIdExposedPortsGet**](docs/SandboxesApi.md#apiv1sandboxesidexposedportsget) | **GET** /api/v1/sandboxes/{id}/exposed-ports | Get sandbox exposed ports
@@ -219,6 +220,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxConfig](docs/SandboxConfig.md)
 - [SandboxResourceUsage](docs/SandboxResourceUsage.md)
 - [SandboxStatus](docs/SandboxStatus.md)
+- [SandboxSummary](docs/SandboxSummary.md)
 - [SandboxTemplate](docs/SandboxTemplate.md)
 - [SandboxTemplateCondition](docs/SandboxTemplateCondition.md)
 - [SandboxTemplateSpec](docs/SandboxTemplateSpec.md)
@@ -271,6 +273,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessRestoreResponse](docs/SuccessRestoreResponse.md)
 - [SuccessRestoreResponseAllOfData](docs/SuccessRestoreResponseAllOfData.md)
 - [SuccessResumeSandboxResponse](docs/SuccessResumeSandboxResponse.md)
+- [SuccessSandboxListResponse](docs/SuccessSandboxListResponse.md)
+- [SuccessSandboxListResponseAllOfData](docs/SuccessSandboxListResponseAllOfData.md)
 - [SuccessSandboxNetworkPolicyResponse](docs/SuccessSandboxNetworkPolicyResponse.md)
 - [SuccessSandboxResponse](docs/SuccessSandboxResponse.md)
 - [SuccessSandboxStatusResponse](docs/SuccessSandboxStatusResponse.md)

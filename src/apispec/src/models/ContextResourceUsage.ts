@@ -40,11 +40,11 @@ export interface ContextResourceUsage {
      */
     type?: string;
     /**
-     * 
+     * Alias for the REPL or CLI tool (e.g., python, node, bash, redis-cli)
      * @type {string}
      * @memberof ContextResourceUsage
      */
-    language?: string;
+    alias?: string;
     /**
      * 
      * @type {boolean}
@@ -84,7 +84,7 @@ export function ContextResourceUsageFromJSONTyped(json: any, ignoreDiscriminator
         
         'contextId': json['context_id'] == null ? undefined : json['context_id'],
         'type': json['type'] == null ? undefined : json['type'],
-        'language': json['language'] == null ? undefined : json['language'],
+        'alias': json['alias'] == null ? undefined : json['alias'],
         'running': json['running'] == null ? undefined : json['running'],
         'paused': json['paused'] == null ? undefined : json['paused'],
         'usage': json['usage'] == null ? undefined : ResourceUsageFromJSON(json['usage']),
@@ -104,7 +104,7 @@ export function ContextResourceUsageToJSONTyped(value?: ContextResourceUsage | n
         
         'context_id': value['contextId'],
         'type': value['type'],
-        'language': value['language'],
+        'alias': value['alias'],
         'running': value['running'],
         'paused': value['paused'],
         'usage': ResourceUsageToJSON(value['usage']),

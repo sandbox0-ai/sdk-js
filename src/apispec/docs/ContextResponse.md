@@ -8,7 +8,7 @@ Name | Type
 ------------ | -------------
 `id` | string
 `type` | [ProcessType](ProcessType.md)
-`language` | string
+`alias` | string
 `cwd` | string
 `envVars` | { [key: string]: string; }
 `running` | boolean
@@ -25,7 +25,7 @@ import type { ContextResponse } from 'sandbox0'
 const example = {
   "id": null,
   "type": null,
-  "language": null,
+  "alias": null,
   "cwd": null,
   "envVars": null,
   "running": null,

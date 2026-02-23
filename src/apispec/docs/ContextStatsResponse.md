@@ -8,7 +8,7 @@ Name | Type
 ------------ | -------------
 `contextId` | string
 `type` | string
-`language` | string
+`alias` | string
 `running` | boolean
 `paused` | boolean
 `usage` | [ResourceUsage](ResourceUsage.md)
@@ -22,7 +22,7 @@ import type { ContextStatsResponse } from 'sandbox0'
 const example = {
   "contextId": null,
   "type": null,
-  "language": null,
+  "alias": null,
   "running": null,
   "paused": null,
   "usage": null,

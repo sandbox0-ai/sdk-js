@@ -40,11 +40,11 @@ export interface ContextResponse {
      */
     type: ProcessType;
     /**
-     * 
+     * Alias for the REPL or CLI tool (e.g., python, node, bash, redis-cli)
      * @type {string}
      * @memberof ContextResponse
      */
-    language?: string;
+    alias?: string;
     /**
      * 
      * @type {string}
@@ -109,7 +109,7 @@ export function ContextResponseFromJSONTyped(json: any, ignoreDiscriminator: boo
         
         'id': json['id'],
         'type': ProcessTypeFromJSON(json['type']),
-        'language': json['language'] == null ? undefined : json['language'],
+        'alias': json['alias'] == null ? undefined : json['alias'],
         'cwd': json['cwd'] == null ? undefined : json['cwd'],
         'envVars': json['env_vars'] == null ? undefined : json['env_vars'],
         'running': json['running'],
@@ -132,7 +132,7 @@ export function ContextResponseToJSONTyped(value?: ContextResponse | null, ignor
         
         'id': value['id'],
         'type': ProcessTypeToJSON(value['type']),
-        'language': value['language'],
+        'alias': value['alias'],
         'cwd': value['cwd'],
         'env_vars': value['envVars'],
         'running': value['running'],

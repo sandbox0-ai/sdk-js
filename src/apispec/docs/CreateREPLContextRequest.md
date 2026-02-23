@@ -6,7 +6,7 @@
 
 Name | Type
 ------------ | -------------
-`language` | string
+`alias` | string
 `input` | string
 `replConfig` | [REPLConfig](REPLConfig.md)
 
@@ -17,7 +17,7 @@ import type { CreateREPLContextRequest } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "language": null,
+  "alias": null,
   "input": null,
   "replConfig": null,
 } satisfies CreateREPLContextRequest

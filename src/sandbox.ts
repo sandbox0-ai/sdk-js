@@ -293,7 +293,7 @@ export class Sandbox {
     this.status = params.status ?? "";
   }
 
-  async run(language: string, input: string, options?: RunOptions): Promise<RunResult> {
+  async run(alias: string, input: string, options?: RunOptions): Promise<RunResult> {
     if (!input.trim()) {
       throw new APIError({
         statusCode: 0,
@@ -301,7 +301,7 @@ export class Sandbox {
         message: "input cannot be empty",
       });
     }
-    const contextId = await this.ensureReplContext(language, options);
+    const contextId = await this.ensureReplContext(alias, options);
     const execResp = await this.contextExec(contextId, normalizeReplInput(input));
     return {
       sandboxId: this.id,
@@ -355,20 +355,20 @@ export class Sandbox {
   }
 
   private async ensureReplContext(
-    language: string,
+    alias: string,
     options?: RunOptions,
   ): Promise<string> {
     if (options?.contextId) {
       return options.contextId;
     }
-    const normalized = language.trim() || "python";
+    const normalized = alias.trim() || "python";
     const cached = this.replContextByLang.get(normalized);
     if (cached) {
       return cached;
     }
     const request: CreateContextRequest = {
       type: models.ProcessType.Repl as ProcessType,
-      repl: { language: normalized } as CreateREPLContextRequest,
+      repl: { alias: normalized } as CreateREPLContextRequest,
       cwd: options?.cwd,
       envVars: options?.envVars,
       ptySize: buildPty(options?.ptyRows, options?.ptyCols),

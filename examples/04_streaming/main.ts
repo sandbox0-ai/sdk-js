@@ -9,7 +9,7 @@ async function main() {
     console.log("REPL stream:");
     const replCtx = await sandbox.createContext({
       type: "repl",
-      repl: { language: "python" },
+      repl: { alias: "python" },
     });
     const replStream = await sandbox.connectWsContext(replCtx.id);
 
@@ -48,7 +48,7 @@ async function main() {
     console.log("\nWritable stream input:");
     const streamCtx = await sandbox.createContext({
       type: "repl",
-      repl: { language: "python" },
+      repl: { alias: "python" },
     });
     const stream = await sandbox.connectWsContext(streamCtx.id);
     const writer = stream.writable.getWriter();

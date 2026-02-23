@@ -30,7 +30,7 @@ describe("SandboxContexts", () => {
     try {
       const replReq = {
         type: models.ProcessType.Repl,
-        repl: { language: "python" },
+        repl: { alias: "python" },
         ptySize: { rows: 24, cols: 80 },
         envVars: { SDK_JS_E2E_CTX: "true" },
         idleTimeoutSec: 60,

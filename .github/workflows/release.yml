@@ -24,6 +24,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        continue-on-error: true
+        id: npm-ci
+
+      - name: Retry npm ci if failed
+        if: steps.npm-ci.outcome == 'failure'
+        run: npm ci
 
       - name: Build
         run: npm run build

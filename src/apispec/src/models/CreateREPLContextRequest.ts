@@ -28,11 +28,11 @@ import {
  */
 export interface CreateREPLContextRequest {
     /**
-     * 
+     * Alias for the REPL or CLI tool (e.g., python, node, bash, redis-cli)
      * @type {string}
      * @memberof CreateREPLContextRequest
      */
-    language?: string;
+    alias?: string;
     /**
      * 
      * @type {string}
@@ -64,7 +64,7 @@ export function CreateREPLContextRequestFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
-        'language': json['language'] == null ? undefined : json['language'],
+        'alias': json['alias'] == null ? undefined : json['alias'],
         'input': json['input'] == null ? undefined : json['input'],
         'replConfig': json['repl_config'] == null ? undefined : REPLConfigFromJSON(json['repl_config']),
     };
@@ -81,7 +81,7 @@ export function CreateREPLContextRequestToJSONTyped(value?: CreateREPLContextReq
 
     return {
         
-        'language': value['language'],
+        'alias': value['alias'],
         'input': value['input'],
         'repl_config': REPLConfigToJSON(value['replConfig']),
     };

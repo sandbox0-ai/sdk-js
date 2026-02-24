@@ -44,6 +44,7 @@ export * from './FileWatchSubscribeRequest';
 export * from './FileWatchSubscribed';
 export * from './FileWatchUnsubscribeRequest';
 export * from './FileWatchUnsubscribed';
+export * from './ForkVolumeRequest';
 export * from './Identity';
 export * from './LabelSelector';
 export * from './LabelSelectorRequirement';

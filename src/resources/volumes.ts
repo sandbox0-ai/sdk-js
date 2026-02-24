@@ -1,5 +1,6 @@
 import type {
   CreateSandboxVolumeRequest,
+  ForkVolumeRequest,
   CreateSnapshotRequest,
   SandboxVolume,
   Snapshot,
@@ -50,6 +51,16 @@ export class Volumes {
       this.client.apispec.sandboxVolumes.apiV1SandboxvolumesIdDelete({ id: volumeId }),
     );
     return ensureModel(response, "delete volume returned empty response");
+  }
+
+  async fork(volumeId: string, request?: ForkVolumeRequest): Promise<SandboxVolume> {
+    const response = await wrapApiCall(() =>
+      this.client.apispec.sandboxVolumes.apiV1SandboxvolumesIdForkPost({
+        id: volumeId,
+        forkVolumeRequest: request,
+      }),
+    );
+    return ensureData(response, "fork volume returned empty response");
   }
 
   async createSnapshot(

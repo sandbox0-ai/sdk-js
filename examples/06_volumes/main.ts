@@ -36,15 +36,29 @@ async function main() {
     content = await sandbox.readFile("/mnt/data/hello.txt");
     console.log(`file content:\n${Buffer.from(content).toString("utf-8")}`);
 
+    const forkedVolume = await client.volumes.fork(volumeId, {});
+    const forkedVolumeId = forkedVolume.id;
+    console.log(`volume forked: ${forkedVolumeId} (source: ${volumeId})`);
+
     const sandbox2 = await client.sandboxes.claim("default");
     console.log(`new sandbox created: ${sandbox2.id}`);
 
     const mountSession2 = await sandbox2.mount(volumeId, "/mnt/data");
+    const forkMountSession = await sandbox2.mount(forkedVolumeId, "/mnt/fork");
     content = await sandbox2.readFile("/mnt/data/hello.txt");
-    console.log(`sandbox2 file content:\n${Buffer.from(content).toString("utf-8")}`);
+    console.log(`sandbox2 source volume content:\n${Buffer.from(content).toString("utf-8")}`);
 
+    await sandbox2.writeFile("/mnt/fork/hello.txt", "hello from fork\n");
+    content = await sandbox2.readFile("/mnt/fork/hello.txt");
+    console.log(`forked volume file content:\n${Buffer.from(content).toString("utf-8")}`);
+
+    content = await sandbox2.readFile("/mnt/data/hello.txt");
+    console.log(`source volume file content after fork write:\n${Buffer.from(content).toString("utf-8")}`);
+
+    await sandbox2.unmount(forkedVolumeId, forkMountSession.mountSessionId);
     await sandbox2.unmount(volumeId, mountSession2.mountSessionId);
     await client.sandboxes.delete(sandbox2.id);
+    await client.volumes.delete(forkedVolumeId);
 
     await sandbox.unmount(volumeId, mountSession.mountSessionId);
     await client.volumes.delete(volumeId);

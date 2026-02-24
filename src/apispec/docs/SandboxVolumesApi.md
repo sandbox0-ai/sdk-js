@@ -9,6 +9,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 | [**apiV1SandboxesIdSandboxvolumesUnmountPost**](SandboxVolumesApi.md#apiv1sandboxesidsandboxvolumesunmountpost) | **POST** /api/v1/sandboxes/{id}/sandboxvolumes/unmount | Unmount sandbox volume |
 | [**apiV1SandboxvolumesGet**](SandboxVolumesApi.md#apiv1sandboxvolumesget) | **GET** /api/v1/sandboxvolumes | List sandbox volumes |
 | [**apiV1SandboxvolumesIdDelete**](SandboxVolumesApi.md#apiv1sandboxvolumesiddelete) | **DELETE** /api/v1/sandboxvolumes/{id} | Delete sandbox volume |
+| [**apiV1SandboxvolumesIdForkPost**](SandboxVolumesApi.md#apiv1sandboxvolumesidforkpost) | **POST** /api/v1/sandboxvolumes/{id}/fork | Fork sandbox volume |
 | [**apiV1SandboxvolumesIdGet**](SandboxVolumesApi.md#apiv1sandboxvolumesidget) | **GET** /api/v1/sandboxvolumes/{id} | Get sandbox volume |
 | [**apiV1SandboxvolumesPost**](SandboxVolumesApi.md#apiv1sandboxvolumespost) | **POST** /api/v1/sandboxvolumes | Create sandbox volume |
 
@@ -354,6 +355,79 @@ example().catch(console.error);
 |-------------|-------------|------------------|
 | **200** | Deleted |  -  |
 | **409** | Volume has active mounts |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## apiV1SandboxvolumesIdForkPost
+
+> SuccessSandboxVolumeResponse apiV1SandboxvolumesIdForkPost(id, forkVolumeRequest)
+
+Fork sandbox volume
+
+### Example
+
+```ts
+import {
+  Configuration,
+  SandboxVolumesApi,
+} from 'sandbox0';
+import type { ApiV1SandboxvolumesIdForkPostRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SandboxVolumesApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // ForkVolumeRequest (optional)
+    forkVolumeRequest: ...,
+  } satisfies ApiV1SandboxvolumesIdForkPostRequest;
+
+  try {
+    const data = await api.apiV1SandboxvolumesIdForkPost(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **forkVolumeRequest** | [ForkVolumeRequest](ForkVolumeRequest.md) |  | [Optional] |
+
+### Return type
+
+[**SuccessSandboxVolumeResponse**](SuccessSandboxVolumeResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | Volume forked |  -  |
+| **404** | Not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

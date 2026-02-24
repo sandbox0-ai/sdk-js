@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   CreateSandboxVolumeRequest,
   ErrorEnvelope,
+  ForkVolumeRequest,
   MountRequest,
   SuccessDeletedResponse,
   SuccessMountResponse,
@@ -31,6 +32,8 @@ import {
     CreateSandboxVolumeRequestToJSON,
     ErrorEnvelopeFromJSON,
     ErrorEnvelopeToJSON,
+    ForkVolumeRequestFromJSON,
+    ForkVolumeRequestToJSON,
     MountRequestFromJSON,
     MountRequestToJSON,
     SuccessDeletedResponseFromJSON,
@@ -65,6 +68,11 @@ export interface ApiV1SandboxesIdSandboxvolumesUnmountPostRequest {
 
 export interface ApiV1SandboxvolumesIdDeleteRequest {
     id: string;
+}
+
+export interface ApiV1SandboxvolumesIdForkPostRequest {
+    id: string;
+    forkVolumeRequest?: ForkVolumeRequest;
 }
 
 export interface ApiV1SandboxvolumesIdGetRequest {
@@ -314,6 +322,54 @@ export class SandboxVolumesApi extends runtime.BaseAPI {
      */
     async apiV1SandboxvolumesIdDelete(requestParameters: ApiV1SandboxvolumesIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessDeletedResponse> {
         const response = await this.apiV1SandboxvolumesIdDeleteRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Fork sandbox volume
+     */
+    async apiV1SandboxvolumesIdForkPostRaw(requestParameters: ApiV1SandboxvolumesIdForkPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxVolumeResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1SandboxvolumesIdForkPost().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxvolumes/{id}/fork`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ForkVolumeRequestToJSON(requestParameters['forkVolumeRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxVolumeResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Fork sandbox volume
+     */
+    async apiV1SandboxvolumesIdForkPost(requestParameters: ApiV1SandboxvolumesIdForkPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxVolumeResponse> {
+        const response = await this.apiV1SandboxvolumesIdForkPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

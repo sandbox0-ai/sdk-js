@@ -88,6 +88,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SandboxVolumesApi* | [**apiV1SandboxesIdSandboxvolumesUnmountPost**](docs/SandboxVolumesApi.md#apiv1sandboxesidsandboxvolumesunmountpost) | **POST** /api/v1/sandboxes/{id}/sandboxvolumes/unmount | Unmount sandbox volume
 *SandboxVolumesApi* | [**apiV1SandboxvolumesGet**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesget) | **GET** /api/v1/sandboxvolumes | List sandbox volumes
 *SandboxVolumesApi* | [**apiV1SandboxvolumesIdDelete**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesiddelete) | **DELETE** /api/v1/sandboxvolumes/{id} | Delete sandbox volume
+*SandboxVolumesApi* | [**apiV1SandboxvolumesIdForkPost**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesidforkpost) | **POST** /api/v1/sandboxvolumes/{id}/fork | Fork sandbox volume
 *SandboxVolumesApi* | [**apiV1SandboxvolumesIdGet**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesidget) | **GET** /api/v1/sandboxvolumes/{id} | Get sandbox volume
 *SandboxVolumesApi* | [**apiV1SandboxvolumesPost**](docs/SandboxVolumesApi.md#apiv1sandboxvolumespost) | **POST** /api/v1/sandboxvolumes | Create sandbox volume
 *SandboxesApi* | [**apiV1SandboxesGet**](docs/SandboxesApi.md#apiv1sandboxesget) | **GET** /api/v1/sandboxes | List sandboxes
@@ -176,6 +177,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [FileWatchSubscribed](docs/FileWatchSubscribed.md)
 - [FileWatchUnsubscribeRequest](docs/FileWatchUnsubscribeRequest.md)
 - [FileWatchUnsubscribed](docs/FileWatchUnsubscribed.md)
+- [ForkVolumeRequest](docs/ForkVolumeRequest.md)
 - [Identity](docs/Identity.md)
 - [LabelSelector](docs/LabelSelector.md)
 - [LabelSelectorRequirement](docs/LabelSelectorRequirement.md)

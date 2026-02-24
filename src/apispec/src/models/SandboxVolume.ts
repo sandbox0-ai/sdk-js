@@ -50,6 +50,12 @@ export interface SandboxVolume {
      * @type {string}
      * @memberof SandboxVolume
      */
+    sourceVolumeId?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof SandboxVolume
+     */
     cacheSize: string;
     /**
      * 
@@ -118,6 +124,7 @@ export function SandboxVolumeFromJSONTyped(json: any, ignoreDiscriminator: boole
         'id': json['id'],
         'teamId': json['team_id'],
         'userId': json['user_id'],
+        'sourceVolumeId': json['source_volume_id'] == null ? undefined : json['source_volume_id'],
         'cacheSize': json['cache_size'],
         'prefetch': json['prefetch'] == null ? undefined : json['prefetch'],
         'bufferSize': json['buffer_size'],
@@ -142,6 +149,7 @@ export function SandboxVolumeToJSONTyped(value?: SandboxVolume | null, ignoreDis
         'id': value['id'],
         'team_id': value['teamId'],
         'user_id': value['userId'],
+        'source_volume_id': value['sourceVolumeId'],
         'cache_size': value['cacheSize'],
         'prefetch': value['prefetch'],
         'buffer_size': value['bufferSize'],

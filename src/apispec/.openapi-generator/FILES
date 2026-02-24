@@ -49,6 +49,7 @@ docs/FileWatchSubscribed.md
 docs/FileWatchUnsubscribeRequest.md
 docs/FileWatchUnsubscribed.md
 docs/FilesApi.md
+docs/ForkVolumeRequest.md
 docs/HealthApi.md
 docs/Identity.md
 docs/LabelSelector.md
@@ -255,6 +256,7 @@ src/models/FileWatchSubscribeRequest.ts
 src/models/FileWatchSubscribed.ts
 src/models/FileWatchUnsubscribeRequest.ts
 src/models/FileWatchUnsubscribed.ts
+src/models/ForkVolumeRequest.ts
 src/models/Identity.ts
 src/models/LabelSelector.ts
 src/models/LabelSelectorRequirement.ts

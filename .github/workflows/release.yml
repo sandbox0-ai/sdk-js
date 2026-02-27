@@ -22,6 +22,13 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Update version in package.json
+        run: npm version ${{ steps.version.outputs.VERSION }} --no-git-tag-version
+
       - name: Install dependencies
         run: npm ci
         continue-on-error: true

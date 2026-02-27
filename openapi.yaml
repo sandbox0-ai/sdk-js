@@ -999,7 +999,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RefreshRequest"
+              $ref: "#/components/schemas/SandboxRefreshRequest"
       responses:
         "200":
           description: TTL refreshed
@@ -2957,6 +2957,13 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/ResumeSandboxResponse"
+    SandboxRefreshRequest:
+      type: object
+      properties:
+        duration:
+          type: integer
+          format: int32
+          description: Duration to extend TTL in seconds (optional, defaults to original TTL)
     RefreshResponse:
       type: object
       properties:

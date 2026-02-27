@@ -1,7 +1,7 @@
 import type {
   ClaimRequest,
   PauseSandboxResponse,
-  RefreshRequest,
+  SandboxRefreshRequest,
   RefreshResponse,
   ResumeSandboxResponse,
   Sandbox,
@@ -110,10 +110,10 @@ export class Sandboxes {
 
   async refresh(
     sandboxId: string,
-    request?: RefreshRequest,
+    request?: SandboxRefreshRequest,
   ): Promise<RefreshResponse> {
     const params = request
-      ? { id: sandboxId, refreshRequest: request }
+      ? { id: sandboxId, sandboxRefreshRequest: request }
       : { id: sandboxId };
     const response = await wrapApiCall(() =>
       this.client.apispec.sandboxes.apiV1SandboxesIdRefreshPost(params),

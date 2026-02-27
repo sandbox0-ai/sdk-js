@@ -94,6 +94,7 @@ docs/ResourceUsage.md
 docs/ResumeSandboxResponse.md
 docs/Sandbox.md
 docs/SandboxConfig.md
+docs/SandboxRefreshRequest.md
 docs/SandboxResourceUsage.md
 docs/SandboxStatus.md
 docs/SandboxSummary.md
@@ -300,6 +301,7 @@ src/models/ResourceUsage.ts
 src/models/ResumeSandboxResponse.ts
 src/models/Sandbox.ts
 src/models/SandboxConfig.ts
+src/models/SandboxRefreshRequest.ts
 src/models/SandboxResourceUsage.ts
 src/models/SandboxStatus.ts
 src/models/SandboxSummary.ts

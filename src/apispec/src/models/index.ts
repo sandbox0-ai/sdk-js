@@ -87,6 +87,7 @@ export * from './ResourceUsage';
 export * from './ResumeSandboxResponse';
 export * from './Sandbox';
 export * from './SandboxConfig';
+export * from './SandboxRefreshRequest';
 export * from './SandboxResourceUsage';
 export * from './SandboxStatus';
 export * from './SandboxSummary';

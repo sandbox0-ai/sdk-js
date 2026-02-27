@@ -824,7 +824,7 @@ example().catch(console.error);
 
 ## apiV1SandboxesIdRefreshPost
 
-> SuccessRefreshResponse apiV1SandboxesIdRefreshPost(id, refreshRequest)
+> SuccessRefreshResponse apiV1SandboxesIdRefreshPost(id, sandboxRefreshRequest)
 
 Refresh sandbox TTL
 
@@ -848,8 +848,8 @@ async function example() {
   const body = {
     // string
     id: id_example,
-    // RefreshRequest (optional)
-    refreshRequest: ...,
+    // SandboxRefreshRequest (optional)
+    sandboxRefreshRequest: ...,
   } satisfies ApiV1SandboxesIdRefreshPostRequest;
 
   try {
@@ -870,7 +870,7 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | `string` |  | [Defaults to `undefined`] |
-| **refreshRequest** | [RefreshRequest](RefreshRequest.md) |  | [Optional] |
+| **sandboxRefreshRequest** | [SandboxRefreshRequest](SandboxRefreshRequest.md) |  | [Optional] |
 
 ### Return type
 

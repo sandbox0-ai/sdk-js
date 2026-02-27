@@ -17,7 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ClaimRequest,
   ErrorEnvelope,
-  RefreshRequest,
+  SandboxRefreshRequest,
   SandboxUpdateRequest,
   SuccessClaimResponse,
   SuccessExposedPortsResponse,
@@ -37,8 +37,8 @@ import {
     ClaimRequestToJSON,
     ErrorEnvelopeFromJSON,
     ErrorEnvelopeToJSON,
-    RefreshRequestFromJSON,
-    RefreshRequestToJSON,
+    SandboxRefreshRequestFromJSON,
+    SandboxRefreshRequestToJSON,
     SandboxUpdateRequestFromJSON,
     SandboxUpdateRequestToJSON,
     SuccessClaimResponseFromJSON,
@@ -121,7 +121,7 @@ export interface ApiV1SandboxesIdPutRequest {
 
 export interface ApiV1SandboxesIdRefreshPostRequest {
     id: string;
-    refreshRequest?: RefreshRequest;
+    sandboxRefreshRequest?: SandboxRefreshRequest;
 }
 
 export interface ApiV1SandboxesIdResumePostRequest {
@@ -724,7 +724,7 @@ export class SandboxesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: RefreshRequestToJSON(requestParameters['refreshRequest']),
+            body: SandboxRefreshRequestToJSON(requestParameters['sandboxRefreshRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SuccessRefreshResponseFromJSON(jsonValue));

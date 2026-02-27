@@ -1,6 +1,7 @@
 import { describe, it, before, skip } from "node:test";
 import assert from "node:assert";
 import { loadE2EConfig, newClient, type E2EConfig } from "./helpers.ts";
+import { ProcessType } from "../../src/apispec/src/models/index.ts";
 
 describe("SandboxRun", () => {
   let cfg: E2EConfig | null;
@@ -27,13 +28,21 @@ describe("SandboxRun", () => {
     };
 
     try {
-      const runResult = await sandbox.run("python", "print('hello')\n", {
-        ttlSec: 120,
-        idleTimeoutSec: 60,
+      // Create a custom REPL context with specific settings
+      const customCtx = await sandbox.createContext({
+        type: ProcessType.Repl,
+        repl: { alias: "python" },
         cwd: "/tmp",
         envVars: { SDK_JS_E2E: "true" },
-        ptyRows: 24,
-        ptyCols: 80,
+        ttlSec: 120,
+        idleTimeoutSec: 60,
+        ptySize: { rows: 24, cols: 80 },
+      });
+      assert.ok(customCtx.id);
+
+      // Run using the custom context
+      const runResult = await sandbox.run("python", "print('hello')\n", {
+        contextId: customCtx.id,
       });
       assert.ok(runResult.contextId);
 
@@ -42,6 +51,7 @@ describe("SandboxRun", () => {
         contextId: runResult.contextId,
       });
 
+      // Cmd always creates a new context, so options work directly
       const cmdResult = await sandbox.cmd("echo hello", {
         command: ["sh", "-c", "echo hello"],
         ttlSec: 120,

@@ -19,13 +19,12 @@ import type {
 import { WebSocketClient, type WebSocketRawData } from "./ws_client";
 
 export interface RunOptions {
+  /**
+   * Use a specific context ID instead of the default cached REPL context.
+   * Use this when you need custom envVars, cwd, or other context settings.
+   * Create a context first with createContext(), then pass its ID here.
+   */
   contextId?: string;
-  idleTimeoutSec?: number;
-  ttlSec?: number;
-  cwd?: string;
-  envVars?: Record<string, string>;
-  ptyRows?: number;
-  ptyCols?: number;
 }
 
 export interface CmdOptions {
@@ -366,14 +365,10 @@ export class Sandbox {
     if (cached) {
       return cached;
     }
+    // Create a default REPL context with no custom settings
     const request: CreateContextRequest = {
       type: models.ProcessType.Repl as ProcessType,
       repl: { alias: normalized } as CreateREPLContextRequest,
-      cwd: options?.cwd,
-      envVars: options?.envVars,
-      ptySize: buildPty(options?.ptyRows, options?.ptyCols),
-      idleTimeoutSec: options?.idleTimeoutSec,
-      ttlSec: options?.ttlSec,
     };
     const response = await this.createContext(request);
     this.replContextByLang.set(normalized, response.id);

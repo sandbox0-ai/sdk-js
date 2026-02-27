@@ -1,4 +1,4 @@
-.PHONY: apispec check build lint test-e2e set-version tag publish release
+.PHONY: apispec check build lint test-e2e set-version tag publish release install
 
 # Version for publishing (usage: make publish v=0.1.0)
 v ?=
@@ -69,3 +69,11 @@ endif
 # Full release workflow
 release: check set-version tag
 	@echo "Release v$(v) completed! CI will publish to npm."
+
+# Create local tarball for installation without publishing
+install: build
+	@rm -f *.tgz
+	@npm pack
+	@echo ""
+	@echo "Tarball created. Install in your project with:"
+	@echo "  npm install $(shell pwd)/sandbox0-$(shell node -p "require('./package.json').version").tgz"

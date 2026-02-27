@@ -1,6 +1,7 @@
 import { describe, it, before, skip } from "node:test";
 import assert from "node:assert";
 import { loadE2EConfig, newClient, type E2EConfig } from "./helpers.ts";
+import type { SandboxUpdateRequest } from "../src/apispec/src/models/index";
 
 describe("Sandboxes", () => {
   let cfg: E2EConfig | null;
@@ -32,6 +33,16 @@ describe("Sandboxes", () => {
 
       const status = await client.sandboxes.status(sandbox.id);
       assert.strictEqual(status.sandboxId, sandbox.id);
+
+      // Test update with SandboxUpdateConfig
+      const updateRequest: SandboxUpdateRequest = {
+        config: {
+          ttl: 300,
+          autoResume: false,
+        },
+      };
+      const updated = await client.sandboxes.update(sandbox.id, updateRequest);
+      assert.strictEqual(updated.autoResume, false);
 
       const paused = await client.sandboxes.pause(sandbox.id);
       assert.ok(paused.paused);

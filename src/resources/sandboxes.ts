@@ -10,6 +10,7 @@ import type {
   SandboxUpdateRequest,
   SuccessMessageResponse,
 } from "../apispec/src/models/index";
+import type { SandboxListOptions, SandboxListResult } from "../models";
 import { ensureData, ensureModel } from "../response";
 import { wrapApiCall } from "../errors";
 import type { Client } from "../client";
@@ -35,6 +36,24 @@ export class Sandboxes {
       podName: data.podName,
       status: data.status,
     });
+  }
+
+  async list(options?: SandboxListOptions): Promise<SandboxListResult> {
+    const response = await wrapApiCall(() =>
+      this.client.apispec.sandboxes.apiV1SandboxesGet({
+        status: options?.status,
+        templateId: options?.templateId,
+        paused: options?.paused,
+        limit: options?.limit,
+        offset: options?.offset,
+      }),
+    );
+    const data = ensureData(response, "list sandboxes returned empty response");
+    return {
+      sandboxes: data.sandboxes ?? [],
+      count: data.count ?? 0,
+      hasMore: data.hasMore ?? false,
+    };
   }
 
   async open(template: string, config?: SandboxConfig): Promise<SandboxSession> {

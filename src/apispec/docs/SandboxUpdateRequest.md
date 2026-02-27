@@ -6,7 +6,7 @@
 
 Name | Type
 ------------ | -------------
-`config` | [SandboxConfig](SandboxConfig.md)
+`config` | [SandboxUpdateConfig](SandboxUpdateConfig.md)
 
 ## Example
 

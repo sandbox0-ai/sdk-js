@@ -94,6 +94,7 @@ export * from './SandboxTemplate';
 export * from './SandboxTemplateCondition';
 export * from './SandboxTemplateSpec';
 export * from './SandboxTemplateStatus';
+export * from './SandboxUpdateConfig';
 export * from './SandboxUpdateRequest';
 export * from './SandboxVolume';
 export * from './SecurityContext';

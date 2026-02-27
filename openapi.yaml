@@ -2716,11 +2716,35 @@ components:
         - expires_at
         - claimed_at
         - created_at
+    SandboxUpdateConfig:
+      type: object
+      description: |
+        Subset of SandboxConfig fields that can be updated at runtime without restarting the sandbox.
+        Note: env_vars and webhook are not included as they only affect new processes or require restart.
+      properties:
+        ttl:
+          type: integer
+          format: int32
+        hard_ttl:
+          type: integer
+          format: int32
+        network:
+          $ref: "#/components/schemas/TplSandboxNetworkPolicy"
+        auto_resume:
+          type: boolean
+          default: true
+          description: |
+            Sandbox-level resume gate for paused sandboxes. When false, any inbound request
+            (API or public exposure) must not auto resume the sandbox.
+        exposed_ports:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExposedPortConfig"
     SandboxUpdateRequest:
       type: object
       properties:
         config:
-          $ref: "#/components/schemas/SandboxConfig"
+          $ref: "#/components/schemas/SandboxUpdateConfig"
     SandboxStatus:
       type: object
       properties:

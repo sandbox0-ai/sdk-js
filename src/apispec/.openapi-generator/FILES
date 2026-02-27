@@ -101,6 +101,7 @@ docs/SandboxTemplate.md
 docs/SandboxTemplateCondition.md
 docs/SandboxTemplateSpec.md
 docs/SandboxTemplateStatus.md
+docs/SandboxUpdateConfig.md
 docs/SandboxUpdateRequest.md
 docs/SandboxVolume.md
 docs/SandboxVolumesApi.md
@@ -306,6 +307,7 @@ src/models/SandboxTemplate.ts
 src/models/SandboxTemplateCondition.ts
 src/models/SandboxTemplateSpec.ts
 src/models/SandboxTemplateStatus.ts
+src/models/SandboxUpdateConfig.ts
 src/models/SandboxUpdateRequest.ts
 src/models/SandboxVolume.ts
 src/models/SecurityContext.ts

@@ -227,6 +227,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxTemplateCondition](docs/SandboxTemplateCondition.md)
 - [SandboxTemplateSpec](docs/SandboxTemplateSpec.md)
 - [SandboxTemplateStatus](docs/SandboxTemplateStatus.md)
+- [SandboxUpdateConfig](docs/SandboxUpdateConfig.md)
 - [SandboxUpdateRequest](docs/SandboxUpdateRequest.md)
 - [SandboxVolume](docs/SandboxVolume.md)
 - [SecurityContext](docs/SecurityContext.md)

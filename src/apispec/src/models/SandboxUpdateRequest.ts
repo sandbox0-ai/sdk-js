@@ -13,13 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
-import type { SandboxConfig } from './SandboxConfig';
+import type { SandboxUpdateConfig } from './SandboxUpdateConfig';
 import {
-    SandboxConfigFromJSON,
-    SandboxConfigFromJSONTyped,
-    SandboxConfigToJSON,
-    SandboxConfigToJSONTyped,
-} from './SandboxConfig';
+    SandboxUpdateConfigFromJSON,
+    SandboxUpdateConfigFromJSONTyped,
+    SandboxUpdateConfigToJSON,
+    SandboxUpdateConfigToJSONTyped,
+} from './SandboxUpdateConfig';
 
 /**
  * 
@@ -29,10 +29,10 @@ import {
 export interface SandboxUpdateRequest {
     /**
      * 
-     * @type {SandboxConfig}
+     * @type {SandboxUpdateConfig}
      * @memberof SandboxUpdateRequest
      */
-    config?: SandboxConfig;
+    config?: SandboxUpdateConfig;
 }
 
 /**
@@ -52,7 +52,7 @@ export function SandboxUpdateRequestFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-        'config': json['config'] == null ? undefined : SandboxConfigFromJSON(json['config']),
+        'config': json['config'] == null ? undefined : SandboxUpdateConfigFromJSON(json['config']),
     };
 }
 
@@ -67,7 +67,7 @@ export function SandboxUpdateRequestToJSONTyped(value?: SandboxUpdateRequest | n
 
     return {
         
-        'config': SandboxConfigToJSON(value['config']),
+        'config': SandboxUpdateConfigToJSON(value['config']),
     };
 }
 

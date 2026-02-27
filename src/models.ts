@@ -46,3 +46,21 @@ export interface FileWatchResponse {
   path?: string;
   error?: string;
 }
+
+import type { SandboxSummary } from "./apispec/src/models/index";
+
+export type SandboxStatusFilter = SandboxSummary["status"];
+
+export interface SandboxListOptions {
+  status?: SandboxStatusFilter;
+  templateId?: string;
+  paused?: boolean;
+  limit?: number;
+  offset?: number;
+}
+
+export interface SandboxListResult {
+  sandboxes: SandboxSummary[];
+  count: number;
+  hasMore: boolean;
+}

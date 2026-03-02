@@ -14,6 +14,7 @@ Name | Type
 `status` | string
 `claimedAt` | string
 `expiresAt` | string
+`hardExpiresAt` | string
 `createdAt` | string
 
 ## Example
@@ -31,6 +32,7 @@ const example = {
   "status": null,
   "claimedAt": null,
   "expiresAt": null,
+  "hardExpiresAt": null,
   "createdAt": null,
 } satisfies SandboxStatus
 

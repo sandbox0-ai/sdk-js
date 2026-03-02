@@ -291,7 +291,7 @@ This endpoint does not need any parameter.
 
 ## apiV1SandboxvolumesIdDelete
 
-> SuccessDeletedResponse apiV1SandboxvolumesIdDelete(id)
+> SuccessDeletedResponse apiV1SandboxvolumesIdDelete(id, force)
 
 Delete sandbox volume
 
@@ -315,6 +315,8 @@ async function example() {
   const body = {
     // string
     id: id_example,
+    // boolean | Force delete even if volume has active mounts (optional)
+    force: true,
   } satisfies ApiV1SandboxvolumesIdDeleteRequest;
 
   try {
@@ -335,6 +337,7 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | `string` |  | [Defaults to `undefined`] |
+| **force** | `boolean` | Force delete even if volume has active mounts | [Optional] [Defaults to `false`] |
 
 ### Return type
 

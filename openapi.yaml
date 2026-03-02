@@ -1824,6 +1824,13 @@ paths:
       x-upstream-path: /sandboxvolumes/{id}
       parameters:
         - $ref: "#/components/parameters/SandboxVolumeID"
+        - name: force
+          in: query
+          required: false
+          description: Force delete even if volume has active mounts
+          schema:
+            type: boolean
+            default: false
       responses:
         "200":
           description: Deleted
@@ -2699,6 +2706,11 @@ components:
         expires_at:
           type: string
           format: date-time
+          description: Soft expiration timestamp. Zero value means not set.
+        hard_expires_at:
+          type: string
+          format: date-time
+          description: Hard expiration timestamp. Zero value means not set.
         claimed_at:
           type: string
           format: date-time
@@ -2714,6 +2726,7 @@ components:
         - auto_resume
         - pod_name
         - expires_at
+        - hard_expires_at
         - claimed_at
         - created_at
     SandboxUpdateConfig:
@@ -2764,6 +2777,8 @@ components:
           type: string
         expires_at:
           type: string
+        hard_expires_at:
+          type: string
         created_at:
           type: string
     SuccessSandboxResponse:
@@ -2802,6 +2817,10 @@ components:
         expires_at:
           type: string
           format: date-time
+        hard_expires_at:
+          type: string
+          format: date-time
+          description: Hard expiration timestamp. Zero value means not set.
       required:
         - id
         - template_id
@@ -2809,6 +2828,7 @@ components:
         - paused
         - created_at
         - expires_at
+        - hard_expires_at
     SuccessSandboxListResponse:
       allOf:
         - $ref: "#/components/schemas/SuccessEnvelope"
@@ -2972,7 +2992,11 @@ components:
         expires_at:
           type: string
           format: date-time
-      required: [sandbox_id, expires_at]
+        hard_expires_at:
+          type: string
+          format: date-time
+          description: Hard expiration timestamp. Zero value means not set.
+      required: [sandbox_id, expires_at, hard_expires_at]
     SuccessRefreshResponse:
       allOf:
         - $ref: "#/components/schemas/SuccessEnvelope"

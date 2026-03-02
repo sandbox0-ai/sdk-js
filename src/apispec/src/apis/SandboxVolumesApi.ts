@@ -68,6 +68,7 @@ export interface ApiV1SandboxesIdSandboxvolumesUnmountPostRequest {
 
 export interface ApiV1SandboxvolumesIdDeleteRequest {
     id: string;
+    force?: boolean;
 }
 
 export interface ApiV1SandboxvolumesIdForkPostRequest {
@@ -292,6 +293,10 @@ export class SandboxVolumesApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters['force'] != null) {
+            queryParameters['force'] = requestParameters['force'];
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 

@@ -1,6 +1,7 @@
 export { Client, type ClientOptions, DEFAULT_BASE_URL } from "./client";
 export { Sandbox } from "./sandbox";
 export { APIError } from "./errors";
+export { verifyWebhookSignature } from "./webhook_signature";
 export * from "./models";
 export * from "./sessions";
 export { apis, models, runtime } from "./apispec_compat";

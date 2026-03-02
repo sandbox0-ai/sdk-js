@@ -46,9 +46,15 @@ export class Volumes {
     return ensureData(response, "get volume returned empty response");
   }
 
-  async delete(volumeId: string): Promise<SuccessDeletedResponse> {
+  async delete(
+    volumeId: string,
+    options?: { force?: boolean },
+  ): Promise<SuccessDeletedResponse> {
     const response = await wrapApiCall(() =>
-      this.client.apispec.sandboxVolumes.apiV1SandboxvolumesIdDelete({ id: volumeId }),
+      this.client.apispec.sandboxVolumes.apiV1SandboxvolumesIdDelete({
+        id: volumeId,
+        force: options?.force,
+      }),
     );
     return ensureModel(response, "delete volume returned empty response");
   }

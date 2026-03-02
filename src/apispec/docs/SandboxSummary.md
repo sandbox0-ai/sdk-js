@@ -13,6 +13,7 @@ Name | Type
 `clusterId` | string
 `createdAt` | Date
 `expiresAt` | Date
+`hardExpiresAt` | Date
 
 ## Example
 
@@ -28,6 +29,7 @@ const example = {
   "clusterId": null,
   "createdAt": null,
   "expiresAt": null,
+  "hardExpiresAt": null,
 } satisfies SandboxSummary
 
 console.log(example)

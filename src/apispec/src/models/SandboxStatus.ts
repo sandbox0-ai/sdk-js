@@ -72,6 +72,12 @@ export interface SandboxStatus {
      * @type {string}
      * @memberof SandboxStatus
      */
+    hardExpiresAt?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SandboxStatus
+     */
     createdAt?: string;
 }
 
@@ -100,6 +106,7 @@ export function SandboxStatusFromJSONTyped(json: any, ignoreDiscriminator: boole
         'status': json['status'] == null ? undefined : json['status'],
         'claimedAt': json['claimed_at'] == null ? undefined : json['claimed_at'],
         'expiresAt': json['expires_at'] == null ? undefined : json['expires_at'],
+        'hardExpiresAt': json['hard_expires_at'] == null ? undefined : json['hard_expires_at'],
         'createdAt': json['created_at'] == null ? undefined : json['created_at'],
     };
 }
@@ -123,6 +130,7 @@ export function SandboxStatusToJSONTyped(value?: SandboxStatus | null, ignoreDis
         'status': value['status'],
         'claimed_at': value['claimedAt'],
         'expires_at': value['expiresAt'],
+        'hard_expires_at': value['hardExpiresAt'],
         'created_at': value['createdAt'],
     };
 }

@@ -16,6 +16,7 @@ Name | Type
 `exposedPorts` | [Array&lt;ExposedPortConfig&gt;](ExposedPortConfig.md)
 `podName` | string
 `expiresAt` | Date
+`hardExpiresAt` | Date
 `claimedAt` | Date
 `createdAt` | Date
 
@@ -36,6 +37,7 @@ const example = {
   "exposedPorts": null,
   "podName": null,
   "expiresAt": null,
+  "hardExpiresAt": null,
   "claimedAt": null,
   "createdAt": null,
 } satisfies Sandbox

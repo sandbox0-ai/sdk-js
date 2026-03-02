@@ -8,6 +8,7 @@ Name | Type
 ------------ | -------------
 `sandboxId` | string
 `expiresAt` | Date
+`hardExpiresAt` | Date
 
 ## Example
 
@@ -18,6 +19,7 @@ import type { RefreshResponse } from 'sandbox0'
 const example = {
   "sandboxId": null,
   "expiresAt": null,
+  "hardExpiresAt": null,
 } satisfies RefreshResponse
 
 console.log(example)

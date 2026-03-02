@@ -31,6 +31,12 @@ export interface RefreshResponse {
      * @memberof RefreshResponse
      */
     expiresAt: Date;
+    /**
+     * Hard expiration timestamp. Zero value means not set.
+     * @type {Date}
+     * @memberof RefreshResponse
+     */
+    hardExpiresAt: Date;
 }
 
 /**
@@ -39,6 +45,7 @@ export interface RefreshResponse {
 export function instanceOfRefreshResponse(value: object): value is RefreshResponse {
     if (!('sandboxId' in value) || value['sandboxId'] === undefined) return false;
     if (!('expiresAt' in value) || value['expiresAt'] === undefined) return false;
+    if (!('hardExpiresAt' in value) || value['hardExpiresAt'] === undefined) return false;
     return true;
 }
 
@@ -54,6 +61,7 @@ export function RefreshResponseFromJSONTyped(json: any, ignoreDiscriminator: boo
         
         'sandboxId': json['sandbox_id'],
         'expiresAt': (new Date(json['expires_at'])),
+        'hardExpiresAt': (new Date(json['hard_expires_at'])),
     };
 }
 
@@ -70,6 +78,7 @@ export function RefreshResponseToJSONTyped(value?: RefreshResponse | null, ignor
         
         'sandbox_id': value['sandboxId'],
         'expires_at': value['expiresAt'].toISOString(),
+        'hard_expires_at': value['hardExpiresAt'].toISOString(),
     };
 }
 

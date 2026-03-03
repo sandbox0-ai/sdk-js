@@ -92,11 +92,12 @@ describe("Volumes", () => {
     let forkDeleted = false;
     let sourceSessionId = "";
     let forkSessionId = "";
+    let forkVolumeId = "";
 
     const cleanup = async () => {
       if (forkSessionId) {
         try {
-          await sandbox.unmount(forked.id, forkSessionId);
+          await sandbox.unmount(forkVolumeId, forkSessionId);
         } catch {
           // Ignore cleanup errors
         }
@@ -108,9 +109,9 @@ describe("Volumes", () => {
           // Ignore cleanup errors
         }
       }
-      if (!forkDeleted) {
+      if (forkVolumeId && !forkDeleted) {
         try {
-          await client.volumes.delete(forked.id);
+          await client.volumes.delete(forkVolumeId);
         } catch {
           // Ignore cleanup errors
         }
@@ -129,13 +130,13 @@ describe("Volumes", () => {
       }
     };
 
-    let forked = { id: "" };
     try {
       const initSession = await sandbox.mount(source.id, `/mnt/src-init-${Date.now()}`);
       await sandbox.writeFile(`${initSession.mountPoint}/hello.txt`, "source-original\n");
       await sandbox.unmount(source.id, initSession.mountSessionId);
 
-      forked = await client.volumes.fork(source.id, {});
+      const forked = await client.volumes.fork(source.id, {});
+      forkVolumeId = forked.id;
       assert.ok(forked.id);
       assert.strictEqual(forked.sourceVolumeId, source.id);
 

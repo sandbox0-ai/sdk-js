@@ -1,7 +1,7 @@
 import { describe, it, before, skip } from "node:test";
 import assert from "node:assert";
 import { loadE2EConfig, newClient, type E2EConfig } from "./helpers.ts";
-import type { SandboxUpdateRequest } from "../src/apispec/src/models/index";
+import type { SandboxUpdateRequest } from "../../src/apispec/src/models/index.ts";
 
 describe("Sandboxes", () => {
   let cfg: E2EConfig | null;

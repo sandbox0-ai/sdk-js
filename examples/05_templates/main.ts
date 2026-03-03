@@ -2,8 +2,7 @@ import { createClient } from "../_shared.ts";
 
 async function main() {
   const client = createClient();
-  const response = await client.apispec.templates.apiV1TemplatesGet();
-  const templates = response.data?.templates ?? [];
+  const templates = await client.templates.list();
 
   console.log(`templates: ${templates.length}`);
   for (const tpl of templates) {

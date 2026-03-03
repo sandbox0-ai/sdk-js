@@ -3,6 +3,7 @@ import type * as apisTypes from "./apispec/src/apis/index";
 import { apis, runtime } from "./apispec_compat";
 import { normalizeNullMapMiddleware } from "./response_normalize";
 import { Sandboxes } from "./resources/sandboxes";
+import { Templates } from "./resources/templates";
 import { Volumes } from "./resources/volumes";
 import { Sandbox } from "./sandbox";
 
@@ -46,6 +47,7 @@ export class Client {
   };
 
   readonly sandboxes: Sandboxes;
+  readonly templates: Templates;
   readonly volumes: Volumes;
 
   constructor(options: ClientOptions) {
@@ -76,6 +78,7 @@ export class Client {
     };
 
     this.sandboxes = new Sandboxes(this);
+    this.templates = new Templates(this);
     this.volumes = new Volumes(this);
   }
 

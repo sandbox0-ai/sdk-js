@@ -26,6 +26,7 @@ describe("Client", () => {
 
     assert.ok(client);
     assert.ok(client.sandboxes);
+    assert.ok(client.templates);
     assert.ok(client.volumes);
     assert.ok(client.apispec);
 

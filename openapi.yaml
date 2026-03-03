@@ -3961,9 +3961,7 @@ components:
         maxIdle:
           type: integer
           format: int32
-        autoScale:
-          type: boolean
-      required: [minIdle, maxIdle, autoScale]
+      required: [minIdle, maxIdle]
     TplSandboxNetworkPolicy:
       type: object
       properties:

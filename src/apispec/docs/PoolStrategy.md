@@ -8,7 +8,6 @@ Name | Type
 ------------ | -------------
 `minIdle` | number
 `maxIdle` | number
-`autoScale` | boolean
 
 ## Example
 
@@ -19,7 +18,6 @@ import type { PoolStrategy } from 'sandbox0'
 const example = {
   "minIdle": null,
   "maxIdle": null,
-  "autoScale": null,
 } satisfies PoolStrategy
 
 console.log(example)

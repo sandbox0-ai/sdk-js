@@ -31,12 +31,6 @@ export interface PoolStrategy {
      * @memberof PoolStrategy
      */
     maxIdle: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PoolStrategy
-     */
-    autoScale: boolean;
 }
 
 /**
@@ -45,7 +39,6 @@ export interface PoolStrategy {
 export function instanceOfPoolStrategy(value: object): value is PoolStrategy {
     if (!('minIdle' in value) || value['minIdle'] === undefined) return false;
     if (!('maxIdle' in value) || value['maxIdle'] === undefined) return false;
-    if (!('autoScale' in value) || value['autoScale'] === undefined) return false;
     return true;
 }
 
@@ -61,7 +54,6 @@ export function PoolStrategyFromJSONTyped(json: any, ignoreDiscriminator: boolea
         
         'minIdle': json['minIdle'],
         'maxIdle': json['maxIdle'],
-        'autoScale': json['autoScale'],
     };
 }
 
@@ -78,7 +70,6 @@ export function PoolStrategyToJSONTyped(value?: PoolStrategy | null, ignoreDiscr
         
         'minIdle': value['minIdle'],
         'maxIdle': value['maxIdle'],
-        'autoScale': value['autoScale'],
     };
 }
 

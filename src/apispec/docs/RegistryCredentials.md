@@ -7,7 +7,8 @@
 Name | Type
 ------------ | -------------
 `provider` | string
-`registry` | string
+`pushRegistry` | string
+`pullRegistry` | string
 `username` | string
 `password` | string
 `expiresAt` | Date
@@ -20,7 +21,8 @@ import type { RegistryCredentials } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "provider": null,
-  "registry": null,
+  "pushRegistry": null,
+  "pullRegistry": null,
   "username": null,
   "password": null,
   "expiresAt": null,

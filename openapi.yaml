@@ -2118,7 +2118,9 @@ components:
       properties:
         provider:
           type: string
-        registry:
+        pushRegistry:
+          type: string
+        pullRegistry:
           type: string
         username:
           type: string
@@ -2127,7 +2129,7 @@ components:
         expiresAt:
           type: string
           format: date-time
-      required: [provider, registry, username, password]
+      required: [provider, pushRegistry, pullRegistry, username, password]
     SuccessDeletedResponse:
       allOf:
         - $ref: "#/components/schemas/SuccessEnvelope"
@@ -3672,6 +3674,8 @@ components:
           type: string
         spec:
           $ref: "#/components/schemas/SandboxTemplateSpec"
+        status:
+          $ref: "#/components/schemas/SandboxTemplateStatus"
         created_at:
           type: string
           format: date-time
@@ -4050,6 +4054,7 @@ components:
         lastUpdateTime:
           type: string
           format: date-time
+          nullable: true
     SandboxTemplateCondition:
       type: object
       properties:

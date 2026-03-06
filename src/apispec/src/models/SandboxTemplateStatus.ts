@@ -50,7 +50,7 @@ export interface SandboxTemplateStatus {
      * @type {Date}
      * @memberof SandboxTemplateStatus
      */
-    lastUpdateTime?: Date;
+    lastUpdateTime?: Date | null;
 }
 
 /**

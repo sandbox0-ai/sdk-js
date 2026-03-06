@@ -30,7 +30,13 @@ export interface RegistryCredentials {
      * @type {string}
      * @memberof RegistryCredentials
      */
-    registry: string;
+    pushRegistry: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegistryCredentials
+     */
+    pullRegistry: string;
     /**
      * 
      * @type {string}
@@ -56,7 +62,8 @@ export interface RegistryCredentials {
  */
 export function instanceOfRegistryCredentials(value: object): value is RegistryCredentials {
     if (!('provider' in value) || value['provider'] === undefined) return false;
-    if (!('registry' in value) || value['registry'] === undefined) return false;
+    if (!('pushRegistry' in value) || value['pushRegistry'] === undefined) return false;
+    if (!('pullRegistry' in value) || value['pullRegistry'] === undefined) return false;
     if (!('username' in value) || value['username'] === undefined) return false;
     if (!('password' in value) || value['password'] === undefined) return false;
     return true;
@@ -73,7 +80,8 @@ export function RegistryCredentialsFromJSONTyped(json: any, ignoreDiscriminator:
     return {
         
         'provider': json['provider'],
-        'registry': json['registry'],
+        'pushRegistry': json['pushRegistry'],
+        'pullRegistry': json['pullRegistry'],
         'username': json['username'],
         'password': json['password'],
         'expiresAt': json['expiresAt'] == null ? undefined : (new Date(json['expiresAt'])),
@@ -92,7 +100,8 @@ export function RegistryCredentialsToJSONTyped(value?: RegistryCredentials | nul
     return {
         
         'provider': value['provider'],
-        'registry': value['registry'],
+        'pushRegistry': value['pushRegistry'],
+        'pullRegistry': value['pullRegistry'],
         'username': value['username'],
         'password': value['password'],
         'expiresAt': value['expiresAt'] == null ? value['expiresAt'] : value['expiresAt'].toISOString(),

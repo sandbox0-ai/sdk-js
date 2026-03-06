@@ -11,6 +11,7 @@ Name | Type
 `teamId` | string
 `userId` | string
 `spec` | [SandboxTemplateSpec](SandboxTemplateSpec.md)
+`status` | [SandboxTemplateStatus](SandboxTemplateStatus.md)
 `createdAt` | Date
 `updatedAt` | Date
 
@@ -26,6 +27,7 @@ const example = {
   "teamId": null,
   "userId": null,
   "spec": null,
+  "status": null,
   "createdAt": null,
   "updatedAt": null,
 } satisfies Template

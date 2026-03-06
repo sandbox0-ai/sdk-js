@@ -20,6 +20,13 @@ import {
     SandboxTemplateSpecToJSON,
     SandboxTemplateSpecToJSONTyped,
 } from './SandboxTemplateSpec';
+import type { SandboxTemplateStatus } from './SandboxTemplateStatus';
+import {
+    SandboxTemplateStatusFromJSON,
+    SandboxTemplateStatusFromJSONTyped,
+    SandboxTemplateStatusToJSON,
+    SandboxTemplateStatusToJSONTyped,
+} from './SandboxTemplateStatus';
 
 /**
  * 
@@ -57,6 +64,12 @@ export interface Template {
      * @memberof Template
      */
     spec: SandboxTemplateSpec;
+    /**
+     * 
+     * @type {SandboxTemplateStatus}
+     * @memberof Template
+     */
+    status?: SandboxTemplateStatus;
     /**
      * 
      * @type {Date}
@@ -98,6 +111,7 @@ export function TemplateFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'teamId': json['team_id'] == null ? undefined : json['team_id'],
         'userId': json['user_id'] == null ? undefined : json['user_id'],
         'spec': SandboxTemplateSpecFromJSON(json['spec']),
+        'status': json['status'] == null ? undefined : SandboxTemplateStatusFromJSON(json['status']),
         'createdAt': (new Date(json['created_at'])),
         'updatedAt': (new Date(json['updated_at'])),
     };
@@ -119,6 +133,7 @@ export function TemplateToJSONTyped(value?: Template | null, ignoreDiscriminator
         'team_id': value['teamId'],
         'user_id': value['userId'],
         'spec': SandboxTemplateSpecToJSON(value['spec']),
+        'status': SandboxTemplateStatusToJSON(value['status']),
         'created_at': value['createdAt'].toISOString(),
         'updated_at': value['updatedAt'].toISOString(),
     };

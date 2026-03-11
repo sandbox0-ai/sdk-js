@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * Sandbox0 API
- * Public HTTP APIs exposed by internal-gateway.
+ * Public HTTP APIs exposed by Sandbox0 regional gateways and the global directory.
  *
  * The version of the OpenAPI document: 0.1.0
  * 

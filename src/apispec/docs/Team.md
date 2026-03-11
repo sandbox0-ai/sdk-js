@@ -10,6 +10,7 @@ Name | Type
 `name` | string
 `slug` | string
 `ownerId` | string
+`homeRegionId` | string
 `createdAt` | Date
 `updatedAt` | Date
 
@@ -24,6 +25,7 @@ const example = {
   "name": null,
   "slug": null,
   "ownerId": null,
+  "homeRegionId": null,
   "createdAt": null,
   "updatedAt": null,
 } satisfies Team

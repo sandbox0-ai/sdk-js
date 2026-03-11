@@ -657,7 +657,6 @@ example().catch(console.error);
 |-------------|-------------|------------------|
 | **201** | Team created |  -  |
 | **400** | Invalid request |  -  |
-| **409** | Team already exists |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

@@ -4,11 +4,82 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
+| [**tenantActivePut**](UsersApi.md#tenantactiveput) | **PUT** /tenant/active | Update current user |
 | [**usersMeGet**](UsersApi.md#usersmeget) | **GET** /users/me | Get current user |
 | [**usersMeIdentitiesGet**](UsersApi.md#usersmeidentitiesget) | **GET** /users/me/identities | List current user identities |
 | [**usersMeIdentitiesIdDelete**](UsersApi.md#usersmeidentitiesiddelete) | **DELETE** /users/me/identities/{id} | Delete a user identity |
-| [**usersMePut**](UsersApi.md#usersmeput) | **PUT** /users/me | Update current user |
 
+
+
+## tenantActivePut
+
+> SuccessUserResponse tenantActivePut(updateUserRequest)
+
+Update current user
+
+### Example
+
+```ts
+import {
+  Configuration,
+  UsersApi,
+} from 'sandbox0';
+import type { TenantActivePutRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new UsersApi(config);
+
+  const body = {
+    // UpdateUserRequest
+    updateUserRequest: ...,
+  } satisfies TenantActivePutRequest;
+
+  try {
+    const data = await api.tenantActivePut(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **updateUserRequest** | [UpdateUserRequest](UpdateUserRequest.md) |  | |
+
+### Return type
+
+[**SuccessUserResponse**](SuccessUserResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Updated user |  -  |
+| **400** | Invalid request |  -  |
+| **401** | Unauthorized |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
 ## usersMeGet
@@ -203,77 +274,6 @@ example().catch(console.error);
 | **400** | Invalid request |  -  |
 | **401** | Unauthorized |  -  |
 | **404** | Identity not found |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
-
-## usersMePut
-
-> SuccessUserResponse usersMePut(updateUserRequest)
-
-Update current user
-
-### Example
-
-```ts
-import {
-  Configuration,
-  UsersApi,
-} from 'sandbox0';
-import type { UsersMePutRequest } from 'sandbox0';
-
-async function example() {
-  console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
-    // Configure HTTP bearer authorization: bearerAuth
-    accessToken: "YOUR BEARER TOKEN",
-  });
-  const api = new UsersApi(config);
-
-  const body = {
-    // UpdateUserRequest
-    updateUserRequest: ...,
-  } satisfies UsersMePutRequest;
-
-  try {
-    const data = await api.usersMePut(body);
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-// Run the test
-example().catch(console.error);
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **updateUserRequest** | [UpdateUserRequest](UpdateUserRequest.md) |  | |
-
-### Return type
-
-[**SuccessUserResponse**](SuccessUserResponse.md)
-
-### Authorization
-
-[bearerAuth](../README.md#bearerAuth)
-
-### HTTP request headers
-
-- **Content-Type**: `application/json`
-- **Accept**: `application/json`
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Updated user |  -  |
-| **400** | Invalid request |  -  |
-| **401** | Unauthorized |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

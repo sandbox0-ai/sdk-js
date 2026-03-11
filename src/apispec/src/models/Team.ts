@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * Sandbox0 API
- * Public HTTP APIs exposed by internal-gateway.
+ * Public HTTP APIs exposed by Sandbox0 regional gateways and the global directory.
  *
  * The version of the OpenAPI document: 0.1.0
  * 
@@ -45,6 +45,12 @@ export interface Team {
     ownerId?: string | null;
     /**
      * 
+     * @type {string}
+     * @memberof Team
+     */
+    homeRegionId?: string | null;
+    /**
+     * 
      * @type {Date}
      * @memberof Team
      */
@@ -83,6 +89,7 @@ export function TeamFromJSONTyped(json: any, ignoreDiscriminator: boolean): Team
         'name': json['name'],
         'slug': json['slug'],
         'ownerId': json['owner_id'] == null ? undefined : json['owner_id'],
+        'homeRegionId': json['home_region_id'] == null ? undefined : json['home_region_id'],
         'createdAt': (new Date(json['created_at'])),
         'updatedAt': (new Date(json['updated_at'])),
     };
@@ -103,6 +110,7 @@ export function TeamToJSONTyped(value?: Team | null, ignoreDiscriminator: boolea
         'name': value['name'],
         'slug': value['slug'],
         'owner_id': value['ownerId'],
+        'home_region_id': value['homeRegionId'],
         'created_at': value['createdAt'].toISOString(),
         'updated_at': value['updatedAt'].toISOString(),
     };

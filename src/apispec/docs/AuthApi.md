@@ -281,6 +281,7 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **302** | Redirect to local CLI return_url with token query parameters when return_url is localhost |  -  |
 | **200** | Tokens issued |  -  |
 | **400** | Invalid request |  -  |
 | **401** | OIDC authorization failed |  -  |

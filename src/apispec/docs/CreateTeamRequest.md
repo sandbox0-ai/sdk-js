@@ -8,6 +8,7 @@ Name | Type
 ------------ | -------------
 `name` | string
 `slug` | string
+`homeRegionId` | string
 
 ## Example
 
@@ -18,6 +19,7 @@ import type { CreateTeamRequest } from 'sandbox0'
 const example = {
   "name": null,
   "slug": null,
+  "homeRegionId": null,
 } satisfies CreateTeamRequest
 
 console.log(example)

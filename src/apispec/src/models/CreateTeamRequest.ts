@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * Sandbox0 API
- * Public HTTP APIs exposed by internal-gateway.
+ * Public HTTP APIs exposed by Sandbox0 regional gateways and the global directory.
  *
  * The version of the OpenAPI document: 0.1.0
  * 
@@ -31,6 +31,12 @@ export interface CreateTeamRequest {
      * @memberof CreateTeamRequest
      */
     slug?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateTeamRequest
+     */
+    homeRegionId?: string | null;
 }
 
 /**
@@ -53,6 +59,7 @@ export function CreateTeamRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'name': json['name'],
         'slug': json['slug'] == null ? undefined : json['slug'],
+        'homeRegionId': json['home_region_id'] == null ? undefined : json['home_region_id'],
     };
 }
 
@@ -69,6 +76,7 @@ export function CreateTeamRequestToJSONTyped(value?: CreateTeamRequest | null, i
         
         'name': value['name'],
         'slug': value['slug'],
+        'home_region_id': value['homeRegionId'],
     };
 }
 

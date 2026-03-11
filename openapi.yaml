@@ -2,15 +2,17 @@ openapi: 3.0.3
 info:
   title: Sandbox0 API
   version: 0.1.0
-  description: Public HTTP APIs exposed by internal-gateway.
+  description: Public HTTP APIs exposed by Sandbox0 regional gateways and the global directory.
 servers:
   - url: https://api.sandbox0.ai
     description: Production
 tags:
   - name: health
   - name: auth
+  - name: tenant
   - name: users
   - name: teams
+  - name: regions
   - name: api-keys
   - name: sandboxes
   - name: contexts
@@ -224,6 +226,8 @@ paths:
           schema:
             type: string
       responses:
+        "302":
+          description: Redirect to local CLI return_url with token query parameters when return_url is localhost
         "200":
           description: Tokens issued
           content:
@@ -286,6 +290,49 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
+  /auth/region-token:
+    post:
+      tags: [tenant]
+      summary: Exchange a global user session for a region-scoped token
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IssueRegionTokenRequest"
+      responses:
+        "200":
+          description: Region token issued
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessIssueRegionTokenResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Active team cannot be resolved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Active team is not routable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
   /users/me:
     get:
       tags: [users]
@@ -301,6 +348,49 @@ paths:
                 $ref: "#/components/schemas/SuccessUserResponse"
         "401":
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /tenant/active:
+    get:
+      tags: [tenant]
+      summary: Resolve the active team and its routing information
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: team_id
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Active team
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessActiveTeamResponse"
+        "400":
+          description: No active team selected
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Team not accessible
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Active team is not routable
           content:
             application/json:
               schema:
@@ -426,6 +516,182 @@ paths:
                 $ref: "#/components/schemas/SuccessTeamResponse"
         "400":
           description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /regions:
+    get:
+      tags: [regions]
+      summary: List regions in the global directory
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Region list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessRegionListResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: System admin access required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    post:
+      tags: [regions]
+      summary: Create a region in the global directory
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRegionRequest"
+      responses:
+        "201":
+          description: Region created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessRegionResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: System admin access required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Region already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /regions/{id}:
+    get:
+      tags: [regions]
+      summary: Get a region from the global directory
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/RegionId"
+      responses:
+        "200":
+          description: Region
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessRegionResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: System admin access required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Region not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    put:
+      tags: [regions]
+      summary: Update a region in the global directory
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/RegionId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateRegionRequest"
+      responses:
+        "200":
+          description: Region updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessRegionResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: System admin access required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Region not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    delete:
+      tags: [regions]
+      summary: Delete a region from the global directory
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/RegionId"
+      responses:
+        "200":
+          description: Region deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessMessageResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: System admin access required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Region not found
           content:
             application/json:
               schema:
@@ -1736,7 +2002,7 @@ paths:
       summary: Get registry credentials for uploads
       security:
         - bearerAuth: []
-      x-upstream-service: manager
+      x-upstream-service: edge-gateway
       x-upstream-path: /api/v1/registry/credentials
       responses:
         "200":
@@ -1997,6 +2263,12 @@ components:
       schema:
         type: string
     TeamID:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    RegionId:
       name: id
       in: path
       required: true
@@ -2294,6 +2566,10 @@ components:
         default_team_id:
           type: string
           nullable: true
+        default_team:
+          allOf:
+            - $ref: "#/components/schemas/Team"
+          nullable: true
         email_verified:
           type: boolean
         is_admin:
@@ -2329,6 +2605,56 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/User"
+    ActiveTeam:
+      type: object
+      properties:
+        user_id:
+          type: string
+        team_id:
+          type: string
+        team_role:
+          type: string
+        home_region_id:
+          type: string
+        default_team:
+          type: boolean
+        edge_gateway_url:
+          type: string
+          nullable: true
+      required: [user_id, team_id, home_region_id]
+    SuccessActiveTeamResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/ActiveTeam"
+    IssueRegionTokenRequest:
+      type: object
+      properties:
+        team_id:
+          type: string
+    IssueRegionTokenResponse:
+      type: object
+      properties:
+        region_id:
+          type: string
+        edge_gateway_url:
+          type: string
+          nullable: true
+        token:
+          type: string
+        expires_at:
+          type: integer
+          format: int64
+      required: [region_id, token, expires_at]
+    SuccessIssueRegionTokenResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/IssueRegionTokenResponse"
     Identity:
       type: object
       properties:
@@ -2364,6 +2690,9 @@ components:
         owner_id:
           type: string
           nullable: true
+        home_region_id:
+          type: string
+          nullable: true
         created_at:
           type: string
           format: date-time
@@ -2371,6 +2700,58 @@ components:
           type: string
           format: date-time
       required: [id, name, slug, created_at, updated_at]
+    Region:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        edge_gateway_url:
+          type: string
+        enabled:
+          type: boolean
+      required: [id, edge_gateway_url, enabled]
+    CreateRegionRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        edge_gateway_url:
+          type: string
+        enabled:
+          type: boolean
+      required: [id, edge_gateway_url]
+    UpdateRegionRequest:
+      type: object
+      properties:
+        display_name:
+          type: string
+        edge_gateway_url:
+          type: string
+        enabled:
+          type: boolean
+    SuccessRegionResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/Region"
+    SuccessRegionListResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                regions:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Region"
     TeamMember:
       type: object
       properties:
@@ -2393,6 +2774,9 @@ components:
           type: string
         slug:
           type: string
+        home_region_id:
+          type: string
+          nullable: true
       required: [name]
     UpdateTeamRequest:
       type: object
@@ -2401,6 +2785,9 @@ components:
           type: string
         slug:
           type: string
+        home_region_id:
+          type: string
+          nullable: true
     AddTeamMemberRequest:
       type: object
       properties:

@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * Sandbox0 API
- * Public HTTP APIs exposed by internal-gateway.
+ * Public HTTP APIs exposed by Sandbox0 regional gateways and the global directory.
  *
  * The version of the OpenAPI document: 0.1.0
  * 
@@ -34,18 +34,65 @@ import {
     UpdateUserRequestToJSON,
 } from '../models/index';
 
-export interface UsersMeIdentitiesIdDeleteRequest {
-    id: string;
+export interface TenantActivePutRequest {
+    updateUserRequest: UpdateUserRequest;
 }
 
-export interface UsersMePutRequest {
-    updateUserRequest: UpdateUserRequest;
+export interface UsersMeIdentitiesIdDeleteRequest {
+    id: string;
 }
 
 /**
  * 
  */
 export class UsersApi extends runtime.BaseAPI {
+
+    /**
+     * Update current user
+     */
+    async tenantActivePutRaw(requestParameters: TenantActivePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessUserResponse>> {
+        if (requestParameters['updateUserRequest'] == null) {
+            throw new runtime.RequiredError(
+                'updateUserRequest',
+                'Required parameter "updateUserRequest" was null or undefined when calling tenantActivePut().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/tenant/active`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateUserRequestToJSON(requestParameters['updateUserRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessUserResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Update current user
+     */
+    async tenantActivePut(requestParameters: TenantActivePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessUserResponse> {
+        const response = await this.tenantActivePutRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Get current user
@@ -163,53 +210,6 @@ export class UsersApi extends runtime.BaseAPI {
      */
     async usersMeIdentitiesIdDelete(requestParameters: UsersMeIdentitiesIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessMessageResponse> {
         const response = await this.usersMeIdentitiesIdDeleteRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Update current user
-     */
-    async usersMePutRaw(requestParameters: UsersMePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessUserResponse>> {
-        if (requestParameters['updateUserRequest'] == null) {
-            throw new runtime.RequiredError(
-                'updateUserRequest',
-                'Required parameter "updateUserRequest" was null or undefined when calling usersMePut().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/users/me`;
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UpdateUserRequestToJSON(requestParameters['updateUserRequest']),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessUserResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Update current user
-     */
-    async usersMePut(requestParameters: UsersMePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessUserResponse> {
-        const response = await this.usersMePutRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -2,6 +2,7 @@
 .npmignore
 README.md
 docs/APIKey.md
+docs/ActiveTeam.md
 docs/AddTeamMemberRequest.md
 docs/Affinity.md
 docs/ApiKeysApi.md
@@ -31,6 +32,7 @@ docs/CreateAPIKeyResponse.md
 docs/CreateCMDContextRequest.md
 docs/CreateContextRequest.md
 docs/CreateREPLContextRequest.md
+docs/CreateRegionRequest.md
 docs/CreateSandboxVolumeRequest.md
 docs/CreateSnapshotRequest.md
 docs/CreateTeamRequest.md
@@ -52,6 +54,8 @@ docs/FilesApi.md
 docs/ForkVolumeRequest.md
 docs/HealthApi.md
 docs/Identity.md
+docs/IssueRegionTokenRequest.md
+docs/IssueRegionTokenResponse.md
 docs/LabelSelector.md
 docs/LabelSelectorRequirement.md
 docs/LifecyclePolicy.md
@@ -85,6 +89,8 @@ docs/REPLReadyConfig.md
 docs/REPLReadyMode.md
 docs/RefreshRequest.md
 docs/RefreshResponse.md
+docs/Region.md
+docs/RegionsApi.md
 docs/RegisterRequest.md
 docs/RegistryApi.md
 docs/RegistryCredentials.md
@@ -113,6 +119,7 @@ docs/Snapshot.md
 docs/SnapshotsApi.md
 docs/SuccessAPIKeyListResponse.md
 docs/SuccessAPIKeyListResponseAllOfData.md
+docs/SuccessActiveTeamResponse.md
 docs/SuccessAuthProvidersResponse.md
 docs/SuccessAuthProvidersResponseAllOfData.md
 docs/SuccessClaimResponse.md
@@ -138,6 +145,7 @@ docs/SuccessHealthResponse.md
 docs/SuccessHealthResponseAllOfData.md
 docs/SuccessIdentityListResponse.md
 docs/SuccessIdentityListResponseAllOfData.md
+docs/SuccessIssueRegionTokenResponse.md
 docs/SuccessLoginResponse.md
 docs/SuccessMessageResponse.md
 docs/SuccessMessageResponseAllOfData.md
@@ -148,6 +156,9 @@ docs/SuccessMovedResponse.md
 docs/SuccessMovedResponseAllOfData.md
 docs/SuccessPauseSandboxResponse.md
 docs/SuccessRefreshResponse.md
+docs/SuccessRegionListResponse.md
+docs/SuccessRegionListResponseAllOfData.md
+docs/SuccessRegionResponse.md
 docs/SuccessRegistryCredentialsResponse.md
 docs/SuccessResizedResponse.md
 docs/SuccessResizedResponseAllOfData.md
@@ -186,10 +197,12 @@ docs/Template.md
 docs/TemplateCreateRequest.md
 docs/TemplateUpdateRequest.md
 docs/TemplatesApi.md
+docs/TenantApi.md
 docs/Toleration.md
 docs/TplSandboxNetworkPolicy.md
 docs/UnmountRequest.md
 docs/UpdateExposedPortsRequest.md
+docs/UpdateRegionRequest.md
 docs/UpdateTeamMemberRequest.md
 docs/UpdateTeamRequest.md
 docs/UpdateUserRequest.md
@@ -205,16 +218,19 @@ src/apis/AuthApi.ts
 src/apis/ContextsApi.ts
 src/apis/FilesApi.ts
 src/apis/HealthApi.ts
+src/apis/RegionsApi.ts
 src/apis/RegistryApi.ts
 src/apis/SandboxVolumesApi.ts
 src/apis/SandboxesApi.ts
 src/apis/SnapshotsApi.ts
 src/apis/TeamsApi.ts
 src/apis/TemplatesApi.ts
+src/apis/TenantApi.ts
 src/apis/UsersApi.ts
 src/apis/index.ts
 src/index.ts
 src/models/APIKey.ts
+src/models/ActiveTeam.ts
 src/models/AddTeamMemberRequest.ts
 src/models/Affinity.ts
 src/models/ApiV1SandboxesIdFilesGet200Response.ts
@@ -241,6 +257,7 @@ src/models/CreateAPIKeyResponse.ts
 src/models/CreateCMDContextRequest.ts
 src/models/CreateContextRequest.ts
 src/models/CreateREPLContextRequest.ts
+src/models/CreateRegionRequest.ts
 src/models/CreateSandboxVolumeRequest.ts
 src/models/CreateSnapshotRequest.ts
 src/models/CreateTeamRequest.ts
@@ -260,6 +277,8 @@ src/models/FileWatchUnsubscribeRequest.ts
 src/models/FileWatchUnsubscribed.ts
 src/models/ForkVolumeRequest.ts
 src/models/Identity.ts
+src/models/IssueRegionTokenRequest.ts
+src/models/IssueRegionTokenResponse.ts
 src/models/LabelSelector.ts
 src/models/LabelSelectorRequirement.ts
 src/models/LifecyclePolicy.ts
@@ -293,6 +312,7 @@ src/models/REPLReadyConfig.ts
 src/models/REPLReadyMode.ts
 src/models/RefreshRequest.ts
 src/models/RefreshResponse.ts
+src/models/Region.ts
 src/models/RegisterRequest.ts
 src/models/RegistryCredentials.ts
 src/models/ResizeContextRequest.ts
@@ -317,6 +337,7 @@ src/models/SignalContextRequest.ts
 src/models/Snapshot.ts
 src/models/SuccessAPIKeyListResponse.ts
 src/models/SuccessAPIKeyListResponseAllOfData.ts
+src/models/SuccessActiveTeamResponse.ts
 src/models/SuccessAuthProvidersResponse.ts
 src/models/SuccessAuthProvidersResponseAllOfData.ts
 src/models/SuccessClaimResponse.ts
@@ -342,6 +363,7 @@ src/models/SuccessHealthResponse.ts
 src/models/SuccessHealthResponseAllOfData.ts
 src/models/SuccessIdentityListResponse.ts
 src/models/SuccessIdentityListResponseAllOfData.ts
+src/models/SuccessIssueRegionTokenResponse.ts
 src/models/SuccessLoginResponse.ts
 src/models/SuccessMessageResponse.ts
 src/models/SuccessMessageResponseAllOfData.ts
@@ -352,6 +374,9 @@ src/models/SuccessMovedResponse.ts
 src/models/SuccessMovedResponseAllOfData.ts
 src/models/SuccessPauseSandboxResponse.ts
 src/models/SuccessRefreshResponse.ts
+src/models/SuccessRegionListResponse.ts
+src/models/SuccessRegionListResponseAllOfData.ts
+src/models/SuccessRegionResponse.ts
 src/models/SuccessRegistryCredentialsResponse.ts
 src/models/SuccessResizedResponse.ts
 src/models/SuccessResizedResponseAllOfData.ts
@@ -392,6 +417,7 @@ src/models/Toleration.ts
 src/models/TplSandboxNetworkPolicy.ts
 src/models/UnmountRequest.ts
 src/models/UpdateExposedPortsRequest.ts
+src/models/UpdateRegionRequest.ts
 src/models/UpdateTeamMemberRequest.ts
 src/models/UpdateTeamRequest.ts
 src/models/UpdateUserRequest.ts

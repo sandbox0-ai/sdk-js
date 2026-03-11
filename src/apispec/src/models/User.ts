@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * Sandbox0 API
- * Public HTTP APIs exposed by internal-gateway.
+ * Public HTTP APIs exposed by Sandbox0 regional gateways and the global directory.
  *
  * The version of the OpenAPI document: 0.1.0
  * 
@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { Team } from './Team';
+import {
+    TeamFromJSON,
+    TeamFromJSONTyped,
+    TeamToJSON,
+    TeamToJSONTyped,
+} from './Team';
+
 /**
  * 
  * @export
@@ -49,6 +57,12 @@ export interface User {
      * @memberof User
      */
     defaultTeamId?: string | null;
+    /**
+     * 
+     * @type {Team}
+     * @memberof User
+     */
+    defaultTeam?: Team | null;
     /**
      * 
      * @type {boolean}
@@ -104,6 +118,7 @@ export function UserFromJSONTyped(json: any, ignoreDiscriminator: boolean): User
         'name': json['name'],
         'avatarUrl': json['avatar_url'] == null ? undefined : json['avatar_url'],
         'defaultTeamId': json['default_team_id'] == null ? undefined : json['default_team_id'],
+        'defaultTeam': json['default_team'] == null ? undefined : TeamFromJSON(json['default_team']),
         'emailVerified': json['email_verified'],
         'isAdmin': json['is_admin'],
         'createdAt': (new Date(json['created_at'])),
@@ -127,6 +142,7 @@ export function UserToJSONTyped(value?: User | null, ignoreDiscriminator: boolea
         'name': value['name'],
         'avatar_url': value['avatarUrl'],
         'default_team_id': value['defaultTeamId'],
+        'default_team': TeamToJSON(value['defaultTeam']),
         'email_verified': value['emailVerified'],
         'is_admin': value['isAdmin'],
         'created_at': value['createdAt'].toISOString(),

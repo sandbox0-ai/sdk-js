@@ -82,6 +82,11 @@ All URIs are relative to *https://api.sandbox0.ai*
 *HealthApi* | [**healthzGet**](docs/HealthApi.md#healthzget) | **GET** /healthz | Health check
 *HealthApi* | [**metricsGet**](docs/HealthApi.md#metricsget) | **GET** /metrics | Prometheus metrics
 *HealthApi* | [**readyzGet**](docs/HealthApi.md#readyzget) | **GET** /readyz | Readiness check
+*RegionsApi* | [**regionsGet**](docs/RegionsApi.md#regionsget) | **GET** /regions | List regions in the global directory
+*RegionsApi* | [**regionsIdDelete**](docs/RegionsApi.md#regionsiddelete) | **DELETE** /regions/{id} | Delete a region from the global directory
+*RegionsApi* | [**regionsIdGet**](docs/RegionsApi.md#regionsidget) | **GET** /regions/{id} | Get a region from the global directory
+*RegionsApi* | [**regionsIdPut**](docs/RegionsApi.md#regionsidput) | **PUT** /regions/{id} | Update a region in the global directory
+*RegionsApi* | [**regionsPost**](docs/RegionsApi.md#regionspost) | **POST** /regions | Create a region in the global directory
 *RegistryApi* | [**apiV1RegistryCredentialsPost**](docs/RegistryApi.md#apiv1registrycredentialspost) | **POST** /api/v1/registry/credentials | Get registry credentials for uploads
 *SandboxVolumesApi* | [**apiV1SandboxesIdSandboxvolumesMountPost**](docs/SandboxVolumesApi.md#apiv1sandboxesidsandboxvolumesmountpost) | **POST** /api/v1/sandboxes/{id}/sandboxvolumes/mount | Mount sandbox volume in sandbox
 *SandboxVolumesApi* | [**apiV1SandboxesIdSandboxvolumesStatusGet**](docs/SandboxVolumesApi.md#apiv1sandboxesidsandboxvolumesstatusget) | **GET** /api/v1/sandboxes/{id}/sandboxvolumes/status | Get sandbox volume mount status
@@ -125,15 +130,18 @@ All URIs are relative to *https://api.sandbox0.ai*
 *TemplatesApi* | [**apiV1TemplatesIdGet**](docs/TemplatesApi.md#apiv1templatesidget) | **GET** /api/v1/templates/{id} | Get template
 *TemplatesApi* | [**apiV1TemplatesIdPut**](docs/TemplatesApi.md#apiv1templatesidput) | **PUT** /api/v1/templates/{id} | Update template
 *TemplatesApi* | [**apiV1TemplatesPost**](docs/TemplatesApi.md#apiv1templatespost) | **POST** /api/v1/templates | Create template
+*TenantApi* | [**authRegionTokenPost**](docs/TenantApi.md#authregiontokenpost) | **POST** /auth/region-token | Exchange a global user session for a region-scoped token
+*TenantApi* | [**tenantActiveGet**](docs/TenantApi.md#tenantactiveget) | **GET** /tenant/active | Resolve the active team and its routing information
+*UsersApi* | [**tenantActivePut**](docs/UsersApi.md#tenantactiveput) | **PUT** /tenant/active | Update current user
 *UsersApi* | [**usersMeGet**](docs/UsersApi.md#usersmeget) | **GET** /users/me | Get current user
 *UsersApi* | [**usersMeIdentitiesGet**](docs/UsersApi.md#usersmeidentitiesget) | **GET** /users/me/identities | List current user identities
 *UsersApi* | [**usersMeIdentitiesIdDelete**](docs/UsersApi.md#usersmeidentitiesiddelete) | **DELETE** /users/me/identities/{id} | Delete a user identity
-*UsersApi* | [**usersMePut**](docs/UsersApi.md#usersmeput) | **PUT** /users/me | Update current user
 
 
 ### Models
 
 - [APIKey](docs/APIKey.md)
+- [ActiveTeam](docs/ActiveTeam.md)
 - [AddTeamMemberRequest](docs/AddTeamMemberRequest.md)
 - [Affinity](docs/Affinity.md)
 - [ApiV1SandboxesIdFilesGet200Response](docs/ApiV1SandboxesIdFilesGet200Response.md)
@@ -160,6 +168,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [CreateCMDContextRequest](docs/CreateCMDContextRequest.md)
 - [CreateContextRequest](docs/CreateContextRequest.md)
 - [CreateREPLContextRequest](docs/CreateREPLContextRequest.md)
+- [CreateRegionRequest](docs/CreateRegionRequest.md)
 - [CreateSandboxVolumeRequest](docs/CreateSandboxVolumeRequest.md)
 - [CreateSnapshotRequest](docs/CreateSnapshotRequest.md)
 - [CreateTeamRequest](docs/CreateTeamRequest.md)
@@ -179,6 +188,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [FileWatchUnsubscribed](docs/FileWatchUnsubscribed.md)
 - [ForkVolumeRequest](docs/ForkVolumeRequest.md)
 - [Identity](docs/Identity.md)
+- [IssueRegionTokenRequest](docs/IssueRegionTokenRequest.md)
+- [IssueRegionTokenResponse](docs/IssueRegionTokenResponse.md)
 - [LabelSelector](docs/LabelSelector.md)
 - [LabelSelectorRequirement](docs/LabelSelectorRequirement.md)
 - [LifecyclePolicy](docs/LifecyclePolicy.md)
@@ -212,6 +223,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [REPLReadyMode](docs/REPLReadyMode.md)
 - [RefreshRequest](docs/RefreshRequest.md)
 - [RefreshResponse](docs/RefreshResponse.md)
+- [Region](docs/Region.md)
 - [RegisterRequest](docs/RegisterRequest.md)
 - [RegistryCredentials](docs/RegistryCredentials.md)
 - [ResizeContextRequest](docs/ResizeContextRequest.md)
@@ -236,6 +248,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [Snapshot](docs/Snapshot.md)
 - [SuccessAPIKeyListResponse](docs/SuccessAPIKeyListResponse.md)
 - [SuccessAPIKeyListResponseAllOfData](docs/SuccessAPIKeyListResponseAllOfData.md)
+- [SuccessActiveTeamResponse](docs/SuccessActiveTeamResponse.md)
 - [SuccessAuthProvidersResponse](docs/SuccessAuthProvidersResponse.md)
 - [SuccessAuthProvidersResponseAllOfData](docs/SuccessAuthProvidersResponseAllOfData.md)
 - [SuccessClaimResponse](docs/SuccessClaimResponse.md)
@@ -261,6 +274,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessHealthResponseAllOfData](docs/SuccessHealthResponseAllOfData.md)
 - [SuccessIdentityListResponse](docs/SuccessIdentityListResponse.md)
 - [SuccessIdentityListResponseAllOfData](docs/SuccessIdentityListResponseAllOfData.md)
+- [SuccessIssueRegionTokenResponse](docs/SuccessIssueRegionTokenResponse.md)
 - [SuccessLoginResponse](docs/SuccessLoginResponse.md)
 - [SuccessMessageResponse](docs/SuccessMessageResponse.md)
 - [SuccessMessageResponseAllOfData](docs/SuccessMessageResponseAllOfData.md)
@@ -271,6 +285,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessMovedResponseAllOfData](docs/SuccessMovedResponseAllOfData.md)
 - [SuccessPauseSandboxResponse](docs/SuccessPauseSandboxResponse.md)
 - [SuccessRefreshResponse](docs/SuccessRefreshResponse.md)
+- [SuccessRegionListResponse](docs/SuccessRegionListResponse.md)
+- [SuccessRegionListResponseAllOfData](docs/SuccessRegionListResponseAllOfData.md)
+- [SuccessRegionResponse](docs/SuccessRegionResponse.md)
 - [SuccessRegistryCredentialsResponse](docs/SuccessRegistryCredentialsResponse.md)
 - [SuccessResizedResponse](docs/SuccessResizedResponse.md)
 - [SuccessResizedResponseAllOfData](docs/SuccessResizedResponseAllOfData.md)
@@ -311,6 +328,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [TplSandboxNetworkPolicy](docs/TplSandboxNetworkPolicy.md)
 - [UnmountRequest](docs/UnmountRequest.md)
 - [UpdateExposedPortsRequest](docs/UpdateExposedPortsRequest.md)
+- [UpdateRegionRequest](docs/UpdateRegionRequest.md)
 - [UpdateTeamMemberRequest](docs/UpdateTeamMemberRequest.md)
 - [UpdateTeamRequest](docs/UpdateTeamRequest.md)
 - [UpdateUserRequest](docs/UpdateUserRequest.md)

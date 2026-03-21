@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { SandboxNetworkPolicy } from './SandboxNetworkPolicy';
+import {
+    SandboxNetworkPolicyFromJSON,
+    SandboxNetworkPolicyFromJSONTyped,
+    SandboxNetworkPolicyToJSON,
+    SandboxNetworkPolicyToJSONTyped,
+} from './SandboxNetworkPolicy';
 import type { ExposedPortConfig } from './ExposedPortConfig';
 import {
     ExposedPortConfigFromJSON,
@@ -27,13 +34,6 @@ import {
     CredentialBindingToJSON,
     CredentialBindingToJSONTyped,
 } from './CredentialBinding';
-import type { TplSandboxNetworkPolicy } from './TplSandboxNetworkPolicy';
-import {
-    TplSandboxNetworkPolicyFromJSON,
-    TplSandboxNetworkPolicyFromJSONTyped,
-    TplSandboxNetworkPolicyToJSON,
-    TplSandboxNetworkPolicyToJSONTyped,
-} from './TplSandboxNetworkPolicy';
 
 /**
  * Subset of SandboxConfig fields that can be updated at runtime without restarting the sandbox.
@@ -57,14 +57,15 @@ export interface SandboxUpdateConfig {
     hardTtl?: number;
     /**
      * 
-     * @type {TplSandboxNetworkPolicy}
+     * @type {SandboxNetworkPolicy}
      * @memberof SandboxUpdateConfig
      */
-    network?: TplSandboxNetworkPolicy;
+    network?: SandboxNetworkPolicy;
     /**
-     * 
+     * Legacy sibling field. Prefer `network.credentialBindings`.
      * @type {Array<CredentialBinding>}
      * @memberof SandboxUpdateConfig
+     * @deprecated
      */
     credentialBindings?: Array<CredentialBinding>;
     /**
@@ -102,7 +103,7 @@ export function SandboxUpdateConfigFromJSONTyped(json: any, ignoreDiscriminator:
         
         'ttl': json['ttl'] == null ? undefined : json['ttl'],
         'hardTtl': json['hard_ttl'] == null ? undefined : json['hard_ttl'],
-        'network': json['network'] == null ? undefined : TplSandboxNetworkPolicyFromJSON(json['network']),
+        'network': json['network'] == null ? undefined : SandboxNetworkPolicyFromJSON(json['network']),
         'credentialBindings': json['credential_bindings'] == null ? undefined : ((json['credential_bindings'] as Array<any>).map(CredentialBindingFromJSON)),
         'autoResume': json['auto_resume'] == null ? undefined : json['auto_resume'],
         'exposedPorts': json['exposed_ports'] == null ? undefined : ((json['exposed_ports'] as Array<any>).map(ExposedPortConfigFromJSON)),
@@ -122,7 +123,7 @@ export function SandboxUpdateConfigToJSONTyped(value?: SandboxUpdateConfig | nul
         
         'ttl': value['ttl'],
         'hard_ttl': value['hardTtl'],
-        'network': TplSandboxNetworkPolicyToJSON(value['network']),
+        'network': SandboxNetworkPolicyToJSON(value['network']),
         'credential_bindings': value['credentialBindings'] == null ? undefined : ((value['credentialBindings'] as Array<any>).map(CredentialBindingToJSON)),
         'auto_resume': value['autoResume'],
         'exposed_ports': value['exposedPorts'] == null ? undefined : ((value['exposedPorts'] as Array<any>).map(ExposedPortConfigToJSON)),

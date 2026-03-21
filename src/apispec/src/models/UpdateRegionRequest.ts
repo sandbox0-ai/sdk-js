@@ -33,6 +33,12 @@ export interface UpdateRegionRequest {
     edgeGatewayUrl?: string;
     /**
      * 
+     * @type {string}
+     * @memberof UpdateRegionRequest
+     */
+    meteringExportUrl?: string | null;
+    /**
+     * 
      * @type {boolean}
      * @memberof UpdateRegionRequest
      */
@@ -58,6 +64,7 @@ export function UpdateRegionRequestFromJSONTyped(json: any, ignoreDiscriminator:
         
         'displayName': json['display_name'] == null ? undefined : json['display_name'],
         'edgeGatewayUrl': json['edge_gateway_url'] == null ? undefined : json['edge_gateway_url'],
+        'meteringExportUrl': json['metering_export_url'] == null ? undefined : json['metering_export_url'],
         'enabled': json['enabled'] == null ? undefined : json['enabled'],
     };
 }
@@ -75,6 +82,7 @@ export function UpdateRegionRequestToJSONTyped(value?: UpdateRegionRequest | nul
         
         'display_name': value['displayName'],
         'edge_gateway_url': value['edgeGatewayUrl'],
+        'metering_export_url': value['meteringExportUrl'],
         'enabled': value['enabled'],
     };
 }

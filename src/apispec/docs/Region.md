@@ -9,6 +9,7 @@ Name | Type
 `id` | string
 `displayName` | string
 `edgeGatewayUrl` | string
+`meteringExportUrl` | string
 `enabled` | boolean
 
 ## Example
@@ -21,6 +22,7 @@ const example = {
   "id": null,
   "displayName": null,
   "edgeGatewayUrl": null,
+  "meteringExportUrl": null,
   "enabled": null,
 } satisfies Region
 

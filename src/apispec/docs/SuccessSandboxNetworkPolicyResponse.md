@@ -7,7 +7,7 @@
 Name | Type
 ------------ | -------------
 `success` | boolean
-`data` | [TplSandboxNetworkPolicy](TplSandboxNetworkPolicy.md)
+`data` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
 
 ## Example
 

@@ -27,6 +27,13 @@ import {
     ExposedPortConfigToJSON,
     ExposedPortConfigToJSONTyped,
 } from './ExposedPortConfig';
+import type { CredentialBinding } from './CredentialBinding';
+import {
+    CredentialBindingFromJSON,
+    CredentialBindingFromJSONTyped,
+    CredentialBindingToJSON,
+    CredentialBindingToJSONTyped,
+} from './CredentialBinding';
 import type { TplSandboxNetworkPolicy } from './TplSandboxNetworkPolicy';
 import {
     TplSandboxNetworkPolicyFromJSON,
@@ -65,6 +72,12 @@ export interface SandboxConfig {
      * @memberof SandboxConfig
      */
     network?: TplSandboxNetworkPolicy;
+    /**
+     * 
+     * @type {Array<CredentialBinding>}
+     * @memberof SandboxConfig
+     */
+    credentialBindings?: Array<CredentialBinding>;
     /**
      * 
      * @type {WebhookConfig}
@@ -108,6 +121,7 @@ export function SandboxConfigFromJSONTyped(json: any, ignoreDiscriminator: boole
         'ttl': json['ttl'] == null ? undefined : json['ttl'],
         'hardTtl': json['hard_ttl'] == null ? undefined : json['hard_ttl'],
         'network': json['network'] == null ? undefined : TplSandboxNetworkPolicyFromJSON(json['network']),
+        'credentialBindings': json['credential_bindings'] == null ? undefined : ((json['credential_bindings'] as Array<any>).map(CredentialBindingFromJSON)),
         'webhook': json['webhook'] == null ? undefined : WebhookConfigFromJSON(json['webhook']),
         'autoResume': json['auto_resume'] == null ? undefined : json['auto_resume'],
         'exposedPorts': json['exposed_ports'] == null ? undefined : ((json['exposed_ports'] as Array<any>).map(ExposedPortConfigFromJSON)),
@@ -129,6 +143,7 @@ export function SandboxConfigToJSONTyped(value?: SandboxConfig | null, ignoreDis
         'ttl': value['ttl'],
         'hard_ttl': value['hardTtl'],
         'network': TplSandboxNetworkPolicyToJSON(value['network']),
+        'credential_bindings': value['credentialBindings'] == null ? undefined : ((value['credentialBindings'] as Array<any>).map(CredentialBindingToJSON)),
         'webhook': WebhookConfigToJSON(value['webhook']),
         'auto_resume': value['autoResume'],
         'exposed_ports': value['exposedPorts'] == null ? undefined : ((value['exposedPorts'] as Array<any>).map(ExposedPortConfigToJSON)),

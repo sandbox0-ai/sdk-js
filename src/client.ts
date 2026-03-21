@@ -2,6 +2,7 @@ import type * as runtimeTypes from "./apispec/src/runtime";
 import type * as apisTypes from "./apispec/src/apis/index";
 import { apis, runtime } from "./apispec_compat";
 import { normalizeNullMapMiddleware } from "./response_normalize";
+import { CredentialSources } from "./resources/credential_sources";
 import { Sandboxes } from "./resources/sandboxes";
 import { Templates } from "./resources/templates";
 import { Volumes } from "./resources/volumes";
@@ -44,11 +45,13 @@ export class Client {
     sandboxVolumes: apisTypes.SandboxVolumesApi;
     snapshots: apisTypes.SnapshotsApi;
     templates: apisTypes.TemplatesApi;
+    credentialSources: apisTypes.CredentialSourcesApi;
   };
 
   readonly sandboxes: Sandboxes;
   readonly templates: Templates;
   readonly volumes: Volumes;
+  readonly credentialSources: CredentialSources;
 
   constructor(options: ClientOptions) {
     const headers: Record<string, string> = {
@@ -75,11 +78,13 @@ export class Client {
       sandboxVolumes: new apis.SandboxVolumesApi(this.configuration),
       snapshots: new apis.SnapshotsApi(this.configuration),
       templates: new apis.TemplatesApi(this.configuration),
+      credentialSources: new apis.CredentialSourcesApi(this.configuration),
     };
 
     this.sandboxes = new Sandboxes(this);
     this.templates = new Templates(this);
     this.volumes = new Volumes(this);
+    this.credentialSources = new CredentialSources(this);
   }
 
   sandbox(id: string): Sandbox {

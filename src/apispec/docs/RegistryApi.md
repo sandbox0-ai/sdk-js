@@ -66,6 +66,7 @@ This endpoint does not need any parameter.
 |-------------|-------------|------------------|
 | **200** | Registry credentials |  -  |
 | **401** | Unauthorized |  -  |
+| **403** | Forbidden |  -  |
 | **500** | Server error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)

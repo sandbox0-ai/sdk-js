@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ClaimRequest,
   ErrorEnvelope,
+  SandboxNetworkPolicy,
   SandboxRefreshRequest,
   SandboxUpdateRequest,
   SuccessClaimResponse,
@@ -29,7 +30,6 @@ import type {
   SuccessSandboxNetworkPolicyResponse,
   SuccessSandboxResponse,
   SuccessSandboxStatusResponse,
-  TplSandboxNetworkPolicy,
   UpdateExposedPortsRequest,
 } from '../models/index';
 import {
@@ -37,6 +37,8 @@ import {
     ClaimRequestToJSON,
     ErrorEnvelopeFromJSON,
     ErrorEnvelopeToJSON,
+    SandboxNetworkPolicyFromJSON,
+    SandboxNetworkPolicyToJSON,
     SandboxRefreshRequestFromJSON,
     SandboxRefreshRequestToJSON,
     SandboxUpdateRequestFromJSON,
@@ -61,8 +63,6 @@ import {
     SuccessSandboxResponseToJSON,
     SuccessSandboxStatusResponseFromJSON,
     SuccessSandboxStatusResponseToJSON,
-    TplSandboxNetworkPolicyFromJSON,
-    TplSandboxNetworkPolicyToJSON,
     UpdateExposedPortsRequestFromJSON,
     UpdateExposedPortsRequestToJSON,
 } from '../models/index';
@@ -107,7 +107,7 @@ export interface ApiV1SandboxesIdNetworkGetRequest {
 
 export interface ApiV1SandboxesIdNetworkPutRequest {
     id: string;
-    tplSandboxNetworkPolicy: TplSandboxNetworkPolicy;
+    sandboxNetworkPolicy: SandboxNetworkPolicy;
 }
 
 export interface ApiV1SandboxesIdPausePostRequest {
@@ -546,10 +546,10 @@ export class SandboxesApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['tplSandboxNetworkPolicy'] == null) {
+        if (requestParameters['sandboxNetworkPolicy'] == null) {
             throw new runtime.RequiredError(
-                'tplSandboxNetworkPolicy',
-                'Required parameter "tplSandboxNetworkPolicy" was null or undefined when calling apiV1SandboxesIdNetworkPut().'
+                'sandboxNetworkPolicy',
+                'Required parameter "sandboxNetworkPolicy" was null or undefined when calling apiV1SandboxesIdNetworkPut().'
             );
         }
 
@@ -576,7 +576,7 @@ export class SandboxesApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: TplSandboxNetworkPolicyToJSON(requestParameters['tplSandboxNetworkPolicy']),
+            body: SandboxNetworkPolicyToJSON(requestParameters['sandboxNetworkPolicy']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxNetworkPolicyResponseFromJSON(jsonValue));

@@ -1,4 +1,4 @@
-import type { TplSandboxNetworkPolicy } from "./apispec/src/models/index";
+import type { SandboxNetworkPolicy } from "./apispec/src/models/index";
 import type { Client } from "./client";
 import { wrapApiCall } from "./errors";
 import { ensureData } from "./response";
@@ -10,16 +10,16 @@ function getClient(sandbox: Sandbox): Client {
 
 declare module "./sandbox" {
   interface Sandbox {
-    getNetworkPolicy(): Promise<TplSandboxNetworkPolicy>;
+    getNetworkPolicy(): Promise<SandboxNetworkPolicy>;
     updateNetworkPolicy(
-      policy: TplSandboxNetworkPolicy,
-    ): Promise<TplSandboxNetworkPolicy>;
+      policy: SandboxNetworkPolicy,
+    ): Promise<SandboxNetworkPolicy>;
   }
 }
 
 Sandbox.prototype.getNetworkPolicy = async function (
   this: Sandbox,
-): Promise<TplSandboxNetworkPolicy> {
+): Promise<SandboxNetworkPolicy> {
   const client = getClient(this);
   const response = await wrapApiCall(() =>
     client.apispec.sandboxes.apiV1SandboxesIdNetworkGet({ id: this.id }),
@@ -29,13 +29,13 @@ Sandbox.prototype.getNetworkPolicy = async function (
 
 Sandbox.prototype.updateNetworkPolicy = async function (
   this: Sandbox,
-  policy: TplSandboxNetworkPolicy,
-): Promise<TplSandboxNetworkPolicy> {
+  policy: SandboxNetworkPolicy,
+): Promise<SandboxNetworkPolicy> {
   const client = getClient(this);
   const response = await wrapApiCall(() =>
     client.apispec.sandboxes.apiV1SandboxesIdNetworkPut({
       id: this.id,
-      tplSandboxNetworkPolicy: policy,
+      sandboxNetworkPolicy: policy,
     }),
   );
   return ensureData(response, "update network policy returned empty response");

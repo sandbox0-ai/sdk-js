@@ -20,49 +20,91 @@ import {
     PortSpecToJSON,
     PortSpecToJSONTyped,
 } from './PortSpec';
+import type { EgressCredentialRule } from './EgressCredentialRule';
+import {
+    EgressCredentialRuleFromJSON,
+    EgressCredentialRuleFromJSONTyped,
+    EgressCredentialRuleToJSON,
+    EgressCredentialRuleToJSONTyped,
+} from './EgressCredentialRule';
+import type { TrafficRule } from './TrafficRule';
+import {
+    TrafficRuleFromJSON,
+    TrafficRuleFromJSONTyped,
+    TrafficRuleToJSON,
+    TrafficRuleToJSONTyped,
+} from './TrafficRule';
 
 /**
+ * Egress rule set interpreted by the selected network mode.
+ * In `allow-all`, only `denied*` fields are enforced.
+ * In `block-all`, only `allowed*` fields are enforced.
+ * `trafficRules` is a rule-based alternative and must not be combined
+ * with the legacy `allowed*`/`denied*` fields.
  * 
  * @export
  * @interface NetworkEgressPolicy
  */
 export interface NetworkEgressPolicy {
     /**
-     * 
+     * Legacy CIDR allowlist used only when mode is `block-all`. Use `trafficRules` instead.
      * @type {Array<string>}
      * @memberof NetworkEgressPolicy
+     * @deprecated
      */
     allowedCidrs?: Array<string>;
     /**
-     * 
+     * Legacy domain allowlist used only when mode is `block-all`. Use `trafficRules` instead.
      * @type {Array<string>}
      * @memberof NetworkEgressPolicy
+     * @deprecated
      */
     allowedDomains?: Array<string>;
     /**
-     * 
+     * Legacy port/protocol allowlist used only when mode is `block-all`. Use `trafficRules` instead.
      * @type {Array<PortSpec>}
      * @memberof NetworkEgressPolicy
+     * @deprecated
      */
     allowedPorts?: Array<PortSpec>;
     /**
-     * 
+     * Legacy domain denylist used only when mode is `allow-all`. Use `trafficRules` instead.
      * @type {Array<string>}
      * @memberof NetworkEgressPolicy
+     * @deprecated
      */
     deniedDomains?: Array<string>;
     /**
-     * 
+     * Legacy CIDR denylist used only when mode is `allow-all`. Use `trafficRules` instead.
      * @type {Array<string>}
      * @memberof NetworkEgressPolicy
+     * @deprecated
      */
     deniedCidrs?: Array<string>;
     /**
-     * 
+     * Legacy port/protocol denylist used only when mode is `allow-all`. Use `trafficRules` instead.
      * @type {Array<PortSpec>}
      * @memberof NetworkEgressPolicy
+     * @deprecated
      */
     deniedPorts?: Array<PortSpec>;
+    /**
+     * Ordered egress allow/deny rules. The first matching rule wins and
+     * unmatched traffic falls back to `mode`.
+     * 
+     * @type {Array<TrafficRule>}
+     * @memberof NetworkEgressPolicy
+     */
+    trafficRules?: Array<TrafficRule>;
+    /**
+     * Structured egress auth injection rules resolved by the manager runtime egress auth path.
+     * These rules are orthogonal to allow/deny matching and are intended for
+     * destination-scoped outbound auth behavior.
+     * 
+     * @type {Array<EgressCredentialRule>}
+     * @memberof NetworkEgressPolicy
+     */
+    credentialRules?: Array<EgressCredentialRule>;
 }
 
 /**
@@ -88,6 +130,8 @@ export function NetworkEgressPolicyFromJSONTyped(json: any, ignoreDiscriminator:
         'deniedDomains': json['deniedDomains'] == null ? undefined : json['deniedDomains'],
         'deniedCidrs': json['deniedCidrs'] == null ? undefined : json['deniedCidrs'],
         'deniedPorts': json['deniedPorts'] == null ? undefined : ((json['deniedPorts'] as Array<any>).map(PortSpecFromJSON)),
+        'trafficRules': json['trafficRules'] == null ? undefined : ((json['trafficRules'] as Array<any>).map(TrafficRuleFromJSON)),
+        'credentialRules': json['credentialRules'] == null ? undefined : ((json['credentialRules'] as Array<any>).map(EgressCredentialRuleFromJSON)),
     };
 }
 
@@ -108,6 +152,8 @@ export function NetworkEgressPolicyToJSONTyped(value?: NetworkEgressPolicy | nul
         'deniedDomains': value['deniedDomains'],
         'deniedCidrs': value['deniedCidrs'],
         'deniedPorts': value['deniedPorts'] == null ? undefined : ((value['deniedPorts'] as Array<any>).map(PortSpecToJSON)),
+        'trafficRules': value['trafficRules'] == null ? undefined : ((value['trafficRules'] as Array<any>).map(TrafficRuleToJSON)),
+        'credentialRules': value['credentialRules'] == null ? undefined : ((value['credentialRules'] as Array<any>).map(EgressCredentialRuleToJSON)),
     };
 }
 

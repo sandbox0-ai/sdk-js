@@ -13,6 +13,7 @@ Name | Type
 `sidecars` | [Array&lt;ContainerSpec&gt;](ContainerSpec.md)
 `pod` | [PodSpecOverride](PodSpecOverride.md)
 `network` | [TplSandboxNetworkPolicy](TplSandboxNetworkPolicy.md)
+`credentialBindings` | [Array&lt;CredentialBinding&gt;](CredentialBinding.md)
 `pool` | [PoolStrategy](PoolStrategy.md)
 `lifecycle` | [LifecyclePolicy](LifecyclePolicy.md)
 `envVars` | { [key: string]: string; }
@@ -35,6 +36,7 @@ const example = {
   "sidecars": null,
   "pod": null,
   "network": null,
+  "credentialBindings": null,
   "pool": null,
   "lifecycle": null,
   "envVars": null,

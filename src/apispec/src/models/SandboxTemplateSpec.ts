@@ -34,6 +34,13 @@ import {
     LifecyclePolicyToJSON,
     LifecyclePolicyToJSONTyped,
 } from './LifecyclePolicy';
+import type { CredentialBinding } from './CredentialBinding';
+import {
+    CredentialBindingFromJSON,
+    CredentialBindingFromJSONTyped,
+    CredentialBindingToJSON,
+    CredentialBindingToJSONTyped,
+} from './CredentialBinding';
 import type { TplSandboxNetworkPolicy } from './TplSandboxNetworkPolicy';
 import {
     TplSandboxNetworkPolicyFromJSON,
@@ -97,6 +104,12 @@ export interface SandboxTemplateSpec {
      * @memberof SandboxTemplateSpec
      */
     network?: TplSandboxNetworkPolicy;
+    /**
+     * 
+     * @type {Array<CredentialBinding>}
+     * @memberof SandboxTemplateSpec
+     */
+    credentialBindings?: Array<CredentialBinding>;
     /**
      * 
      * @type {PoolStrategy}
@@ -165,6 +178,7 @@ export function SandboxTemplateSpecFromJSONTyped(json: any, ignoreDiscriminator:
         'sidecars': json['sidecars'] == null ? undefined : ((json['sidecars'] as Array<any>).map(ContainerSpecFromJSON)),
         'pod': json['pod'] == null ? undefined : PodSpecOverrideFromJSON(json['pod']),
         'network': json['network'] == null ? undefined : TplSandboxNetworkPolicyFromJSON(json['network']),
+        'credentialBindings': json['credentialBindings'] == null ? undefined : ((json['credentialBindings'] as Array<any>).map(CredentialBindingFromJSON)),
         'pool': json['pool'] == null ? undefined : PoolStrategyFromJSON(json['pool']),
         'lifecycle': json['lifecycle'] == null ? undefined : LifecyclePolicyFromJSON(json['lifecycle']),
         'envVars': json['envVars'] == null ? undefined : json['envVars'],
@@ -193,6 +207,7 @@ export function SandboxTemplateSpecToJSONTyped(value?: SandboxTemplateSpec | nul
         'sidecars': value['sidecars'] == null ? undefined : ((value['sidecars'] as Array<any>).map(ContainerSpecToJSON)),
         'pod': PodSpecOverrideToJSON(value['pod']),
         'network': TplSandboxNetworkPolicyToJSON(value['network']),
+        'credentialBindings': value['credentialBindings'] == null ? undefined : ((value['credentialBindings'] as Array<any>).map(CredentialBindingToJSON)),
         'pool': PoolStrategyToJSON(value['pool']),
         'lifecycle': LifecyclePolicyToJSON(value['lifecycle']),
         'envVars': value['envVars'],

@@ -608,7 +608,7 @@ example().catch(console.error);
 
 ## apiV1SandboxesIdNetworkPut
 
-> SuccessSandboxNetworkPolicyResponse apiV1SandboxesIdNetworkPut(id, tplSandboxNetworkPolicy)
+> SuccessSandboxNetworkPolicyResponse apiV1SandboxesIdNetworkPut(id, sandboxNetworkPolicy)
 
 Update sandbox network policy
 
@@ -632,8 +632,8 @@ async function example() {
   const body = {
     // string
     id: id_example,
-    // TplSandboxNetworkPolicy
-    tplSandboxNetworkPolicy: ...,
+    // SandboxNetworkPolicy
+    sandboxNetworkPolicy: ...,
   } satisfies ApiV1SandboxesIdNetworkPutRequest;
 
   try {
@@ -654,7 +654,7 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | `string` |  | [Defaults to `undefined`] |
-| **tplSandboxNetworkPolicy** | [TplSandboxNetworkPolicy](TplSandboxNetworkPolicy.md) |  | |
+| **sandboxNetworkPolicy** | [SandboxNetworkPolicy](SandboxNetworkPolicy.md) |  | |
 
 ### Return type
 

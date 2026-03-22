@@ -31,12 +31,6 @@ export interface UpdateTeamRequest {
      * @memberof UpdateTeamRequest
      */
     slug?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateTeamRequest
-     */
-    homeRegionId?: string | null;
 }
 
 /**
@@ -58,7 +52,6 @@ export function UpdateTeamRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'name': json['name'] == null ? undefined : json['name'],
         'slug': json['slug'] == null ? undefined : json['slug'],
-        'homeRegionId': json['home_region_id'] == null ? undefined : json['home_region_id'],
     };
 }
 
@@ -75,7 +68,6 @@ export function UpdateTeamRequestToJSONTyped(value?: UpdateTeamRequest | null, i
         
         'name': value['name'],
         'slug': value['slug'],
-        'home_region_id': value['homeRegionId'],
     };
 }
 

@@ -1,30 +1,24 @@
 
-# LoginResponse
+# GatewayMetadata
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`accessToken` | string
-`refreshToken` | string
-`expiresAt` | number
-`user` | [User](User.md)
-`regionalSession` | [RegionalSession](RegionalSession.md)
+`gatewayMode` | string
+`service` | string
 
 ## Example
 
 ```typescript
-import type { LoginResponse } from 'sandbox0'
+import type { GatewayMetadata } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "accessToken": null,
-  "refreshToken": null,
-  "expiresAt": null,
-  "user": null,
-  "regionalSession": null,
-} satisfies LoginResponse
+  "gatewayMode": null,
+  "service": null,
+} satisfies GatewayMetadata
 
 console.log(example)
 
@@ -33,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as LoginResponse
+const exampleParsed = JSON.parse(exampleJSON) as GatewayMetadata
 console.log(exampleParsed)
 ```
 

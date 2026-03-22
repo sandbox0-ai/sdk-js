@@ -20,6 +20,13 @@ import {
     UserToJSON,
     UserToJSONTyped,
 } from './User';
+import type { RegionalSession } from './RegionalSession';
+import {
+    RegionalSessionFromJSON,
+    RegionalSessionFromJSONTyped,
+    RegionalSessionToJSON,
+    RegionalSessionToJSONTyped,
+} from './RegionalSession';
 
 /**
  * 
@@ -51,6 +58,12 @@ export interface LoginResponse {
      * @memberof LoginResponse
      */
     user: User;
+    /**
+     * 
+     * @type {RegionalSession}
+     * @memberof LoginResponse
+     */
+    regionalSession?: RegionalSession;
 }
 
 /**
@@ -78,6 +91,7 @@ export function LoginResponseFromJSONTyped(json: any, ignoreDiscriminator: boole
         'refreshToken': json['refresh_token'],
         'expiresAt': json['expires_at'],
         'user': UserFromJSON(json['user']),
+        'regionalSession': json['regional_session'] == null ? undefined : RegionalSessionFromJSON(json['regional_session']),
     };
 }
 
@@ -96,6 +110,7 @@ export function LoginResponseToJSONTyped(value?: LoginResponse | null, ignoreDis
         'refresh_token': value['refreshToken'],
         'expires_at': value['expiresAt'],
         'user': UserToJSON(value['user']),
+        'regional_session': RegionalSessionToJSON(value['regionalSession']),
     };
 }
 

@@ -65,6 +65,7 @@ docs/FileWatchUnsubscribeRequest.md
 docs/FileWatchUnsubscribed.md
 docs/FilesApi.md
 docs/ForkVolumeRequest.md
+docs/GatewayMetadata.md
 docs/HTTPHeadersProjection.md
 docs/HealthApi.md
 docs/Identity.md
@@ -106,6 +107,7 @@ docs/REPLReadyMode.md
 docs/RefreshRequest.md
 docs/RefreshResponse.md
 docs/Region.md
+docs/RegionalSession.md
 docs/RegionsApi.md
 docs/RegisterRequest.md
 docs/RegistryApi.md
@@ -163,6 +165,7 @@ docs/SuccessFileReadResponse.md
 docs/SuccessFileReadResponseAllOfData.md
 docs/SuccessFileReadResponseAllOfDataOneOf.md
 docs/SuccessFileStatResponse.md
+docs/SuccessGatewayMetadataResponse.md
 docs/SuccessHealthResponse.md
 docs/SuccessHealthResponseAllOfData.md
 docs/SuccessIdentityListResponse.md
@@ -313,6 +316,7 @@ src/models/FileWatchSubscribed.ts
 src/models/FileWatchUnsubscribeRequest.ts
 src/models/FileWatchUnsubscribed.ts
 src/models/ForkVolumeRequest.ts
+src/models/GatewayMetadata.ts
 src/models/HTTPHeadersProjection.ts
 src/models/Identity.ts
 src/models/IssueRegionTokenRequest.ts
@@ -353,6 +357,7 @@ src/models/REPLReadyMode.ts
 src/models/RefreshRequest.ts
 src/models/RefreshResponse.ts
 src/models/Region.ts
+src/models/RegionalSession.ts
 src/models/RegisterRequest.ts
 src/models/RegistryCredentials.ts
 src/models/ResizeContextRequest.ts
@@ -405,6 +410,7 @@ src/models/SuccessFileReadResponse.ts
 src/models/SuccessFileReadResponseAllOfData.ts
 src/models/SuccessFileReadResponseAllOfDataOneOf.ts
 src/models/SuccessFileStatResponse.ts
+src/models/SuccessGatewayMetadataResponse.ts
 src/models/SuccessHealthResponse.ts
 src/models/SuccessHealthResponseAllOfData.ts
 src/models/SuccessIdentityListResponse.ts

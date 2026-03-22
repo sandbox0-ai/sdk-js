@@ -10,6 +10,7 @@ Name | Type
 `ttl` | number
 `hardTtl` | number
 `network` | [TplSandboxNetworkPolicy](TplSandboxNetworkPolicy.md)
+`credentialBindings` | [Array&lt;CredentialBinding&gt;](CredentialBinding.md)
 `webhook` | [WebhookConfig](WebhookConfig.md)
 `autoResume` | boolean
 `exposedPorts` | [Array&lt;ExposedPortConfig&gt;](ExposedPortConfig.md)
@@ -25,6 +26,7 @@ const example = {
   "ttl": null,
   "hardTtl": null,
   "network": null,
+  "credentialBindings": null,
   "webhook": null,
   "autoResume": null,
   "exposedPorts": null,

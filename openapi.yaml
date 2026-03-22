@@ -732,6 +732,7 @@ paths:
     put:
       tags: [teams]
       summary: Update a team
+      description: Team home region is immutable after creation and cannot be changed through this endpoint.
       security:
         - bearerAuth: []
       parameters:
@@ -763,6 +764,12 @@ paths:
                 $ref: "#/components/schemas/ErrorEnvelope"
         "404":
           description: Team not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Team update conflicts with an immutable field or existing slug
           content:
             application/json:
               schema:
@@ -1316,7 +1323,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TplSandboxNetworkPolicy"
+              $ref: "#/components/schemas/SandboxNetworkPolicy"
       responses:
         "200":
           description: Network policy updated
@@ -2017,12 +2024,126 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
         "500":
           description: Server error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/credential-sources:
+    get:
+      tags: [credential-sources]
+      summary: List credential sources
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/credential-sources
+      responses:
+        "200":
+          description: Credential sources
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessCredentialSourceListResponse"
+    post:
+      tags: [credential-sources]
+      summary: Create credential source
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/credential-sources
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CredentialSourceWriteRequest"
+      responses:
+        "201":
+          description: Credential source created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessCredentialSourceResponse"
+  /api/v1/credential-sources/{name}:
+    get:
+      tags: [credential-sources]
+      summary: Get credential source
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/credential-sources/{name}
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Credential source
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessCredentialSourceResponse"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    put:
+      tags: [credential-sources]
+      summary: Update credential source
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/credential-sources/{name}
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CredentialSourceWriteRequest"
+      responses:
+        "200":
+          description: Credential source updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessCredentialSourceResponse"
+    delete:
+      tags: [credential-sources]
+      summary: Delete credential source
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/credential-sources/{name}
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Credential source deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessMessageResponse"
   /api/v1/sandboxvolumes:
     post:
       tags: [sandbox-volumes]
@@ -2385,6 +2506,22 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/RegistryCredentials"
+    SuccessCredentialSourceResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/CredentialSourceMetadata"
+    SuccessCredentialSourceListResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/CredentialSourceMetadata"
     RegistryCredentials:
       type: object
       properties:
@@ -2481,6 +2618,12 @@ components:
           type: string
         type:
           type: string
+        external_auth_portal_url:
+          type: string
+          description: >
+            When set, browser login for this provider should redirect to this external URL
+            instead of initiating the OIDC flow directly. Used for deployments that host
+            their own authorization portal.
       required: [id, name, type]
     SuccessAuthProvidersResponse:
       allOf:
@@ -2709,6 +2852,9 @@ components:
           type: string
         edge_gateway_url:
           type: string
+        metering_export_url:
+          type: string
+          nullable: true
         enabled:
           type: boolean
       required: [id, edge_gateway_url, enabled]
@@ -2721,6 +2867,9 @@ components:
           type: string
         edge_gateway_url:
           type: string
+        metering_export_url:
+          type: string
+          nullable: true
         enabled:
           type: boolean
       required: [id, edge_gateway_url]
@@ -2731,6 +2880,9 @@ components:
           type: string
         edge_gateway_url:
           type: string
+        metering_export_url:
+          type: string
+          nullable: true
         enabled:
           type: boolean
     SuccessRegionResponse:
@@ -2785,9 +2937,6 @@ components:
           type: string
         slug:
           type: string
-        home_region_id:
-          type: string
-          nullable: true
     AddTeamMemberRequest:
       type: object
       properties:
@@ -2975,6 +3124,13 @@ components:
           format: int32
         network:
           $ref: "#/components/schemas/TplSandboxNetworkPolicy"
+        credential_bindings:
+          type: array
+          description: |
+            Sandbox-scoped credential bindings that can be referenced by egress
+            credential rules through `credentialRef`.
+          items:
+            $ref: "#/components/schemas/CredentialBinding"
         webhook:
           $ref: "#/components/schemas/WebhookConfig"
         auto_resume:
@@ -3132,6 +3288,13 @@ components:
           format: int32
         network:
           $ref: "#/components/schemas/TplSandboxNetworkPolicy"
+        credential_bindings:
+          type: array
+          description: |
+            Runtime-updatable credential bindings referenced by egress
+            credential rules through `credentialRef`.
+          items:
+            $ref: "#/components/schemas/CredentialBinding"
         auto_resume:
           type: boolean
           default: true
@@ -4140,6 +4303,10 @@ components:
           $ref: "#/components/schemas/PodSpecOverride"
         network:
           $ref: "#/components/schemas/TplSandboxNetworkPolicy"
+        credentialBindings:
+          type: array
+          items:
+            $ref: "#/components/schemas/CredentialBinding"
         pool:
           $ref: "#/components/schemas/PoolStrategy"
         lifecycle:
@@ -4355,6 +4522,10 @@ components:
       required: [minIdle, maxIdle]
     TplSandboxNetworkPolicy:
       type: object
+      description: |
+        Template-level outbound network policy.
+        `allow-all` permits traffic by default and applies `denied*` rules as subtractive filters.
+        `block-all` denies traffic by default and applies `allowed*` rules as additive exceptions.
       properties:
         mode:
           type: string
@@ -4362,33 +4533,289 @@ components:
         egress:
           $ref: "#/components/schemas/NetworkEgressPolicy"
       required: [mode]
+    SandboxNetworkPolicy:
+      type: object
+      properties:
+        mode:
+          type: string
+          enum: [allow-all, block-all]
+        egress:
+          $ref: "#/components/schemas/NetworkEgressPolicy"
+        credentialBindings:
+          type: array
+          items:
+            $ref: "#/components/schemas/CredentialBinding"
+      required: [mode]
     NetworkEgressPolicy:
       type: object
+      description: |
+        Egress rule set interpreted by the selected network mode.
+        In `allow-all`, only `denied*` fields are enforced.
+        In `block-all`, only `allowed*` fields are enforced.
+        `trafficRules` is a rule-based alternative and must not be combined
+        with the legacy `allowed*`/`denied*` fields.
       properties:
         allowedCidrs:
           type: array
+          deprecated: true
+          description: Legacy CIDR allowlist used only when mode is `block-all`. Use `trafficRules` instead.
           items:
             type: string
         allowedDomains:
           type: array
+          deprecated: true
+          description: Legacy domain allowlist used only when mode is `block-all`. Use `trafficRules` instead.
           items:
             type: string
         allowedPorts:
           type: array
+          deprecated: true
+          description: Legacy port/protocol allowlist used only when mode is `block-all`. Use `trafficRules` instead.
           items:
             $ref: "#/components/schemas/PortSpec"
         deniedDomains:
           type: array
+          deprecated: true
+          description: Legacy domain denylist used only when mode is `allow-all`. Use `trafficRules` instead.
           items:
             type: string
         deniedCidrs:
           type: array
+          deprecated: true
+          description: Legacy CIDR denylist used only when mode is `allow-all`. Use `trafficRules` instead.
           items:
             type: string
         deniedPorts:
           type: array
+          deprecated: true
+          description: Legacy port/protocol denylist used only when mode is `allow-all`. Use `trafficRules` instead.
           items:
             $ref: "#/components/schemas/PortSpec"
+        trafficRules:
+          type: array
+          description: |
+            Ordered egress allow/deny rules. The first matching rule wins and
+            unmatched traffic falls back to `mode`.
+          items:
+            $ref: "#/components/schemas/TrafficRule"
+        credentialRules:
+          type: array
+          description: |
+            Structured egress auth injection rules resolved by the manager runtime egress auth path.
+            These rules are orthogonal to allow/deny matching and are intended for
+            destination-scoped outbound auth behavior.
+          items:
+            $ref: "#/components/schemas/EgressCredentialRule"
+    TrafficRule:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Optional stable identifier used for merge and replacement.
+        action:
+          $ref: "#/components/schemas/TrafficRuleAction"
+        cidrs:
+          type: array
+          description: CIDR match list for the rule.
+          items:
+            type: string
+        domains:
+          type: array
+          description: Domain match list for the rule.
+          items:
+            type: string
+        ports:
+          type: array
+          description: Port/protocol constraints for the rule.
+          items:
+            $ref: "#/components/schemas/PortSpec"
+        appProtocols:
+          type: array
+          description: Classified application protocols matched by the rule.
+          items:
+            $ref: "#/components/schemas/TrafficRuleAppProtocol"
+      required: [action]
+    TrafficRuleAction:
+      type: string
+      enum: [allow, deny]
+    TrafficRuleAppProtocol:
+      type: string
+      enum: [http, tls, ssh, socks5, mqtt, redis, amqp, dns, mongodb, udp]
+    EgressCredentialRule:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Optional stable identifier used for merge and replacement.
+        credentialRef:
+          type: string
+          description: |
+            Stable binding ref to resolve when this traffic rule matches.
+            The referenced binding must be present in `credential_bindings`.
+        rollout:
+          $ref: "#/components/schemas/EgressAuthRolloutMode"
+        protocol:
+          $ref: "#/components/schemas/EgressAuthProtocol"
+        tlsMode:
+          $ref: "#/components/schemas/EgressTLSMode"
+        failurePolicy:
+          $ref: "#/components/schemas/EgressAuthFailurePolicy"
+        domains:
+          type: array
+          description: Domain match list for the rule.
+          items:
+            type: string
+        ports:
+          type: array
+          description: Port/protocol constraints for the rule.
+          items:
+            $ref: "#/components/schemas/PortSpec"
+      required: [credentialRef]
+    CredentialBinding:
+      type: object
+      properties:
+        ref:
+          type: string
+          description: Stable binding identifier matched by `credentialRef`.
+        sourceRef:
+          type: string
+          description: Region-scoped credential source reference resolved by `manager`.
+        projection:
+          $ref: "#/components/schemas/ProjectionSpec"
+        cachePolicy:
+          $ref: "#/components/schemas/CachePolicySpec"
+      required: [ref, sourceRef, projection]
+    ProjectionSpec:
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/CredentialProjectionType"
+        httpHeaders:
+          $ref: "#/components/schemas/HTTPHeadersProjection"
+        tlsClientCertificate:
+          $ref: "#/components/schemas/TLSClientCertificateProjection"
+        usernamePassword:
+          $ref: "#/components/schemas/UsernamePasswordProjection"
+      required: [type]
+    CredentialProjectionType:
+      type: string
+      enum: [http_headers, tls_client_certificate, username_password]
+    HTTPHeadersProjection:
+      type: object
+      properties:
+        headers:
+          type: array
+          description: Outbound headers synthesized from the resolved credential source.
+          items:
+            $ref: "#/components/schemas/ProjectedHeader"
+    TLSClientCertificateProjection:
+      type: object
+      description: Client certificate projection used for TLS terminate-reoriginate auth.
+    UsernamePasswordProjection:
+      type: object
+      description: Username/password projection used for SOCKS5 and MQTT auth handshakes.
+    ProjectedHeader:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Outbound header name.
+        valueTemplate:
+          type: string
+          description: Template rendered against the resolved credential source payload.
+      required: [name, valueTemplate]
+    CachePolicySpec:
+      type: object
+      properties:
+        ttl:
+          type: string
+          description: Override for the broker-side cache TTL of resolved auth material.
+    CredentialSourceMetadata:
+      type: object
+      properties:
+        name:
+          type: string
+        resolverKind:
+          $ref: "#/components/schemas/CredentialSourceResolverKind"
+        currentVersion:
+          type: integer
+          format: int64
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+      required: [name, resolverKind]
+    CredentialSourceWriteRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        resolverKind:
+          $ref: "#/components/schemas/CredentialSourceResolverKind"
+        spec:
+          $ref: "#/components/schemas/CredentialSourceWriteSpec"
+      required: [name, resolverKind, spec]
+    CredentialSourceResolverKind:
+      type: string
+      enum: [static_headers, static_tls_client_certificate, static_username_password]
+    CredentialSourceWriteSpec:
+      type: object
+      properties:
+        staticHeaders:
+          $ref: "#/components/schemas/StaticHeadersSourceSpec"
+        staticTLSClientCertificate:
+          $ref: "#/components/schemas/StaticTLSClientCertificateSourceSpec"
+        staticUsernamePassword:
+          $ref: "#/components/schemas/StaticUsernamePasswordSourceSpec"
+    StaticHeadersSourceSpec:
+      type: object
+      properties:
+        values:
+          type: object
+          writeOnly: true
+          additionalProperties:
+            type: string
+    StaticTLSClientCertificateSourceSpec:
+      type: object
+      properties:
+        certificatePem:
+          type: string
+          writeOnly: true
+        privateKeyPem:
+          type: string
+          writeOnly: true
+        caPem:
+          type: string
+          writeOnly: true
+      required: [certificatePem, privateKeyPem]
+    StaticUsernamePasswordSourceSpec:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required: [username, password]
+    EgressAuthProtocol:
+      type: string
+      enum: [http, https, grpc, tls, socks5, mqtt, redis]
+    EgressAuthRolloutMode:
+      type: string
+      enum: [enabled, disabled]
+    EgressTLSMode:
+      type: string
+      enum: [passthrough, terminate-reoriginate]
+    EgressAuthFailurePolicy:
+      type: string
+      enum: [fail-closed, fail-open]
     PortSpec:
       type: object
       properties:
@@ -4462,4 +4889,4 @@ components:
         - type: object
           properties:
             data:
-              $ref: "#/components/schemas/TplSandboxNetworkPolicy"
+              $ref: "#/components/schemas/SandboxNetworkPolicy"

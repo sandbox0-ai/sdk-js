@@ -9,6 +9,7 @@ docs/ApiKeysApi.md
 docs/ApiV1SandboxesIdFilesGet200Response.md
 docs/AuthApi.md
 docs/AuthProvider.md
+docs/CachePolicySpec.md
 docs/Capabilities.md
 docs/ChangePasswordRequest.md
 docs/ClaimRequest.md
@@ -36,6 +37,18 @@ docs/CreateRegionRequest.md
 docs/CreateSandboxVolumeRequest.md
 docs/CreateSnapshotRequest.md
 docs/CreateTeamRequest.md
+docs/CredentialBinding.md
+docs/CredentialProjectionType.md
+docs/CredentialSourceMetadata.md
+docs/CredentialSourceResolverKind.md
+docs/CredentialSourceWriteRequest.md
+docs/CredentialSourceWriteSpec.md
+docs/CredentialSourcesApi.md
+docs/EgressAuthFailurePolicy.md
+docs/EgressAuthProtocol.md
+docs/EgressAuthRolloutMode.md
+docs/EgressCredentialRule.md
+docs/EgressTLSMode.md
 docs/EnvVar.md
 docs/ErrorEnvelope.md
 docs/ExecCandidate.md
@@ -52,6 +65,7 @@ docs/FileWatchUnsubscribeRequest.md
 docs/FileWatchUnsubscribed.md
 docs/FilesApi.md
 docs/ForkVolumeRequest.md
+docs/HTTPHeadersProjection.md
 docs/HealthApi.md
 docs/Identity.md
 docs/IssueRegionTokenRequest.md
@@ -82,6 +96,8 @@ docs/PortSpec.md
 docs/PreStopHook.md
 docs/PreferredSchedulingTerm.md
 docs/ProcessType.md
+docs/ProjectedHeader.md
+docs/ProjectionSpec.md
 docs/REPLConfig.md
 docs/REPLEnvVar.md
 docs/REPLPromptConfig.md
@@ -100,6 +116,7 @@ docs/ResourceUsage.md
 docs/ResumeSandboxResponse.md
 docs/Sandbox.md
 docs/SandboxConfig.md
+docs/SandboxNetworkPolicy.md
 docs/SandboxRefreshRequest.md
 docs/SandboxResourceUsage.md
 docs/SandboxStatus.md
@@ -117,6 +134,9 @@ docs/SecurityContext.md
 docs/SignalContextRequest.md
 docs/Snapshot.md
 docs/SnapshotsApi.md
+docs/StaticHeadersSourceSpec.md
+docs/StaticTLSClientCertificateSourceSpec.md
+docs/StaticUsernamePasswordSourceSpec.md
 docs/SuccessAPIKeyListResponse.md
 docs/SuccessAPIKeyListResponseAllOfData.md
 docs/SuccessActiveTeamResponse.md
@@ -131,6 +151,8 @@ docs/SuccessContextStatsResponse.md
 docs/SuccessCreateAPIKeyResponse.md
 docs/SuccessCreatedResponse.md
 docs/SuccessCreatedResponseAllOfData.md
+docs/SuccessCredentialSourceListResponse.md
+docs/SuccessCredentialSourceResponse.md
 docs/SuccessDeletedResponse.md
 docs/SuccessDeletedResponseAllOfData.md
 docs/SuccessEnvelope.md
@@ -200,6 +222,9 @@ docs/TemplatesApi.md
 docs/TenantApi.md
 docs/Toleration.md
 docs/TplSandboxNetworkPolicy.md
+docs/TrafficRule.md
+docs/TrafficRuleAction.md
+docs/TrafficRuleAppProtocol.md
 docs/UnmountRequest.md
 docs/UpdateExposedPortsRequest.md
 docs/UpdateRegionRequest.md
@@ -216,6 +241,7 @@ package.json
 src/apis/ApiKeysApi.ts
 src/apis/AuthApi.ts
 src/apis/ContextsApi.ts
+src/apis/CredentialSourcesApi.ts
 src/apis/FilesApi.ts
 src/apis/HealthApi.ts
 src/apis/RegionsApi.ts
@@ -235,6 +261,7 @@ src/models/AddTeamMemberRequest.ts
 src/models/Affinity.ts
 src/models/ApiV1SandboxesIdFilesGet200Response.ts
 src/models/AuthProvider.ts
+src/models/CachePolicySpec.ts
 src/models/Capabilities.ts
 src/models/ChangePasswordRequest.ts
 src/models/ClaimRequest.ts
@@ -261,6 +288,17 @@ src/models/CreateRegionRequest.ts
 src/models/CreateSandboxVolumeRequest.ts
 src/models/CreateSnapshotRequest.ts
 src/models/CreateTeamRequest.ts
+src/models/CredentialBinding.ts
+src/models/CredentialProjectionType.ts
+src/models/CredentialSourceMetadata.ts
+src/models/CredentialSourceResolverKind.ts
+src/models/CredentialSourceWriteRequest.ts
+src/models/CredentialSourceWriteSpec.ts
+src/models/EgressAuthFailurePolicy.ts
+src/models/EgressAuthProtocol.ts
+src/models/EgressAuthRolloutMode.ts
+src/models/EgressCredentialRule.ts
+src/models/EgressTLSMode.ts
 src/models/EnvVar.ts
 src/models/ErrorEnvelope.ts
 src/models/ExecCandidate.ts
@@ -276,6 +314,7 @@ src/models/FileWatchSubscribed.ts
 src/models/FileWatchUnsubscribeRequest.ts
 src/models/FileWatchUnsubscribed.ts
 src/models/ForkVolumeRequest.ts
+src/models/HTTPHeadersProjection.ts
 src/models/Identity.ts
 src/models/IssueRegionTokenRequest.ts
 src/models/IssueRegionTokenResponse.ts
@@ -305,6 +344,8 @@ src/models/PortSpec.ts
 src/models/PreStopHook.ts
 src/models/PreferredSchedulingTerm.ts
 src/models/ProcessType.ts
+src/models/ProjectedHeader.ts
+src/models/ProjectionSpec.ts
 src/models/REPLConfig.ts
 src/models/REPLEnvVar.ts
 src/models/REPLPromptConfig.ts
@@ -321,6 +362,7 @@ src/models/ResourceUsage.ts
 src/models/ResumeSandboxResponse.ts
 src/models/Sandbox.ts
 src/models/SandboxConfig.ts
+src/models/SandboxNetworkPolicy.ts
 src/models/SandboxRefreshRequest.ts
 src/models/SandboxResourceUsage.ts
 src/models/SandboxStatus.ts
@@ -335,6 +377,9 @@ src/models/SandboxVolume.ts
 src/models/SecurityContext.ts
 src/models/SignalContextRequest.ts
 src/models/Snapshot.ts
+src/models/StaticHeadersSourceSpec.ts
+src/models/StaticTLSClientCertificateSourceSpec.ts
+src/models/StaticUsernamePasswordSourceSpec.ts
 src/models/SuccessAPIKeyListResponse.ts
 src/models/SuccessAPIKeyListResponseAllOfData.ts
 src/models/SuccessActiveTeamResponse.ts
@@ -349,6 +394,8 @@ src/models/SuccessContextStatsResponse.ts
 src/models/SuccessCreateAPIKeyResponse.ts
 src/models/SuccessCreatedResponse.ts
 src/models/SuccessCreatedResponseAllOfData.ts
+src/models/SuccessCredentialSourceListResponse.ts
+src/models/SuccessCredentialSourceResponse.ts
 src/models/SuccessDeletedResponse.ts
 src/models/SuccessDeletedResponseAllOfData.ts
 src/models/SuccessEnvelope.ts
@@ -415,6 +462,9 @@ src/models/TemplateCreateRequest.ts
 src/models/TemplateUpdateRequest.ts
 src/models/Toleration.ts
 src/models/TplSandboxNetworkPolicy.ts
+src/models/TrafficRule.ts
+src/models/TrafficRuleAction.ts
+src/models/TrafficRuleAppProtocol.ts
 src/models/UnmountRequest.ts
 src/models/UpdateExposedPortsRequest.ts
 src/models/UpdateRegionRequest.ts

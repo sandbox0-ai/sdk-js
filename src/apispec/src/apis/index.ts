@@ -3,6 +3,7 @@
 export * from './ApiKeysApi';
 export * from './AuthApi';
 export * from './ContextsApi';
+export * from './CredentialSourcesApi';
 export * from './FilesApi';
 export * from './HealthApi';
 export * from './RegionsApi';

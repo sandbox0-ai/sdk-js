@@ -18,13 +18,13 @@ async function main() {
     process.stdout.write(resp.outputRaw);
 
     await sandbox.updateNetworkPolicy({
-      mode: models.TplSandboxNetworkPolicyModeEnum.BlockAll,
+      mode: models.SandboxNetworkPolicyModeEnum.BlockAll,
     });
     resp = await sandbox.cmd(shell);
     process.stdout.write(resp.outputRaw);
 
     await sandbox.updateNetworkPolicy({
-      mode: models.TplSandboxNetworkPolicyModeEnum.BlockAll,
+      mode: models.SandboxNetworkPolicyModeEnum.BlockAll,
       egress: { allowedDomains: ["github.com"] },
     });
     resp = await sandbox.cmd(shell);

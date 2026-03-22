@@ -8,7 +8,6 @@ Name | Type
 ------------ | -------------
 `name` | string
 `slug` | string
-`homeRegionId` | string
 
 ## Example
 
@@ -19,7 +18,6 @@ import type { UpdateTeamRequest } from 'sandbox0'
 const example = {
   "name": null,
   "slug": null,
-  "homeRegionId": null,
 } satisfies UpdateTeamRequest
 
 console.log(example)

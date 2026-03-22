@@ -435,6 +435,7 @@ export class TeamsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Team home region is immutable after creation and cannot be changed through this endpoint.
      * Update a team
      */
     async teamsIdPutRaw(requestParameters: TeamsIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessTeamResponse>> {
@@ -482,6 +483,7 @@ export class TeamsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Team home region is immutable after creation and cannot be changed through this endpoint.
      * Update a team
      */
     async teamsIdPut(requestParameters: TeamsIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessTeamResponse> {

@@ -522,6 +522,8 @@ example().catch(console.error);
 
 Update a team
 
+Team home region is immutable after creation and cannot be changed through this endpoint.
+
 ### Example
 
 ```ts
@@ -587,6 +589,7 @@ example().catch(console.error);
 | **400** | Invalid request |  -  |
 | **403** | Forbidden |  -  |
 | **404** | Team not found |  -  |
+| **409** | Team update conflicts with an immutable field or existing slug |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

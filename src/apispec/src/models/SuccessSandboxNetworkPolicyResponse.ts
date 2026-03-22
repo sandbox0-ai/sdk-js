@@ -13,13 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
-import type { TplSandboxNetworkPolicy } from './TplSandboxNetworkPolicy';
+import type { SandboxNetworkPolicy } from './SandboxNetworkPolicy';
 import {
-    TplSandboxNetworkPolicyFromJSON,
-    TplSandboxNetworkPolicyFromJSONTyped,
-    TplSandboxNetworkPolicyToJSON,
-    TplSandboxNetworkPolicyToJSONTyped,
-} from './TplSandboxNetworkPolicy';
+    SandboxNetworkPolicyFromJSON,
+    SandboxNetworkPolicyFromJSONTyped,
+    SandboxNetworkPolicyToJSON,
+    SandboxNetworkPolicyToJSONTyped,
+} from './SandboxNetworkPolicy';
 
 /**
  * 
@@ -35,10 +35,10 @@ export interface SuccessSandboxNetworkPolicyResponse {
     success: boolean;
     /**
      * 
-     * @type {TplSandboxNetworkPolicy}
+     * @type {SandboxNetworkPolicy}
      * @memberof SuccessSandboxNetworkPolicyResponse
      */
-    data?: TplSandboxNetworkPolicy;
+    data?: SandboxNetworkPolicy;
 }
 
 /**
@@ -60,7 +60,7 @@ export function SuccessSandboxNetworkPolicyResponseFromJSONTyped(json: any, igno
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : TplSandboxNetworkPolicyFromJSON(json['data']),
+        'data': json['data'] == null ? undefined : SandboxNetworkPolicyFromJSON(json['data']),
     };
 }
 
@@ -76,7 +76,7 @@ export function SuccessSandboxNetworkPolicyResponseToJSONTyped(value?: SuccessSa
     return {
         
         'success': value['success'],
-        'data': TplSandboxNetworkPolicyToJSON(value['data']),
+        'data': SandboxNetworkPolicyToJSON(value['data']),
     };
 }
 

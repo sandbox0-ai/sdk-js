@@ -37,6 +37,13 @@ export interface AuthProvider {
      * @memberof AuthProvider
      */
     type: string;
+    /**
+     * When set, browser login for this provider should redirect to this external URL instead of initiating the OIDC flow directly. Used for deployments that host their own authorization portal.
+     * 
+     * @type {string}
+     * @memberof AuthProvider
+     */
+    externalAuthPortalUrl?: string;
 }
 
 /**
@@ -62,6 +69,7 @@ export function AuthProviderFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'id': json['id'],
         'name': json['name'],
         'type': json['type'],
+        'externalAuthPortalUrl': json['external_auth_portal_url'] == null ? undefined : json['external_auth_portal_url'],
     };
 }
 
@@ -79,6 +87,7 @@ export function AuthProviderToJSONTyped(value?: AuthProvider | null, ignoreDiscr
         'id': value['id'],
         'name': value['name'],
         'type': value['type'],
+        'external_auth_portal_url': value['externalAuthPortalUrl'],
     };
 }
 

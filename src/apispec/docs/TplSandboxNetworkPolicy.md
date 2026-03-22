@@ -1,6 +1,7 @@
 
 # TplSandboxNetworkPolicy
 
+Template-level outbound network policy. `allow-all` permits traffic by default and applies `denied*` rules as subtractive filters. `block-all` denies traffic by default and applies `allowed*` rules as additive exceptions. 
 
 ## Properties
 

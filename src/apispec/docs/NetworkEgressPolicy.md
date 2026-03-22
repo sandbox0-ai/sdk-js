@@ -1,6 +1,7 @@
 
 # NetworkEgressPolicy
 
+Egress rule set interpreted by the selected network mode. In `allow-all`, only `denied*` fields are enforced. In `block-all`, only `allowed*` fields are enforced. `trafficRules` is a rule-based alternative and must not be combined with the legacy `allowed*`/`denied*` fields. 
 
 ## Properties
 
@@ -12,6 +13,8 @@ Name | Type
 `deniedDomains` | Array&lt;string&gt;
 `deniedCidrs` | Array&lt;string&gt;
 `deniedPorts` | [Array&lt;PortSpec&gt;](PortSpec.md)
+`trafficRules` | [Array&lt;TrafficRule&gt;](TrafficRule.md)
+`credentialRules` | [Array&lt;EgressCredentialRule&gt;](EgressCredentialRule.md)
 
 ## Example
 
@@ -26,6 +29,8 @@ const example = {
   "deniedDomains": null,
   "deniedCidrs": null,
   "deniedPorts": null,
+  "trafficRules": null,
+  "credentialRules": null,
 } satisfies NetworkEgressPolicy
 
 console.log(example)

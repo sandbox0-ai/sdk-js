@@ -72,6 +72,11 @@ All URIs are relative to *https://api.sandbox0.ai*
 *ContextsApi* | [**apiV1SandboxesIdContextsCtxIdWsGet**](docs/ContextsApi.md#apiv1sandboxesidcontextsctxidwsget) | **GET** /api/v1/sandboxes/{id}/contexts/{ctx_id}/ws | Context WebSocket (I/O)
 *ContextsApi* | [**apiV1SandboxesIdContextsGet**](docs/ContextsApi.md#apiv1sandboxesidcontextsget) | **GET** /api/v1/sandboxes/{id}/contexts | List contexts
 *ContextsApi* | [**apiV1SandboxesIdContextsPost**](docs/ContextsApi.md#apiv1sandboxesidcontextspost) | **POST** /api/v1/sandboxes/{id}/contexts | Create a context
+*CredentialSourcesApi* | [**apiV1CredentialSourcesGet**](docs/CredentialSourcesApi.md#apiv1credentialsourcesget) | **GET** /api/v1/credential-sources | List credential sources
+*CredentialSourcesApi* | [**apiV1CredentialSourcesNameDelete**](docs/CredentialSourcesApi.md#apiv1credentialsourcesnamedelete) | **DELETE** /api/v1/credential-sources/{name} | Delete credential source
+*CredentialSourcesApi* | [**apiV1CredentialSourcesNameGet**](docs/CredentialSourcesApi.md#apiv1credentialsourcesnameget) | **GET** /api/v1/credential-sources/{name} | Get credential source
+*CredentialSourcesApi* | [**apiV1CredentialSourcesNamePut**](docs/CredentialSourcesApi.md#apiv1credentialsourcesnameput) | **PUT** /api/v1/credential-sources/{name} | Update credential source
+*CredentialSourcesApi* | [**apiV1CredentialSourcesPost**](docs/CredentialSourcesApi.md#apiv1credentialsourcespost) | **POST** /api/v1/credential-sources | Create credential source
 *FilesApi* | [**apiV1SandboxesIdFilesDelete**](docs/FilesApi.md#apiv1sandboxesidfilesdelete) | **DELETE** /api/v1/sandboxes/{id}/files | Delete file or directory
 *FilesApi* | [**apiV1SandboxesIdFilesGet**](docs/FilesApi.md#apiv1sandboxesidfilesget) | **GET** /api/v1/sandboxes/{id}/files | Read file content
 *FilesApi* | [**apiV1SandboxesIdFilesListGet**](docs/FilesApi.md#apiv1sandboxesidfileslistget) | **GET** /api/v1/sandboxes/{id}/files/list | List directory entries
@@ -146,6 +151,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [Affinity](docs/Affinity.md)
 - [ApiV1SandboxesIdFilesGet200Response](docs/ApiV1SandboxesIdFilesGet200Response.md)
 - [AuthProvider](docs/AuthProvider.md)
+- [CachePolicySpec](docs/CachePolicySpec.md)
 - [Capabilities](docs/Capabilities.md)
 - [ChangePasswordRequest](docs/ChangePasswordRequest.md)
 - [ClaimRequest](docs/ClaimRequest.md)
@@ -172,6 +178,17 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [CreateSandboxVolumeRequest](docs/CreateSandboxVolumeRequest.md)
 - [CreateSnapshotRequest](docs/CreateSnapshotRequest.md)
 - [CreateTeamRequest](docs/CreateTeamRequest.md)
+- [CredentialBinding](docs/CredentialBinding.md)
+- [CredentialProjectionType](docs/CredentialProjectionType.md)
+- [CredentialSourceMetadata](docs/CredentialSourceMetadata.md)
+- [CredentialSourceResolverKind](docs/CredentialSourceResolverKind.md)
+- [CredentialSourceWriteRequest](docs/CredentialSourceWriteRequest.md)
+- [CredentialSourceWriteSpec](docs/CredentialSourceWriteSpec.md)
+- [EgressAuthFailurePolicy](docs/EgressAuthFailurePolicy.md)
+- [EgressAuthProtocol](docs/EgressAuthProtocol.md)
+- [EgressAuthRolloutMode](docs/EgressAuthRolloutMode.md)
+- [EgressCredentialRule](docs/EgressCredentialRule.md)
+- [EgressTLSMode](docs/EgressTLSMode.md)
 - [EnvVar](docs/EnvVar.md)
 - [ErrorEnvelope](docs/ErrorEnvelope.md)
 - [ExecCandidate](docs/ExecCandidate.md)
@@ -187,6 +204,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [FileWatchUnsubscribeRequest](docs/FileWatchUnsubscribeRequest.md)
 - [FileWatchUnsubscribed](docs/FileWatchUnsubscribed.md)
 - [ForkVolumeRequest](docs/ForkVolumeRequest.md)
+- [HTTPHeadersProjection](docs/HTTPHeadersProjection.md)
 - [Identity](docs/Identity.md)
 - [IssueRegionTokenRequest](docs/IssueRegionTokenRequest.md)
 - [IssueRegionTokenResponse](docs/IssueRegionTokenResponse.md)
@@ -216,6 +234,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [PreStopHook](docs/PreStopHook.md)
 - [PreferredSchedulingTerm](docs/PreferredSchedulingTerm.md)
 - [ProcessType](docs/ProcessType.md)
+- [ProjectedHeader](docs/ProjectedHeader.md)
+- [ProjectionSpec](docs/ProjectionSpec.md)
 - [REPLConfig](docs/REPLConfig.md)
 - [REPLEnvVar](docs/REPLEnvVar.md)
 - [REPLPromptConfig](docs/REPLPromptConfig.md)
@@ -232,6 +252,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ResumeSandboxResponse](docs/ResumeSandboxResponse.md)
 - [Sandbox](docs/Sandbox.md)
 - [SandboxConfig](docs/SandboxConfig.md)
+- [SandboxNetworkPolicy](docs/SandboxNetworkPolicy.md)
 - [SandboxRefreshRequest](docs/SandboxRefreshRequest.md)
 - [SandboxResourceUsage](docs/SandboxResourceUsage.md)
 - [SandboxStatus](docs/SandboxStatus.md)
@@ -246,6 +267,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SecurityContext](docs/SecurityContext.md)
 - [SignalContextRequest](docs/SignalContextRequest.md)
 - [Snapshot](docs/Snapshot.md)
+- [StaticHeadersSourceSpec](docs/StaticHeadersSourceSpec.md)
+- [StaticTLSClientCertificateSourceSpec](docs/StaticTLSClientCertificateSourceSpec.md)
+- [StaticUsernamePasswordSourceSpec](docs/StaticUsernamePasswordSourceSpec.md)
 - [SuccessAPIKeyListResponse](docs/SuccessAPIKeyListResponse.md)
 - [SuccessAPIKeyListResponseAllOfData](docs/SuccessAPIKeyListResponseAllOfData.md)
 - [SuccessActiveTeamResponse](docs/SuccessActiveTeamResponse.md)
@@ -260,6 +284,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessCreateAPIKeyResponse](docs/SuccessCreateAPIKeyResponse.md)
 - [SuccessCreatedResponse](docs/SuccessCreatedResponse.md)
 - [SuccessCreatedResponseAllOfData](docs/SuccessCreatedResponseAllOfData.md)
+- [SuccessCredentialSourceListResponse](docs/SuccessCredentialSourceListResponse.md)
+- [SuccessCredentialSourceResponse](docs/SuccessCredentialSourceResponse.md)
 - [SuccessDeletedResponse](docs/SuccessDeletedResponse.md)
 - [SuccessDeletedResponseAllOfData](docs/SuccessDeletedResponseAllOfData.md)
 - [SuccessEnvelope](docs/SuccessEnvelope.md)
@@ -326,6 +352,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [TemplateUpdateRequest](docs/TemplateUpdateRequest.md)
 - [Toleration](docs/Toleration.md)
 - [TplSandboxNetworkPolicy](docs/TplSandboxNetworkPolicy.md)
+- [TrafficRule](docs/TrafficRule.md)
+- [TrafficRuleAction](docs/TrafficRuleAction.md)
+- [TrafficRuleAppProtocol](docs/TrafficRuleAppProtocol.md)
 - [UnmountRequest](docs/UnmountRequest.md)
 - [UpdateExposedPortsRequest](docs/UpdateExposedPortsRequest.md)
 - [UpdateRegionRequest](docs/UpdateRegionRequest.md)

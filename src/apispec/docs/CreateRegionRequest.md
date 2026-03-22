@@ -8,7 +8,7 @@ Name | Type
 ------------ | -------------
 `id` | string
 `displayName` | string
-`edgeGatewayUrl` | string
+`regionalGatewayUrl` | string
 `meteringExportUrl` | string
 `enabled` | boolean
 
@@ -21,7 +21,7 @@ import type { CreateRegionRequest } from 'sandbox0'
 const example = {
   "id": null,
   "displayName": null,
-  "edgeGatewayUrl": null,
+  "regionalGatewayUrl": null,
   "meteringExportUrl": null,
   "enabled": null,
 } satisfies CreateRegionRequest

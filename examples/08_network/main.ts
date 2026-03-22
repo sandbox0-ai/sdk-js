@@ -5,7 +5,7 @@ async function main() {
   const client = createClient();
   const sandbox = await client.sandboxes.claim("default", {
     hardTtl: 600,
-    network: { mode: models.TplSandboxNetworkPolicyModeEnum.AllowAll },
+    network: { mode: models.SandboxNetworkPolicyModeEnum.AllowAll },
   });
 
   try {

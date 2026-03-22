@@ -4,11 +4,11 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**regionsGet**](RegionsApi.md#regionsget) | **GET** /regions | List regions in the global directory |
-| [**regionsIdDelete**](RegionsApi.md#regionsiddelete) | **DELETE** /regions/{id} | Delete a region from the global directory |
-| [**regionsIdGet**](RegionsApi.md#regionsidget) | **GET** /regions/{id} | Get a region from the global directory |
-| [**regionsIdPut**](RegionsApi.md#regionsidput) | **PUT** /regions/{id} | Update a region in the global directory |
-| [**regionsPost**](RegionsApi.md#regionspost) | **POST** /regions | Create a region in the global directory |
+| [**regionsGet**](RegionsApi.md#regionsget) | **GET** /regions | List regions in the global gateway |
+| [**regionsIdDelete**](RegionsApi.md#regionsiddelete) | **DELETE** /regions/{id} | Delete a region from the global gateway |
+| [**regionsIdGet**](RegionsApi.md#regionsidget) | **GET** /regions/{id} | Get a region from the global gateway |
+| [**regionsIdPut**](RegionsApi.md#regionsidput) | **PUT** /regions/{id} | Update a region in the global gateway |
+| [**regionsPost**](RegionsApi.md#regionspost) | **POST** /regions | Create a region in the global gateway |
 
 
 
@@ -16,7 +16,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 > SuccessRegionListResponse regionsGet()
 
-List regions in the global directory
+List regions in the global gateway
 
 ### Example
 
@@ -79,7 +79,7 @@ This endpoint does not need any parameter.
 
 > SuccessMessageResponse regionsIdDelete(id)
 
-Delete a region from the global directory
+Delete a region from the global gateway
 
 ### Example
 
@@ -152,7 +152,7 @@ example().catch(console.error);
 
 > SuccessRegionResponse regionsIdGet(id)
 
-Get a region from the global directory
+Get a region from the global gateway
 
 ### Example
 
@@ -224,7 +224,7 @@ example().catch(console.error);
 
 > SuccessRegionResponse regionsIdPut(id, updateRegionRequest)
 
-Update a region in the global directory
+Update a region in the global gateway
 
 ### Example
 
@@ -300,7 +300,7 @@ example().catch(console.error);
 
 > SuccessRegionResponse regionsPost(createRegionRequest)
 
-Create a region in the global directory
+Create a region in the global gateway
 
 ### Example
 

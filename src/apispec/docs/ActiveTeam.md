@@ -11,7 +11,7 @@ Name | Type
 `teamRole` | string
 `homeRegionId` | string
 `defaultTeam` | boolean
-`edgeGatewayUrl` | string
+`regionalGatewayUrl` | string
 
 ## Example
 
@@ -25,7 +25,7 @@ const example = {
   "teamRole": null,
   "homeRegionId": null,
   "defaultTeam": null,
-  "edgeGatewayUrl": null,
+  "regionalGatewayUrl": null,
 } satisfies ActiveTeam
 
 console.log(example)

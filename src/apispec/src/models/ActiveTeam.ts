@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * Sandbox0 API
- * Public HTTP APIs exposed by Sandbox0 regional gateways and the global directory.
+ * Public HTTP APIs exposed by Sandbox0 regional gateways and the global gateway.
  *
  * The version of the OpenAPI document: 0.1.0
  * 
@@ -54,7 +54,7 @@ export interface ActiveTeam {
      * @type {string}
      * @memberof ActiveTeam
      */
-    edgeGatewayUrl?: string | null;
+    regionalGatewayUrl?: string | null;
 }
 
 /**
@@ -82,7 +82,7 @@ export function ActiveTeamFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'teamRole': json['team_role'] == null ? undefined : json['team_role'],
         'homeRegionId': json['home_region_id'],
         'defaultTeam': json['default_team'] == null ? undefined : json['default_team'],
-        'edgeGatewayUrl': json['edge_gateway_url'] == null ? undefined : json['edge_gateway_url'],
+        'regionalGatewayUrl': json['regional_gateway_url'] == null ? undefined : json['regional_gateway_url'],
     };
 }
 
@@ -102,7 +102,7 @@ export function ActiveTeamToJSONTyped(value?: ActiveTeam | null, ignoreDiscrimin
         'team_role': value['teamRole'],
         'home_region_id': value['homeRegionId'],
         'default_team': value['defaultTeam'],
-        'edge_gateway_url': value['edgeGatewayUrl'],
+        'regional_gateway_url': value['regionalGatewayUrl'],
     };
 }
 

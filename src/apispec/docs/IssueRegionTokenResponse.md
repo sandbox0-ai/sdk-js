@@ -7,7 +7,7 @@
 Name | Type
 ------------ | -------------
 `regionId` | string
-`edgeGatewayUrl` | string
+`regionalGatewayUrl` | string
 `token` | string
 `expiresAt` | number
 
@@ -19,7 +19,7 @@ import type { IssueRegionTokenResponse } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "regionId": null,
-  "edgeGatewayUrl": null,
+  "regionalGatewayUrl": null,
   "token": null,
   "expiresAt": null,
 } satisfies IssueRegionTokenResponse

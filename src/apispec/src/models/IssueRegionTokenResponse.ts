@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * Sandbox0 API
- * Public HTTP APIs exposed by Sandbox0 regional gateways and the global directory.
+ * Public HTTP APIs exposed by Sandbox0 regional gateways and the global gateway.
  *
  * The version of the OpenAPI document: 0.1.0
  * 
@@ -30,7 +30,7 @@ export interface IssueRegionTokenResponse {
      * @type {string}
      * @memberof IssueRegionTokenResponse
      */
-    edgeGatewayUrl?: string | null;
+    regionalGatewayUrl?: string | null;
     /**
      * 
      * @type {string}
@@ -66,7 +66,7 @@ export function IssueRegionTokenResponseFromJSONTyped(json: any, ignoreDiscrimin
     return {
         
         'regionId': json['region_id'],
-        'edgeGatewayUrl': json['edge_gateway_url'] == null ? undefined : json['edge_gateway_url'],
+        'regionalGatewayUrl': json['regional_gateway_url'] == null ? undefined : json['regional_gateway_url'],
         'token': json['token'],
         'expiresAt': json['expires_at'],
     };
@@ -84,7 +84,7 @@ export function IssueRegionTokenResponseToJSONTyped(value?: IssueRegionTokenResp
     return {
         
         'region_id': value['regionId'],
-        'edge_gateway_url': value['edgeGatewayUrl'],
+        'regional_gateway_url': value['regionalGatewayUrl'],
         'token': value['token'],
         'expires_at': value['expiresAt'],
     };

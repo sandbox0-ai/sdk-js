@@ -7,7 +7,7 @@
 Name | Type
 ------------ | -------------
 `displayName` | string
-`edgeGatewayUrl` | string
+`regionalGatewayUrl` | string
 `meteringExportUrl` | string
 `enabled` | boolean
 
@@ -19,7 +19,7 @@ import type { UpdateRegionRequest } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "displayName": null,
-  "edgeGatewayUrl": null,
+  "regionalGatewayUrl": null,
   "meteringExportUrl": null,
   "enabled": null,
 } satisfies UpdateRegionRequest

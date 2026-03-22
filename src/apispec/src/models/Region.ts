@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * Sandbox0 API
- * Public HTTP APIs exposed by Sandbox0 regional gateways and the global directory.
+ * Public HTTP APIs exposed by Sandbox0 regional gateways and the global gateway.
  *
  * The version of the OpenAPI document: 0.1.0
  * 
@@ -36,7 +36,7 @@ export interface Region {
      * @type {string}
      * @memberof Region
      */
-    edgeGatewayUrl: string;
+    regionalGatewayUrl: string;
     /**
      * 
      * @type {string}
@@ -56,7 +56,7 @@ export interface Region {
  */
 export function instanceOfRegion(value: object): value is Region {
     if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('edgeGatewayUrl' in value) || value['edgeGatewayUrl'] === undefined) return false;
+    if (!('regionalGatewayUrl' in value) || value['regionalGatewayUrl'] === undefined) return false;
     if (!('enabled' in value) || value['enabled'] === undefined) return false;
     return true;
 }
@@ -73,7 +73,7 @@ export function RegionFromJSONTyped(json: any, ignoreDiscriminator: boolean): Re
         
         'id': json['id'],
         'displayName': json['display_name'] == null ? undefined : json['display_name'],
-        'edgeGatewayUrl': json['edge_gateway_url'],
+        'regionalGatewayUrl': json['regional_gateway_url'],
         'meteringExportUrl': json['metering_export_url'] == null ? undefined : json['metering_export_url'],
         'enabled': json['enabled'],
     };
@@ -92,7 +92,7 @@ export function RegionToJSONTyped(value?: Region | null, ignoreDiscriminator: bo
         
         'id': value['id'],
         'display_name': value['displayName'],
-        'edge_gateway_url': value['edgeGatewayUrl'],
+        'regional_gateway_url': value['regionalGatewayUrl'],
         'metering_export_url': value['meteringExportUrl'],
         'enabled': value['enabled'],
     };

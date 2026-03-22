@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * Sandbox0 API
- * Public HTTP APIs exposed by Sandbox0 regional gateways and the global directory.
+ * Public HTTP APIs exposed by Sandbox0 regional gateways and the global gateway.
  *
  * The version of the OpenAPI document: 0.1.0
  * 
@@ -60,7 +60,7 @@ export interface RegionsPostRequest {
 export class RegionsApi extends runtime.BaseAPI {
 
     /**
-     * List regions in the global directory
+     * List regions in the global gateway
      */
     async regionsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessRegionListResponse>> {
         const queryParameters: any = {};
@@ -89,7 +89,7 @@ export class RegionsApi extends runtime.BaseAPI {
     }
 
     /**
-     * List regions in the global directory
+     * List regions in the global gateway
      */
     async regionsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessRegionListResponse> {
         const response = await this.regionsGetRaw(initOverrides);
@@ -97,7 +97,7 @@ export class RegionsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Delete a region from the global directory
+     * Delete a region from the global gateway
      */
     async regionsIdDeleteRaw(requestParameters: RegionsIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessMessageResponse>> {
         if (requestParameters['id'] == null) {
@@ -134,7 +134,7 @@ export class RegionsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Delete a region from the global directory
+     * Delete a region from the global gateway
      */
     async regionsIdDelete(requestParameters: RegionsIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessMessageResponse> {
         const response = await this.regionsIdDeleteRaw(requestParameters, initOverrides);
@@ -142,7 +142,7 @@ export class RegionsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get a region from the global directory
+     * Get a region from the global gateway
      */
     async regionsIdGetRaw(requestParameters: RegionsIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessRegionResponse>> {
         if (requestParameters['id'] == null) {
@@ -179,7 +179,7 @@ export class RegionsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get a region from the global directory
+     * Get a region from the global gateway
      */
     async regionsIdGet(requestParameters: RegionsIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessRegionResponse> {
         const response = await this.regionsIdGetRaw(requestParameters, initOverrides);
@@ -187,7 +187,7 @@ export class RegionsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Update a region in the global directory
+     * Update a region in the global gateway
      */
     async regionsIdPutRaw(requestParameters: RegionsIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessRegionResponse>> {
         if (requestParameters['id'] == null) {
@@ -234,7 +234,7 @@ export class RegionsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Update a region in the global directory
+     * Update a region in the global gateway
      */
     async regionsIdPut(requestParameters: RegionsIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessRegionResponse> {
         const response = await this.regionsIdPutRaw(requestParameters, initOverrides);
@@ -242,7 +242,7 @@ export class RegionsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create a region in the global directory
+     * Create a region in the global gateway
      */
     async regionsPostRaw(requestParameters: RegionsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessRegionResponse>> {
         if (requestParameters['createRegionRequest'] == null) {
@@ -281,7 +281,7 @@ export class RegionsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create a region in the global directory
+     * Create a region in the global gateway
      */
     async regionsPost(requestParameters: RegionsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessRegionResponse> {
         const response = await this.regionsPostRaw(requestParameters, initOverrides);

@@ -1,6 +1,6 @@
 {
   "name": "sandbox0",
-  "version": "0.1.0",
+  "version": "0.1.8",
   "description": "Sandbox0 JavaScript/TypeScript SDK",
   "license": "Apache-2.0",
   "author": "Sandbox0 Team",
@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && node ./scripts/fix-esm-imports.mjs",
     "lint": "tsc -p tsconfig.json --noEmit",
     "lint:examples": "tsc -p tsconfig.examples.json --noEmit",
     "lint:e2e": "tsc -p tsconfig.e2e.json --noEmit",

@@ -1,30 +1,28 @@
 
-# LoginResponse
+# RegionalSession
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`accessToken` | string
-`refreshToken` | string
+`regionId` | string
+`regionalGatewayUrl` | string
+`token` | string
 `expiresAt` | number
-`user` | [User](User.md)
-`regionalSession` | [RegionalSession](RegionalSession.md)
 
 ## Example
 
 ```typescript
-import type { LoginResponse } from 'sandbox0'
+import type { RegionalSession } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "accessToken": null,
-  "refreshToken": null,
+  "regionId": null,
+  "regionalGatewayUrl": null,
+  "token": null,
   "expiresAt": null,
-  "user": null,
-  "regionalSession": null,
-} satisfies LoginResponse
+} satisfies RegionalSession
 
 console.log(example)
 
@@ -33,7 +31,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as LoginResponse
+const exampleParsed = JSON.parse(exampleJSON) as RegionalSession
 console.log(exampleParsed)
 ```
 

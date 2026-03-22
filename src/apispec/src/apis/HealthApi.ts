@@ -16,11 +16,14 @@
 import * as runtime from '../runtime';
 import type {
   ErrorEnvelope,
+  SuccessGatewayMetadataResponse,
   SuccessHealthResponse,
 } from '../models/index';
 import {
     ErrorEnvelopeFromJSON,
     ErrorEnvelopeToJSON,
+    SuccessGatewayMetadataResponseFromJSON,
+    SuccessGatewayMetadataResponseToJSON,
     SuccessHealthResponseFromJSON,
     SuccessHealthResponseToJSON,
 } from '../models/index';
@@ -56,6 +59,35 @@ export class HealthApi extends runtime.BaseAPI {
      */
     async healthzGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessHealthResponse> {
         const response = await this.healthzGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Gateway metadata
+     */
+    async metadataGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessGatewayMetadataResponse>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/metadata`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessGatewayMetadataResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Gateway metadata
+     */
+    async metadataGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessGatewayMetadataResponse> {
+        const response = await this.metadataGetRaw(initOverrides);
         return await response.value();
     }
 

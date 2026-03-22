@@ -85,6 +85,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *FilesApi* | [**apiV1SandboxesIdFilesStatGet**](docs/FilesApi.md#apiv1sandboxesidfilesstatget) | **GET** /api/v1/sandboxes/{id}/files/stat | Stat a file
 *FilesApi* | [**apiV1SandboxesIdFilesWatchGet**](docs/FilesApi.md#apiv1sandboxesidfileswatchget) | **GET** /api/v1/sandboxes/{id}/files/watch | File watch WebSocket
 *HealthApi* | [**healthzGet**](docs/HealthApi.md#healthzget) | **GET** /healthz | Health check
+*HealthApi* | [**metadataGet**](docs/HealthApi.md#metadataget) | **GET** /metadata | Gateway metadata
 *HealthApi* | [**metricsGet**](docs/HealthApi.md#metricsget) | **GET** /metrics | Prometheus metrics
 *HealthApi* | [**readyzGet**](docs/HealthApi.md#readyzget) | **GET** /readyz | Readiness check
 *RegionsApi* | [**regionsGet**](docs/RegionsApi.md#regionsget) | **GET** /regions | List regions in the global gateway
@@ -204,6 +205,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [FileWatchUnsubscribeRequest](docs/FileWatchUnsubscribeRequest.md)
 - [FileWatchUnsubscribed](docs/FileWatchUnsubscribed.md)
 - [ForkVolumeRequest](docs/ForkVolumeRequest.md)
+- [GatewayMetadata](docs/GatewayMetadata.md)
 - [HTTPHeadersProjection](docs/HTTPHeadersProjection.md)
 - [Identity](docs/Identity.md)
 - [IssueRegionTokenRequest](docs/IssueRegionTokenRequest.md)
@@ -244,6 +246,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [RefreshRequest](docs/RefreshRequest.md)
 - [RefreshResponse](docs/RefreshResponse.md)
 - [Region](docs/Region.md)
+- [RegionalSession](docs/RegionalSession.md)
 - [RegisterRequest](docs/RegisterRequest.md)
 - [RegistryCredentials](docs/RegistryCredentials.md)
 - [ResizeContextRequest](docs/ResizeContextRequest.md)
@@ -296,6 +299,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessFileReadResponseAllOfData](docs/SuccessFileReadResponseAllOfData.md)
 - [SuccessFileReadResponseAllOfDataOneOf](docs/SuccessFileReadResponseAllOfDataOneOf.md)
 - [SuccessFileStatResponse](docs/SuccessFileStatResponse.md)
+- [SuccessGatewayMetadataResponse](docs/SuccessGatewayMetadataResponse.md)
 - [SuccessHealthResponse](docs/SuccessHealthResponse.md)
 - [SuccessHealthResponseAllOfData](docs/SuccessHealthResponseAllOfData.md)
 - [SuccessIdentityListResponse](docs/SuccessIdentityListResponse.md)

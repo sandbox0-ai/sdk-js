@@ -5,6 +5,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
 | [**healthzGet**](HealthApi.md#healthzget) | **GET** /healthz | Health check |
+| [**metadataGet**](HealthApi.md#metadataget) | **GET** /metadata | Gateway metadata |
 | [**metricsGet**](HealthApi.md#metricsget) | **GET** /metrics | Prometheus metrics |
 | [**readyzGet**](HealthApi.md#readyzget) | **GET** /readyz | Readiness check |
 
@@ -64,6 +65,63 @@ No authorization required
 |-------------|-------------|------------------|
 | **200** | Service is healthy |  -  |
 | **500** | Unhealthy |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## metadataGet
+
+> SuccessGatewayMetadataResponse metadataGet()
+
+Gateway metadata
+
+### Example
+
+```ts
+import {
+  Configuration,
+  HealthApi,
+} from 'sandbox0';
+import type { MetadataGetRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const api = new HealthApi();
+
+  try {
+    const data = await api.metadataGet();
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**SuccessGatewayMetadataResponse**](SuccessGatewayMetadataResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Gateway metadata |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

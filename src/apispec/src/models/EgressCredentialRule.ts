@@ -62,7 +62,9 @@ export interface EgressCredentialRule {
      */
     name?: string;
     /**
-     * Broker-managed credential binding reference to resolve for matching traffic.
+     * Stable binding ref to resolve when this traffic rule matches.
+     * The referenced binding must be present in `credential_bindings`.
+     * 
      * @type {string}
      * @memberof EgressCredentialRule
      */

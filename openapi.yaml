@@ -2611,6 +2611,12 @@ components:
           type: string
         type:
           type: string
+        external_auth_portal_url:
+          type: string
+          description: >
+            When set, browser login for this provider should redirect to this external URL
+            instead of initiating the OIDC flow directly. Used for deployments that host
+            their own authorization portal.
       required: [id, name, type]
     SuccessAuthProvidersResponse:
       allOf:
@@ -3113,11 +3119,12 @@ components:
           type: integer
           format: int32
         network:
-          $ref: "#/components/schemas/SandboxNetworkPolicy"
+          $ref: "#/components/schemas/TplSandboxNetworkPolicy"
         credential_bindings:
           type: array
-          deprecated: true
-          description: Legacy sibling field. Prefer `network.credentialBindings`.
+          description: |
+            Sandbox-scoped credential bindings that can be referenced by egress
+            credential rules through `credentialRef`.
           items:
             $ref: "#/components/schemas/CredentialBinding"
         webhook:
@@ -3276,11 +3283,12 @@ components:
           type: integer
           format: int32
         network:
-          $ref: "#/components/schemas/SandboxNetworkPolicy"
+          $ref: "#/components/schemas/TplSandboxNetworkPolicy"
         credential_bindings:
           type: array
-          deprecated: true
-          description: Legacy sibling field. Prefer `network.credentialBindings`.
+          description: |
+            Runtime-updatable credential bindings referenced by egress
+            credential rules through `credentialRef`.
           items:
             $ref: "#/components/schemas/CredentialBinding"
         auto_resume:
@@ -4290,11 +4298,9 @@ components:
         pod:
           $ref: "#/components/schemas/PodSpecOverride"
         network:
-          $ref: "#/components/schemas/SandboxNetworkPolicy"
+          $ref: "#/components/schemas/TplSandboxNetworkPolicy"
         credentialBindings:
           type: array
-          deprecated: true
-          description: Legacy sibling field. Prefer `network.credentialBindings`.
           items:
             $ref: "#/components/schemas/CredentialBinding"
         pool:
@@ -4639,7 +4645,9 @@ components:
           description: Optional stable identifier used for merge and replacement.
         credentialRef:
           type: string
-          description: Broker-managed credential binding reference to resolve for matching traffic.
+          description: |
+            Stable binding ref to resolve when this traffic rule matches.
+            The referenced binding must be present in `credential_bindings`.
         rollout:
           $ref: "#/components/schemas/EgressAuthRolloutMode"
         protocol:
@@ -4664,7 +4672,7 @@ components:
       properties:
         ref:
           type: string
-          description: Stable credential binding reference matched by `credentialRef`.
+          description: Stable binding identifier matched by `credentialRef`.
         sourceRef:
           type: string
           description: Region-scoped credential source reference resolved by `manager`.
@@ -4693,6 +4701,7 @@ components:
       properties:
         headers:
           type: array
+          description: Outbound headers synthesized from the resolved credential source.
           items:
             $ref: "#/components/schemas/ProjectedHeader"
     TLSClientCertificateProjection:
@@ -4706,14 +4715,17 @@ components:
       properties:
         name:
           type: string
+          description: Outbound header name.
         valueTemplate:
           type: string
+          description: Template rendered against the resolved credential source payload.
       required: [name, valueTemplate]
     CachePolicySpec:
       type: object
       properties:
         ttl:
           type: string
+          description: Override for the broker-side cache TTL of resolved auth material.
     CredentialSourceMetadata:
       type: object
       properties:

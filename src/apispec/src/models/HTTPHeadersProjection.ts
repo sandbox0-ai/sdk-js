@@ -28,7 +28,7 @@ import {
  */
 export interface HTTPHeadersProjection {
     /**
-     * 
+     * Outbound headers synthesized from the resolved credential source.
      * @type {Array<ProjectedHeader>}
      * @memberof HTTPHeadersProjection
      */

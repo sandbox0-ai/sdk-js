@@ -9,7 +9,7 @@ Name | Type
 `envVars` | { [key: string]: string; }
 `ttl` | number
 `hardTtl` | number
-`network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
+`network` | [TplSandboxNetworkPolicy](TplSandboxNetworkPolicy.md)
 `credentialBindings` | [Array&lt;CredentialBinding&gt;](CredentialBinding.md)
 `webhook` | [WebhookConfig](WebhookConfig.md)
 `autoResume` | boolean

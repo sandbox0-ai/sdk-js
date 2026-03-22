@@ -12,7 +12,7 @@ Name | Type
 `mainContainer` | [ContainerSpec](ContainerSpec.md)
 `sidecars` | [Array&lt;ContainerSpec&gt;](ContainerSpec.md)
 `pod` | [PodSpecOverride](PodSpecOverride.md)
-`network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
+`network` | [TplSandboxNetworkPolicy](TplSandboxNetworkPolicy.md)
 `credentialBindings` | [Array&lt;CredentialBinding&gt;](CredentialBinding.md)
 `pool` | [PoolStrategy](PoolStrategy.md)
 `lifecycle` | [LifecyclePolicy](LifecyclePolicy.md)

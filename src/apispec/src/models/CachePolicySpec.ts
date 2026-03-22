@@ -20,7 +20,7 @@ import { mapValues } from '../runtime';
  */
 export interface CachePolicySpec {
     /**
-     * 
+     * Override for the broker-side cache TTL of resolved auth material.
      * @type {string}
      * @memberof CachePolicySpec
      */

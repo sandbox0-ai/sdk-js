@@ -9,6 +9,7 @@ Name | Type
 `id` | string
 `name` | string
 `type` | string
+`externalAuthPortalUrl` | string
 
 ## Example
 
@@ -20,6 +21,7 @@ const example = {
   "id": null,
   "name": null,
   "type": null,
+  "externalAuthPortalUrl": null,
 } satisfies AuthProvider
 
 console.log(example)

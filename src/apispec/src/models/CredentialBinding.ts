@@ -35,7 +35,7 @@ import {
  */
 export interface CredentialBinding {
     /**
-     * Stable credential binding reference matched by `credentialRef`.
+     * Stable binding identifier matched by `credentialRef`.
      * @type {string}
      * @memberof CredentialBinding
      */

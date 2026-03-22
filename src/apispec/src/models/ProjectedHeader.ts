@@ -20,13 +20,13 @@ import { mapValues } from '../runtime';
  */
 export interface ProjectedHeader {
     /**
-     * 
+     * Outbound header name.
      * @type {string}
      * @memberof ProjectedHeader
      */
     name: string;
     /**
-     * 
+     * Template rendered against the resolved credential source payload.
      * @type {string}
      * @memberof ProjectedHeader
      */

@@ -13,13 +13,6 @@
  */
 
 import { mapValues } from '../runtime';
-import type { SandboxNetworkPolicy } from './SandboxNetworkPolicy';
-import {
-    SandboxNetworkPolicyFromJSON,
-    SandboxNetworkPolicyFromJSONTyped,
-    SandboxNetworkPolicyToJSON,
-    SandboxNetworkPolicyToJSONTyped,
-} from './SandboxNetworkPolicy';
 import type { WebhookConfig } from './WebhookConfig';
 import {
     WebhookConfigFromJSON,
@@ -41,6 +34,13 @@ import {
     CredentialBindingToJSON,
     CredentialBindingToJSONTyped,
 } from './CredentialBinding';
+import type { TplSandboxNetworkPolicy } from './TplSandboxNetworkPolicy';
+import {
+    TplSandboxNetworkPolicyFromJSON,
+    TplSandboxNetworkPolicyFromJSONTyped,
+    TplSandboxNetworkPolicyToJSON,
+    TplSandboxNetworkPolicyToJSONTyped,
+} from './TplSandboxNetworkPolicy';
 
 /**
  * 
@@ -68,15 +68,16 @@ export interface SandboxConfig {
     hardTtl?: number;
     /**
      * 
-     * @type {SandboxNetworkPolicy}
+     * @type {TplSandboxNetworkPolicy}
      * @memberof SandboxConfig
      */
-    network?: SandboxNetworkPolicy;
+    network?: TplSandboxNetworkPolicy;
     /**
-     * Legacy sibling field. Prefer `network.credentialBindings`.
+     * Sandbox-scoped credential bindings that can be referenced by egress
+     * credential rules through `credentialRef`.
+     * 
      * @type {Array<CredentialBinding>}
      * @memberof SandboxConfig
-     * @deprecated
      */
     credentialBindings?: Array<CredentialBinding>;
     /**
@@ -121,7 +122,7 @@ export function SandboxConfigFromJSONTyped(json: any, ignoreDiscriminator: boole
         'envVars': json['env_vars'] == null ? undefined : json['env_vars'],
         'ttl': json['ttl'] == null ? undefined : json['ttl'],
         'hardTtl': json['hard_ttl'] == null ? undefined : json['hard_ttl'],
-        'network': json['network'] == null ? undefined : SandboxNetworkPolicyFromJSON(json['network']),
+        'network': json['network'] == null ? undefined : TplSandboxNetworkPolicyFromJSON(json['network']),
         'credentialBindings': json['credential_bindings'] == null ? undefined : ((json['credential_bindings'] as Array<any>).map(CredentialBindingFromJSON)),
         'webhook': json['webhook'] == null ? undefined : WebhookConfigFromJSON(json['webhook']),
         'autoResume': json['auto_resume'] == null ? undefined : json['auto_resume'],
@@ -143,7 +144,7 @@ export function SandboxConfigToJSONTyped(value?: SandboxConfig | null, ignoreDis
         'env_vars': value['envVars'],
         'ttl': value['ttl'],
         'hard_ttl': value['hardTtl'],
-        'network': SandboxNetworkPolicyToJSON(value['network']),
+        'network': TplSandboxNetworkPolicyToJSON(value['network']),
         'credential_bindings': value['credentialBindings'] == null ? undefined : ((value['credentialBindings'] as Array<any>).map(CredentialBindingToJSON)),
         'webhook': WebhookConfigToJSON(value['webhook']),
         'auto_resume': value['autoResume'],

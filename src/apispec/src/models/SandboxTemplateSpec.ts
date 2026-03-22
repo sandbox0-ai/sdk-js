@@ -20,13 +20,6 @@ import {
     PoolStrategyToJSON,
     PoolStrategyToJSONTyped,
 } from './PoolStrategy';
-import type { SandboxNetworkPolicy } from './SandboxNetworkPolicy';
-import {
-    SandboxNetworkPolicyFromJSON,
-    SandboxNetworkPolicyFromJSONTyped,
-    SandboxNetworkPolicyToJSON,
-    SandboxNetworkPolicyToJSONTyped,
-} from './SandboxNetworkPolicy';
 import type { ContainerSpec } from './ContainerSpec';
 import {
     ContainerSpecFromJSON,
@@ -48,6 +41,13 @@ import {
     CredentialBindingToJSON,
     CredentialBindingToJSONTyped,
 } from './CredentialBinding';
+import type { TplSandboxNetworkPolicy } from './TplSandboxNetworkPolicy';
+import {
+    TplSandboxNetworkPolicyFromJSON,
+    TplSandboxNetworkPolicyFromJSONTyped,
+    TplSandboxNetworkPolicyToJSON,
+    TplSandboxNetworkPolicyToJSONTyped,
+} from './TplSandboxNetworkPolicy';
 import type { PodSpecOverride } from './PodSpecOverride';
 import {
     PodSpecOverrideFromJSON,
@@ -100,15 +100,14 @@ export interface SandboxTemplateSpec {
     pod?: PodSpecOverride;
     /**
      * 
-     * @type {SandboxNetworkPolicy}
+     * @type {TplSandboxNetworkPolicy}
      * @memberof SandboxTemplateSpec
      */
-    network?: SandboxNetworkPolicy;
+    network?: TplSandboxNetworkPolicy;
     /**
-     * Legacy sibling field. Prefer `network.credentialBindings`.
+     * 
      * @type {Array<CredentialBinding>}
      * @memberof SandboxTemplateSpec
-     * @deprecated
      */
     credentialBindings?: Array<CredentialBinding>;
     /**
@@ -178,7 +177,7 @@ export function SandboxTemplateSpecFromJSONTyped(json: any, ignoreDiscriminator:
         'mainContainer': json['mainContainer'] == null ? undefined : ContainerSpecFromJSON(json['mainContainer']),
         'sidecars': json['sidecars'] == null ? undefined : ((json['sidecars'] as Array<any>).map(ContainerSpecFromJSON)),
         'pod': json['pod'] == null ? undefined : PodSpecOverrideFromJSON(json['pod']),
-        'network': json['network'] == null ? undefined : SandboxNetworkPolicyFromJSON(json['network']),
+        'network': json['network'] == null ? undefined : TplSandboxNetworkPolicyFromJSON(json['network']),
         'credentialBindings': json['credentialBindings'] == null ? undefined : ((json['credentialBindings'] as Array<any>).map(CredentialBindingFromJSON)),
         'pool': json['pool'] == null ? undefined : PoolStrategyFromJSON(json['pool']),
         'lifecycle': json['lifecycle'] == null ? undefined : LifecyclePolicyFromJSON(json['lifecycle']),
@@ -207,7 +206,7 @@ export function SandboxTemplateSpecToJSONTyped(value?: SandboxTemplateSpec | nul
         'mainContainer': ContainerSpecToJSON(value['mainContainer']),
         'sidecars': value['sidecars'] == null ? undefined : ((value['sidecars'] as Array<any>).map(ContainerSpecToJSON)),
         'pod': PodSpecOverrideToJSON(value['pod']),
-        'network': SandboxNetworkPolicyToJSON(value['network']),
+        'network': TplSandboxNetworkPolicyToJSON(value['network']),
         'credentialBindings': value['credentialBindings'] == null ? undefined : ((value['credentialBindings'] as Array<any>).map(CredentialBindingToJSON)),
         'pool': PoolStrategyToJSON(value['pool']),
         'lifecycle': LifecyclePolicyToJSON(value['lifecycle']),

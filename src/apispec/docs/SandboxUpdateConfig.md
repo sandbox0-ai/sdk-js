@@ -9,7 +9,7 @@ Name | Type
 ------------ | -------------
 `ttl` | number
 `hardTtl` | number
-`network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
+`network` | [TplSandboxNetworkPolicy](TplSandboxNetworkPolicy.md)
 `credentialBindings` | [Array&lt;CredentialBinding&gt;](CredentialBinding.md)
 `autoResume` | boolean
 `exposedPorts` | [Array&lt;ExposedPortConfig&gt;](ExposedPortConfig.md)

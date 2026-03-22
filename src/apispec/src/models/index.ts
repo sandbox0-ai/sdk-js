@@ -206,7 +206,6 @@ export * from './Template';
 export * from './TemplateCreateRequest';
 export * from './TemplateUpdateRequest';
 export * from './Toleration';
-export * from './TplSandboxNetworkPolicy';
 export * from './TrafficRule';
 export * from './TrafficRuleAction';
 export * from './TrafficRuleAppProtocol';

@@ -351,7 +351,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [TemplateCreateRequest](docs/TemplateCreateRequest.md)
 - [TemplateUpdateRequest](docs/TemplateUpdateRequest.md)
 - [Toleration](docs/Toleration.md)
-- [TplSandboxNetworkPolicy](docs/TplSandboxNetworkPolicy.md)
 - [TrafficRule](docs/TrafficRule.md)
 - [TrafficRuleAction](docs/TrafficRuleAction.md)
 - [TrafficRuleAppProtocol](docs/TrafficRuleAppProtocol.md)

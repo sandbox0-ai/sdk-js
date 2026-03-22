@@ -221,7 +221,6 @@ docs/TemplateUpdateRequest.md
 docs/TemplatesApi.md
 docs/TenantApi.md
 docs/Toleration.md
-docs/TplSandboxNetworkPolicy.md
 docs/TrafficRule.md
 docs/TrafficRuleAction.md
 docs/TrafficRuleAppProtocol.md
@@ -461,7 +460,6 @@ src/models/Template.ts
 src/models/TemplateCreateRequest.ts
 src/models/TemplateUpdateRequest.ts
 src/models/Toleration.ts
-src/models/TplSandboxNetworkPolicy.ts
 src/models/TrafficRule.ts
 src/models/TrafficRuleAction.ts
 src/models/TrafficRuleAppProtocol.ts

@@ -63,7 +63,7 @@ export interface EgressCredentialRule {
     name?: string;
     /**
      * Stable binding ref to resolve when this traffic rule matches.
-     * The referenced binding must be present in `credential_bindings`.
+     * The referenced binding must be present in `network.credentialBindings`.
      * 
      * @type {string}
      * @memberof EgressCredentialRule

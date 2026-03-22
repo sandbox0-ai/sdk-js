@@ -9,8 +9,7 @@ Name | Type
 ------------ | -------------
 `ttl` | number
 `hardTtl` | number
-`network` | [TplSandboxNetworkPolicy](TplSandboxNetworkPolicy.md)
-`credentialBindings` | [Array&lt;CredentialBinding&gt;](CredentialBinding.md)
+`network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
 `autoResume` | boolean
 `exposedPorts` | [Array&lt;ExposedPortConfig&gt;](ExposedPortConfig.md)
 
@@ -24,7 +23,6 @@ const example = {
   "ttl": null,
   "hardTtl": null,
   "network": null,
-  "credentialBindings": null,
   "autoResume": null,
   "exposedPorts": null,
 } satisfies SandboxUpdateConfig

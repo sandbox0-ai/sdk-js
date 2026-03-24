@@ -291,7 +291,7 @@ No authorization required
 
 ## authOidcProviderLoginGet
 
-> authOidcProviderLoginGet(provider, returnUrl)
+> authOidcProviderLoginGet(provider, returnUrl, homeRegionId)
 
 Initiate OIDC login
 
@@ -313,6 +313,8 @@ async function example() {
     provider: provider_example,
     // string (optional)
     returnUrl: returnUrl_example,
+    // string | Required for first-time OIDC auto-provisioning in global-gateway mode so the bootstrap team is created with an explicit home region. (optional)
+    homeRegionId: homeRegionId_example,
   } satisfies AuthOidcProviderLoginGetRequest;
 
   try {
@@ -334,6 +336,7 @@ example().catch(console.error);
 |------------- | ------------- | ------------- | -------------|
 | **provider** | `string` |  | [Defaults to `undefined`] |
 | **returnUrl** | `string` |  | [Optional] [Defaults to `undefined`] |
+| **homeRegionId** | `string` | Required for first-time OIDC auto-provisioning in global-gateway mode so the bootstrap team is created with an explicit home region. | [Optional] [Defaults to `undefined`] |
 
 ### Return type
 

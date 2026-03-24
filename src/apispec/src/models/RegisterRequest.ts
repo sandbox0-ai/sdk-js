@@ -37,6 +37,12 @@ export interface RegisterRequest {
      * @memberof RegisterRequest
      */
     name: string;
+    /**
+     * Required in global-gateway mode because registration creates the user's default team.
+     * @type {string}
+     * @memberof RegisterRequest
+     */
+    homeRegionId?: string | null;
 }
 
 /**
@@ -62,6 +68,7 @@ export function RegisterRequestFromJSONTyped(json: any, ignoreDiscriminator: boo
         'email': json['email'],
         'password': json['password'],
         'name': json['name'],
+        'homeRegionId': json['home_region_id'] == null ? undefined : json['home_region_id'],
     };
 }
 
@@ -79,6 +86,7 @@ export function RegisterRequestToJSONTyped(value?: RegisterRequest | null, ignor
         'email': value['email'],
         'password': value['password'],
         'name': value['name'],
+        'home_region_id': value['homeRegionId'],
     };
 }
 

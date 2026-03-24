@@ -60,7 +60,6 @@ export interface AuthOidcProviderCallbackGetRequest {
 export interface AuthOidcProviderLoginGetRequest {
     provider: string;
     returnUrl?: string;
-    homeRegionId?: string;
 }
 
 export interface AuthRefreshPostRequest {
@@ -273,10 +272,6 @@ export class AuthApi extends runtime.BaseAPI {
 
         if (requestParameters['returnUrl'] != null) {
             queryParameters['return_url'] = requestParameters['returnUrl'];
-        }
-
-        if (requestParameters['homeRegionId'] != null) {
-            queryParameters['home_region_id'] = requestParameters['homeRegionId'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};

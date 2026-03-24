@@ -70,7 +70,6 @@ This endpoint does not need any parameter.
 |-------------|-------------|------------------|
 | **200** | Region list |  -  |
 | **401** | Unauthorized |  -  |
-| **403** | System admin access required |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

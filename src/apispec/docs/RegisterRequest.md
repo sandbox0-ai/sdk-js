@@ -9,6 +9,7 @@ Name | Type
 `email` | string
 `password` | string
 `name` | string
+`homeRegionId` | string
 
 ## Example
 
@@ -20,6 +21,7 @@ const example = {
   "email": null,
   "password": null,
   "name": null,
+  "homeRegionId": null,
 } satisfies RegisterRequest
 
 console.log(example)

@@ -138,10 +138,20 @@ All URIs are relative to *https://api.sandbox0.ai*
 *TemplatesApi* | [**apiV1TemplatesPost**](docs/TemplatesApi.md#apiv1templatespost) | **POST** /api/v1/templates | Create template
 *TenantApi* | [**authRegionTokenPost**](docs/TenantApi.md#authregiontokenpost) | **POST** /auth/region-token | Exchange a global user session for a region-scoped token
 *TenantApi* | [**tenantActiveGet**](docs/TenantApi.md#tenantactiveget) | **GET** /tenant/active | Resolve the active team and its routing information
-*UsersApi* | [**tenantActivePut**](docs/UsersApi.md#tenantactiveput) | **PUT** /tenant/active | Update current user
 *UsersApi* | [**usersMeGet**](docs/UsersApi.md#usersmeget) | **GET** /users/me | Get current user
 *UsersApi* | [**usersMeIdentitiesGet**](docs/UsersApi.md#usersmeidentitiesget) | **GET** /users/me/identities | List current user identities
 *UsersApi* | [**usersMeIdentitiesIdDelete**](docs/UsersApi.md#usersmeidentitiesiddelete) | **DELETE** /users/me/identities/{id} | Delete a user identity
+*UsersApi* | [**usersMePut**](docs/UsersApi.md#usersmeput) | **PUT** /users/me | Update current user
+*VolumeSyncApi* | [**apiV1SandboxvolumesIdSyncBootstrapArchiveGet**](docs/VolumeSyncApi.md#apiv1sandboxvolumesidsyncbootstraparchiveget) | **GET** /api/v1/sandboxvolumes/{id}/sync/bootstrap/archive | Download a bootstrap snapshot archive for local-first sync
+*VolumeSyncApi* | [**apiV1SandboxvolumesIdSyncBootstrapPost**](docs/VolumeSyncApi.md#apiv1sandboxvolumesidsyncbootstrappost) | **POST** /api/v1/sandboxvolumes/{id}/sync/bootstrap | Create a bootstrap snapshot and journal anchor for local-first sync
+*VolumeSyncApi* | [**apiV1SandboxvolumesIdSyncChangesGet**](docs/VolumeSyncApi.md#apiv1sandboxvolumesidsyncchangesget) | **GET** /api/v1/sandboxvolumes/{id}/sync/changes | List volume sync journal entries
+*VolumeSyncApi* | [**apiV1SandboxvolumesIdSyncConflictsConflictIdPut**](docs/VolumeSyncApi.md#apiv1sandboxvolumesidsyncconflictsconflictidput) | **PUT** /api/v1/sandboxvolumes/{id}/sync/conflicts/{conflict_id} | Resolve or ignore a volume sync conflict
+*VolumeSyncApi* | [**apiV1SandboxvolumesIdSyncConflictsGet**](docs/VolumeSyncApi.md#apiv1sandboxvolumesidsyncconflictsget) | **GET** /api/v1/sandboxvolumes/{id}/sync/conflicts | List volume sync conflicts
+*VolumeSyncApi* | [**apiV1SandboxvolumesIdSyncReplayPayloadGet**](docs/VolumeSyncApi.md#apiv1sandboxvolumesidsyncreplaypayloadget) | **GET** /api/v1/sandboxvolumes/{id}/sync/replay-payload | Download a replay payload for one sync journal entry
+*VolumeSyncApi* | [**apiV1SandboxvolumesIdSyncReplicasReplicaIdChangesPost**](docs/VolumeSyncApi.md#apiv1sandboxvolumesidsyncreplicasreplicaidchangespost) | **POST** /api/v1/sandboxvolumes/{id}/sync/replicas/{replica_id}/changes | Append replica-originated sync journal entries
+*VolumeSyncApi* | [**apiV1SandboxvolumesIdSyncReplicasReplicaIdCursorPut**](docs/VolumeSyncApi.md#apiv1sandboxvolumesidsyncreplicasreplicaidcursorput) | **PUT** /api/v1/sandboxvolumes/{id}/sync/replicas/{replica_id}/cursor | Advance a volume sync replica cursor
+*VolumeSyncApi* | [**apiV1SandboxvolumesIdSyncReplicasReplicaIdGet**](docs/VolumeSyncApi.md#apiv1sandboxvolumesidsyncreplicasreplicaidget) | **GET** /api/v1/sandboxvolumes/{id}/sync/replicas/{replica_id} | Get a volume sync replica
+*VolumeSyncApi* | [**apiV1SandboxvolumesIdSyncReplicasReplicaIdPut**](docs/VolumeSyncApi.md#apiv1sandboxvolumesidsyncreplicasreplicaidput) | **PUT** /api/v1/sandboxvolumes/{id}/sync/replicas/{replica_id} | Register or update a volume sync replica
 
 
 ### Models
@@ -151,10 +161,13 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [AddTeamMemberRequest](docs/AddTeamMemberRequest.md)
 - [Affinity](docs/Affinity.md)
 - [ApiV1SandboxesIdFilesGet200Response](docs/ApiV1SandboxesIdFilesGet200Response.md)
+- [AppendReplicaChangesRequest](docs/AppendReplicaChangesRequest.md)
+- [AppendReplicaChangesResponse](docs/AppendReplicaChangesResponse.md)
 - [AuthProvider](docs/AuthProvider.md)
 - [CachePolicySpec](docs/CachePolicySpec.md)
 - [Capabilities](docs/Capabilities.md)
 - [ChangePasswordRequest](docs/ChangePasswordRequest.md)
+- [ChangeRequest](docs/ChangeRequest.md)
 - [ClaimRequest](docs/ClaimRequest.md)
 - [ClaimResponse](docs/ClaimResponse.md)
 - [ContainerSpec](docs/ContainerSpec.md)
@@ -179,6 +192,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [CreateSandboxVolumeRequest](docs/CreateSandboxVolumeRequest.md)
 - [CreateSnapshotRequest](docs/CreateSnapshotRequest.md)
 - [CreateTeamRequest](docs/CreateTeamRequest.md)
+- [CreateVolumeSyncBootstrapRequest](docs/CreateVolumeSyncBootstrapRequest.md)
 - [CredentialBinding](docs/CredentialBinding.md)
 - [CredentialProjectionType](docs/CredentialProjectionType.md)
 - [CredentialSourceMetadata](docs/CredentialSourceMetadata.md)
@@ -213,6 +227,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [LabelSelector](docs/LabelSelector.md)
 - [LabelSelectorRequirement](docs/LabelSelectorRequirement.md)
 - [LifecyclePolicy](docs/LifecyclePolicy.md)
+- [ListVolumeSyncChangesResponse](docs/ListVolumeSyncChangesResponse.md)
+- [ListVolumeSyncConflictsResponse](docs/ListVolumeSyncConflictsResponse.md)
 - [LoginRequest](docs/LoginRequest.md)
 - [LoginResponse](docs/LoginResponse.md)
 - [ModelError](docs/ModelError.md)
@@ -250,6 +266,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [RegisterRequest](docs/RegisterRequest.md)
 - [RegistryCredentials](docs/RegistryCredentials.md)
 - [ResizeContextRequest](docs/ResizeContextRequest.md)
+- [ResolveVolumeSyncConflictRequest](docs/ResolveVolumeSyncConflictRequest.md)
 - [ResourceQuota](docs/ResourceQuota.md)
 - [ResourceUsage](docs/ResourceUsage.md)
 - [ResumeSandboxResponse](docs/ResumeSandboxResponse.md)
@@ -347,8 +364,18 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessUnmountedResponse](docs/SuccessUnmountedResponse.md)
 - [SuccessUnmountedResponseAllOfData](docs/SuccessUnmountedResponseAllOfData.md)
 - [SuccessUserResponse](docs/SuccessUserResponse.md)
+- [SuccessVolumeSyncAppendResponse](docs/SuccessVolumeSyncAppendResponse.md)
+- [SuccessVolumeSyncBootstrapResponse](docs/SuccessVolumeSyncBootstrapResponse.md)
+- [SuccessVolumeSyncChangeListResponse](docs/SuccessVolumeSyncChangeListResponse.md)
+- [SuccessVolumeSyncConflictListResponse](docs/SuccessVolumeSyncConflictListResponse.md)
+- [SuccessVolumeSyncConflictResponse](docs/SuccessVolumeSyncConflictResponse.md)
+- [SuccessVolumeSyncReplicaResponse](docs/SuccessVolumeSyncReplicaResponse.md)
 - [SuccessWrittenResponse](docs/SuccessWrittenResponse.md)
 - [SuccessWrittenResponseAllOfData](docs/SuccessWrittenResponseAllOfData.md)
+- [SyncConflict](docs/SyncConflict.md)
+- [SyncEventType](docs/SyncEventType.md)
+- [SyncJournalEntry](docs/SyncJournalEntry.md)
+- [SyncReplica](docs/SyncReplica.md)
 - [Team](docs/Team.md)
 - [TeamMember](docs/TeamMember.md)
 - [Template](docs/Template.md)
@@ -361,12 +388,24 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [UnmountRequest](docs/UnmountRequest.md)
 - [UpdateExposedPortsRequest](docs/UpdateExposedPortsRequest.md)
 - [UpdateRegionRequest](docs/UpdateRegionRequest.md)
+- [UpdateSyncReplicaCursorRequest](docs/UpdateSyncReplicaCursorRequest.md)
 - [UpdateTeamMemberRequest](docs/UpdateTeamMemberRequest.md)
 - [UpdateTeamRequest](docs/UpdateTeamRequest.md)
 - [UpdateUserRequest](docs/UpdateUserRequest.md)
+- [UpsertSyncReplicaRequest](docs/UpsertSyncReplicaRequest.md)
 - [User](docs/User.md)
 - [VolumeAccessMode](docs/VolumeAccessMode.md)
 - [VolumeConfig](docs/VolumeConfig.md)
+- [VolumeSyncBootstrap](docs/VolumeSyncBootstrap.md)
+- [VolumeSyncBootstrapCompatibilityConflictDetails](docs/VolumeSyncBootstrapCompatibilityConflictDetails.md)
+- [VolumeSyncBootstrapConflictErrorEnvelope](docs/VolumeSyncBootstrapConflictErrorEnvelope.md)
+- [VolumeSyncBootstrapConflictErrorEnvelopeAllOfError](docs/VolumeSyncBootstrapConflictErrorEnvelopeAllOfError.md)
+- [VolumeSyncCompatibilityIssue](docs/VolumeSyncCompatibilityIssue.md)
+- [VolumeSyncFilesystemCapabilities](docs/VolumeSyncFilesystemCapabilities.md)
+- [VolumeSyncReplicaEnvelope](docs/VolumeSyncReplicaEnvelope.md)
+- [VolumeSyncReseedRequiredDetails](docs/VolumeSyncReseedRequiredDetails.md)
+- [VolumeSyncReseedRequiredErrorEnvelope](docs/VolumeSyncReseedRequiredErrorEnvelope.md)
+- [VolumeSyncReseedRequiredErrorEnvelopeAllOfError](docs/VolumeSyncReseedRequiredErrorEnvelopeAllOfError.md)
 - [WebhookConfig](docs/WebhookConfig.md)
 - [WeightedPodAffinityTerm](docs/WeightedPodAffinityTerm.md)
 

@@ -1,6 +1,6 @@
 import { describe, it, before, skip } from "node:test";
 import assert from "node:assert";
-import { loadE2EConfig, newClient, type E2EConfig } from "./helpers.ts";
+import { loadE2EConfig, newClient, waitForWatchEvent, type E2EConfig } from "./helpers.ts";
 
 describe("Volumes", () => {
   let cfg: E2EConfig | null;
@@ -78,6 +78,61 @@ describe("Volumes", () => {
     const session = await client.volumes.open({});
     assert.ok(session.volume.id);
     await session.close();
+  });
+
+  it("should handle direct volume file operations", async () => {
+    if (!cfg) return;
+    const client = await newClient(cfg);
+
+    const volume = await client.volumes.create({});
+    assert.ok(volume.id);
+    let deleted = false;
+
+    const cleanup = async () => {
+      if (deleted) return;
+      try {
+        await client.volumes.delete(volume.id);
+      } catch {
+        // Ignore cleanup errors
+      }
+    };
+
+    try {
+      const baseDir = `/sdk-js-volume-${Date.now()}`;
+      const filePath = `${baseDir}/hello.txt`;
+      const movedPath = `${baseDir}/moved.txt`;
+
+      await client.volumes.mkdir(volume.id, baseDir, true);
+      await client.volumes.writeFile(volume.id, filePath, "hello volume");
+      const stat = await client.volumes.statFile(volume.id, filePath);
+      assert.ok(stat);
+
+      const content = await client.volumes.readFile(volume.id, filePath);
+      assert.strictEqual(Buffer.from(content).toString("utf-8"), "hello volume");
+
+      const entries = await client.volumes.listFiles(volume.id, baseDir);
+      assert.ok(entries.some((entry) => entry.name === "hello.txt"));
+
+      await client.volumes.moveFile(volume.id, filePath, movedPath);
+
+      const watch = await client.volumes.watchFiles(volume.id, baseDir, true);
+      try {
+        await client.volumes.writeFile(volume.id, `${baseDir}/watch.txt`, "watch");
+        const event = await waitForWatchEvent(watch.events(), 10000);
+        assert.ok(event);
+        assert.ok(event.path);
+      } finally {
+        watch.close();
+      }
+
+      await client.volumes.deleteFile(volume.id, movedPath);
+      await client.volumes.deleteFile(volume.id, baseDir);
+
+      await client.volumes.delete(volume.id);
+      deleted = true;
+    } finally {
+      await cleanup();
+    }
   });
 
   it("should isolate writes between source and forked volumes", async () => {

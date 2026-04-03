@@ -80,6 +80,43 @@ export interface ApiV1SandboxesIdFilesWatchGetRequest {
     id: string;
 }
 
+export interface ApiV1SandboxvolumesIdFilesDeleteRequest {
+    id: string;
+    path: string;
+}
+
+export interface ApiV1SandboxvolumesIdFilesGetRequest {
+    id: string;
+    path: string;
+}
+
+export interface ApiV1SandboxvolumesIdFilesListGetRequest {
+    id: string;
+    path: string;
+}
+
+export interface ApiV1SandboxvolumesIdFilesMovePostRequest {
+    id: string;
+    moveFileRequest: MoveFileRequest;
+}
+
+export interface ApiV1SandboxvolumesIdFilesPostRequest {
+    id: string;
+    path: string;
+    mkdir?: boolean;
+    recursive?: boolean;
+    body?: Blob;
+}
+
+export interface ApiV1SandboxvolumesIdFilesStatGetRequest {
+    id: string;
+    path: string;
+}
+
+export interface ApiV1SandboxvolumesIdFilesWatchGetRequest {
+    id: string;
+}
+
 /**
  * 
  */
@@ -483,6 +520,406 @@ export class FilesApi extends runtime.BaseAPI {
      */
     async apiV1SandboxesIdFilesWatchGet(requestParameters: ApiV1SandboxesIdFilesWatchGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.apiV1SandboxesIdFilesWatchGetRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Delete volume file or directory
+     */
+    async apiV1SandboxvolumesIdFilesDeleteRaw(requestParameters: ApiV1SandboxvolumesIdFilesDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessDeletedResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1SandboxvolumesIdFilesDelete().'
+            );
+        }
+
+        if (requestParameters['path'] == null) {
+            throw new runtime.RequiredError(
+                'path',
+                'Required parameter "path" was null or undefined when calling apiV1SandboxvolumesIdFilesDelete().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['path'] != null) {
+            queryParameters['path'] = requestParameters['path'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxvolumes/{id}/files`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessDeletedResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Delete volume file or directory
+     */
+    async apiV1SandboxvolumesIdFilesDelete(requestParameters: ApiV1SandboxvolumesIdFilesDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessDeletedResponse> {
+        const response = await this.apiV1SandboxvolumesIdFilesDeleteRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Use query params: - path=/tmp/a.txt: target file path relative to the volume root When `Accept` or `Content-Type` is `application/json`, returns a base64 JSON payload. 
+     * Read volume file content
+     */
+    async apiV1SandboxvolumesIdFilesGetRaw(requestParameters: ApiV1SandboxvolumesIdFilesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Blob>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1SandboxvolumesIdFilesGet().'
+            );
+        }
+
+        if (requestParameters['path'] == null) {
+            throw new runtime.RequiredError(
+                'path',
+                'Required parameter "path" was null or undefined when calling apiV1SandboxvolumesIdFilesGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['path'] != null) {
+            queryParameters['path'] = requestParameters['path'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxvolumes/{id}/files`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.BlobApiResponse(response);
+    }
+
+    /**
+     * Use query params: - path=/tmp/a.txt: target file path relative to the volume root When `Accept` or `Content-Type` is `application/json`, returns a base64 JSON payload. 
+     * Read volume file content
+     */
+    async apiV1SandboxvolumesIdFilesGet(requestParameters: ApiV1SandboxvolumesIdFilesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Blob> {
+        const response = await this.apiV1SandboxvolumesIdFilesGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Use query params: - path=/tmp: target directory path relative to the volume root 
+     * List volume directory entries
+     */
+    async apiV1SandboxvolumesIdFilesListGetRaw(requestParameters: ApiV1SandboxvolumesIdFilesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFileListResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1SandboxvolumesIdFilesListGet().'
+            );
+        }
+
+        if (requestParameters['path'] == null) {
+            throw new runtime.RequiredError(
+                'path',
+                'Required parameter "path" was null or undefined when calling apiV1SandboxvolumesIdFilesListGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['path'] != null) {
+            queryParameters['path'] = requestParameters['path'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxvolumes/{id}/files/list`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessFileListResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Use query params: - path=/tmp: target directory path relative to the volume root 
+     * List volume directory entries
+     */
+    async apiV1SandboxvolumesIdFilesListGet(requestParameters: ApiV1SandboxvolumesIdFilesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFileListResponse> {
+        const response = await this.apiV1SandboxvolumesIdFilesListGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Move a volume file or directory
+     */
+    async apiV1SandboxvolumesIdFilesMovePostRaw(requestParameters: ApiV1SandboxvolumesIdFilesMovePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessMovedResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1SandboxvolumesIdFilesMovePost().'
+            );
+        }
+
+        if (requestParameters['moveFileRequest'] == null) {
+            throw new runtime.RequiredError(
+                'moveFileRequest',
+                'Required parameter "moveFileRequest" was null or undefined when calling apiV1SandboxvolumesIdFilesMovePost().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxvolumes/{id}/files/move`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: MoveFileRequestToJSON(requestParameters['moveFileRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessMovedResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Move a volume file or directory
+     */
+    async apiV1SandboxvolumesIdFilesMovePost(requestParameters: ApiV1SandboxvolumesIdFilesMovePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessMovedResponse> {
+        const response = await this.apiV1SandboxvolumesIdFilesMovePostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Use `path` query param and `mkdir=true` to create directories, otherwise writes file content.
+     * Write volume file or create directory
+     */
+    async apiV1SandboxvolumesIdFilesPostRaw(requestParameters: ApiV1SandboxvolumesIdFilesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessWrittenResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1SandboxvolumesIdFilesPost().'
+            );
+        }
+
+        if (requestParameters['path'] == null) {
+            throw new runtime.RequiredError(
+                'path',
+                'Required parameter "path" was null or undefined when calling apiV1SandboxvolumesIdFilesPost().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['path'] != null) {
+            queryParameters['path'] = requestParameters['path'];
+        }
+
+        if (requestParameters['mkdir'] != null) {
+            queryParameters['mkdir'] = requestParameters['mkdir'];
+        }
+
+        if (requestParameters['recursive'] != null) {
+            queryParameters['recursive'] = requestParameters['recursive'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/octet-stream';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxvolumes/{id}/files`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters['body'] as any,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessWrittenResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Use `path` query param and `mkdir=true` to create directories, otherwise writes file content.
+     * Write volume file or create directory
+     */
+    async apiV1SandboxvolumesIdFilesPost(requestParameters: ApiV1SandboxvolumesIdFilesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessWrittenResponse> {
+        const response = await this.apiV1SandboxvolumesIdFilesPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Use query params: - path=/tmp/a.txt: target file path relative to the volume root 
+     * Stat a volume file
+     */
+    async apiV1SandboxvolumesIdFilesStatGetRaw(requestParameters: ApiV1SandboxvolumesIdFilesStatGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFileStatResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1SandboxvolumesIdFilesStatGet().'
+            );
+        }
+
+        if (requestParameters['path'] == null) {
+            throw new runtime.RequiredError(
+                'path',
+                'Required parameter "path" was null or undefined when calling apiV1SandboxvolumesIdFilesStatGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['path'] != null) {
+            queryParameters['path'] = requestParameters['path'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxvolumes/{id}/files/stat`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessFileStatResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Use query params: - path=/tmp/a.txt: target file path relative to the volume root 
+     * Stat a volume file
+     */
+    async apiV1SandboxvolumesIdFilesStatGet(requestParameters: ApiV1SandboxvolumesIdFilesStatGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFileStatResponse> {
+        const response = await this.apiV1SandboxvolumesIdFilesStatGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Upgrades to WebSocket for volume file watch events. Client messages: - { \"action\": \"subscribe\", \"path\": \"/tmp\", \"recursive\": false } - { \"action\": \"unsubscribe\", \"watch_id\": \"watch-id\" } Server messages: - { \"type\": \"subscribed\", \"watch_id\": \"watch-id\", \"path\": \"/tmp\" } - { \"type\": \"event\", \"watch_id\": \"watch-id\", \"event\": \"write\", \"path\": \"/tmp/a.txt\" } - { \"type\": \"unsubscribed\", \"watch_id\": \"watch-id\" } - { \"type\": \"error\", \"error\": \"message\" } 
+     * Volume file watch WebSocket
+     */
+    async apiV1SandboxvolumesIdFilesWatchGetRaw(requestParameters: ApiV1SandboxvolumesIdFilesWatchGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1SandboxvolumesIdFilesWatchGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxvolumes/{id}/files/watch`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Upgrades to WebSocket for volume file watch events. Client messages: - { \"action\": \"subscribe\", \"path\": \"/tmp\", \"recursive\": false } - { \"action\": \"unsubscribe\", \"watch_id\": \"watch-id\" } Server messages: - { \"type\": \"subscribed\", \"watch_id\": \"watch-id\", \"path\": \"/tmp\" } - { \"type\": \"event\", \"watch_id\": \"watch-id\", \"event\": \"write\", \"path\": \"/tmp/a.txt\" } - { \"type\": \"unsubscribed\", \"watch_id\": \"watch-id\" } - { \"type\": \"error\", \"error\": \"message\" } 
+     * Volume file watch WebSocket
+     */
+    async apiV1SandboxvolumesIdFilesWatchGet(requestParameters: ApiV1SandboxvolumesIdFilesWatchGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.apiV1SandboxvolumesIdFilesWatchGetRaw(requestParameters, initOverrides);
     }
 
 }

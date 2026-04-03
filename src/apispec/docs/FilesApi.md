@@ -11,6 +11,13 @@ All URIs are relative to *https://api.sandbox0.ai*
 | [**apiV1SandboxesIdFilesPost**](FilesApi.md#apiv1sandboxesidfilespost) | **POST** /api/v1/sandboxes/{id}/files | Write file or create directory |
 | [**apiV1SandboxesIdFilesStatGet**](FilesApi.md#apiv1sandboxesidfilesstatget) | **GET** /api/v1/sandboxes/{id}/files/stat | Stat a file |
 | [**apiV1SandboxesIdFilesWatchGet**](FilesApi.md#apiv1sandboxesidfileswatchget) | **GET** /api/v1/sandboxes/{id}/files/watch | File watch WebSocket |
+| [**apiV1SandboxvolumesIdFilesDelete**](FilesApi.md#apiv1sandboxvolumesidfilesdelete) | **DELETE** /api/v1/sandboxvolumes/{id}/files | Delete volume file or directory |
+| [**apiV1SandboxvolumesIdFilesGet**](FilesApi.md#apiv1sandboxvolumesidfilesget) | **GET** /api/v1/sandboxvolumes/{id}/files | Read volume file content |
+| [**apiV1SandboxvolumesIdFilesListGet**](FilesApi.md#apiv1sandboxvolumesidfileslistget) | **GET** /api/v1/sandboxvolumes/{id}/files/list | List volume directory entries |
+| [**apiV1SandboxvolumesIdFilesMovePost**](FilesApi.md#apiv1sandboxvolumesidfilesmovepost) | **POST** /api/v1/sandboxvolumes/{id}/files/move | Move a volume file or directory |
+| [**apiV1SandboxvolumesIdFilesPost**](FilesApi.md#apiv1sandboxvolumesidfilespost) | **POST** /api/v1/sandboxvolumes/{id}/files | Write volume file or create directory |
+| [**apiV1SandboxvolumesIdFilesStatGet**](FilesApi.md#apiv1sandboxvolumesidfilesstatget) | **GET** /api/v1/sandboxvolumes/{id}/files/stat | Stat a volume file |
+| [**apiV1SandboxvolumesIdFilesWatchGet**](FilesApi.md#apiv1sandboxvolumesidfileswatchget) | **GET** /api/v1/sandboxvolumes/{id}/files/watch | Volume file watch WebSocket |
 
 
 
@@ -496,6 +503,527 @@ async function example() {
 
   try {
     const data = await api.apiV1SandboxesIdFilesWatchGet(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **101** | Switching Protocols |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## apiV1SandboxvolumesIdFilesDelete
+
+> SuccessDeletedResponse apiV1SandboxvolumesIdFilesDelete(id, path)
+
+Delete volume file or directory
+
+### Example
+
+```ts
+import {
+  Configuration,
+  FilesApi,
+} from 'sandbox0';
+import type { ApiV1SandboxvolumesIdFilesDeleteRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new FilesApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // string
+    path: path_example,
+  } satisfies ApiV1SandboxvolumesIdFilesDeleteRequest;
+
+  try {
+    const data = await api.apiV1SandboxvolumesIdFilesDelete(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **path** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+[**SuccessDeletedResponse**](SuccessDeletedResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Deleted |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## apiV1SandboxvolumesIdFilesGet
+
+> Blob apiV1SandboxvolumesIdFilesGet(id, path)
+
+Read volume file content
+
+Use query params: - path&#x3D;/tmp/a.txt: target file path relative to the volume root When &#x60;Accept&#x60; or &#x60;Content-Type&#x60; is &#x60;application/json&#x60;, returns a base64 JSON payload. 
+
+### Example
+
+```ts
+import {
+  Configuration,
+  FilesApi,
+} from 'sandbox0';
+import type { ApiV1SandboxvolumesIdFilesGetRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new FilesApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // string
+    path: path_example,
+  } satisfies ApiV1SandboxvolumesIdFilesGetRequest;
+
+  try {
+    const data = await api.apiV1SandboxvolumesIdFilesGet(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **path** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+**Blob**
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/octet-stream`, `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | File content |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## apiV1SandboxvolumesIdFilesListGet
+
+> SuccessFileListResponse apiV1SandboxvolumesIdFilesListGet(id, path)
+
+List volume directory entries
+
+Use query params: - path&#x3D;/tmp: target directory path relative to the volume root 
+
+### Example
+
+```ts
+import {
+  Configuration,
+  FilesApi,
+} from 'sandbox0';
+import type { ApiV1SandboxvolumesIdFilesListGetRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new FilesApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // string
+    path: path_example,
+  } satisfies ApiV1SandboxvolumesIdFilesListGetRequest;
+
+  try {
+    const data = await api.apiV1SandboxvolumesIdFilesListGet(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **path** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+[**SuccessFileListResponse**](SuccessFileListResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Directory entries |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## apiV1SandboxvolumesIdFilesMovePost
+
+> SuccessMovedResponse apiV1SandboxvolumesIdFilesMovePost(id, moveFileRequest)
+
+Move a volume file or directory
+
+### Example
+
+```ts
+import {
+  Configuration,
+  FilesApi,
+} from 'sandbox0';
+import type { ApiV1SandboxvolumesIdFilesMovePostRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new FilesApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // MoveFileRequest
+    moveFileRequest: ...,
+  } satisfies ApiV1SandboxvolumesIdFilesMovePostRequest;
+
+  try {
+    const data = await api.apiV1SandboxvolumesIdFilesMovePost(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **moveFileRequest** | [MoveFileRequest](MoveFileRequest.md) |  | |
+
+### Return type
+
+[**SuccessMovedResponse**](SuccessMovedResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Moved |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## apiV1SandboxvolumesIdFilesPost
+
+> SuccessWrittenResponse apiV1SandboxvolumesIdFilesPost(id, path, mkdir, recursive, body)
+
+Write volume file or create directory
+
+Use &#x60;path&#x60; query param and &#x60;mkdir&#x3D;true&#x60; to create directories, otherwise writes file content.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  FilesApi,
+} from 'sandbox0';
+import type { ApiV1SandboxvolumesIdFilesPostRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new FilesApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // string
+    path: path_example,
+    // boolean (optional)
+    mkdir: true,
+    // boolean (optional)
+    recursive: true,
+    // Blob (optional)
+    body: BINARY_DATA_HERE,
+  } satisfies ApiV1SandboxvolumesIdFilesPostRequest;
+
+  try {
+    const data = await api.apiV1SandboxvolumesIdFilesPost(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **path** | `string` |  | [Defaults to `undefined`] |
+| **mkdir** | `boolean` |  | [Optional] [Defaults to `undefined`] |
+| **recursive** | `boolean` |  | [Optional] [Defaults to `undefined`] |
+| **body** | `Blob` |  | [Optional] |
+
+### Return type
+
+[**SuccessWrittenResponse**](SuccessWrittenResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/octet-stream`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | File written |  -  |
+| **201** | Directory created |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## apiV1SandboxvolumesIdFilesStatGet
+
+> SuccessFileStatResponse apiV1SandboxvolumesIdFilesStatGet(id, path)
+
+Stat a volume file
+
+Use query params: - path&#x3D;/tmp/a.txt: target file path relative to the volume root 
+
+### Example
+
+```ts
+import {
+  Configuration,
+  FilesApi,
+} from 'sandbox0';
+import type { ApiV1SandboxvolumesIdFilesStatGetRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new FilesApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // string
+    path: path_example,
+  } satisfies ApiV1SandboxvolumesIdFilesStatGetRequest;
+
+  try {
+    const data = await api.apiV1SandboxvolumesIdFilesStatGet(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **path** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+[**SuccessFileStatResponse**](SuccessFileStatResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | File metadata |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## apiV1SandboxvolumesIdFilesWatchGet
+
+> apiV1SandboxvolumesIdFilesWatchGet(id)
+
+Volume file watch WebSocket
+
+Upgrades to WebSocket for volume file watch events. Client messages: - { \&quot;action\&quot;: \&quot;subscribe\&quot;, \&quot;path\&quot;: \&quot;/tmp\&quot;, \&quot;recursive\&quot;: false } - { \&quot;action\&quot;: \&quot;unsubscribe\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot; } Server messages: - { \&quot;type\&quot;: \&quot;subscribed\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot;, \&quot;path\&quot;: \&quot;/tmp\&quot; } - { \&quot;type\&quot;: \&quot;event\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot;, \&quot;event\&quot;: \&quot;write\&quot;, \&quot;path\&quot;: \&quot;/tmp/a.txt\&quot; } - { \&quot;type\&quot;: \&quot;unsubscribed\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot; } - { \&quot;type\&quot;: \&quot;error\&quot;, \&quot;error\&quot;: \&quot;message\&quot; } 
+
+### Example
+
+```ts
+import {
+  Configuration,
+  FilesApi,
+} from 'sandbox0';
+import type { ApiV1SandboxvolumesIdFilesWatchGetRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new FilesApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+  } satisfies ApiV1SandboxvolumesIdFilesWatchGetRequest;
+
+  try {
+    const data = await api.apiV1SandboxvolumesIdFilesWatchGet(body);
     console.log(data);
   } catch (error) {
     console.error(error);

@@ -41,6 +41,13 @@ import {
     LifecyclePolicyToJSON,
     LifecyclePolicyToJSONTyped,
 } from './LifecyclePolicy';
+import type { SidecarContainerSpec } from './SidecarContainerSpec';
+import {
+    SidecarContainerSpecFromJSON,
+    SidecarContainerSpecFromJSONTyped,
+    SidecarContainerSpecToJSON,
+    SidecarContainerSpecToJSONTyped,
+} from './SidecarContainerSpec';
 import type { PodSpecOverride } from './PodSpecOverride';
 import {
     PodSpecOverrideFromJSON,
@@ -81,10 +88,10 @@ export interface SandboxTemplateSpec {
     mainContainer?: ContainerSpec;
     /**
      * 
-     * @type {Array<ContainerSpec>}
+     * @type {Array<SidecarContainerSpec>}
      * @memberof SandboxTemplateSpec
      */
-    sidecars?: Array<ContainerSpec>;
+    sidecars?: Array<SidecarContainerSpec>;
     /**
      * 
      * @type {PodSpecOverride}
@@ -162,7 +169,7 @@ export function SandboxTemplateSpecFromJSONTyped(json: any, ignoreDiscriminator:
         'displayName': json['displayName'] == null ? undefined : json['displayName'],
         'tags': json['tags'] == null ? undefined : json['tags'],
         'mainContainer': json['mainContainer'] == null ? undefined : ContainerSpecFromJSON(json['mainContainer']),
-        'sidecars': json['sidecars'] == null ? undefined : ((json['sidecars'] as Array<any>).map(ContainerSpecFromJSON)),
+        'sidecars': json['sidecars'] == null ? undefined : ((json['sidecars'] as Array<any>).map(SidecarContainerSpecFromJSON)),
         'pod': json['pod'] == null ? undefined : PodSpecOverrideFromJSON(json['pod']),
         'network': json['network'] == null ? undefined : SandboxNetworkPolicyFromJSON(json['network']),
         'pool': json['pool'] == null ? undefined : PoolStrategyFromJSON(json['pool']),
@@ -190,7 +197,7 @@ export function SandboxTemplateSpecToJSONTyped(value?: SandboxTemplateSpec | nul
         'displayName': value['displayName'],
         'tags': value['tags'],
         'mainContainer': ContainerSpecToJSON(value['mainContainer']),
-        'sidecars': value['sidecars'] == null ? undefined : ((value['sidecars'] as Array<any>).map(ContainerSpecToJSON)),
+        'sidecars': value['sidecars'] == null ? undefined : ((value['sidecars'] as Array<any>).map(SidecarContainerSpecToJSON)),
         'pod': PodSpecOverrideToJSON(value['pod']),
         'network': SandboxNetworkPolicyToJSON(value['network']),
         'pool': PoolStrategyToJSON(value['pool']),

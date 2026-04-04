@@ -24,11 +24,27 @@ describe("Templates", () => {
     }
     const source = templates[0];
     const sourceSpec = source.spec!;
+    const sidecars = [
+      {
+        name: "codex",
+        image: "busybox:latest",
+        command: ["sh", "-lc", "touch /tmp/ready; tail -f /dev/null"],
+        readinessProbe: {
+          exec: { command: ["test", "-f", "/tmp/ready"] },
+          initialDelaySeconds: 1,
+          periodSeconds: 1,
+          failureThreshold: 1,
+        },
+      },
+    ];
 
     const templateId = `sdk-js-e2e-${Date.now()}`;
     const created = await client.templates.create({
       templateId,
-      spec: sourceSpec,
+      spec: {
+        ...sourceSpec,
+        sidecars,
+      },
     });
     let deleted = false;
 
@@ -43,17 +59,25 @@ describe("Templates", () => {
 
     try {
       assert.strictEqual(created.templateId, templateId);
+      assert.strictEqual(created.spec?.sidecars?.length, 1);
+      assert.deepStrictEqual(created.spec?.sidecars?.[0]?.readinessProbe?.exec?.command, [
+        "test",
+        "-f",
+        "/tmp/ready",
+      ]);
 
       const fetched = await client.templates.get(templateId);
       assert.strictEqual(fetched.templateId, templateId);
+      assert.strictEqual(fetched.spec?.sidecars?.length, 1);
 
       const updated = await client.templates.update(templateId, {
         spec: {
-          ...sourceSpec,
+          ...fetched.spec!,
           displayName: "SDK JS E2E Updated",
         },
       });
       assert.strictEqual(updated.templateId, templateId);
+      assert.strictEqual(updated.spec?.sidecars?.length, 1);
 
       await client.templates.delete(templateId);
       deleted = true;

@@ -10,7 +10,7 @@ Name | Type
 `displayName` | string
 `tags` | Array&lt;string&gt;
 `mainContainer` | [ContainerSpec](ContainerSpec.md)
-`sidecars` | [Array&lt;ContainerSpec&gt;](ContainerSpec.md)
+`sidecars` | [Array&lt;SidecarContainerSpec&gt;](SidecarContainerSpec.md)
 `pod` | [PodSpecOverride](PodSpecOverride.md)
 `network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
 `pool` | [PoolStrategy](PoolStrategy.md)

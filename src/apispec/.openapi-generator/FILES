@@ -55,6 +55,7 @@ docs/EgressCredentialRule.md
 docs/EgressTLSMode.md
 docs/EnvVar.md
 docs/ErrorEnvelope.md
+docs/ExecAction.md
 docs/ExecCandidate.md
 docs/ExposedPortConfig.md
 docs/FileContentResponse.md
@@ -69,7 +70,10 @@ docs/FileWatchUnsubscribeRequest.md
 docs/FileWatchUnsubscribed.md
 docs/FilesApi.md
 docs/ForkVolumeRequest.md
+docs/GRPCAction.md
 docs/GatewayMetadata.md
+docs/HTTPGetAction.md
+docs/HTTPHeader.md
 docs/HTTPHeadersProjection.md
 docs/HealthApi.md
 docs/Identity.md
@@ -102,6 +106,8 @@ docs/PoolStrategy.md
 docs/PortSpec.md
 docs/PreStopHook.md
 docs/PreferredSchedulingTerm.md
+docs/Probe.md
+docs/ProbePort.md
 docs/ProcessType.md
 docs/ProjectedHeader.md
 docs/ProjectionSpec.md
@@ -140,6 +146,7 @@ docs/SandboxVolume.md
 docs/SandboxVolumesApi.md
 docs/SandboxesApi.md
 docs/SecurityContext.md
+docs/SidecarContainerSpec.md
 docs/SignalContextRequest.md
 docs/Snapshot.md
 docs/SnapshotsApi.md
@@ -232,6 +239,7 @@ docs/SyncConflict.md
 docs/SyncEventType.md
 docs/SyncJournalEntry.md
 docs/SyncReplica.md
+docs/TCPSocketAction.md
 docs/Team.md
 docs/TeamMember.md
 docs/TeamsApi.md
@@ -338,6 +346,7 @@ src/models/EgressCredentialRule.ts
 src/models/EgressTLSMode.ts
 src/models/EnvVar.ts
 src/models/ErrorEnvelope.ts
+src/models/ExecAction.ts
 src/models/ExecCandidate.ts
 src/models/ExposedPortConfig.ts
 src/models/FileContentResponse.ts
@@ -351,7 +360,10 @@ src/models/FileWatchSubscribed.ts
 src/models/FileWatchUnsubscribeRequest.ts
 src/models/FileWatchUnsubscribed.ts
 src/models/ForkVolumeRequest.ts
+src/models/GRPCAction.ts
 src/models/GatewayMetadata.ts
+src/models/HTTPGetAction.ts
+src/models/HTTPHeader.ts
 src/models/HTTPHeadersProjection.ts
 src/models/Identity.ts
 src/models/IssueRegionTokenRequest.ts
@@ -383,6 +395,8 @@ src/models/PoolStrategy.ts
 src/models/PortSpec.ts
 src/models/PreStopHook.ts
 src/models/PreferredSchedulingTerm.ts
+src/models/Probe.ts
+src/models/ProbePort.ts
 src/models/ProcessType.ts
 src/models/ProjectedHeader.ts
 src/models/ProjectionSpec.ts
@@ -417,6 +431,7 @@ src/models/SandboxUpdateConfig.ts
 src/models/SandboxUpdateRequest.ts
 src/models/SandboxVolume.ts
 src/models/SecurityContext.ts
+src/models/SidecarContainerSpec.ts
 src/models/SignalContextRequest.ts
 src/models/Snapshot.ts
 src/models/StaticHeadersSourceSpec.ts
@@ -508,6 +523,7 @@ src/models/SyncConflict.ts
 src/models/SyncEventType.ts
 src/models/SyncJournalEntry.ts
 src/models/SyncReplica.ts
+src/models/TCPSocketAction.ts
 src/models/Team.ts
 src/models/TeamMember.ts
 src/models/Template.ts

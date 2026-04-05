@@ -31,12 +31,6 @@ export interface UpdateUserRequest {
      * @memberof UpdateUserRequest
      */
     avatarUrl?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateUserRequest
-     */
-    defaultTeamId?: string | null;
 }
 
 /**
@@ -58,7 +52,6 @@ export function UpdateUserRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'name': json['name'] == null ? undefined : json['name'],
         'avatarUrl': json['avatar_url'] == null ? undefined : json['avatar_url'],
-        'defaultTeamId': json['default_team_id'] == null ? undefined : json['default_team_id'],
     };
 }
 
@@ -75,7 +68,6 @@ export function UpdateUserRequestToJSONTyped(value?: UpdateUserRequest | null, i
         
         'name': value['name'],
         'avatar_url': value['avatarUrl'],
-        'default_team_id': value['defaultTeamId'],
     };
 }
 

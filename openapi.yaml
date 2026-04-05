@@ -258,6 +258,62 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
+  /auth/oidc/{provider}/device/start:
+    post:
+      tags: [auth]
+      summary: Start OIDC device login
+      parameters:
+        - $ref: "#/components/parameters/OIDCProvider"
+      responses:
+        "200":
+          description: Device login started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessDeviceLoginStartResponse"
+        "404":
+          description: Provider not found or device login unsupported
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /auth/oidc/{provider}/device/poll:
+    post:
+      tags: [auth]
+      summary: Poll OIDC device login
+      parameters:
+        - $ref: "#/components/parameters/OIDCProvider"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeviceLoginPollRequest"
+      responses:
+        "200":
+          description: Device login is pending or completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessDeviceLoginPollResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Device login expired, declined, or invalid
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Provider or device login session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
   /auth/logout:
     post:
       tags: [auth]
@@ -305,11 +361,11 @@ paths:
   /auth/region-token:
     post:
       tags: [tenant]
-      summary: Exchange a global user session for a region-scoped token
+      summary: Exchange a user session and explicit team selection for a region-scoped token
       security:
         - bearerAuth: []
       requestBody:
-        required: false
+        required: true
         content:
           application/json:
             schema:
@@ -322,7 +378,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SuccessIssueRegionTokenResponse"
         "400":
-          description: Invalid request
+          description: team_id missing or invalid request
           content:
             application/json:
               schema:
@@ -334,13 +390,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
         "403":
-          description: Active team cannot be resolved
+          description: Team not accessible
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
         "409":
-          description: Active team is not routable
+          description: Team is not routable
           content:
             application/json:
               schema:
@@ -390,49 +446,6 @@ paths:
                 $ref: "#/components/schemas/ErrorEnvelope"
         "401":
           description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorEnvelope"
-  /tenant/active:
-    get:
-      tags: [tenant]
-      summary: Resolve the active team and its routing information
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: team_id
-          in: query
-          required: false
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Active team
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessActiveTeamResponse"
-        "400":
-          description: No active team selected
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorEnvelope"
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorEnvelope"
-        "403":
-          description: Team not accessible
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorEnvelope"
-        "409":
-          description: Active team is not routable
           content:
             application/json:
               schema:
@@ -3134,7 +3147,11 @@ components:
             When set, browser login for this provider should redirect to this external URL
             instead of initiating the OIDC flow directly. Used for deployments that host
             their own authorization portal.
-      required: [id, name, type]
+        browser_login_enabled:
+          type: boolean
+        device_login_enabled:
+          type: boolean
+      required: [id, name, type, browser_login_enabled, device_login_enabled]
     SuccessAuthProvidersResponse:
       allOf:
         - $ref: "#/components/schemas/SuccessEnvelope"
@@ -3170,7 +3187,7 @@ components:
         home_region_id:
           type: string
           nullable: true
-          description: Required in global-gateway mode because registration creates the user's default team.
+          description: Required in global-gateway mode because registration creates the user's initial team.
       required: [email, password, name]
     RefreshRequest:
       type: object
@@ -3199,9 +3216,6 @@ components:
           format: int64
         user:
           $ref: "#/components/schemas/User"
-        regional_session:
-          $ref: "#/components/schemas/RegionalSession"
-          nullable: true
       required: [access_token, refresh_token, expires_at, user]
     SuccessLoginResponse:
       allOf:
@@ -3210,6 +3224,57 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/LoginResponse"
+    DeviceLoginStartResponse:
+      type: object
+      properties:
+        device_login_id:
+          type: string
+        user_code:
+          type: string
+        verification_uri:
+          type: string
+        verification_uri_complete:
+          type: string
+        expires_at:
+          type: integer
+          format: int64
+        interval_seconds:
+          type: integer
+      required: [device_login_id, user_code, verification_uri, expires_at, interval_seconds]
+    SuccessDeviceLoginStartResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/DeviceLoginStartResponse"
+    DeviceLoginPollRequest:
+      type: object
+      properties:
+        device_login_id:
+          type: string
+      required: [device_login_id]
+    DeviceLoginPollResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [pending, slow_down, completed]
+        interval_seconds:
+          type: integer
+        expires_at:
+          type: integer
+          format: int64
+        login:
+          $ref: "#/components/schemas/LoginResponse"
+      required: [status]
+    SuccessDeviceLoginPollResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/DeviceLoginPollResponse"
     User:
       type: object
       properties:
@@ -3222,13 +3287,6 @@ components:
           type: string
         avatar_url:
           type: string
-          nullable: true
-        default_team_id:
-          type: string
-          nullable: true
-        default_team:
-          allOf:
-            - $ref: "#/components/schemas/Team"
           nullable: true
         email_verified:
           type: boolean
@@ -3255,9 +3313,6 @@ components:
           type: string
         avatar_url:
           type: string
-        default_team_id:
-          type: string
-          nullable: true
     SuccessUserResponse:
       allOf:
         - $ref: "#/components/schemas/SuccessEnvelope"
@@ -3265,35 +3320,12 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/User"
-    ActiveTeam:
-      type: object
-      properties:
-        user_id:
-          type: string
-        team_id:
-          type: string
-        team_role:
-          type: string
-        home_region_id:
-          type: string
-        default_team:
-          type: boolean
-        regional_gateway_url:
-          type: string
-          nullable: true
-      required: [user_id, team_id, home_region_id]
-    SuccessActiveTeamResponse:
-      allOf:
-        - $ref: "#/components/schemas/SuccessEnvelope"
-        - type: object
-          properties:
-            data:
-              $ref: "#/components/schemas/ActiveTeam"
     IssueRegionTokenRequest:
       type: object
       properties:
         team_id:
           type: string
+      required: [team_id]
     RegionalSession:
       type: object
       properties:

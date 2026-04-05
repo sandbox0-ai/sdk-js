@@ -10,8 +10,6 @@ Name | Type
 `email` | string
 `name` | string
 `avatarUrl` | string
-`defaultTeamId` | string
-`defaultTeam` | [Team](Team.md)
 `emailVerified` | boolean
 `isAdmin` | boolean
 `createdAt` | Date
@@ -28,8 +26,6 @@ const example = {
   "email": null,
   "name": null,
   "avatarUrl": null,
-  "defaultTeamId": null,
-  "defaultTeam": null,
   "emailVerified": null,
   "isAdmin": null,
   "createdAt": null,

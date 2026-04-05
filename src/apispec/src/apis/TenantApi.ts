@@ -17,7 +17,6 @@ import * as runtime from '../runtime';
 import type {
   ErrorEnvelope,
   IssueRegionTokenRequest,
-  SuccessActiveTeamResponse,
   SuccessIssueRegionTokenResponse,
 } from '../models/index';
 import {
@@ -25,18 +24,12 @@ import {
     ErrorEnvelopeToJSON,
     IssueRegionTokenRequestFromJSON,
     IssueRegionTokenRequestToJSON,
-    SuccessActiveTeamResponseFromJSON,
-    SuccessActiveTeamResponseToJSON,
     SuccessIssueRegionTokenResponseFromJSON,
     SuccessIssueRegionTokenResponseToJSON,
 } from '../models/index';
 
 export interface AuthRegionTokenPostRequest {
-    issueRegionTokenRequest?: IssueRegionTokenRequest;
-}
-
-export interface TenantActiveGetRequest {
-    teamId?: string;
+    issueRegionTokenRequest: IssueRegionTokenRequest;
 }
 
 /**
@@ -45,9 +38,16 @@ export interface TenantActiveGetRequest {
 export class TenantApi extends runtime.BaseAPI {
 
     /**
-     * Exchange a global user session for a region-scoped token
+     * Exchange a user session and explicit team selection for a region-scoped token
      */
     async authRegionTokenPostRaw(requestParameters: AuthRegionTokenPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessIssueRegionTokenResponse>> {
+        if (requestParameters['issueRegionTokenRequest'] == null) {
+            throw new runtime.RequiredError(
+                'issueRegionTokenRequest',
+                'Required parameter "issueRegionTokenRequest" was null or undefined when calling authRegionTokenPost().'
+            );
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -77,51 +77,10 @@ export class TenantApi extends runtime.BaseAPI {
     }
 
     /**
-     * Exchange a global user session for a region-scoped token
+     * Exchange a user session and explicit team selection for a region-scoped token
      */
-    async authRegionTokenPost(requestParameters: AuthRegionTokenPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessIssueRegionTokenResponse> {
+    async authRegionTokenPost(requestParameters: AuthRegionTokenPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessIssueRegionTokenResponse> {
         const response = await this.authRegionTokenPostRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Resolve the active team and its routing information
-     */
-    async tenantActiveGetRaw(requestParameters: TenantActiveGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessActiveTeamResponse>> {
-        const queryParameters: any = {};
-
-        if (requestParameters['teamId'] != null) {
-            queryParameters['team_id'] = requestParameters['teamId'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/tenant/active`;
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessActiveTeamResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Resolve the active team and its routing information
-     */
-    async tenantActiveGet(requestParameters: TenantActiveGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessActiveTeamResponse> {
-        const response = await this.tenantActiveGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

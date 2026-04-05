@@ -57,6 +57,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 *AuthApi* | [**authLoginPost**](docs/AuthApi.md#authloginpost) | **POST** /auth/login | Login with email and password
 *AuthApi* | [**authLogoutPost**](docs/AuthApi.md#authlogoutpost) | **POST** /auth/logout | Logout
 *AuthApi* | [**authOidcProviderCallbackGet**](docs/AuthApi.md#authoidcprovidercallbackget) | **GET** /auth/oidc/{provider}/callback | OIDC callback
+*AuthApi* | [**authOidcProviderDevicePollPost**](docs/AuthApi.md#authoidcproviderdevicepollpost) | **POST** /auth/oidc/{provider}/device/poll | Poll OIDC device login
+*AuthApi* | [**authOidcProviderDeviceStartPost**](docs/AuthApi.md#authoidcproviderdevicestartpost) | **POST** /auth/oidc/{provider}/device/start | Start OIDC device login
 *AuthApi* | [**authOidcProviderLoginGet**](docs/AuthApi.md#authoidcproviderloginget) | **GET** /auth/oidc/{provider}/login | Initiate OIDC login
 *AuthApi* | [**authProvidersGet**](docs/AuthApi.md#authprovidersget) | **GET** /auth/providers | Get available auth providers
 *AuthApi* | [**authRefreshPost**](docs/AuthApi.md#authrefreshpost) | **POST** /auth/refresh | Refresh access token
@@ -143,8 +145,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *TemplatesApi* | [**apiV1TemplatesIdGet**](docs/TemplatesApi.md#apiv1templatesidget) | **GET** /api/v1/templates/{id} | Get template
 *TemplatesApi* | [**apiV1TemplatesIdPut**](docs/TemplatesApi.md#apiv1templatesidput) | **PUT** /api/v1/templates/{id} | Update template
 *TemplatesApi* | [**apiV1TemplatesPost**](docs/TemplatesApi.md#apiv1templatespost) | **POST** /api/v1/templates | Create template
-*TenantApi* | [**authRegionTokenPost**](docs/TenantApi.md#authregiontokenpost) | **POST** /auth/region-token | Exchange a global user session for a region-scoped token
-*TenantApi* | [**tenantActiveGet**](docs/TenantApi.md#tenantactiveget) | **GET** /tenant/active | Resolve the active team and its routing information
+*TenantApi* | [**authRegionTokenPost**](docs/TenantApi.md#authregiontokenpost) | **POST** /auth/region-token | Exchange a user session and explicit team selection for a region-scoped token
 *UsersApi* | [**usersMeGet**](docs/UsersApi.md#usersmeget) | **GET** /users/me | Get current user
 *UsersApi* | [**usersMeIdentitiesGet**](docs/UsersApi.md#usersmeidentitiesget) | **GET** /users/me/identities | List current user identities
 *UsersApi* | [**usersMeIdentitiesIdDelete**](docs/UsersApi.md#usersmeidentitiesiddelete) | **DELETE** /users/me/identities/{id} | Delete a user identity
@@ -164,7 +165,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 ### Models
 
 - [APIKey](docs/APIKey.md)
-- [ActiveTeam](docs/ActiveTeam.md)
 - [AddTeamMemberRequest](docs/AddTeamMemberRequest.md)
 - [Affinity](docs/Affinity.md)
 - [ApiV1SandboxesIdFilesGet200Response](docs/ApiV1SandboxesIdFilesGet200Response.md)
@@ -206,6 +206,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [CredentialSourceResolverKind](docs/CredentialSourceResolverKind.md)
 - [CredentialSourceWriteRequest](docs/CredentialSourceWriteRequest.md)
 - [CredentialSourceWriteSpec](docs/CredentialSourceWriteSpec.md)
+- [DeviceLoginPollRequest](docs/DeviceLoginPollRequest.md)
+- [DeviceLoginPollResponse](docs/DeviceLoginPollResponse.md)
+- [DeviceLoginStartResponse](docs/DeviceLoginStartResponse.md)
 - [EgressAuthFailurePolicy](docs/EgressAuthFailurePolicy.md)
 - [EgressAuthProtocol](docs/EgressAuthProtocol.md)
 - [EgressAuthRolloutMode](docs/EgressAuthRolloutMode.md)
@@ -306,7 +309,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [StaticUsernamePasswordSourceSpec](docs/StaticUsernamePasswordSourceSpec.md)
 - [SuccessAPIKeyListResponse](docs/SuccessAPIKeyListResponse.md)
 - [SuccessAPIKeyListResponseAllOfData](docs/SuccessAPIKeyListResponseAllOfData.md)
-- [SuccessActiveTeamResponse](docs/SuccessActiveTeamResponse.md)
 - [SuccessAuthProvidersResponse](docs/SuccessAuthProvidersResponse.md)
 - [SuccessAuthProvidersResponseAllOfData](docs/SuccessAuthProvidersResponseAllOfData.md)
 - [SuccessClaimResponse](docs/SuccessClaimResponse.md)
@@ -322,6 +324,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessCredentialSourceResponse](docs/SuccessCredentialSourceResponse.md)
 - [SuccessDeletedResponse](docs/SuccessDeletedResponse.md)
 - [SuccessDeletedResponseAllOfData](docs/SuccessDeletedResponseAllOfData.md)
+- [SuccessDeviceLoginPollResponse](docs/SuccessDeviceLoginPollResponse.md)
+- [SuccessDeviceLoginStartResponse](docs/SuccessDeviceLoginStartResponse.md)
 - [SuccessEnvelope](docs/SuccessEnvelope.md)
 - [SuccessExposedPortsResponse](docs/SuccessExposedPortsResponse.md)
 - [SuccessExposedPortsResponseAllOfData](docs/SuccessExposedPortsResponseAllOfData.md)

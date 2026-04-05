@@ -10,7 +10,6 @@ Name | Type
 `refreshToken` | string
 `expiresAt` | number
 `user` | [User](User.md)
-`regionalSession` | [RegionalSession](RegionalSession.md)
 
 ## Example
 
@@ -23,7 +22,6 @@ const example = {
   "refreshToken": null,
   "expiresAt": null,
   "user": null,
-  "regionalSession": null,
 } satisfies LoginResponse
 
 console.log(example)

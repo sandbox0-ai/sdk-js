@@ -38,7 +38,7 @@ export interface RegisterRequest {
      */
     name: string;
     /**
-     * Required in global-gateway mode because registration creates the user's default team.
+     * Required in global-gateway mode because registration creates the user's initial team.
      * @type {string}
      * @memberof RegisterRequest
      */

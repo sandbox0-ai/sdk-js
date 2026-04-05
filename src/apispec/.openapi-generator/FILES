@@ -2,7 +2,6 @@
 .npmignore
 README.md
 docs/APIKey.md
-docs/ActiveTeam.md
 docs/AddTeamMemberRequest.md
 docs/Affinity.md
 docs/ApiKeysApi.md
@@ -48,6 +47,9 @@ docs/CredentialSourceResolverKind.md
 docs/CredentialSourceWriteRequest.md
 docs/CredentialSourceWriteSpec.md
 docs/CredentialSourcesApi.md
+docs/DeviceLoginPollRequest.md
+docs/DeviceLoginPollResponse.md
+docs/DeviceLoginStartResponse.md
 docs/EgressAuthFailurePolicy.md
 docs/EgressAuthProtocol.md
 docs/EgressAuthRolloutMode.md
@@ -155,7 +157,6 @@ docs/StaticTLSClientCertificateSourceSpec.md
 docs/StaticUsernamePasswordSourceSpec.md
 docs/SuccessAPIKeyListResponse.md
 docs/SuccessAPIKeyListResponseAllOfData.md
-docs/SuccessActiveTeamResponse.md
 docs/SuccessAuthProvidersResponse.md
 docs/SuccessAuthProvidersResponseAllOfData.md
 docs/SuccessClaimResponse.md
@@ -171,6 +172,8 @@ docs/SuccessCredentialSourceListResponse.md
 docs/SuccessCredentialSourceResponse.md
 docs/SuccessDeletedResponse.md
 docs/SuccessDeletedResponseAllOfData.md
+docs/SuccessDeviceLoginPollResponse.md
+docs/SuccessDeviceLoginStartResponse.md
 docs/SuccessEnvelope.md
 docs/SuccessExposedPortsResponse.md
 docs/SuccessExposedPortsResponseAllOfData.md
@@ -297,7 +300,6 @@ src/apis/VolumeSyncApi.ts
 src/apis/index.ts
 src/index.ts
 src/models/APIKey.ts
-src/models/ActiveTeam.ts
 src/models/AddTeamMemberRequest.ts
 src/models/Affinity.ts
 src/models/ApiV1SandboxesIdFilesGet200Response.ts
@@ -339,6 +341,9 @@ src/models/CredentialSourceMetadata.ts
 src/models/CredentialSourceResolverKind.ts
 src/models/CredentialSourceWriteRequest.ts
 src/models/CredentialSourceWriteSpec.ts
+src/models/DeviceLoginPollRequest.ts
+src/models/DeviceLoginPollResponse.ts
+src/models/DeviceLoginStartResponse.ts
 src/models/EgressAuthFailurePolicy.ts
 src/models/EgressAuthProtocol.ts
 src/models/EgressAuthRolloutMode.ts
@@ -439,7 +444,6 @@ src/models/StaticTLSClientCertificateSourceSpec.ts
 src/models/StaticUsernamePasswordSourceSpec.ts
 src/models/SuccessAPIKeyListResponse.ts
 src/models/SuccessAPIKeyListResponseAllOfData.ts
-src/models/SuccessActiveTeamResponse.ts
 src/models/SuccessAuthProvidersResponse.ts
 src/models/SuccessAuthProvidersResponseAllOfData.ts
 src/models/SuccessClaimResponse.ts
@@ -455,6 +459,8 @@ src/models/SuccessCredentialSourceListResponse.ts
 src/models/SuccessCredentialSourceResponse.ts
 src/models/SuccessDeletedResponse.ts
 src/models/SuccessDeletedResponseAllOfData.ts
+src/models/SuccessDeviceLoginPollResponse.ts
+src/models/SuccessDeviceLoginStartResponse.ts
 src/models/SuccessEnvelope.ts
 src/models/SuccessExposedPortsResponse.ts
 src/models/SuccessExposedPortsResponseAllOfData.ts

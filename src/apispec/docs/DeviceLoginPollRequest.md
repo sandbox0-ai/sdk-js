@@ -1,32 +1,22 @@
 
-# AuthProvider
+# DeviceLoginPollRequest
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`id` | string
-`name` | string
-`type` | string
-`externalAuthPortalUrl` | string
-`browserLoginEnabled` | boolean
-`deviceLoginEnabled` | boolean
+`deviceLoginId` | string
 
 ## Example
 
 ```typescript
-import type { AuthProvider } from 'sandbox0'
+import type { DeviceLoginPollRequest } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "id": null,
-  "name": null,
-  "type": null,
-  "externalAuthPortalUrl": null,
-  "browserLoginEnabled": null,
-  "deviceLoginEnabled": null,
-} satisfies AuthProvider
+  "deviceLoginId": null,
+} satisfies DeviceLoginPollRequest
 
 console.log(example)
 
@@ -35,7 +25,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as AuthProvider
+const exampleParsed = JSON.parse(exampleJSON) as DeviceLoginPollRequest
 console.log(exampleParsed)
 ```
 

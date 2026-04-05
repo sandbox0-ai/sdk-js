@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './APIKey';
-export * from './ActiveTeam';
 export * from './AddTeamMemberRequest';
 export * from './Affinity';
 export * from './ApiV1SandboxesIdFilesGet200Response';
@@ -43,6 +42,9 @@ export * from './CredentialSourceMetadata';
 export * from './CredentialSourceResolverKind';
 export * from './CredentialSourceWriteRequest';
 export * from './CredentialSourceWriteSpec';
+export * from './DeviceLoginPollRequest';
+export * from './DeviceLoginPollResponse';
+export * from './DeviceLoginStartResponse';
 export * from './EgressAuthFailurePolicy';
 export * from './EgressAuthProtocol';
 export * from './EgressAuthRolloutMode';
@@ -143,7 +145,6 @@ export * from './StaticTLSClientCertificateSourceSpec';
 export * from './StaticUsernamePasswordSourceSpec';
 export * from './SuccessAPIKeyListResponse';
 export * from './SuccessAPIKeyListResponseAllOfData';
-export * from './SuccessActiveTeamResponse';
 export * from './SuccessAuthProvidersResponse';
 export * from './SuccessAuthProvidersResponseAllOfData';
 export * from './SuccessClaimResponse';
@@ -159,6 +160,8 @@ export * from './SuccessCredentialSourceListResponse';
 export * from './SuccessCredentialSourceResponse';
 export * from './SuccessDeletedResponse';
 export * from './SuccessDeletedResponseAllOfData';
+export * from './SuccessDeviceLoginPollResponse';
+export * from './SuccessDeviceLoginStartResponse';
 export * from './SuccessEnvelope';
 export * from './SuccessExposedPortsResponse';
 export * from './SuccessExposedPortsResponseAllOfData';

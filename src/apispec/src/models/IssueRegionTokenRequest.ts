@@ -24,13 +24,14 @@ export interface IssueRegionTokenRequest {
      * @type {string}
      * @memberof IssueRegionTokenRequest
      */
-    teamId?: string;
+    teamId: string;
 }
 
 /**
  * Check if a given object implements the IssueRegionTokenRequest interface.
  */
 export function instanceOfIssueRegionTokenRequest(value: object): value is IssueRegionTokenRequest {
+    if (!('teamId' in value) || value['teamId'] === undefined) return false;
     return true;
 }
 
@@ -44,7 +45,7 @@ export function IssueRegionTokenRequestFromJSONTyped(json: any, ignoreDiscrimina
     }
     return {
         
-        'teamId': json['team_id'] == null ? undefined : json['team_id'],
+        'teamId': json['team_id'],
     };
 }
 

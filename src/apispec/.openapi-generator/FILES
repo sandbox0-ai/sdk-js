@@ -79,8 +79,6 @@ docs/HTTPHeader.md
 docs/HTTPHeadersProjection.md
 docs/HealthApi.md
 docs/Identity.md
-docs/IssueRegionTokenRequest.md
-docs/IssueRegionTokenResponse.md
 docs/LabelSelector.md
 docs/LabelSelectorRequirement.md
 docs/LifecyclePolicy.md
@@ -121,7 +119,6 @@ docs/REPLReadyMode.md
 docs/RefreshRequest.md
 docs/RefreshResponse.md
 docs/Region.md
-docs/RegionalSession.md
 docs/RegionsApi.md
 docs/RegisterRequest.md
 docs/RegistryApi.md
@@ -187,7 +184,6 @@ docs/SuccessHealthResponse.md
 docs/SuccessHealthResponseAllOfData.md
 docs/SuccessIdentityListResponse.md
 docs/SuccessIdentityListResponseAllOfData.md
-docs/SuccessIssueRegionTokenResponse.md
 docs/SuccessLoginResponse.md
 docs/SuccessMessageResponse.md
 docs/SuccessMessageResponseAllOfData.md
@@ -250,7 +246,6 @@ docs/Template.md
 docs/TemplateCreateRequest.md
 docs/TemplateUpdateRequest.md
 docs/TemplatesApi.md
-docs/TenantApi.md
 docs/Toleration.md
 docs/TrafficRule.md
 docs/TrafficRuleAction.md
@@ -294,7 +289,6 @@ src/apis/SandboxesApi.ts
 src/apis/SnapshotsApi.ts
 src/apis/TeamsApi.ts
 src/apis/TemplatesApi.ts
-src/apis/TenantApi.ts
 src/apis/UsersApi.ts
 src/apis/VolumeSyncApi.ts
 src/apis/index.ts
@@ -371,8 +365,6 @@ src/models/HTTPGetAction.ts
 src/models/HTTPHeader.ts
 src/models/HTTPHeadersProjection.ts
 src/models/Identity.ts
-src/models/IssueRegionTokenRequest.ts
-src/models/IssueRegionTokenResponse.ts
 src/models/LabelSelector.ts
 src/models/LabelSelectorRequirement.ts
 src/models/LifecyclePolicy.ts
@@ -413,7 +405,6 @@ src/models/REPLReadyMode.ts
 src/models/RefreshRequest.ts
 src/models/RefreshResponse.ts
 src/models/Region.ts
-src/models/RegionalSession.ts
 src/models/RegisterRequest.ts
 src/models/RegistryCredentials.ts
 src/models/ResizeContextRequest.ts
@@ -474,7 +465,6 @@ src/models/SuccessHealthResponse.ts
 src/models/SuccessHealthResponseAllOfData.ts
 src/models/SuccessIdentityListResponse.ts
 src/models/SuccessIdentityListResponseAllOfData.ts
-src/models/SuccessIssueRegionTokenResponse.ts
 src/models/SuccessLoginResponse.ts
 src/models/SuccessMessageResponse.ts
 src/models/SuccessMessageResponseAllOfData.ts

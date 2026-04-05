@@ -145,7 +145,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 *TemplatesApi* | [**apiV1TemplatesIdGet**](docs/TemplatesApi.md#apiv1templatesidget) | **GET** /api/v1/templates/{id} | Get template
 *TemplatesApi* | [**apiV1TemplatesIdPut**](docs/TemplatesApi.md#apiv1templatesidput) | **PUT** /api/v1/templates/{id} | Update template
 *TemplatesApi* | [**apiV1TemplatesPost**](docs/TemplatesApi.md#apiv1templatespost) | **POST** /api/v1/templates | Create template
-*TenantApi* | [**authRegionTokenPost**](docs/TenantApi.md#authregiontokenpost) | **POST** /auth/region-token | Exchange a user session and explicit team selection for a region-scoped token
 *UsersApi* | [**usersMeGet**](docs/UsersApi.md#usersmeget) | **GET** /users/me | Get current user
 *UsersApi* | [**usersMeIdentitiesGet**](docs/UsersApi.md#usersmeidentitiesget) | **GET** /users/me/identities | List current user identities
 *UsersApi* | [**usersMeIdentitiesIdDelete**](docs/UsersApi.md#usersmeidentitiesiddelete) | **DELETE** /users/me/identities/{id} | Delete a user identity
@@ -236,8 +235,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [HTTPHeader](docs/HTTPHeader.md)
 - [HTTPHeadersProjection](docs/HTTPHeadersProjection.md)
 - [Identity](docs/Identity.md)
-- [IssueRegionTokenRequest](docs/IssueRegionTokenRequest.md)
-- [IssueRegionTokenResponse](docs/IssueRegionTokenResponse.md)
 - [LabelSelector](docs/LabelSelector.md)
 - [LabelSelectorRequirement](docs/LabelSelectorRequirement.md)
 - [LifecyclePolicy](docs/LifecyclePolicy.md)
@@ -278,7 +275,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [RefreshRequest](docs/RefreshRequest.md)
 - [RefreshResponse](docs/RefreshResponse.md)
 - [Region](docs/Region.md)
-- [RegionalSession](docs/RegionalSession.md)
 - [RegisterRequest](docs/RegisterRequest.md)
 - [RegistryCredentials](docs/RegistryCredentials.md)
 - [ResizeContextRequest](docs/ResizeContextRequest.md)
@@ -339,7 +335,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessHealthResponseAllOfData](docs/SuccessHealthResponseAllOfData.md)
 - [SuccessIdentityListResponse](docs/SuccessIdentityListResponse.md)
 - [SuccessIdentityListResponseAllOfData](docs/SuccessIdentityListResponseAllOfData.md)
-- [SuccessIssueRegionTokenResponse](docs/SuccessIssueRegionTokenResponse.md)
 - [SuccessLoginResponse](docs/SuccessLoginResponse.md)
 - [SuccessMessageResponse](docs/SuccessMessageResponse.md)
 - [SuccessMessageResponseAllOfData](docs/SuccessMessageResponseAllOfData.md)

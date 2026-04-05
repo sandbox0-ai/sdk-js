@@ -1,22 +1,24 @@
 
-# IssueRegionTokenRequest
+# SuccessDeviceLoginPollResponse
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`teamId` | string
+`success` | boolean
+`data` | [DeviceLoginPollResponse](DeviceLoginPollResponse.md)
 
 ## Example
 
 ```typescript
-import type { IssueRegionTokenRequest } from 'sandbox0'
+import type { SuccessDeviceLoginPollResponse } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "teamId": null,
-} satisfies IssueRegionTokenRequest
+  "success": null,
+  "data": null,
+} satisfies SuccessDeviceLoginPollResponse
 
 console.log(example)
 
@@ -25,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as IssueRegionTokenRequest
+const exampleParsed = JSON.parse(exampleJSON) as SuccessDeviceLoginPollResponse
 console.log(exampleParsed)
 ```
 

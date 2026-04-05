@@ -13,6 +13,5 @@ export * from './SandboxesApi';
 export * from './SnapshotsApi';
 export * from './TeamsApi';
 export * from './TemplatesApi';
-export * from './TenantApi';
 export * from './UsersApi';
 export * from './VolumeSyncApi';

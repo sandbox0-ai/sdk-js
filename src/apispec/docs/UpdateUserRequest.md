@@ -8,7 +8,6 @@ Name | Type
 ------------ | -------------
 `name` | string
 `avatarUrl` | string
-`defaultTeamId` | string
 
 ## Example
 
@@ -19,7 +18,6 @@ import type { UpdateUserRequest } from 'sandbox0'
 const example = {
   "name": null,
   "avatarUrl": null,
-  "defaultTeamId": null,
 } satisfies UpdateUserRequest
 
 console.log(example)

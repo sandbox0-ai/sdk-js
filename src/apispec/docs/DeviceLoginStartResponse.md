@@ -1,28 +1,32 @@
 
-# RegionalSession
+# DeviceLoginStartResponse
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`regionId` | string
-`regionalGatewayUrl` | string
-`token` | string
+`deviceLoginId` | string
+`userCode` | string
+`verificationUri` | string
+`verificationUriComplete` | string
 `expiresAt` | number
+`intervalSeconds` | number
 
 ## Example
 
 ```typescript
-import type { RegionalSession } from 'sandbox0'
+import type { DeviceLoginStartResponse } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "regionId": null,
-  "regionalGatewayUrl": null,
-  "token": null,
+  "deviceLoginId": null,
+  "userCode": null,
+  "verificationUri": null,
+  "verificationUriComplete": null,
   "expiresAt": null,
-} satisfies RegionalSession
+  "intervalSeconds": null,
+} satisfies DeviceLoginStartResponse
 
 console.log(example)
 
@@ -31,7 +35,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as RegionalSession
+const exampleParsed = JSON.parse(exampleJSON) as DeviceLoginStartResponse
 console.log(exampleParsed)
 ```
 

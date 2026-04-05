@@ -1,28 +1,28 @@
 
-# IssueRegionTokenResponse
+# DeviceLoginPollResponse
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`regionId` | string
-`regionalGatewayUrl` | string
-`token` | string
+`status` | string
+`intervalSeconds` | number
 `expiresAt` | number
+`login` | [LoginResponse](LoginResponse.md)
 
 ## Example
 
 ```typescript
-import type { IssueRegionTokenResponse } from 'sandbox0'
+import type { DeviceLoginPollResponse } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "regionId": null,
-  "regionalGatewayUrl": null,
-  "token": null,
+  "status": null,
+  "intervalSeconds": null,
   "expiresAt": null,
-} satisfies IssueRegionTokenResponse
+  "login": null,
+} satisfies DeviceLoginPollResponse
 
 console.log(example)
 
@@ -31,7 +31,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as IssueRegionTokenResponse
+const exampleParsed = JSON.parse(exampleJSON) as DeviceLoginPollResponse
 console.log(exampleParsed)
 ```
 

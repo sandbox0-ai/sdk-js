@@ -2,7 +2,6 @@
 .npmignore
 README.md
 docs/APIKey.md
-docs/ActiveTeam.md
 docs/AddTeamMemberRequest.md
 docs/Affinity.md
 docs/ApiKeysApi.md
@@ -48,6 +47,9 @@ docs/CredentialSourceResolverKind.md
 docs/CredentialSourceWriteRequest.md
 docs/CredentialSourceWriteSpec.md
 docs/CredentialSourcesApi.md
+docs/DeviceLoginPollRequest.md
+docs/DeviceLoginPollResponse.md
+docs/DeviceLoginStartResponse.md
 docs/EgressAuthFailurePolicy.md
 docs/EgressAuthProtocol.md
 docs/EgressAuthRolloutMode.md
@@ -77,8 +79,6 @@ docs/HTTPHeader.md
 docs/HTTPHeadersProjection.md
 docs/HealthApi.md
 docs/Identity.md
-docs/IssueRegionTokenRequest.md
-docs/IssueRegionTokenResponse.md
 docs/LabelSelector.md
 docs/LabelSelectorRequirement.md
 docs/LifecyclePolicy.md
@@ -119,7 +119,6 @@ docs/REPLReadyMode.md
 docs/RefreshRequest.md
 docs/RefreshResponse.md
 docs/Region.md
-docs/RegionalSession.md
 docs/RegionsApi.md
 docs/RegisterRequest.md
 docs/RegistryApi.md
@@ -155,7 +154,6 @@ docs/StaticTLSClientCertificateSourceSpec.md
 docs/StaticUsernamePasswordSourceSpec.md
 docs/SuccessAPIKeyListResponse.md
 docs/SuccessAPIKeyListResponseAllOfData.md
-docs/SuccessActiveTeamResponse.md
 docs/SuccessAuthProvidersResponse.md
 docs/SuccessAuthProvidersResponseAllOfData.md
 docs/SuccessClaimResponse.md
@@ -171,6 +169,8 @@ docs/SuccessCredentialSourceListResponse.md
 docs/SuccessCredentialSourceResponse.md
 docs/SuccessDeletedResponse.md
 docs/SuccessDeletedResponseAllOfData.md
+docs/SuccessDeviceLoginPollResponse.md
+docs/SuccessDeviceLoginStartResponse.md
 docs/SuccessEnvelope.md
 docs/SuccessExposedPortsResponse.md
 docs/SuccessExposedPortsResponseAllOfData.md
@@ -184,7 +184,6 @@ docs/SuccessHealthResponse.md
 docs/SuccessHealthResponseAllOfData.md
 docs/SuccessIdentityListResponse.md
 docs/SuccessIdentityListResponseAllOfData.md
-docs/SuccessIssueRegionTokenResponse.md
 docs/SuccessLoginResponse.md
 docs/SuccessMessageResponse.md
 docs/SuccessMessageResponseAllOfData.md
@@ -247,7 +246,6 @@ docs/Template.md
 docs/TemplateCreateRequest.md
 docs/TemplateUpdateRequest.md
 docs/TemplatesApi.md
-docs/TenantApi.md
 docs/Toleration.md
 docs/TrafficRule.md
 docs/TrafficRuleAction.md
@@ -291,13 +289,11 @@ src/apis/SandboxesApi.ts
 src/apis/SnapshotsApi.ts
 src/apis/TeamsApi.ts
 src/apis/TemplatesApi.ts
-src/apis/TenantApi.ts
 src/apis/UsersApi.ts
 src/apis/VolumeSyncApi.ts
 src/apis/index.ts
 src/index.ts
 src/models/APIKey.ts
-src/models/ActiveTeam.ts
 src/models/AddTeamMemberRequest.ts
 src/models/Affinity.ts
 src/models/ApiV1SandboxesIdFilesGet200Response.ts
@@ -339,6 +335,9 @@ src/models/CredentialSourceMetadata.ts
 src/models/CredentialSourceResolverKind.ts
 src/models/CredentialSourceWriteRequest.ts
 src/models/CredentialSourceWriteSpec.ts
+src/models/DeviceLoginPollRequest.ts
+src/models/DeviceLoginPollResponse.ts
+src/models/DeviceLoginStartResponse.ts
 src/models/EgressAuthFailurePolicy.ts
 src/models/EgressAuthProtocol.ts
 src/models/EgressAuthRolloutMode.ts
@@ -366,8 +365,6 @@ src/models/HTTPGetAction.ts
 src/models/HTTPHeader.ts
 src/models/HTTPHeadersProjection.ts
 src/models/Identity.ts
-src/models/IssueRegionTokenRequest.ts
-src/models/IssueRegionTokenResponse.ts
 src/models/LabelSelector.ts
 src/models/LabelSelectorRequirement.ts
 src/models/LifecyclePolicy.ts
@@ -408,7 +405,6 @@ src/models/REPLReadyMode.ts
 src/models/RefreshRequest.ts
 src/models/RefreshResponse.ts
 src/models/Region.ts
-src/models/RegionalSession.ts
 src/models/RegisterRequest.ts
 src/models/RegistryCredentials.ts
 src/models/ResizeContextRequest.ts
@@ -439,7 +435,6 @@ src/models/StaticTLSClientCertificateSourceSpec.ts
 src/models/StaticUsernamePasswordSourceSpec.ts
 src/models/SuccessAPIKeyListResponse.ts
 src/models/SuccessAPIKeyListResponseAllOfData.ts
-src/models/SuccessActiveTeamResponse.ts
 src/models/SuccessAuthProvidersResponse.ts
 src/models/SuccessAuthProvidersResponseAllOfData.ts
 src/models/SuccessClaimResponse.ts
@@ -455,6 +450,8 @@ src/models/SuccessCredentialSourceListResponse.ts
 src/models/SuccessCredentialSourceResponse.ts
 src/models/SuccessDeletedResponse.ts
 src/models/SuccessDeletedResponseAllOfData.ts
+src/models/SuccessDeviceLoginPollResponse.ts
+src/models/SuccessDeviceLoginStartResponse.ts
 src/models/SuccessEnvelope.ts
 src/models/SuccessExposedPortsResponse.ts
 src/models/SuccessExposedPortsResponseAllOfData.ts
@@ -468,7 +465,6 @@ src/models/SuccessHealthResponse.ts
 src/models/SuccessHealthResponseAllOfData.ts
 src/models/SuccessIdentityListResponse.ts
 src/models/SuccessIdentityListResponseAllOfData.ts
-src/models/SuccessIssueRegionTokenResponse.ts
 src/models/SuccessLoginResponse.ts
 src/models/SuccessMessageResponse.ts
 src/models/SuccessMessageResponseAllOfData.ts

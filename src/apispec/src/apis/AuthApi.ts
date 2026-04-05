@@ -16,17 +16,22 @@
 import * as runtime from '../runtime';
 import type {
   ChangePasswordRequest,
+  DeviceLoginPollRequest,
   ErrorEnvelope,
   LoginRequest,
   RefreshRequest,
   RegisterRequest,
   SuccessAuthProvidersResponse,
+  SuccessDeviceLoginPollResponse,
+  SuccessDeviceLoginStartResponse,
   SuccessLoginResponse,
   SuccessMessageResponse,
 } from '../models/index';
 import {
     ChangePasswordRequestFromJSON,
     ChangePasswordRequestToJSON,
+    DeviceLoginPollRequestFromJSON,
+    DeviceLoginPollRequestToJSON,
     ErrorEnvelopeFromJSON,
     ErrorEnvelopeToJSON,
     LoginRequestFromJSON,
@@ -37,6 +42,10 @@ import {
     RegisterRequestToJSON,
     SuccessAuthProvidersResponseFromJSON,
     SuccessAuthProvidersResponseToJSON,
+    SuccessDeviceLoginPollResponseFromJSON,
+    SuccessDeviceLoginPollResponseToJSON,
+    SuccessDeviceLoginStartResponseFromJSON,
+    SuccessDeviceLoginStartResponseToJSON,
     SuccessLoginResponseFromJSON,
     SuccessLoginResponseToJSON,
     SuccessMessageResponseFromJSON,
@@ -55,6 +64,15 @@ export interface AuthOidcProviderCallbackGetRequest {
     provider: string;
     code: string;
     state: string;
+}
+
+export interface AuthOidcProviderDevicePollPostRequest {
+    provider: string;
+    deviceLoginPollRequest: DeviceLoginPollRequest;
+}
+
+export interface AuthOidcProviderDeviceStartPostRequest {
+    provider: string;
 }
 
 export interface AuthOidcProviderLoginGetRequest {
@@ -254,6 +272,90 @@ export class AuthApi extends runtime.BaseAPI {
      */
     async authOidcProviderCallbackGet(requestParameters: AuthOidcProviderCallbackGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessLoginResponse> {
         const response = await this.authOidcProviderCallbackGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Poll OIDC device login
+     */
+    async authOidcProviderDevicePollPostRaw(requestParameters: AuthOidcProviderDevicePollPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessDeviceLoginPollResponse>> {
+        if (requestParameters['provider'] == null) {
+            throw new runtime.RequiredError(
+                'provider',
+                'Required parameter "provider" was null or undefined when calling authOidcProviderDevicePollPost().'
+            );
+        }
+
+        if (requestParameters['deviceLoginPollRequest'] == null) {
+            throw new runtime.RequiredError(
+                'deviceLoginPollRequest',
+                'Required parameter "deviceLoginPollRequest" was null or undefined when calling authOidcProviderDevicePollPost().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/auth/oidc/{provider}/device/poll`;
+        urlPath = urlPath.replace(`{${"provider"}}`, encodeURIComponent(String(requestParameters['provider'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: DeviceLoginPollRequestToJSON(requestParameters['deviceLoginPollRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessDeviceLoginPollResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Poll OIDC device login
+     */
+    async authOidcProviderDevicePollPost(requestParameters: AuthOidcProviderDevicePollPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessDeviceLoginPollResponse> {
+        const response = await this.authOidcProviderDevicePollPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Start OIDC device login
+     */
+    async authOidcProviderDeviceStartPostRaw(requestParameters: AuthOidcProviderDeviceStartPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessDeviceLoginStartResponse>> {
+        if (requestParameters['provider'] == null) {
+            throw new runtime.RequiredError(
+                'provider',
+                'Required parameter "provider" was null or undefined when calling authOidcProviderDeviceStartPost().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/auth/oidc/{provider}/device/start`;
+        urlPath = urlPath.replace(`{${"provider"}}`, encodeURIComponent(String(requestParameters['provider'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessDeviceLoginStartResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Start OIDC device login
+     */
+    async authOidcProviderDeviceStartPost(requestParameters: AuthOidcProviderDeviceStartPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessDeviceLoginStartResponse> {
+        const response = await this.authOidcProviderDeviceStartPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

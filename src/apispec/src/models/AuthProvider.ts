@@ -44,6 +44,18 @@ export interface AuthProvider {
      * @memberof AuthProvider
      */
     externalAuthPortalUrl?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AuthProvider
+     */
+    browserLoginEnabled: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AuthProvider
+     */
+    deviceLoginEnabled: boolean;
 }
 
 /**
@@ -53,6 +65,8 @@ export function instanceOfAuthProvider(value: object): value is AuthProvider {
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
     if (!('type' in value) || value['type'] === undefined) return false;
+    if (!('browserLoginEnabled' in value) || value['browserLoginEnabled'] === undefined) return false;
+    if (!('deviceLoginEnabled' in value) || value['deviceLoginEnabled'] === undefined) return false;
     return true;
 }
 
@@ -70,6 +84,8 @@ export function AuthProviderFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'name': json['name'],
         'type': json['type'],
         'externalAuthPortalUrl': json['external_auth_portal_url'] == null ? undefined : json['external_auth_portal_url'],
+        'browserLoginEnabled': json['browser_login_enabled'],
+        'deviceLoginEnabled': json['device_login_enabled'],
     };
 }
 
@@ -88,6 +104,8 @@ export function AuthProviderToJSONTyped(value?: AuthProvider | null, ignoreDiscr
         'name': value['name'],
         'type': value['type'],
         'external_auth_portal_url': value['externalAuthPortalUrl'],
+        'browser_login_enabled': value['browserLoginEnabled'],
+        'device_login_enabled': value['deviceLoginEnabled'],
     };
 }
 

@@ -8,6 +8,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 | [**authLoginPost**](AuthApi.md#authloginpost) | **POST** /auth/login | Login with email and password |
 | [**authLogoutPost**](AuthApi.md#authlogoutpost) | **POST** /auth/logout | Logout |
 | [**authOidcProviderCallbackGet**](AuthApi.md#authoidcprovidercallbackget) | **GET** /auth/oidc/{provider}/callback | OIDC callback |
+| [**authOidcProviderDevicePollPost**](AuthApi.md#authoidcproviderdevicepollpost) | **POST** /auth/oidc/{provider}/device/poll | Poll OIDC device login |
+| [**authOidcProviderDeviceStartPost**](AuthApi.md#authoidcproviderdevicestartpost) | **POST** /auth/oidc/{provider}/device/start | Start OIDC device login |
 | [**authOidcProviderLoginGet**](AuthApi.md#authoidcproviderloginget) | **GET** /auth/oidc/{provider}/login | Initiate OIDC login |
 | [**authProvidersGet**](AuthApi.md#authprovidersget) | **GET** /auth/providers | Get available auth providers |
 | [**authRefreshPost**](AuthApi.md#authrefreshpost) | **POST** /auth/refresh | Refresh access token |
@@ -285,6 +287,143 @@ No authorization required
 | **200** | Tokens issued |  -  |
 | **400** | Invalid request |  -  |
 | **401** | OIDC authorization failed |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## authOidcProviderDevicePollPost
+
+> SuccessDeviceLoginPollResponse authOidcProviderDevicePollPost(provider, deviceLoginPollRequest)
+
+Poll OIDC device login
+
+### Example
+
+```ts
+import {
+  Configuration,
+  AuthApi,
+} from 'sandbox0';
+import type { AuthOidcProviderDevicePollPostRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const api = new AuthApi();
+
+  const body = {
+    // string
+    provider: provider_example,
+    // DeviceLoginPollRequest
+    deviceLoginPollRequest: ...,
+  } satisfies AuthOidcProviderDevicePollPostRequest;
+
+  try {
+    const data = await api.authOidcProviderDevicePollPost(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **provider** | `string` |  | [Defaults to `undefined`] |
+| **deviceLoginPollRequest** | [DeviceLoginPollRequest](DeviceLoginPollRequest.md) |  | |
+
+### Return type
+
+[**SuccessDeviceLoginPollResponse**](SuccessDeviceLoginPollResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Device login is pending or completed |  -  |
+| **400** | Invalid request |  -  |
+| **401** | Device login expired, declined, or invalid |  -  |
+| **404** | Provider or device login session not found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## authOidcProviderDeviceStartPost
+
+> SuccessDeviceLoginStartResponse authOidcProviderDeviceStartPost(provider)
+
+Start OIDC device login
+
+### Example
+
+```ts
+import {
+  Configuration,
+  AuthApi,
+} from 'sandbox0';
+import type { AuthOidcProviderDeviceStartPostRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const api = new AuthApi();
+
+  const body = {
+    // string
+    provider: provider_example,
+  } satisfies AuthOidcProviderDeviceStartPostRequest;
+
+  try {
+    const data = await api.authOidcProviderDeviceStartPost(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **provider** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+[**SuccessDeviceLoginStartResponse**](SuccessDeviceLoginStartResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Device login started |  -  |
+| **404** | Provider not found or device login unsupported |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

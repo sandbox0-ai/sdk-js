@@ -10,6 +10,8 @@ Name | Type
 `teamId` | string
 `userId` | string
 `sourceVolumeId` | string
+`defaultPosixUid` | number
+`defaultPosixGid` | number
 `cacheSize` | string
 `prefetch` | number
 `bufferSize` | string
@@ -29,6 +31,8 @@ const example = {
   "teamId": null,
   "userId": null,
   "sourceVolumeId": null,
+  "defaultPosixUid": null,
+  "defaultPosixGid": null,
   "cacheSize": null,
   "prefetch": null,
   "bufferSize": null,

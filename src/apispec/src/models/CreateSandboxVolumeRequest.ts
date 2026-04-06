@@ -28,6 +28,18 @@ import {
  */
 export interface CreateSandboxVolumeRequest {
     /**
+     * Default POSIX UID used by external volume access paths that do not carry caller identity. Defaults to 0 when omitted on create.
+     * @type {number}
+     * @memberof CreateSandboxVolumeRequest
+     */
+    defaultPosixUid?: number;
+    /**
+     * Default POSIX GID used by external volume access paths that do not carry caller identity. Defaults to 0 when omitted on create.
+     * @type {number}
+     * @memberof CreateSandboxVolumeRequest
+     */
+    defaultPosixGid?: number;
+    /**
      * 
      * @type {string}
      * @memberof CreateSandboxVolumeRequest
@@ -78,6 +90,8 @@ export function CreateSandboxVolumeRequestFromJSONTyped(json: any, ignoreDiscrim
     }
     return {
         
+        'defaultPosixUid': json['default_posix_uid'] == null ? undefined : json['default_posix_uid'],
+        'defaultPosixGid': json['default_posix_gid'] == null ? undefined : json['default_posix_gid'],
         'cacheSize': json['cache_size'] == null ? undefined : json['cache_size'],
         'prefetch': json['prefetch'] == null ? undefined : json['prefetch'],
         'bufferSize': json['buffer_size'] == null ? undefined : json['buffer_size'],
@@ -97,6 +111,8 @@ export function CreateSandboxVolumeRequestToJSONTyped(value?: CreateSandboxVolum
 
     return {
         
+        'default_posix_uid': value['defaultPosixUid'],
+        'default_posix_gid': value['defaultPosixGid'],
         'cache_size': value['cacheSize'],
         'prefetch': value['prefetch'],
         'buffer_size': value['bufferSize'],

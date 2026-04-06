@@ -6,6 +6,8 @@
 
 Name | Type
 ------------ | -------------
+`defaultPosixUid` | number
+`defaultPosixGid` | number
 `cacheSize` | string
 `prefetch` | number
 `bufferSize` | string
@@ -19,6 +21,8 @@ import type { CreateSandboxVolumeRequest } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
+  "defaultPosixUid": null,
+  "defaultPosixGid": null,
   "cacheSize": null,
   "prefetch": null,
   "bufferSize": null,

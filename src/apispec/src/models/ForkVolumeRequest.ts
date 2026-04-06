@@ -28,6 +28,18 @@ import {
  */
 export interface ForkVolumeRequest {
     /**
+     * Override the default POSIX UID for external volume access paths. Inherits from the source volume when omitted.
+     * @type {number}
+     * @memberof ForkVolumeRequest
+     */
+    defaultPosixUid?: number;
+    /**
+     * Override the default POSIX GID for external volume access paths. Inherits from the source volume when omitted.
+     * @type {number}
+     * @memberof ForkVolumeRequest
+     */
+    defaultPosixGid?: number;
+    /**
      * 
      * @type {string}
      * @memberof ForkVolumeRequest
@@ -78,6 +90,8 @@ export function ForkVolumeRequestFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
+        'defaultPosixUid': json['default_posix_uid'] == null ? undefined : json['default_posix_uid'],
+        'defaultPosixGid': json['default_posix_gid'] == null ? undefined : json['default_posix_gid'],
         'cacheSize': json['cache_size'] == null ? undefined : json['cache_size'],
         'prefetch': json['prefetch'] == null ? undefined : json['prefetch'],
         'bufferSize': json['buffer_size'] == null ? undefined : json['buffer_size'],
@@ -97,6 +111,8 @@ export function ForkVolumeRequestToJSONTyped(value?: ForkVolumeRequest | null, i
 
     return {
         
+        'default_posix_uid': value['defaultPosixUid'],
+        'default_posix_gid': value['defaultPosixGid'],
         'cache_size': value['cacheSize'],
         'prefetch': value['prefetch'],
         'buffer_size': value['bufferSize'],

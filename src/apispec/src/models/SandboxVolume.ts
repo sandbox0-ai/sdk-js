@@ -53,6 +53,18 @@ export interface SandboxVolume {
     sourceVolumeId?: string | null;
     /**
      * 
+     * @type {number}
+     * @memberof SandboxVolume
+     */
+    defaultPosixUid?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof SandboxVolume
+     */
+    defaultPosixGid?: number | null;
+    /**
+     * 
      * @type {string}
      * @memberof SandboxVolume
      */
@@ -125,6 +137,8 @@ export function SandboxVolumeFromJSONTyped(json: any, ignoreDiscriminator: boole
         'teamId': json['team_id'],
         'userId': json['user_id'],
         'sourceVolumeId': json['source_volume_id'] == null ? undefined : json['source_volume_id'],
+        'defaultPosixUid': json['default_posix_uid'] == null ? undefined : json['default_posix_uid'],
+        'defaultPosixGid': json['default_posix_gid'] == null ? undefined : json['default_posix_gid'],
         'cacheSize': json['cache_size'],
         'prefetch': json['prefetch'] == null ? undefined : json['prefetch'],
         'bufferSize': json['buffer_size'],
@@ -150,6 +164,8 @@ export function SandboxVolumeToJSONTyped(value?: SandboxVolume | null, ignoreDis
         'team_id': value['teamId'],
         'user_id': value['userId'],
         'source_volume_id': value['sourceVolumeId'],
+        'default_posix_uid': value['defaultPosixUid'],
+        'default_posix_gid': value['defaultPosixGid'],
         'cache_size': value['cacheSize'],
         'prefetch': value['prefetch'],
         'buffer_size': value['bufferSize'],

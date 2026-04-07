@@ -49,28 +49,11 @@ async function main() {
 main().catch(console.error);
 ```
 
-## Examples
+## Documentation
 
-Runnable examples are available in the `examples/` directory:
-
-| Example                    | Description                              |
-|----------------------------|------------------------------------------|
-| `01_hello_world`           | Basic sandbox usage                      |
-| `02_context_options`       | Context configuration options            |
-| `03_files`                 | File read/write/list operations          |
-| `04_streaming`             | Streaming execution output               |
-| `05_templates`             | Working with sandbox templates           |
-| `06_volumes`               | Persistent volumes and snapshots         |
-| `07_webhook`               | Webhook event delivery                   |
-| `08_network`               | Network policy configuration             |
-| `09_expose_port`           | Exposing ports publicly                  |
-
-Run an example:
-
-```bash
-cd examples/01_hello_world
-SANDBOX0_TOKEN=your-token npx tsx main.ts
-```
+- [Sandbox0 docs](https://sandbox0.ai/docs)
+- [Template sidecars and shared volumes](https://sandbox0.ai/docs/template/sidecars)
+- [Volume mounts](https://sandbox0.ai/docs/volume/mounts)
 
 ## Bootstrap Mounts At Claim Time
 

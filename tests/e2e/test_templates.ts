@@ -29,6 +29,10 @@ describe("Templates", () => {
         name: "codex",
         image: "busybox:latest",
         command: ["sh", "-lc", "touch /tmp/ready; tail -f /dev/null"],
+        resources: {
+          cpu: "250m",
+          memory: "1Gi",
+        },
         readinessProbe: {
           exec: { command: ["test", "-f", "/tmp/ready"] },
           initialDelaySeconds: 1,

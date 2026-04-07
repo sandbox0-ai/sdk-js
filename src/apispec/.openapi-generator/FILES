@@ -17,6 +17,7 @@ docs/ChangeRequest.md
 docs/ClaimMountRequest.md
 docs/ClaimRequest.md
 docs/ClaimResponse.md
+docs/ContainerMountSpec.md
 docs/ContainerSpec.md
 docs/ContextExecResponse.md
 docs/ContextInputRequest.md
@@ -147,6 +148,7 @@ docs/SandboxVolume.md
 docs/SandboxVolumesApi.md
 docs/SandboxesApi.md
 docs/SecurityContext.md
+docs/SharedVolumeSpec.md
 docs/SidecarContainerSpec.md
 docs/SignalContextRequest.md
 docs/Snapshot.md
@@ -309,6 +311,7 @@ src/models/ChangeRequest.ts
 src/models/ClaimMountRequest.ts
 src/models/ClaimRequest.ts
 src/models/ClaimResponse.ts
+src/models/ContainerMountSpec.ts
 src/models/ContainerSpec.ts
 src/models/ContextExecResponse.ts
 src/models/ContextInputRequest.ts
@@ -431,6 +434,7 @@ src/models/SandboxUpdateConfig.ts
 src/models/SandboxUpdateRequest.ts
 src/models/SandboxVolume.ts
 src/models/SecurityContext.ts
+src/models/SharedVolumeSpec.ts
 src/models/SidecarContainerSpec.ts
 src/models/SignalContextRequest.ts
 src/models/Snapshot.ts

@@ -20,13 +20,13 @@ import {
     ResourceQuotaToJSON,
     ResourceQuotaToJSONTyped,
 } from './ResourceQuota';
-import type { SecurityContext } from './SecurityContext';
+import type { ContainerMountSpec } from './ContainerMountSpec';
 import {
-    SecurityContextFromJSON,
-    SecurityContextFromJSONTyped,
-    SecurityContextToJSON,
-    SecurityContextToJSONTyped,
-} from './SecurityContext';
+    ContainerMountSpecFromJSON,
+    ContainerMountSpecFromJSONTyped,
+    ContainerMountSpecToJSON,
+    ContainerMountSpecToJSONTyped,
+} from './ContainerMountSpec';
 import type { EnvVar } from './EnvVar';
 import {
     EnvVarFromJSON,
@@ -83,13 +83,13 @@ export interface SidecarContainerSpec {
      * @type {ResourceQuota}
      * @memberof SidecarContainerSpec
      */
-    resources?: ResourceQuota;
+    resources: ResourceQuota;
     /**
      * 
-     * @type {SecurityContext}
+     * @type {Array<ContainerMountSpec>}
      * @memberof SidecarContainerSpec
      */
-    securityContext?: SecurityContext;
+    mounts?: Array<ContainerMountSpec>;
     /**
      * 
      * @type {Probe}
@@ -116,6 +116,7 @@ export interface SidecarContainerSpec {
 export function instanceOfSidecarContainerSpec(value: object): value is SidecarContainerSpec {
     if (!('name' in value) || value['name'] === undefined) return false;
     if (!('image' in value) || value['image'] === undefined) return false;
+    if (!('resources' in value) || value['resources'] === undefined) return false;
     return true;
 }
 
@@ -134,8 +135,8 @@ export function SidecarContainerSpecFromJSONTyped(json: any, ignoreDiscriminator
         'command': json['command'] == null ? undefined : json['command'],
         'args': json['args'] == null ? undefined : json['args'],
         'env': json['env'] == null ? undefined : ((json['env'] as Array<any>).map(EnvVarFromJSON)),
-        'resources': json['resources'] == null ? undefined : ResourceQuotaFromJSON(json['resources']),
-        'securityContext': json['securityContext'] == null ? undefined : SecurityContextFromJSON(json['securityContext']),
+        'resources': ResourceQuotaFromJSON(json['resources']),
+        'mounts': json['mounts'] == null ? undefined : ((json['mounts'] as Array<any>).map(ContainerMountSpecFromJSON)),
         'readinessProbe': json['readinessProbe'] == null ? undefined : ProbeFromJSON(json['readinessProbe']),
         'livenessProbe': json['livenessProbe'] == null ? undefined : ProbeFromJSON(json['livenessProbe']),
         'startupProbe': json['startupProbe'] == null ? undefined : ProbeFromJSON(json['startupProbe']),
@@ -159,7 +160,7 @@ export function SidecarContainerSpecToJSONTyped(value?: SidecarContainerSpec | n
         'args': value['args'],
         'env': value['env'] == null ? undefined : ((value['env'] as Array<any>).map(EnvVarToJSON)),
         'resources': ResourceQuotaToJSON(value['resources']),
-        'securityContext': SecurityContextToJSON(value['securityContext']),
+        'mounts': value['mounts'] == null ? undefined : ((value['mounts'] as Array<any>).map(ContainerMountSpecToJSON)),
         'readinessProbe': ProbeToJSON(value['readinessProbe']),
         'livenessProbe': ProbeToJSON(value['livenessProbe']),
         'startupProbe': ProbeToJSON(value['startupProbe']),

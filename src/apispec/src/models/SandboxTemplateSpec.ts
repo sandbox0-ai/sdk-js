@@ -48,6 +48,13 @@ import {
     SidecarContainerSpecToJSON,
     SidecarContainerSpecToJSONTyped,
 } from './SidecarContainerSpec';
+import type { SharedVolumeSpec } from './SharedVolumeSpec';
+import {
+    SharedVolumeSpecFromJSON,
+    SharedVolumeSpecFromJSONTyped,
+    SharedVolumeSpecToJSON,
+    SharedVolumeSpecToJSONTyped,
+} from './SharedVolumeSpec';
 import type { PodSpecOverride } from './PodSpecOverride';
 import {
     PodSpecOverrideFromJSON,
@@ -92,6 +99,12 @@ export interface SandboxTemplateSpec {
      * @memberof SandboxTemplateSpec
      */
     sidecars?: Array<SidecarContainerSpec>;
+    /**
+     * 
+     * @type {Array<SharedVolumeSpec>}
+     * @memberof SandboxTemplateSpec
+     */
+    sharedVolumes?: Array<SharedVolumeSpec>;
     /**
      * 
      * @type {PodSpecOverride}
@@ -170,6 +183,7 @@ export function SandboxTemplateSpecFromJSONTyped(json: any, ignoreDiscriminator:
         'tags': json['tags'] == null ? undefined : json['tags'],
         'mainContainer': json['mainContainer'] == null ? undefined : ContainerSpecFromJSON(json['mainContainer']),
         'sidecars': json['sidecars'] == null ? undefined : ((json['sidecars'] as Array<any>).map(SidecarContainerSpecFromJSON)),
+        'sharedVolumes': json['sharedVolumes'] == null ? undefined : ((json['sharedVolumes'] as Array<any>).map(SharedVolumeSpecFromJSON)),
         'pod': json['pod'] == null ? undefined : PodSpecOverrideFromJSON(json['pod']),
         'network': json['network'] == null ? undefined : SandboxNetworkPolicyFromJSON(json['network']),
         'pool': json['pool'] == null ? undefined : PoolStrategyFromJSON(json['pool']),
@@ -198,6 +212,7 @@ export function SandboxTemplateSpecToJSONTyped(value?: SandboxTemplateSpec | nul
         'tags': value['tags'],
         'mainContainer': ContainerSpecToJSON(value['mainContainer']),
         'sidecars': value['sidecars'] == null ? undefined : ((value['sidecars'] as Array<any>).map(SidecarContainerSpecToJSON)),
+        'sharedVolumes': value['sharedVolumes'] == null ? undefined : ((value['sharedVolumes'] as Array<any>).map(SharedVolumeSpecToJSON)),
         'pod': PodSpecOverrideToJSON(value['pod']),
         'network': SandboxNetworkPolicyToJSON(value['network']),
         'pool': PoolStrategyToJSON(value['pool']),

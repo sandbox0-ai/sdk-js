@@ -39,6 +39,7 @@ const NULL_ARRAY_KEYS = new Set([
   "providers",
   "requiredDuringSchedulingIgnoredDuringExecution",
   "roles",
+  "sharedVolumes",
   "sidecars",
   "tags",
   "teams",

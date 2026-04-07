@@ -11,6 +11,7 @@ Name | Type
 `tags` | Array&lt;string&gt;
 `mainContainer` | [ContainerSpec](ContainerSpec.md)
 `sidecars` | [Array&lt;SidecarContainerSpec&gt;](SidecarContainerSpec.md)
+`sharedVolumes` | [Array&lt;SharedVolumeSpec&gt;](SharedVolumeSpec.md)
 `pod` | [PodSpecOverride](PodSpecOverride.md)
 `network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
 `pool` | [PoolStrategy](PoolStrategy.md)
@@ -33,6 +34,7 @@ const example = {
   "tags": null,
   "mainContainer": null,
   "sidecars": null,
+  "sharedVolumes": null,
   "pod": null,
   "network": null,
   "pool": null,

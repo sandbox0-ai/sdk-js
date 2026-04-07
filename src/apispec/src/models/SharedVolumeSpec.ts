@@ -30,7 +30,7 @@ export interface SharedVolumeSpec {
      * @type {string}
      * @memberof SharedVolumeSpec
      */
-    sandboxVolumeId: string;
+    sandboxVolumeId?: string;
     /**
      * 
      * @type {string}
@@ -68,7 +68,6 @@ export interface SharedVolumeSpec {
  */
 export function instanceOfSharedVolumeSpec(value: object): value is SharedVolumeSpec {
     if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('sandboxVolumeId' in value) || value['sandboxVolumeId'] === undefined) return false;
     if (!('mountPath' in value) || value['mountPath'] === undefined) return false;
     return true;
 }
@@ -84,7 +83,7 @@ export function SharedVolumeSpecFromJSONTyped(json: any, ignoreDiscriminator: bo
     return {
         
         'name': json['name'],
-        'sandboxVolumeId': json['sandboxVolumeId'],
+        'sandboxVolumeId': json['sandboxVolumeId'] == null ? undefined : json['sandboxVolumeId'],
         'mountPath': json['mountPath'],
         'cacheSize': json['cacheSize'] == null ? undefined : json['cacheSize'],
         'prefetch': json['prefetch'] == null ? undefined : json['prefetch'],

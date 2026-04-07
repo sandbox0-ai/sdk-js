@@ -45,7 +45,6 @@ describe("Template models", () => {
         sharedVolumes: [
           {
             name: "workspace",
-            sandboxVolumeId: "vol_123",
             mountPath: "/workspace/shared",
           },
         ],
@@ -71,7 +70,6 @@ describe("Template models", () => {
         sharedVolumes: [
           {
             name: "workspace",
-            sandboxVolumeId: "vol_123",
             mountPath: "/workspace/shared",
           },
         ],
@@ -115,7 +113,7 @@ describe("Template models", () => {
   it("builds template requests with helper functions", () => {
     const spec = templateSpec(container("ubuntu:24.04", resources("1", "4Gi")), {
       displayName: "Helper Template",
-      sharedVolumes: [sharedVolume("workspace", "vol_123", "/workspace/shared", { writeback: true })],
+      sharedVolumes: [sharedVolume("workspace", "/workspace/shared", { sandboxVolumeId: "vol_123", writeback: true })],
       sidecars: [
         sidecar("helper", "busybox:latest", resources("250m", "1Gi"), {
           command: ["sh", "-lc", "tail -f /dev/null"],
@@ -138,9 +136,9 @@ describe("Template models", () => {
         sharedVolumes: [
           {
             name: "workspace",
-            sandboxVolumeId: "vol_123",
             mountPath: "/workspace/shared",
             writeback: true,
+            sandboxVolumeId: "vol_123",
           },
         ],
         sidecars: [
@@ -155,5 +153,12 @@ describe("Template models", () => {
       },
     });
     assert.deepStrictEqual(updateRequest, { spec: createRequest.spec });
+  });
+
+  it("builds claim-bound shared volumes without sandboxVolumeId", () => {
+    assert.deepStrictEqual(sharedVolume("workspace", "/workspace/shared"), {
+      name: "workspace",
+      mountPath: "/workspace/shared",
+    });
   });
 });

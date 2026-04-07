@@ -47,6 +47,7 @@ export interface SidecarInit {
 }
 
 export interface SharedVolumeInit {
+  sandboxVolumeId?: string;
   cacheSize?: string;
   prefetch?: number;
   bufferSize?: string;
@@ -97,14 +98,13 @@ export function sidecar(
 
 export function sharedVolume(
   name: string,
-  sandboxVolumeId: string,
   mountPath: string,
   init: SharedVolumeInit = {},
 ): SharedVolumeSpec {
   return {
     name,
-    sandboxVolumeId,
     mountPath,
+    ...(init.sandboxVolumeId ? { sandboxVolumeId: init.sandboxVolumeId } : {}),
     ...(init.cacheSize ? { cacheSize: init.cacheSize } : {}),
     ...(init.prefetch !== undefined ? { prefetch: init.prefetch } : {}),
     ...(init.bufferSize ? { bufferSize: init.bufferSize } : {}),

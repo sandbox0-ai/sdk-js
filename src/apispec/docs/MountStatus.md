@@ -8,9 +8,12 @@ Name | Type
 ------------ | -------------
 `sandboxvolumeId` | string
 `mountPoint` | string
+`state` | string
 `mountedAt` | string
 `mountedDurationSec` | number
 `mountSessionId` | string
+`errorCode` | string
+`errorMessage` | string
 
 ## Example
 
@@ -21,9 +24,12 @@ import type { MountStatus } from 'sandbox0'
 const example = {
   "sandboxvolumeId": null,
   "mountPoint": null,
+  "state": null,
   "mountedAt": null,
   "mountedDurationSec": null,
   "mountSessionId": null,
+  "errorCode": null,
+  "errorMessage": null,
 } satisfies MountStatus
 
 console.log(example)

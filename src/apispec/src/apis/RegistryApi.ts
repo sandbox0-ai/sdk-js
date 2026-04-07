@@ -16,14 +16,21 @@
 import * as runtime from '../runtime';
 import type {
   ErrorEnvelope,
+  RegistryCredentialsRequest,
   SuccessRegistryCredentialsResponse,
 } from '../models/index';
 import {
     ErrorEnvelopeFromJSON,
     ErrorEnvelopeToJSON,
+    RegistryCredentialsRequestFromJSON,
+    RegistryCredentialsRequestToJSON,
     SuccessRegistryCredentialsResponseFromJSON,
     SuccessRegistryCredentialsResponseToJSON,
 } from '../models/index';
+
+export interface ApiV1RegistryCredentialsPostRequest {
+    registryCredentialsRequest?: RegistryCredentialsRequest;
+}
 
 /**
  * 
@@ -33,10 +40,12 @@ export class RegistryApi extends runtime.BaseAPI {
     /**
      * Get registry credentials for uploads
      */
-    async apiV1RegistryCredentialsPostRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessRegistryCredentialsResponse>> {
+    async apiV1RegistryCredentialsPostRaw(requestParameters: ApiV1RegistryCredentialsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessRegistryCredentialsResponse>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -54,6 +63,7 @@ export class RegistryApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: RegistryCredentialsRequestToJSON(requestParameters['registryCredentialsRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SuccessRegistryCredentialsResponseFromJSON(jsonValue));
@@ -62,8 +72,8 @@ export class RegistryApi extends runtime.BaseAPI {
     /**
      * Get registry credentials for uploads
      */
-    async apiV1RegistryCredentialsPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessRegistryCredentialsResponse> {
-        const response = await this.apiV1RegistryCredentialsPostRaw(initOverrides);
+    async apiV1RegistryCredentialsPost(requestParameters: ApiV1RegistryCredentialsPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessRegistryCredentialsResponse> {
+        const response = await this.apiV1RegistryCredentialsPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

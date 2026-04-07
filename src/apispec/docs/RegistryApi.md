@@ -10,7 +10,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 ## apiV1RegistryCredentialsPost
 
-> SuccessRegistryCredentialsResponse apiV1RegistryCredentialsPost()
+> SuccessRegistryCredentialsResponse apiV1RegistryCredentialsPost(registryCredentialsRequest)
 
 Get registry credentials for uploads
 
@@ -31,8 +31,13 @@ async function example() {
   });
   const api = new RegistryApi(config);
 
+  const body = {
+    // RegistryCredentialsRequest (optional)
+    registryCredentialsRequest: ...,
+  } satisfies ApiV1RegistryCredentialsPostRequest;
+
   try {
-    const data = await api.apiV1RegistryCredentialsPost();
+    const data = await api.apiV1RegistryCredentialsPost(body);
     console.log(data);
   } catch (error) {
     console.error(error);
@@ -45,7 +50,10 @@ example().catch(console.error);
 
 ### Parameters
 
-This endpoint does not need any parameter.
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **registryCredentialsRequest** | [RegistryCredentialsRequest](RegistryCredentialsRequest.md) |  | [Optional] |
 
 ### Return type
 
@@ -57,7 +65,7 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: `application/json`
 - **Accept**: `application/json`
 
 
@@ -65,6 +73,7 @@ This endpoint does not need any parameter.
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Registry credentials |  -  |
+| **400** | Invalid request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
 | **500** | Server error |  -  |

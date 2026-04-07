@@ -14,6 +14,7 @@ docs/CachePolicySpec.md
 docs/Capabilities.md
 docs/ChangePasswordRequest.md
 docs/ChangeRequest.md
+docs/ClaimMountRequest.md
 docs/ClaimRequest.md
 docs/ClaimResponse.md
 docs/ContainerSpec.md
@@ -123,6 +124,7 @@ docs/RegionsApi.md
 docs/RegisterRequest.md
 docs/RegistryApi.md
 docs/RegistryCredentials.md
+docs/RegistryCredentialsRequest.md
 docs/ResizeContextRequest.md
 docs/ResolveVolumeSyncConflictRequest.md
 docs/ResourceQuota.md
@@ -304,6 +306,7 @@ src/models/CachePolicySpec.ts
 src/models/Capabilities.ts
 src/models/ChangePasswordRequest.ts
 src/models/ChangeRequest.ts
+src/models/ClaimMountRequest.ts
 src/models/ClaimRequest.ts
 src/models/ClaimResponse.ts
 src/models/ContainerSpec.ts
@@ -407,6 +410,7 @@ src/models/RefreshResponse.ts
 src/models/Region.ts
 src/models/RegisterRequest.ts
 src/models/RegistryCredentials.ts
+src/models/RegistryCredentialsRequest.ts
 src/models/ResizeContextRequest.ts
 src/models/ResolveVolumeSyncConflictRequest.ts
 src/models/ResourceQuota.ts

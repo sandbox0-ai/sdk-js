@@ -24,13 +24,19 @@ export interface MountStatus {
      * @type {string}
      * @memberof MountStatus
      */
-    sandboxvolumeId?: string;
+    sandboxvolumeId: string;
     /**
      * 
      * @type {string}
      * @memberof MountStatus
      */
-    mountPoint?: string;
+    mountPoint: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MountStatus
+     */
+    state: MountStatusStateEnum;
     /**
      * 
      * @type {string}
@@ -49,12 +55,40 @@ export interface MountStatus {
      * @memberof MountStatus
      */
     mountSessionId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MountStatus
+     */
+    errorCode?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MountStatus
+     */
+    errorMessage?: string;
 }
+
+
+/**
+ * @export
+ */
+export const MountStatusStateEnum = {
+    Pending: 'pending',
+    Mounting: 'mounting',
+    Mounted: 'mounted',
+    Failed: 'failed'
+} as const;
+export type MountStatusStateEnum = typeof MountStatusStateEnum[keyof typeof MountStatusStateEnum];
+
 
 /**
  * Check if a given object implements the MountStatus interface.
  */
 export function instanceOfMountStatus(value: object): value is MountStatus {
+    if (!('sandboxvolumeId' in value) || value['sandboxvolumeId'] === undefined) return false;
+    if (!('mountPoint' in value) || value['mountPoint'] === undefined) return false;
+    if (!('state' in value) || value['state'] === undefined) return false;
     return true;
 }
 
@@ -68,11 +102,14 @@ export function MountStatusFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
-        'sandboxvolumeId': json['sandboxvolume_id'] == null ? undefined : json['sandboxvolume_id'],
-        'mountPoint': json['mount_point'] == null ? undefined : json['mount_point'],
+        'sandboxvolumeId': json['sandboxvolume_id'],
+        'mountPoint': json['mount_point'],
+        'state': json['state'],
         'mountedAt': json['mounted_at'] == null ? undefined : json['mounted_at'],
         'mountedDurationSec': json['mounted_duration_sec'] == null ? undefined : json['mounted_duration_sec'],
         'mountSessionId': json['mount_session_id'] == null ? undefined : json['mount_session_id'],
+        'errorCode': json['error_code'] == null ? undefined : json['error_code'],
+        'errorMessage': json['error_message'] == null ? undefined : json['error_message'],
     };
 }
 
@@ -89,9 +126,12 @@ export function MountStatusToJSONTyped(value?: MountStatus | null, ignoreDiscrim
         
         'sandboxvolume_id': value['sandboxvolumeId'],
         'mount_point': value['mountPoint'],
+        'state': value['state'],
         'mounted_at': value['mountedAt'],
         'mounted_duration_sec': value['mountedDurationSec'],
         'mount_session_id': value['mountSessionId'],
+        'error_code': value['errorCode'],
+        'error_message': value['errorMessage'],
     };
 }
 

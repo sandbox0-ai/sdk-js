@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { MountStatus } from './MountStatus';
+import {
+    MountStatusFromJSON,
+    MountStatusFromJSONTyped,
+    MountStatusToJSON,
+    MountStatusToJSONTyped,
+} from './MountStatus';
+
 /**
  * 
  * @export
@@ -49,6 +57,12 @@ export interface ClaimResponse {
      * @memberof ClaimResponse
      */
     clusterId?: string | null;
+    /**
+     * 
+     * @type {Array<MountStatus>}
+     * @memberof ClaimResponse
+     */
+    bootstrapMounts?: Array<MountStatus>;
 }
 
 /**
@@ -77,6 +91,7 @@ export function ClaimResponseFromJSONTyped(json: any, ignoreDiscriminator: boole
         'podName': json['pod_name'],
         'template': json['template'],
         'clusterId': json['cluster_id'] == null ? undefined : json['cluster_id'],
+        'bootstrapMounts': json['bootstrap_mounts'] == null ? undefined : ((json['bootstrap_mounts'] as Array<any>).map(MountStatusFromJSON)),
     };
 }
 
@@ -96,6 +111,7 @@ export function ClaimResponseToJSONTyped(value?: ClaimResponse | null, ignoreDis
         'pod_name': value['podName'],
         'template': value['template'],
         'cluster_id': value['clusterId'],
+        'bootstrap_mounts': value['bootstrapMounts'] == null ? undefined : ((value['bootstrapMounts'] as Array<any>).map(MountStatusToJSON)),
     };
 }
 

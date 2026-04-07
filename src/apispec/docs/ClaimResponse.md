@@ -11,6 +11,7 @@ Name | Type
 `podName` | string
 `template` | string
 `clusterId` | string
+`bootstrapMounts` | [Array&lt;MountStatus&gt;](MountStatus.md)
 
 ## Example
 
@@ -24,6 +25,7 @@ const example = {
   "podName": null,
   "template": null,
   "clusterId": null,
+  "bootstrapMounts": null,
 } satisfies ClaimResponse
 
 console.log(example)

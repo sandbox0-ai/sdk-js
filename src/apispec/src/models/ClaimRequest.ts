@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { ClaimMountRequest } from './ClaimMountRequest';
+import {
+    ClaimMountRequestFromJSON,
+    ClaimMountRequestFromJSONTyped,
+    ClaimMountRequestToJSON,
+    ClaimMountRequestToJSONTyped,
+} from './ClaimMountRequest';
 import type { SandboxConfig } from './SandboxConfig';
 import {
     SandboxConfigFromJSON,
@@ -39,6 +46,29 @@ export interface ClaimRequest {
      * @memberof ClaimRequest
      */
     config?: SandboxConfig;
+    /**
+     * 
+     * @type {Array<ClaimMountRequest>}
+     * @memberof ClaimRequest
+     */
+    mounts?: Array<ClaimMountRequest>;
+    /**
+     * When true, claim waits best-effort for requested bootstrap mounts to
+     * reach a terminal state before returning. The wait is bounded by
+     * `mount_wait_timeout_ms`.
+     * 
+     * @type {boolean}
+     * @memberof ClaimRequest
+     */
+    waitForMounts?: boolean;
+    /**
+     * Optional best-effort wait budget in milliseconds for bootstrap
+     * mounts when `wait_for_mounts` is true.
+     * 
+     * @type {number}
+     * @memberof ClaimRequest
+     */
+    mountWaitTimeoutMs?: number;
 }
 
 /**
@@ -60,6 +90,9 @@ export function ClaimRequestFromJSONTyped(json: any, ignoreDiscriminator: boolea
         
         'template': json['template'] == null ? undefined : json['template'],
         'config': json['config'] == null ? undefined : SandboxConfigFromJSON(json['config']),
+        'mounts': json['mounts'] == null ? undefined : ((json['mounts'] as Array<any>).map(ClaimMountRequestFromJSON)),
+        'waitForMounts': json['wait_for_mounts'] == null ? undefined : json['wait_for_mounts'],
+        'mountWaitTimeoutMs': json['mount_wait_timeout_ms'] == null ? undefined : json['mount_wait_timeout_ms'],
     };
 }
 
@@ -76,6 +109,9 @@ export function ClaimRequestToJSONTyped(value?: ClaimRequest | null, ignoreDiscr
         
         'template': value['template'],
         'config': SandboxConfigToJSON(value['config']),
+        'mounts': value['mounts'] == null ? undefined : ((value['mounts'] as Array<any>).map(ClaimMountRequestToJSON)),
+        'wait_for_mounts': value['waitForMounts'],
+        'mount_wait_timeout_ms': value['mountWaitTimeoutMs'],
     };
 }
 

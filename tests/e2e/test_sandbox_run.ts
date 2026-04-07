@@ -1,7 +1,7 @@
 import { describe, it, before, skip } from "node:test";
 import assert from "node:assert";
 import { loadE2EConfig, newClient, type E2EConfig } from "./helpers.ts";
-import { ProcessType } from "../../src/apispec/src/models/index.ts";
+import { models } from "../../src/index.ts";
 
 describe("SandboxRun", () => {
   let cfg: E2EConfig | null;
@@ -30,7 +30,7 @@ describe("SandboxRun", () => {
     try {
       // Create a custom REPL context with specific settings
       const customCtx = await sandbox.createContext({
-        type: ProcessType.Repl,
+        type: models.ProcessType.Repl,
         repl: { alias: "python" },
         cwd: "/tmp",
         envVars: { SDK_JS_E2E: "true" },

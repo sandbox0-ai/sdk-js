@@ -1,30 +1,26 @@
 
-# ClaimRequest
+# ClaimMountRequest
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`template` | string
-`config` | [SandboxConfig](SandboxConfig.md)
-`mounts` | [Array&lt;ClaimMountRequest&gt;](ClaimMountRequest.md)
-`waitForMounts` | boolean
-`mountWaitTimeoutMs` | number
+`sandboxvolumeId` | string
+`mountPoint` | string
+`volumeConfig` | [VolumeConfig](VolumeConfig.md)
 
 ## Example
 
 ```typescript
-import type { ClaimRequest } from 'sandbox0'
+import type { ClaimMountRequest } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "template": null,
-  "config": null,
-  "mounts": null,
-  "waitForMounts": null,
-  "mountWaitTimeoutMs": null,
-} satisfies ClaimRequest
+  "sandboxvolumeId": null,
+  "mountPoint": null,
+  "volumeConfig": null,
+} satisfies ClaimMountRequest
 
 console.log(example)
 
@@ -33,7 +29,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as ClaimRequest
+const exampleParsed = JSON.parse(exampleJSON) as ClaimMountRequest
 console.log(exampleParsed)
 ```
 

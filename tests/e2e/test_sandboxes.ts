@@ -68,4 +68,57 @@ describe("Sandboxes", () => {
     assert.ok(session.sandbox.id);
     await session.close();
   });
+
+  it("should claim sandbox with bootstrap mounts", async () => {
+    if (!cfg) return;
+    const client = await newClient(cfg);
+
+    const volume = await client.volumes.create({});
+    assert.ok(volume.id);
+    let volumeDeleted = false;
+
+    const volumeCleanup = async () => {
+      if (volumeDeleted) return;
+      try {
+        await client.volumes.delete(volume.id);
+      } catch {
+        // Ignore cleanup errors
+      }
+    };
+
+    let sandboxId = "";
+    const sandboxCleanup = async () => {
+      if (!sandboxId) return;
+      try {
+        await client.sandboxes.delete(sandboxId);
+      } catch {
+        // Ignore cleanup errors
+      }
+    };
+
+    try {
+      await client.volumes.writeFile(volume.id, "/claim-bootstrap/hello.txt", "hello bootstrap claim mount");
+
+      const sandbox = await client.sandboxes.claim(cfg.template, {
+        mounts: [{ sandboxvolumeId: volume.id, mountPoint: "/workspace/bootstrap-data" }],
+        waitForMounts: true,
+        mountWaitTimeoutMs: 45000,
+      });
+      sandboxId = sandbox.id;
+
+      assert.ok(sandbox.bootstrapMounts.length > 0);
+      assert.strictEqual(sandbox.bootstrapMounts[0]?.state, "mounted");
+
+      const mounts = await sandbox.mountStatus();
+      assert.ok(
+        mounts.some((mount) => mount.sandboxvolumeId === volume.id && mount.state === "mounted"),
+      );
+
+      const content = await sandbox.readFile("/workspace/bootstrap-data/claim-bootstrap/hello.txt");
+      assert.strictEqual(Buffer.from(content).toString("utf-8"), "hello bootstrap claim mount");
+    } finally {
+      await sandboxCleanup();
+      await volumeCleanup();
+    }
+  });
 });

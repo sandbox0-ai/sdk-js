@@ -1,5 +1,7 @@
 import type {
+  ClaimMountRequest,
   ClaimRequest,
+  MountStatus,
   PauseSandboxResponse,
   SandboxRefreshRequest,
   RefreshResponse,
@@ -17,11 +19,51 @@ import type { Client } from "../client";
 import { Sandbox as SandboxHandle } from "../sandbox";
 import { SandboxSession } from "../sessions";
 
+export interface ClaimSandboxOptions {
+  config?: SandboxConfig;
+  mounts?: ClaimMountRequest[];
+  waitForMounts?: boolean;
+  mountWaitTimeoutMs?: number;
+}
+
+function isClaimSandboxOptions(
+  value: SandboxConfig | ClaimSandboxOptions | undefined,
+): value is ClaimSandboxOptions {
+  return !!value && typeof value === "object" && (
+    "config" in value ||
+    "mounts" in value ||
+    "waitForMounts" in value ||
+    "mountWaitTimeoutMs" in value
+  );
+}
+
+function toClaimRequest(
+  template: string,
+  options?: SandboxConfig | ClaimSandboxOptions,
+): ClaimRequest {
+  if (!options) {
+    return { template };
+  }
+  if (!isClaimSandboxOptions(options)) {
+    return { template, config: options };
+  }
+  return {
+    template,
+    config: options.config,
+    mounts: options.mounts,
+    waitForMounts: options.waitForMounts,
+    mountWaitTimeoutMs: options.mountWaitTimeoutMs,
+  };
+}
+
 export class Sandboxes {
   constructor(private readonly client: Client) {}
 
-  async claim(template: string, config?: SandboxConfig): Promise<SandboxHandle> {
-    const request: ClaimRequest = config ? { template, config } : { template };
+  async claim(
+    template: string,
+    options?: SandboxConfig | ClaimSandboxOptions,
+  ): Promise<SandboxHandle> {
+    const request = toClaimRequest(template, options);
     const response = await wrapApiCall(() =>
       this.client.apispec.sandboxes.apiV1SandboxesPost({
         claimRequest: request,
@@ -35,6 +77,7 @@ export class Sandboxes {
       clusterId: data.clusterId ?? undefined,
       podName: data.podName,
       status: data.status,
+      bootstrapMounts: data.bootstrapMounts as MountStatus[] | undefined,
     });
   }
 
@@ -56,8 +99,11 @@ export class Sandboxes {
     };
   }
 
-  async open(template: string, config?: SandboxConfig): Promise<SandboxSession> {
-    const sandbox = await this.claim(template, config);
+  async open(
+    template: string,
+    options?: SandboxConfig | ClaimSandboxOptions,
+  ): Promise<SandboxSession> {
+    const sandbox = await this.claim(template, options);
     return new SandboxSession(sandbox, async () => {
       await this.delete(sandbox.id);
     });

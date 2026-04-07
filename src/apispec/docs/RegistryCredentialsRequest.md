@@ -1,30 +1,22 @@
 
-# ClaimRequest
+# RegistryCredentialsRequest
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`template` | string
-`config` | [SandboxConfig](SandboxConfig.md)
-`mounts` | [Array&lt;ClaimMountRequest&gt;](ClaimMountRequest.md)
-`waitForMounts` | boolean
-`mountWaitTimeoutMs` | number
+`targetImage` | string
 
 ## Example
 
 ```typescript
-import type { ClaimRequest } from 'sandbox0'
+import type { RegistryCredentialsRequest } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "template": null,
-  "config": null,
-  "mounts": null,
-  "waitForMounts": null,
-  "mountWaitTimeoutMs": null,
-} satisfies ClaimRequest
+  "targetImage": null,
+} satisfies RegistryCredentialsRequest
 
 console.log(example)
 
@@ -33,7 +25,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as ClaimRequest
+const exampleParsed = JSON.parse(exampleJSON) as RegistryCredentialsRequest
 console.log(exampleParsed)
 ```
 

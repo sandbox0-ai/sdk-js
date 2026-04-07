@@ -72,6 +72,22 @@ cd examples/01_hello_world
 SANDBOX0_TOKEN=your-token npx tsx main.ts
 ```
 
+## Bootstrap Mounts At Claim Time
+
+```typescript
+const volume = await client.volumes.create({});
+
+const sandbox = await client.sandboxes.claim("default", {
+  mounts: [{ sandboxvolumeId: volume.id, mountPoint: "/workspace/data" }],
+  waitForMounts: true,
+  mountWaitTimeoutMs: 45_000,
+});
+
+for (const mount of sandbox.bootstrapMounts) {
+  console.log(mount.sandboxvolumeId, mount.state);
+}
+```
+
 ## Links
 
 - [Documentation](https://sandbox0.ai/docs)

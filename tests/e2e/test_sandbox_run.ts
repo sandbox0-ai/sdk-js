@@ -62,6 +62,19 @@ describe("SandboxRun", () => {
         ptyCols: 80,
       });
       assert.ok(cmdResult.contextId);
+
+      const stream = await sandbox.cmdStream("echo helper", {
+        command: ["sh", "-c", "echo helper"],
+      });
+      try {
+        const reader = stream.readable.getReader();
+        const { done, value } = await reader.read();
+        assert.strictEqual(done, false);
+        assert.ok(value);
+        assert.ok(value.data.length > 0);
+      } finally {
+        stream.close();
+      }
     } finally {
       await cleanup();
     }

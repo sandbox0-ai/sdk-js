@@ -98,6 +98,7 @@ export class ContextStream {
         socket.onMessage((data: WebSocketRawData) => {
           const payload = parseWsMessage(data);
           if (!payload) return;
+          if (payload.type && payload.type !== "output") return;
           controller.enqueue({
             sandboxId: this._sandboxId,
             contextId: this._contextId,
@@ -346,6 +347,36 @@ export class Sandbox {
       contextId: contextResp.id,
       outputRaw: contextResp.outputRaw ?? "",
     };
+  }
+
+  async cmdStream(command: string, options?: CmdOptions): Promise<ContextStream> {
+	if (options?.wait === true) {
+	  throw new APIError({
+	    statusCode: 0,
+	    code: "invalid_argument",
+	    message: "cmd stream requires wait=false",
+	  });
+	}
+	const cmdArgs = options?.command ?? parseCommand(command);
+	if (!command.trim() || cmdArgs.length === 0) {
+	  throw new APIError({
+	    statusCode: 0,
+	    code: "invalid_argument",
+	    message: "command cannot be empty",
+	  });
+	}
+	const request: CreateContextRequest = {
+	  type: models.ProcessType.Cmd as ProcessType,
+	  cmd: { command: cmdArgs } as CreateCMDContextRequest,
+	  waitUntilDone: false,
+	  cwd: options?.cwd,
+	  envVars: options?.envVars,
+	  ptySize: buildPty(options?.ptyRows, options?.ptyCols),
+	  idleTimeoutSec: options?.idleTimeoutSec,
+	  ttlSec: options?.ttlSec,
+	};
+	const contextResp = await this.createContext(request);
+	return this.connectWsContext(contextResp.id);
   }
 
   async connectWsContext(contextId: string): Promise<ContextStream> {

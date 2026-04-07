@@ -34,6 +34,7 @@ export interface UpdateTeamMemberRequest {
 export const UpdateTeamMemberRequestRoleEnum = {
     Admin: 'admin',
     Developer: 'developer',
+    Builder: 'builder',
     Viewer: 'viewer'
 } as const;
 export type UpdateTeamMemberRequestRoleEnum = typeof UpdateTeamMemberRequestRoleEnum[keyof typeof UpdateTeamMemberRequestRoleEnum];

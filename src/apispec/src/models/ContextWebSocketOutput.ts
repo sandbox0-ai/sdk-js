@@ -54,7 +54,7 @@ export type ContextWebSocketOutputTypeEnum = typeof ContextWebSocketOutputTypeEn
 export const ContextWebSocketOutputSourceEnum = {
     Stdout: 'stdout',
     Stderr: 'stderr',
-    Prompt: 'prompt'
+    Pty: 'pty'
 } as const;
 export type ContextWebSocketOutputSourceEnum = typeof ContextWebSocketOutputSourceEnum[keyof typeof ContextWebSocketOutputSourceEnum];
 

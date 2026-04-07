@@ -25,7 +25,6 @@
     "clean": "rm -rf dist",
     "build": "tsc -p tsconfig.build.json && node ./scripts/fix-esm-imports.mjs",
     "lint": "tsc -p tsconfig.json --noEmit",
-    "lint:examples": "tsc -p tsconfig.examples.json --noEmit",
     "lint:e2e": "tsc -p tsconfig.e2e.json --noEmit",
     "lint:unit": "tsc -p tsconfig.unit.json --noEmit",
     "generate:apispec": "openapi-generator-cli generate -i openapi.yaml -g typescript-fetch -o src/apispec -c openapi-generator-config.yaml",

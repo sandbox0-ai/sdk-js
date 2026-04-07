@@ -12,7 +12,7 @@ Name | Type
 `args` | Array&lt;string&gt;
 `env` | [Array&lt;EnvVar&gt;](EnvVar.md)
 `resources` | [ResourceQuota](ResourceQuota.md)
-`securityContext` | [SecurityContext](SecurityContext.md)
+`mounts` | [Array&lt;ContainerMountSpec&gt;](ContainerMountSpec.md)
 `readinessProbe` | [Probe](Probe.md)
 `livenessProbe` | [Probe](Probe.md)
 `startupProbe` | [Probe](Probe.md)
@@ -30,7 +30,7 @@ const example = {
   "args": null,
   "env": null,
   "resources": null,
-  "securityContext": null,
+  "mounts": null,
   "readinessProbe": null,
   "livenessProbe": null,
   "startupProbe": null,

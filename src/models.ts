@@ -28,6 +28,14 @@ export interface StreamOutput {
   data: string;
 }
 
+export interface StreamDone {
+  sandboxId: string;
+  contextId: string;
+  requestId?: string;
+  exitCode?: number;
+  state?: string;
+}
+
 export interface ExposedPort {
   port: number;
   resume: boolean;

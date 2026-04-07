@@ -26,11 +26,23 @@ export interface ContextWebSocketDone {
      */
     type: ContextWebSocketDoneTypeEnum;
     /**
-     * 
+     * Present for request-scoped REPL completion events.
      * @type {string}
      * @memberof ContextWebSocketDone
      */
-    requestId: string;
+    requestId?: string;
+    /**
+     * Present when the underlying process has exited.
+     * @type {number}
+     * @memberof ContextWebSocketDone
+     */
+    exitCode?: number;
+    /**
+     * Final process state when the underlying process has exited.
+     * @type {string}
+     * @memberof ContextWebSocketDone
+     */
+    state?: string;
 }
 
 
@@ -48,7 +60,6 @@ export type ContextWebSocketDoneTypeEnum = typeof ContextWebSocketDoneTypeEnum[k
  */
 export function instanceOfContextWebSocketDone(value: object): value is ContextWebSocketDone {
     if (!('type' in value) || value['type'] === undefined) return false;
-    if (!('requestId' in value) || value['requestId'] === undefined) return false;
     return true;
 }
 
@@ -63,7 +74,9 @@ export function ContextWebSocketDoneFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'type': json['type'],
-        'requestId': json['request_id'],
+        'requestId': json['request_id'] == null ? undefined : json['request_id'],
+        'exitCode': json['exit_code'] == null ? undefined : json['exit_code'],
+        'state': json['state'] == null ? undefined : json['state'],
     };
 }
 
@@ -80,6 +93,8 @@ export function ContextWebSocketDoneToJSONTyped(value?: ContextWebSocketDone | n
         
         'type': value['type'],
         'request_id': value['requestId'],
+        'exit_code': value['exitCode'],
+        'state': value['state'],
     };
 }
 

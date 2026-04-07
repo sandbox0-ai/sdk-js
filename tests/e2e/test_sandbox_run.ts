@@ -68,10 +68,17 @@ describe("SandboxRun", () => {
       });
       try {
         const reader = stream.readable.getReader();
-        const { done, value } = await reader.read();
-        assert.strictEqual(done, false);
-        assert.ok(value);
-        assert.ok(value.data.length > 0);
+        const first = await reader.read();
+        assert.strictEqual(first.done, false);
+        assert.ok(first.value);
+        assert.ok(first.value.data.length > 0);
+
+        const doneResult = await stream.wait();
+        assert.strictEqual(doneResult.exitCode ?? 0, 0);
+
+        const second = await reader.read();
+        assert.strictEqual(second.done, true);
+        reader.releaseLock();
       } finally {
         stream.close();
       }

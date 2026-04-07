@@ -35,7 +35,7 @@ import type { ApiV1SandboxesIdContextsCtxIdDeleteRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -109,7 +109,7 @@ import type { ApiV1SandboxesIdContextsCtxIdExecPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -184,7 +184,7 @@ import type { ApiV1SandboxesIdContextsCtxIdGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -256,7 +256,7 @@ import type { ApiV1SandboxesIdContextsCtxIdInputPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -331,7 +331,7 @@ import type { ApiV1SandboxesIdContextsCtxIdResizePostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -406,7 +406,7 @@ import type { ApiV1SandboxesIdContextsCtxIdRestartPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -478,7 +478,7 @@ import type { ApiV1SandboxesIdContextsCtxIdSignalPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -553,7 +553,7 @@ import type { ApiV1SandboxesIdContextsCtxIdStatsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -614,7 +614,7 @@ example().catch(console.error);
 
 Context WebSocket (I/O)
 
-Upgrades to WebSocket for streaming I/O. Client messages (JSON): - { \&quot;type\&quot;: \&quot;input\&quot;, \&quot;data\&quot;: \&quot;ls\\n\&quot;, \&quot;request_id\&quot;: \&quot;req-1\&quot; } - { \&quot;type\&quot;: \&quot;resize\&quot;, \&quot;rows\&quot;: 24, \&quot;cols\&quot;: 80 } - { \&quot;type\&quot;: \&quot;signal\&quot;, \&quot;signal\&quot;: \&quot;INT\&quot; } Server messages (JSON): - { \&quot;type\&quot;: \&quot;output\&quot;, \&quot;source\&quot;: \&quot;stdout\&quot;, \&quot;data\&quot;: \&quot;hello\\n\&quot; } - { \&quot;type\&quot;: \&quot;done\&quot;, \&quot;request_id\&quot;: \&quot;req-1\&quot; }
+Upgrades to WebSocket for streaming I/O. Client messages (JSON): - { \&quot;type\&quot;: \&quot;input\&quot;, \&quot;data\&quot;: \&quot;ls\\n\&quot;, \&quot;request_id\&quot;: \&quot;req-1\&quot; } - { \&quot;type\&quot;: \&quot;resize\&quot;, \&quot;rows\&quot;: 24, \&quot;cols\&quot;: 80 } - { \&quot;type\&quot;: \&quot;signal\&quot;, \&quot;signal\&quot;: \&quot;INT\&quot; } Server messages (JSON): - { \&quot;type\&quot;: \&quot;output\&quot;, \&quot;source\&quot;: \&quot;stdout\&quot;, \&quot;data\&quot;: \&quot;hello\\n\&quot; } - { \&quot;type\&quot;: \&quot;done\&quot;, \&quot;request_id\&quot;: \&quot;req-1\&quot; } - { \&quot;type\&quot;: \&quot;done\&quot;, \&quot;exit_code\&quot;: 0, \&quot;state\&quot;: \&quot;stopped\&quot; } 
 
 ### Example
 
@@ -627,7 +627,7 @@ import type { ApiV1SandboxesIdContextsCtxIdWsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -699,7 +699,7 @@ import type { ApiV1SandboxesIdContextsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -768,7 +768,7 @@ import type { ApiV1SandboxesIdContextsPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });

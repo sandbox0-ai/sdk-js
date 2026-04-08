@@ -42,7 +42,6 @@ export interface SidecarInit {
   env?: EnvVar[];
   mounts?: ContainerMountSpec[];
   readinessProbe?: Probe;
-  livenessProbe?: Probe;
   startupProbe?: Probe;
 }
 
@@ -91,7 +90,6 @@ export function sidecar(
     ...(init.env ? { env: [...init.env] } : {}),
     ...(init.mounts ? { mounts: [...init.mounts] } : {}),
     ...(init.readinessProbe ? { readinessProbe: init.readinessProbe } : {}),
-    ...(init.livenessProbe ? { livenessProbe: init.livenessProbe } : {}),
     ...(init.startupProbe ? { startupProbe: init.startupProbe } : {}),
   };
 }

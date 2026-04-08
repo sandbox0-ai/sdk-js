@@ -13,6 +13,7 @@ Name | Type
 `env` | [Array&lt;EnvVar&gt;](EnvVar.md)
 `resources` | [ResourceQuota](ResourceQuota.md)
 `mounts` | [Array&lt;ContainerMountSpec&gt;](ContainerMountSpec.md)
+`readinessProbe` | [Probe](Probe.md)
 `startupProbe` | [Probe](Probe.md)
 
 ## Example
@@ -29,6 +30,7 @@ const example = {
   "env": null,
   "resources": null,
   "mounts": null,
+  "readinessProbe": null,
   "startupProbe": null,
 } satisfies SidecarContainerSpec
 

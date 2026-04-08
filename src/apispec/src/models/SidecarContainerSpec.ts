@@ -95,6 +95,12 @@ export interface SidecarContainerSpec {
      * @type {Probe}
      * @memberof SidecarContainerSpec
      */
+    readinessProbe?: Probe;
+    /**
+     * 
+     * @type {Probe}
+     * @memberof SidecarContainerSpec
+     */
     startupProbe?: Probe;
 }
 
@@ -125,6 +131,7 @@ export function SidecarContainerSpecFromJSONTyped(json: any, ignoreDiscriminator
         'env': json['env'] == null ? undefined : ((json['env'] as Array<any>).map(EnvVarFromJSON)),
         'resources': ResourceQuotaFromJSON(json['resources']),
         'mounts': json['mounts'] == null ? undefined : ((json['mounts'] as Array<any>).map(ContainerMountSpecFromJSON)),
+        'readinessProbe': json['readinessProbe'] == null ? undefined : ProbeFromJSON(json['readinessProbe']),
         'startupProbe': json['startupProbe'] == null ? undefined : ProbeFromJSON(json['startupProbe']),
     };
 }
@@ -147,6 +154,7 @@ export function SidecarContainerSpecToJSONTyped(value?: SidecarContainerSpec | n
         'env': value['env'] == null ? undefined : ((value['env'] as Array<any>).map(EnvVarToJSON)),
         'resources': ResourceQuotaToJSON(value['resources']),
         'mounts': value['mounts'] == null ? undefined : ((value['mounts'] as Array<any>).map(ContainerMountSpecToJSON)),
+        'readinessProbe': ProbeToJSON(value['readinessProbe']),
         'startupProbe': ProbeToJSON(value['startupProbe']),
     };
 }

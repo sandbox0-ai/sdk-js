@@ -59,6 +59,9 @@ const stream = await sandbox.cmdStream("sh -c 'echo hello && echo warn >&2'", {
 for await (const output of stream.outputs()) {
   process.stdout.write(output.data);
 }
+
+const done = await stream.wait();
+console.log(`exit=${done.exitCode} state=${done.state}`);
 ```
 
 ## Documentation

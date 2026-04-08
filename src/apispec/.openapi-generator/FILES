@@ -134,6 +134,7 @@ docs/ResumeSandboxResponse.md
 docs/Sandbox.md
 docs/SandboxConfig.md
 docs/SandboxNetworkPolicy.md
+docs/SandboxPowerState.md
 docs/SandboxRefreshRequest.md
 docs/SandboxResourceUsage.md
 docs/SandboxStatus.md
@@ -422,6 +423,7 @@ src/models/ResumeSandboxResponse.ts
 src/models/Sandbox.ts
 src/models/SandboxConfig.ts
 src/models/SandboxNetworkPolicy.ts
+src/models/SandboxPowerState.ts
 src/models/SandboxRefreshRequest.ts
 src/models/SandboxResourceUsage.ts
 src/models/SandboxStatus.ts

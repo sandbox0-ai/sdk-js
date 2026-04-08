@@ -19,7 +19,6 @@ Name | Type
 `envVars` | { [key: string]: string; }
 `_public` | boolean
 `allowedTeams` | Array&lt;string&gt;
-`runtimeClassName` | string
 `clusterId` | string
 
 ## Example
@@ -42,7 +41,6 @@ const example = {
   "envVars": null,
   "_public": null,
   "allowedTeams": null,
-  "runtimeClassName": null,
   "clusterId": null,
 } satisfies SandboxTemplateSpec
 

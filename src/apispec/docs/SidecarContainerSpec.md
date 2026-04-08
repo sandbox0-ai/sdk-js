@@ -14,7 +14,6 @@ Name | Type
 `resources` | [ResourceQuota](ResourceQuota.md)
 `mounts` | [Array&lt;ContainerMountSpec&gt;](ContainerMountSpec.md)
 `readinessProbe` | [Probe](Probe.md)
-`livenessProbe` | [Probe](Probe.md)
 `startupProbe` | [Probe](Probe.md)
 
 ## Example
@@ -32,7 +31,6 @@ const example = {
   "resources": null,
   "mounts": null,
   "readinessProbe": null,
-  "livenessProbe": null,
   "startupProbe": null,
 } satisfies SidecarContainerSpec
 

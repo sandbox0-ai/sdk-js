@@ -10,6 +10,7 @@ Name | Type
 `templateId` | string
 `status` | string
 `paused` | boolean
+`powerState` | [SandboxPowerState](SandboxPowerState.md)
 `clusterId` | string
 `createdAt` | Date
 `expiresAt` | Date
@@ -26,6 +27,7 @@ const example = {
   "templateId": null,
   "status": null,
   "paused": null,
+  "powerState": null,
   "clusterId": null,
   "createdAt": null,
   "expiresAt": null,

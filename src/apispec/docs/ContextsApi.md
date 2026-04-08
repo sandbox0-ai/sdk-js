@@ -614,7 +614,7 @@ example().catch(console.error);
 
 Context WebSocket (I/O)
 
-Upgrades to WebSocket for streaming I/O. Client messages (JSON): - { \&quot;type\&quot;: \&quot;input\&quot;, \&quot;data\&quot;: \&quot;ls\\n\&quot;, \&quot;request_id\&quot;: \&quot;req-1\&quot; } - { \&quot;type\&quot;: \&quot;resize\&quot;, \&quot;rows\&quot;: 24, \&quot;cols\&quot;: 80 } - { \&quot;type\&quot;: \&quot;signal\&quot;, \&quot;signal\&quot;: \&quot;INT\&quot; } Server messages (JSON): - { \&quot;type\&quot;: \&quot;output\&quot;, \&quot;source\&quot;: \&quot;stdout\&quot;, \&quot;data\&quot;: \&quot;hello\\n\&quot; } 
+Upgrades to WebSocket for streaming I/O. Client messages (JSON): - { \&quot;type\&quot;: \&quot;input\&quot;, \&quot;data\&quot;: \&quot;ls\\n\&quot;, \&quot;request_id\&quot;: \&quot;req-1\&quot; } - { \&quot;type\&quot;: \&quot;resize\&quot;, \&quot;rows\&quot;: 24, \&quot;cols\&quot;: 80 } - { \&quot;type\&quot;: \&quot;signal\&quot;, \&quot;signal\&quot;: \&quot;INT\&quot; } Server messages (JSON): - { \&quot;type\&quot;: \&quot;output\&quot;, \&quot;source\&quot;: \&quot;stdout\&quot;, \&quot;data\&quot;: \&quot;hello\\n\&quot; } - { \&quot;type\&quot;: \&quot;done\&quot;, \&quot;request_id\&quot;: \&quot;req-1\&quot; } - { \&quot;type\&quot;: \&quot;done\&quot;, \&quot;exit_code\&quot;: 0, \&quot;state\&quot;: \&quot;stopped\&quot; } 
 
 ### Example
 

@@ -8,6 +8,8 @@ Name | Type
 ------------ | -------------
 `type` | string
 `requestId` | string
+`exitCode` | number
+`state` | string
 
 ## Example
 
@@ -18,6 +20,8 @@ import type { ContextWebSocketDone } from 'sandbox0'
 const example = {
   "type": null,
   "requestId": null,
+  "exitCode": null,
+  "state": null,
 } satisfies ContextWebSocketDone
 
 console.log(example)

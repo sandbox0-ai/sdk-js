@@ -10,6 +10,8 @@ Name | Type
 `source` | string
 `data` | string
 `requestId` | string
+`exitCode` | number
+`state` | string
 
 ## Example
 
@@ -22,6 +24,8 @@ const example = {
   "source": null,
   "data": null,
   "requestId": null,
+  "exitCode": null,
+  "state": null,
 } satisfies ContextWebSocketResponse
 
 console.log(example)

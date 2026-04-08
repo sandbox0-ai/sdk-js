@@ -14,6 +14,7 @@ import type {
   CmdResult,
   FileWatchResponse,
   RunResult,
+  StreamDone,
   StreamInput,
   StreamOutput,
 } from "./models";
@@ -83,14 +84,26 @@ type SandboxParams = {
 export class ContextStream {
   readonly readable: ReadableStream<StreamOutput>;
   readonly writable: WritableStream<StreamInput>;
+  readonly done: Promise<StreamDone>;
   private readonly socket: WebSocketClient;
   private readonly _contextId: string;
   private readonly _sandboxId: string;
+  private readonly resolveDone: (value: StreamDone) => void;
+  private readonly rejectDone: (reason?: unknown) => void;
+  private doneSettled = false;
 
   constructor(socket: WebSocketClient, sandboxId: string, contextId: string) {
     this.socket = socket;
     this._sandboxId = sandboxId;
     this._contextId = contextId;
+    let resolveDone!: (value: StreamDone) => void;
+    let rejectDone!: (reason?: unknown) => void;
+    this.done = new Promise<StreamDone>((resolve, reject) => {
+      resolveDone = resolve;
+      rejectDone = reject;
+    });
+    this.resolveDone = resolveDone;
+    this.rejectDone = rejectDone;
 
     // Create ReadableStream for outputs with backpressure
     this.readable = new ReadableStream<StreamOutput>({
@@ -98,6 +111,17 @@ export class ContextStream {
         socket.onMessage((data: WebSocketRawData) => {
           const payload = parseWsMessage(data);
           if (!payload) return;
+          if (isTerminalDonePayload(payload)) {
+            this.settleDone(buildStreamDone(this._sandboxId, this._contextId, payload));
+            try {
+              controller.close();
+            } catch {
+              // Controller may already be closed due to error.
+            }
+            socket.close();
+            return;
+          }
+          if (payload.type && payload.type !== "output") return;
           controller.enqueue({
             sandboxId: this._sandboxId,
             contextId: this._contextId,
@@ -106,9 +130,14 @@ export class ContextStream {
           });
         });
         socket.onError((err: Error) => {
+          this.rejectPendingDone(err instanceof Error ? err : new Error("websocket error"));
           controller.error(err instanceof Error ? err : new Error("websocket error"));
         });
         socket.onClose(() => {
+          this.settleDone({
+            sandboxId: this._sandboxId,
+            contextId: this._contextId,
+          });
           try {
             controller.close();
           } catch {
@@ -178,10 +207,29 @@ export class ContextStream {
   }
 
   /**
+   * Wait for the underlying process to finish.
+   */
+  async wait(): Promise<StreamDone> {
+    return this.done;
+  }
+
+  /**
    * Close the stream connection.
    */
   close(): void {
     this.socket.close();
+  }
+
+  private settleDone(done: StreamDone): void {
+    if (this.doneSettled) return;
+    this.doneSettled = true;
+    this.resolveDone(done);
+  }
+
+  private rejectPendingDone(reason: unknown): void {
+    if (this.doneSettled) return;
+    this.doneSettled = true;
+    this.rejectDone(reason);
   }
 }
 
@@ -348,6 +396,36 @@ export class Sandbox {
     };
   }
 
+  async cmdStream(command: string, options?: CmdOptions): Promise<ContextStream> {
+	if (options?.wait === true) {
+	  throw new APIError({
+	    statusCode: 0,
+	    code: "invalid_argument",
+	    message: "cmd stream requires wait=false",
+	  });
+	}
+	const cmdArgs = options?.command ?? parseCommand(command);
+	if (!command.trim() || cmdArgs.length === 0) {
+	  throw new APIError({
+	    statusCode: 0,
+	    code: "invalid_argument",
+	    message: "command cannot be empty",
+	  });
+	}
+	const request: CreateContextRequest = {
+	  type: models.ProcessType.Cmd as ProcessType,
+	  cmd: { command: cmdArgs } as CreateCMDContextRequest,
+	  waitUntilDone: false,
+	  cwd: options?.cwd,
+	  envVars: options?.envVars,
+	  ptySize: buildPty(options?.ptyRows, options?.ptyCols),
+	  idleTimeoutSec: options?.idleTimeoutSec,
+	  ttlSec: options?.ttlSec,
+	};
+	const contextResp = await this.createContext(request);
+	return this.connectWsContext(contextResp.id);
+  }
+
   async connectWsContext(contextId: string): Promise<ContextStream> {
     const wsUrl = this.client.websocketUrl(
       `/api/v1/sandboxes/${this.id}/contexts/${contextId}/ws`,
@@ -454,6 +532,26 @@ function parseWsMessage(data: WebSocketRawData): any | null {
   } catch {
     return null;
   }
+}
+
+function isTerminalDonePayload(payload: any): boolean {
+  if (payload?.type !== "done") {
+    return false;
+  }
+  return !payload.request_id && !payload.requestId
+    || payload.exit_code !== undefined
+    || payload.exitCode !== undefined
+    || typeof payload.state === "string" && payload.state.length > 0;
+}
+
+function buildStreamDone(sandboxId: string, contextId: string, payload: any): StreamDone {
+  return {
+    sandboxId,
+    contextId,
+    requestId: payload.request_id ?? payload.requestId,
+    exitCode: payload.exit_code ?? payload.exitCode,
+    state: typeof payload.state === "string" ? payload.state : undefined,
+  };
 }
 
 

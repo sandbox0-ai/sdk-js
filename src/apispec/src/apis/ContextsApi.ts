@@ -585,7 +585,7 @@ export class ContextsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Upgrades to WebSocket for streaming I/O. Client messages (JSON): - { \"type\": \"input\", \"data\": \"ls\\n\", \"request_id\": \"req-1\" } - { \"type\": \"resize\", \"rows\": 24, \"cols\": 80 } - { \"type\": \"signal\", \"signal\": \"INT\" } Server messages (JSON): - { \"type\": \"output\", \"source\": \"stdout\", \"data\": \"hello\\n\" } 
+     * Upgrades to WebSocket for streaming I/O. Client messages (JSON): - { \"type\": \"input\", \"data\": \"ls\\n\", \"request_id\": \"req-1\" } - { \"type\": \"resize\", \"rows\": 24, \"cols\": 80 } - { \"type\": \"signal\", \"signal\": \"INT\" } Server messages (JSON): - { \"type\": \"output\", \"source\": \"stdout\", \"data\": \"hello\\n\" } - { \"type\": \"done\", \"request_id\": \"req-1\" } - { \"type\": \"done\", \"exit_code\": 0, \"state\": \"stopped\" } 
      * Context WebSocket (I/O)
      */
     async apiV1SandboxesIdContextsCtxIdWsGetRaw(requestParameters: ApiV1SandboxesIdContextsCtxIdWsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -631,7 +631,7 @@ export class ContextsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Upgrades to WebSocket for streaming I/O. Client messages (JSON): - { \"type\": \"input\", \"data\": \"ls\\n\", \"request_id\": \"req-1\" } - { \"type\": \"resize\", \"rows\": 24, \"cols\": 80 } - { \"type\": \"signal\", \"signal\": \"INT\" } Server messages (JSON): - { \"type\": \"output\", \"source\": \"stdout\", \"data\": \"hello\\n\" } 
+     * Upgrades to WebSocket for streaming I/O. Client messages (JSON): - { \"type\": \"input\", \"data\": \"ls\\n\", \"request_id\": \"req-1\" } - { \"type\": \"resize\", \"rows\": 24, \"cols\": 80 } - { \"type\": \"signal\", \"signal\": \"INT\" } Server messages (JSON): - { \"type\": \"output\", \"source\": \"stdout\", \"data\": \"hello\\n\" } - { \"type\": \"done\", \"request_id\": \"req-1\" } - { \"type\": \"done\", \"exit_code\": 0, \"state\": \"stopped\" } 
      * Context WebSocket (I/O)
      */
     async apiV1SandboxesIdContextsCtxIdWsGet(requestParameters: ApiV1SandboxesIdContextsCtxIdWsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {

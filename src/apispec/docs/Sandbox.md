@@ -12,6 +12,7 @@ Name | Type
 `userId` | string
 `status` | string
 `paused` | boolean
+`powerState` | [SandboxPowerState](SandboxPowerState.md)
 `autoResume` | boolean
 `exposedPorts` | [Array&lt;ExposedPortConfig&gt;](ExposedPortConfig.md)
 `podName` | string
@@ -33,6 +34,7 @@ const example = {
   "userId": null,
   "status": null,
   "paused": null,
+  "powerState": null,
   "autoResume": null,
   "exposedPorts": null,
   "podName": null,

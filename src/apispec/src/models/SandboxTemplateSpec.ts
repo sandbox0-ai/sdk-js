@@ -152,12 +152,6 @@ export interface SandboxTemplateSpec {
      * @type {string}
      * @memberof SandboxTemplateSpec
      */
-    runtimeClassName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SandboxTemplateSpec
-     */
     clusterId?: string;
 }
 
@@ -191,7 +185,6 @@ export function SandboxTemplateSpecFromJSONTyped(json: any, ignoreDiscriminator:
         'envVars': json['envVars'] == null ? undefined : json['envVars'],
         '_public': json['public'] == null ? undefined : json['public'],
         'allowedTeams': json['allowedTeams'] == null ? undefined : json['allowedTeams'],
-        'runtimeClassName': json['runtimeClassName'] == null ? undefined : json['runtimeClassName'],
         'clusterId': json['clusterId'] == null ? undefined : json['clusterId'],
     };
 }
@@ -220,7 +213,6 @@ export function SandboxTemplateSpecToJSONTyped(value?: SandboxTemplateSpec | nul
         'envVars': value['envVars'],
         'public': value['_public'],
         'allowedTeams': value['allowedTeams'],
-        'runtimeClassName': value['runtimeClassName'],
         'clusterId': value['clusterId'],
     };
 }

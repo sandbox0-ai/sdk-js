@@ -20,6 +20,13 @@ import {
     ExposedPortConfigToJSON,
     ExposedPortConfigToJSONTyped,
 } from './ExposedPortConfig';
+import type { SandboxPowerState } from './SandboxPowerState';
+import {
+    SandboxPowerStateFromJSON,
+    SandboxPowerStateFromJSONTyped,
+    SandboxPowerStateToJSON,
+    SandboxPowerStateToJSONTyped,
+} from './SandboxPowerState';
 
 /**
  * 
@@ -63,6 +70,12 @@ export interface Sandbox {
      * @memberof Sandbox
      */
     paused: boolean;
+    /**
+     * 
+     * @type {SandboxPowerState}
+     * @memberof Sandbox
+     */
+    powerState: SandboxPowerState;
     /**
      * 
      * @type {boolean}
@@ -116,6 +129,7 @@ export function instanceOfSandbox(value: object): value is Sandbox {
     if (!('teamId' in value) || value['teamId'] === undefined) return false;
     if (!('status' in value) || value['status'] === undefined) return false;
     if (!('paused' in value) || value['paused'] === undefined) return false;
+    if (!('powerState' in value) || value['powerState'] === undefined) return false;
     if (!('autoResume' in value) || value['autoResume'] === undefined) return false;
     if (!('podName' in value) || value['podName'] === undefined) return false;
     if (!('expiresAt' in value) || value['expiresAt'] === undefined) return false;
@@ -141,6 +155,7 @@ export function SandboxFromJSONTyped(json: any, ignoreDiscriminator: boolean): S
         'userId': json['user_id'] == null ? undefined : json['user_id'],
         'status': json['status'],
         'paused': json['paused'],
+        'powerState': SandboxPowerStateFromJSON(json['power_state']),
         'autoResume': json['auto_resume'],
         'exposedPorts': json['exposed_ports'] == null ? undefined : ((json['exposed_ports'] as Array<any>).map(ExposedPortConfigFromJSON)),
         'podName': json['pod_name'],
@@ -168,6 +183,7 @@ export function SandboxToJSONTyped(value?: Sandbox | null, ignoreDiscriminator: 
         'user_id': value['userId'],
         'status': value['status'],
         'paused': value['paused'],
+        'power_state': SandboxPowerStateToJSON(value['powerState']),
         'auto_resume': value['autoResume'],
         'exposed_ports': value['exposedPorts'] == null ? undefined : ((value['exposedPorts'] as Array<any>).map(ExposedPortConfigToJSON)),
         'pod_name': value['podName'],

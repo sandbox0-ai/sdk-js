@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { SandboxPowerState } from './SandboxPowerState';
+import {
+    SandboxPowerStateFromJSON,
+    SandboxPowerStateFromJSONTyped,
+    SandboxPowerStateToJSON,
+    SandboxPowerStateToJSONTyped,
+} from './SandboxPowerState';
+
 /**
  * 
  * @export
@@ -33,6 +41,12 @@ export interface ResumeSandboxResponse {
     resumed: boolean;
     /**
      * 
+     * @type {SandboxPowerState}
+     * @memberof ResumeSandboxResponse
+     */
+    powerState: SandboxPowerState;
+    /**
+     * 
      * @type {string}
      * @memberof ResumeSandboxResponse
      */
@@ -45,6 +59,7 @@ export interface ResumeSandboxResponse {
 export function instanceOfResumeSandboxResponse(value: object): value is ResumeSandboxResponse {
     if (!('sandboxId' in value) || value['sandboxId'] === undefined) return false;
     if (!('resumed' in value) || value['resumed'] === undefined) return false;
+    if (!('powerState' in value) || value['powerState'] === undefined) return false;
     return true;
 }
 
@@ -60,6 +75,7 @@ export function ResumeSandboxResponseFromJSONTyped(json: any, ignoreDiscriminato
         
         'sandboxId': json['sandbox_id'],
         'resumed': json['resumed'],
+        'powerState': SandboxPowerStateFromJSON(json['power_state']),
         'restoredMemory': json['restored_memory'] == null ? undefined : json['restored_memory'],
     };
 }
@@ -77,6 +93,7 @@ export function ResumeSandboxResponseToJSONTyped(value?: ResumeSandboxResponse |
         
         'sandbox_id': value['sandboxId'],
         'resumed': value['resumed'],
+        'power_state': SandboxPowerStateToJSON(value['powerState']),
         'restored_memory': value['restoredMemory'],
     };
 }

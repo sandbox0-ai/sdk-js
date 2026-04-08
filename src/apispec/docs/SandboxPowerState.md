@@ -1,28 +1,30 @@
 
-# ResumeSandboxResponse
+# SandboxPowerState
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`sandboxId` | string
-`resumed` | boolean
-`powerState` | [SandboxPowerState](SandboxPowerState.md)
-`restoredMemory` | string
+`desired` | string
+`desiredGeneration` | number
+`observed` | string
+`observedGeneration` | number
+`phase` | string
 
 ## Example
 
 ```typescript
-import type { ResumeSandboxResponse } from 'sandbox0'
+import type { SandboxPowerState } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "sandboxId": null,
-  "resumed": null,
-  "powerState": null,
-  "restoredMemory": null,
-} satisfies ResumeSandboxResponse
+  "desired": null,
+  "desiredGeneration": null,
+  "observed": null,
+  "observedGeneration": null,
+  "phase": null,
+} satisfies SandboxPowerState
 
 console.log(example)
 
@@ -31,7 +33,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as ResumeSandboxResponse
+const exampleParsed = JSON.parse(exampleJSON) as SandboxPowerState
 console.log(exampleParsed)
 ```
 

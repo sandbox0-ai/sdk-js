@@ -288,6 +288,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [Sandbox](docs/Sandbox.md)
 - [SandboxConfig](docs/SandboxConfig.md)
 - [SandboxNetworkPolicy](docs/SandboxNetworkPolicy.md)
+- [SandboxPowerState](docs/SandboxPowerState.md)
 - [SandboxRefreshRequest](docs/SandboxRefreshRequest.md)
 - [SandboxResourceUsage](docs/SandboxResourceUsage.md)
 - [SandboxStatus](docs/SandboxStatus.md)

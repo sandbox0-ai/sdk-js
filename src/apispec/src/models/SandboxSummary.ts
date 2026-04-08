@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { SandboxPowerState } from './SandboxPowerState';
+import {
+    SandboxPowerStateFromJSON,
+    SandboxPowerStateFromJSONTyped,
+    SandboxPowerStateToJSON,
+    SandboxPowerStateToJSONTyped,
+} from './SandboxPowerState';
+
 /**
  * 
  * @export
@@ -43,6 +51,12 @@ export interface SandboxSummary {
      * @memberof SandboxSummary
      */
     paused: boolean;
+    /**
+     * 
+     * @type {SandboxPowerState}
+     * @memberof SandboxSummary
+     */
+    powerState: SandboxPowerState;
     /**
      * Cluster where sandbox runs (multi-cluster only)
      * @type {string}
@@ -90,6 +104,7 @@ export function instanceOfSandboxSummary(value: object): value is SandboxSummary
     if (!('templateId' in value) || value['templateId'] === undefined) return false;
     if (!('status' in value) || value['status'] === undefined) return false;
     if (!('paused' in value) || value['paused'] === undefined) return false;
+    if (!('powerState' in value) || value['powerState'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     if (!('expiresAt' in value) || value['expiresAt'] === undefined) return false;
     if (!('hardExpiresAt' in value) || value['hardExpiresAt'] === undefined) return false;
@@ -110,6 +125,7 @@ export function SandboxSummaryFromJSONTyped(json: any, ignoreDiscriminator: bool
         'templateId': json['template_id'],
         'status': json['status'],
         'paused': json['paused'],
+        'powerState': SandboxPowerStateFromJSON(json['power_state']),
         'clusterId': json['cluster_id'] == null ? undefined : json['cluster_id'],
         'createdAt': (new Date(json['created_at'])),
         'expiresAt': (new Date(json['expires_at'])),
@@ -132,6 +148,7 @@ export function SandboxSummaryToJSONTyped(value?: SandboxSummary | null, ignoreD
         'template_id': value['templateId'],
         'status': value['status'],
         'paused': value['paused'],
+        'power_state': SandboxPowerStateToJSON(value['powerState']),
         'cluster_id': value['clusterId'],
         'created_at': value['createdAt'].toISOString(),
         'expires_at': value['expiresAt'].toISOString(),

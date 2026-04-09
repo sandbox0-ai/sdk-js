@@ -1,22 +1,58 @@
-import WebSocket from "ws";
+import type WebSocketPackage from "ws";
 
-export type WebSocketRawData = WebSocket.RawData;
+export type WebSocketRawData =
+  | string
+  | ArrayBuffer
+  | Uint8Array
+  | Buffer
+  | Buffer[];
+
+type WebSocketConstructor = new (url: string, protocolsOrOptions?: unknown) => WebSocketLike;
+
+type NodeProcessLike = {
+  versions?: {
+    node?: string;
+  };
+};
+
+type EventTargetSocket = Pick<WebSocket, "readyState" | "send" | "close" | "addEventListener" | "removeEventListener"> & {
+  binaryType?: BinaryType;
+};
+
+type EventEmitterSocket = Pick<WebSocketPackage, "readyState" | "send" | "close" | "on" | "once" | "off"> & {
+  binaryType?: BinaryType;
+};
+
+type WebSocketLike = EventTargetSocket | EventEmitterSocket;
+
+const READY_STATE = {
+  CONNECTING: 0,
+  OPEN: 1,
+  CLOSING: 2,
+  CLOSED: 3,
+} as const;
 
 type WebSocketClientOptions = {
   headers?: Record<string, string>;
   connectTimeoutMs?: number;
+  resolveWebSocketConstructor?: (options: WebSocketClientOptions) => Promise<WebSocketConstructor>;
 };
 
 export class WebSocketClient {
-  private readonly socket: WebSocket;
+  private readonly socket: WebSocketLike;
   private readonly pendingSends: string[] = [];
   private closePending = false;
   private readonly connectTimeoutMs: number;
 
-  constructor(url: string, options: WebSocketClientOptions = {}) {
+  static async connect(url: string, options: WebSocketClientOptions = {}): Promise<WebSocketClient> {
+    const socket = await createWebSocket(url, options);
+    return new WebSocketClient(socket, options);
+  }
+
+  private constructor(socket: WebSocketLike, options: WebSocketClientOptions = {}) {
     this.connectTimeoutMs = options.connectTimeoutMs ?? 10000;
-    this.socket = new WebSocket(url, { headers: options.headers });
-    this.socket.on("open", () => {
+    this.socket = socket;
+    addOpenListener(this.socket, () => {
       this.flushPendingSends();
       if (this.closePending) {
         this.closePending = false;
@@ -31,7 +67,7 @@ export class WebSocketClient {
   }
 
   async waitForOpen(timeoutMs = this.connectTimeoutMs): Promise<void> {
-    if (this.socket.readyState === WebSocket.OPEN) {
+    if (this.socket.readyState === READY_STATE.OPEN) {
       return;
     }
 
@@ -56,38 +92,35 @@ export class WebSocketClient {
       };
       const cleanup = () => {
         clearTimeout(timer);
-        this.socket.off("open", onOpen);
-        this.socket.off("error", onError);
-        this.socket.off("close", onClose);
+        cleanupOpen();
+        cleanupError();
+        cleanupClose();
       };
 
-      this.socket.once("open", onOpen);
-      this.socket.once("error", onError);
-      this.socket.once("close", onClose);
+      const cleanupOpen = addOpenListener(this.socket, onOpen, { once: true });
+      const cleanupError = addErrorListener(this.socket, onError, { once: true });
+      const cleanupClose = addCloseListener(this.socket, onClose, { once: true });
     });
   }
 
   onMessage(handler: (data: WebSocketRawData) => void): () => void {
-    this.socket.on("message", handler);
-    return () => this.socket.off("message", handler);
+    return addMessageListener(this.socket, handler);
   }
 
   onClose(handler: () => void): () => void {
-    this.socket.on("close", handler);
-    return () => this.socket.off("close", handler);
+    return addCloseListener(this.socket, handler);
   }
 
   onError(handler: (err: Error) => void): () => void {
-    this.socket.on("error", handler);
-    return () => this.socket.off("error", handler);
+    return addErrorListener(this.socket, handler);
   }
 
   send(payload: string): void {
-    if (this.socket.readyState === WebSocket.OPEN) {
+    if (this.socket.readyState === READY_STATE.OPEN) {
       this.socket.send(payload);
       return;
     }
-    if (this.socket.readyState === WebSocket.CONNECTING) {
+    if (this.socket.readyState === READY_STATE.CONNECTING) {
       this.pendingSends.push(payload);
       return;
     }
@@ -96,11 +129,11 @@ export class WebSocketClient {
 
   close(): void {
     this.pendingSends.length = 0;
-    if (this.socket.readyState === WebSocket.CONNECTING) {
+    if (this.socket.readyState === READY_STATE.CONNECTING) {
       this.closePending = true;
       return;
     }
-    if (this.socket.readyState === WebSocket.CLOSED) {
+    if (this.socket.readyState === READY_STATE.CLOSED) {
       return;
     }
     this.socket.close();
@@ -128,23 +161,154 @@ export class WebSocketClient {
       };
       const cleanup = () => {
         clearTimeout(timer);
-        this.socket.off("message", onMessage);
-        this.socket.off("error", onError);
-        this.socket.off("close", onClose);
+        cleanupMessage();
+        cleanupError();
+        cleanupClose();
       };
 
-      this.socket.once("message", onMessage);
-      this.socket.once("error", onError);
-      this.socket.once("close", onClose);
+      const cleanupMessage = addMessageListener(this.socket, onMessage, { once: true });
+      const cleanupError = addErrorListener(this.socket, onError, { once: true });
+      const cleanupClose = addCloseListener(this.socket, onClose, { once: true });
     });
   }
 
   private flushPendingSends(): void {
-    while (this.pendingSends.length > 0 && this.socket.readyState === WebSocket.OPEN) {
+    while (this.pendingSends.length > 0 && this.socket.readyState === READY_STATE.OPEN) {
       const payload = this.pendingSends.shift();
       if (payload) {
         this.socket.send(payload);
       }
     }
   }
+}
+
+async function createWebSocket(url: string, options: WebSocketClientOptions): Promise<WebSocketLike> {
+  const resolveConstructor = options.resolveWebSocketConstructor ?? defaultResolveWebSocketConstructor;
+  const WebSocketCtor = await resolveConstructor(options);
+  const socket = options.headers
+    ? new WebSocketCtor(url, { headers: options.headers })
+    : new WebSocketCtor(url);
+  if ("binaryType" in socket) {
+    socket.binaryType = "arraybuffer";
+  }
+  return socket;
+}
+
+async function defaultResolveWebSocketConstructor(options: WebSocketClientOptions): Promise<WebSocketConstructor> {
+  if (typeof globalThis.WebSocket === "function" && (!options.headers || isNodeLikeRuntime())) {
+    return globalThis.WebSocket as unknown as WebSocketConstructor;
+  }
+
+  const imported = await importWsModule();
+  return (imported.default ?? imported.WebSocket) as unknown as WebSocketConstructor;
+}
+
+async function importWsModule(): Promise<typeof import("ws")> {
+  // Keep the `ws` fallback out of static bundle graphs so SandFunc can rely on
+  // runtime-native WebSocket globals without pulling Node socket code.
+  const dynamicImport = Function("specifier", "return import(specifier);") as (specifier: string) => Promise<typeof import("ws")>;
+  return dynamicImport("ws");
+}
+
+function isNodeLikeRuntime(): boolean {
+  const maybeProcess = (globalThis as typeof globalThis & { process?: NodeProcessLike }).process;
+  return typeof maybeProcess?.versions?.node === "string";
+}
+
+function isEventTargetSocket(socket: WebSocketLike): socket is EventTargetSocket {
+  return typeof (socket as EventTargetSocket).addEventListener === "function";
+}
+
+function addOpenListener(socket: WebSocketLike, handler: () => void, options?: { once?: boolean }): () => void {
+  if (isEventTargetSocket(socket)) {
+    const wrapped = () => handler();
+    socket.addEventListener("open", wrapped, options?.once ? { once: true } : undefined);
+    return () => socket.removeEventListener("open", wrapped);
+  }
+
+  if (options?.once) {
+    socket.once("open", handler);
+  } else {
+    socket.on("open", handler);
+  }
+  return () => socket.off("open", handler);
+}
+
+function addMessageListener(
+  socket: WebSocketLike,
+  handler: (data: WebSocketRawData) => void,
+  options?: { once?: boolean },
+): () => void {
+  if (isEventTargetSocket(socket)) {
+    const wrapped = (event: Event) => {
+      handler(extractMessageData(event));
+    };
+    socket.addEventListener("message", wrapped, options?.once ? { once: true } : undefined);
+    return () => socket.removeEventListener("message", wrapped);
+  }
+
+  const wrapped = (data: WebSocketRawData) => {
+    handler(data);
+  };
+  if (options?.once) {
+    socket.once("message", wrapped);
+  } else {
+    socket.on("message", wrapped);
+  }
+  return () => socket.off("message", wrapped);
+}
+
+function addCloseListener(socket: WebSocketLike, handler: () => void, options?: { once?: boolean }): () => void {
+  if (isEventTargetSocket(socket)) {
+    const wrapped = () => handler();
+    socket.addEventListener("close", wrapped, options?.once ? { once: true } : undefined);
+    return () => socket.removeEventListener("close", wrapped);
+  }
+
+  if (options?.once) {
+    socket.once("close", handler);
+  } else {
+    socket.on("close", handler);
+  }
+  return () => socket.off("close", handler);
+}
+
+function addErrorListener(
+  socket: WebSocketLike,
+  handler: (error: Error) => void,
+  options?: { once?: boolean },
+): () => void {
+  if (isEventTargetSocket(socket)) {
+    const wrapped = (event: Event) => {
+      handler(extractError(event));
+    };
+    socket.addEventListener("error", wrapped, options?.once ? { once: true } : undefined);
+    return () => socket.removeEventListener("error", wrapped);
+  }
+
+  const wrapped = (error: Error) => {
+    handler(error instanceof Error ? error : new Error("websocket error"));
+  };
+  if (options?.once) {
+    socket.once("error", wrapped);
+  } else {
+    socket.on("error", wrapped);
+  }
+  return () => socket.off("error", wrapped);
+}
+
+function extractMessageData(event: Event): WebSocketRawData {
+  const candidate = event as Event & { data?: WebSocketRawData };
+  return candidate.data ?? new Uint8Array();
+}
+
+function extractError(event: Event): Error {
+  const candidate = event as Event & { error?: unknown; message?: string };
+  if (candidate.error instanceof Error) {
+    return candidate.error;
+  }
+  if (typeof candidate.message === "string" && candidate.message.trim()) {
+    return new Error(candidate.message);
+  }
+  return new Error("websocket error");
 }

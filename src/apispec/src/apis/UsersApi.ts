@@ -15,19 +15,28 @@
 
 import * as runtime from '../runtime';
 import type {
+  CreateSSHPublicKeyRequest,
   ErrorEnvelope,
   SuccessIdentityListResponse,
   SuccessMessageResponse,
+  SuccessSSHPublicKeyListResponse,
+  SuccessSSHPublicKeyResponse,
   SuccessUserResponse,
   UpdateUserRequest,
 } from '../models/index';
 import {
+    CreateSSHPublicKeyRequestFromJSON,
+    CreateSSHPublicKeyRequestToJSON,
     ErrorEnvelopeFromJSON,
     ErrorEnvelopeToJSON,
     SuccessIdentityListResponseFromJSON,
     SuccessIdentityListResponseToJSON,
     SuccessMessageResponseFromJSON,
     SuccessMessageResponseToJSON,
+    SuccessSSHPublicKeyListResponseFromJSON,
+    SuccessSSHPublicKeyListResponseToJSON,
+    SuccessSSHPublicKeyResponseFromJSON,
+    SuccessSSHPublicKeyResponseToJSON,
     SuccessUserResponseFromJSON,
     SuccessUserResponseToJSON,
     UpdateUserRequestFromJSON,
@@ -40,6 +49,14 @@ export interface UsersMeIdentitiesIdDeleteRequest {
 
 export interface UsersMePutRequest {
     updateUserRequest: UpdateUserRequest;
+}
+
+export interface UsersMeSshKeysIdDeleteRequest {
+    id: string;
+}
+
+export interface UsersMeSshKeysPostRequest {
+    createSSHPublicKeyRequest: CreateSSHPublicKeyRequest;
 }
 
 /**
@@ -210,6 +227,135 @@ export class UsersApi extends runtime.BaseAPI {
      */
     async usersMePut(requestParameters: UsersMePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessUserResponse> {
         const response = await this.usersMePutRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * List current user SSH public keys
+     */
+    async usersMeSshKeysGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSSHPublicKeyListResponse>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/users/me/ssh-keys`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSSHPublicKeyListResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * List current user SSH public keys
+     */
+    async usersMeSshKeysGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSSHPublicKeyListResponse> {
+        const response = await this.usersMeSshKeysGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Delete a current user SSH public key
+     */
+    async usersMeSshKeysIdDeleteRaw(requestParameters: UsersMeSshKeysIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessMessageResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling usersMeSshKeysIdDelete().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/users/me/ssh-keys/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessMessageResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Delete a current user SSH public key
+     */
+    async usersMeSshKeysIdDelete(requestParameters: UsersMeSshKeysIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessMessageResponse> {
+        const response = await this.usersMeSshKeysIdDeleteRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Create a current user SSH public key
+     */
+    async usersMeSshKeysPostRaw(requestParameters: UsersMeSshKeysPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSSHPublicKeyResponse>> {
+        if (requestParameters['createSSHPublicKeyRequest'] == null) {
+            throw new runtime.RequiredError(
+                'createSSHPublicKeyRequest',
+                'Required parameter "createSSHPublicKeyRequest" was null or undefined when calling usersMeSshKeysPost().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/users/me/ssh-keys`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateSSHPublicKeyRequestToJSON(requestParameters['createSSHPublicKeyRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSSHPublicKeyResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Create a current user SSH public key
+     */
+    async usersMeSshKeysPost(requestParameters: UsersMeSshKeysPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSSHPublicKeyResponse> {
+        const response = await this.usersMeSshKeysPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

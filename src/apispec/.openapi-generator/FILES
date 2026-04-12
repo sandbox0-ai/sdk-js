@@ -17,7 +17,6 @@ docs/ChangeRequest.md
 docs/ClaimMountRequest.md
 docs/ClaimRequest.md
 docs/ClaimResponse.md
-docs/ContainerMountSpec.md
 docs/ContainerSpec.md
 docs/ContextExecResponse.md
 docs/ContextInputRequest.md
@@ -38,6 +37,7 @@ docs/CreateCMDContextRequest.md
 docs/CreateContextRequest.md
 docs/CreateREPLContextRequest.md
 docs/CreateRegionRequest.md
+docs/CreateSSHPublicKeyRequest.md
 docs/CreateSandboxVolumeRequest.md
 docs/CreateSnapshotRequest.md
 docs/CreateTeamRequest.md
@@ -49,6 +49,7 @@ docs/CredentialSourceResolverKind.md
 docs/CredentialSourceWriteRequest.md
 docs/CredentialSourceWriteSpec.md
 docs/CredentialSourcesApi.md
+docs/CurrentAPIKeyResponse.md
 docs/DeviceLoginPollRequest.md
 docs/DeviceLoginPollResponse.md
 docs/DeviceLoginStartResponse.md
@@ -131,12 +132,14 @@ docs/ResolveVolumeSyncConflictRequest.md
 docs/ResourceQuota.md
 docs/ResourceUsage.md
 docs/ResumeSandboxResponse.md
+docs/SSHPublicKey.md
 docs/Sandbox.md
 docs/SandboxConfig.md
 docs/SandboxNetworkPolicy.md
 docs/SandboxPowerState.md
 docs/SandboxRefreshRequest.md
 docs/SandboxResourceUsage.md
+docs/SandboxSSHConnection.md
 docs/SandboxStatus.md
 docs/SandboxSummary.md
 docs/SandboxTemplate.md
@@ -149,8 +152,6 @@ docs/SandboxVolume.md
 docs/SandboxVolumesApi.md
 docs/SandboxesApi.md
 docs/SecurityContext.md
-docs/SharedVolumeSpec.md
-docs/SidecarContainerSpec.md
 docs/SignalContextRequest.md
 docs/Snapshot.md
 docs/SnapshotsApi.md
@@ -172,6 +173,8 @@ docs/SuccessCreatedResponse.md
 docs/SuccessCreatedResponseAllOfData.md
 docs/SuccessCredentialSourceListResponse.md
 docs/SuccessCredentialSourceResponse.md
+docs/SuccessCurrentAPIKeyResponse.md
+docs/SuccessCurrentAPIKeyResponseAllOfData.md
 docs/SuccessDeletedResponse.md
 docs/SuccessDeletedResponseAllOfData.md
 docs/SuccessDeviceLoginPollResponse.md
@@ -208,6 +211,9 @@ docs/SuccessResizedResponseAllOfData.md
 docs/SuccessRestoreResponse.md
 docs/SuccessRestoreResponseAllOfData.md
 docs/SuccessResumeSandboxResponse.md
+docs/SuccessSSHPublicKeyListResponse.md
+docs/SuccessSSHPublicKeyListResponseAllOfData.md
+docs/SuccessSSHPublicKeyResponse.md
 docs/SuccessSandboxListResponse.md
 docs/SuccessSandboxListResponseAllOfData.md
 docs/SuccessSandboxNetworkPolicyResponse.md
@@ -278,6 +284,7 @@ docs/VolumeSyncReplicaEnvelope.md
 docs/VolumeSyncReseedRequiredDetails.md
 docs/VolumeSyncReseedRequiredErrorEnvelope.md
 docs/VolumeSyncReseedRequiredErrorEnvelopeAllOfError.md
+docs/WarmProcessSpec.md
 docs/WebhookConfig.md
 docs/WeightedPodAffinityTerm.md
 package.json
@@ -312,7 +319,6 @@ src/models/ChangeRequest.ts
 src/models/ClaimMountRequest.ts
 src/models/ClaimRequest.ts
 src/models/ClaimResponse.ts
-src/models/ContainerMountSpec.ts
 src/models/ContainerSpec.ts
 src/models/ContextExecResponse.ts
 src/models/ContextInputRequest.ts
@@ -332,6 +338,7 @@ src/models/CreateCMDContextRequest.ts
 src/models/CreateContextRequest.ts
 src/models/CreateREPLContextRequest.ts
 src/models/CreateRegionRequest.ts
+src/models/CreateSSHPublicKeyRequest.ts
 src/models/CreateSandboxVolumeRequest.ts
 src/models/CreateSnapshotRequest.ts
 src/models/CreateTeamRequest.ts
@@ -342,6 +349,7 @@ src/models/CredentialSourceMetadata.ts
 src/models/CredentialSourceResolverKind.ts
 src/models/CredentialSourceWriteRequest.ts
 src/models/CredentialSourceWriteSpec.ts
+src/models/CurrentAPIKeyResponse.ts
 src/models/DeviceLoginPollRequest.ts
 src/models/DeviceLoginPollResponse.ts
 src/models/DeviceLoginStartResponse.ts
@@ -420,12 +428,14 @@ src/models/ResolveVolumeSyncConflictRequest.ts
 src/models/ResourceQuota.ts
 src/models/ResourceUsage.ts
 src/models/ResumeSandboxResponse.ts
+src/models/SSHPublicKey.ts
 src/models/Sandbox.ts
 src/models/SandboxConfig.ts
 src/models/SandboxNetworkPolicy.ts
 src/models/SandboxPowerState.ts
 src/models/SandboxRefreshRequest.ts
 src/models/SandboxResourceUsage.ts
+src/models/SandboxSSHConnection.ts
 src/models/SandboxStatus.ts
 src/models/SandboxSummary.ts
 src/models/SandboxTemplate.ts
@@ -436,8 +446,6 @@ src/models/SandboxUpdateConfig.ts
 src/models/SandboxUpdateRequest.ts
 src/models/SandboxVolume.ts
 src/models/SecurityContext.ts
-src/models/SharedVolumeSpec.ts
-src/models/SidecarContainerSpec.ts
 src/models/SignalContextRequest.ts
 src/models/Snapshot.ts
 src/models/StaticHeadersSourceSpec.ts
@@ -458,6 +466,8 @@ src/models/SuccessCreatedResponse.ts
 src/models/SuccessCreatedResponseAllOfData.ts
 src/models/SuccessCredentialSourceListResponse.ts
 src/models/SuccessCredentialSourceResponse.ts
+src/models/SuccessCurrentAPIKeyResponse.ts
+src/models/SuccessCurrentAPIKeyResponseAllOfData.ts
 src/models/SuccessDeletedResponse.ts
 src/models/SuccessDeletedResponseAllOfData.ts
 src/models/SuccessDeviceLoginPollResponse.ts
@@ -494,6 +504,9 @@ src/models/SuccessResizedResponseAllOfData.ts
 src/models/SuccessRestoreResponse.ts
 src/models/SuccessRestoreResponseAllOfData.ts
 src/models/SuccessResumeSandboxResponse.ts
+src/models/SuccessSSHPublicKeyListResponse.ts
+src/models/SuccessSSHPublicKeyListResponseAllOfData.ts
+src/models/SuccessSSHPublicKeyResponse.ts
 src/models/SuccessSandboxListResponse.ts
 src/models/SuccessSandboxListResponseAllOfData.ts
 src/models/SuccessSandboxNetworkPolicyResponse.ts
@@ -560,6 +573,7 @@ src/models/VolumeSyncReplicaEnvelope.ts
 src/models/VolumeSyncReseedRequiredDetails.ts
 src/models/VolumeSyncReseedRequiredErrorEnvelope.ts
 src/models/VolumeSyncReseedRequiredErrorEnvelopeAllOfError.ts
+src/models/WarmProcessSpec.ts
 src/models/WebhookConfig.ts
 src/models/WeightedPodAffinityTerm.ts
 src/models/index.ts

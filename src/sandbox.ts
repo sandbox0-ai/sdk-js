@@ -431,7 +431,7 @@ export class Sandbox {
       `/api/v1/sandboxes/${this.id}/contexts/${contextId}/ws`,
     );
     const headers = await this.client.wsHeaders();
-    const socket = new WebSocketClient(wsUrl, { headers });
+    const socket = await WebSocketClient.connect(wsUrl, { headers });
     return new ContextStream(socket, this.id, contextId);
   }
 

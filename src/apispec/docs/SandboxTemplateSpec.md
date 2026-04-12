@@ -10,8 +10,7 @@ Name | Type
 `displayName` | string
 `tags` | Array&lt;string&gt;
 `mainContainer` | [ContainerSpec](ContainerSpec.md)
-`sidecars` | [Array&lt;SidecarContainerSpec&gt;](SidecarContainerSpec.md)
-`sharedVolumes` | [Array&lt;SharedVolumeSpec&gt;](SharedVolumeSpec.md)
+`warmProcesses` | [Array&lt;WarmProcessSpec&gt;](WarmProcessSpec.md)
 `pod` | [PodSpecOverride](PodSpecOverride.md)
 `network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
 `pool` | [PoolStrategy](PoolStrategy.md)
@@ -32,8 +31,7 @@ const example = {
   "displayName": null,
   "tags": null,
   "mainContainer": null,
-  "sidecars": null,
-  "sharedVolumes": null,
+  "warmProcesses": null,
   "pod": null,
   "network": null,
   "pool": null,

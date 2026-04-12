@@ -1,25 +1,21 @@
 import type {
-  ContainerMountSpec,
   ContainerSpec,
   EnvVar,
   LifecyclePolicy,
   PoolStrategy,
-  Probe,
   ResourceQuota,
   SandboxNetworkPolicy,
   SandboxTemplateSpec,
-  SharedVolumeSpec,
-  SidecarContainerSpec,
   TemplateCreateRequest,
   TemplateUpdateRequest,
+  WarmProcessSpec,
 } from "./apispec/src/models/index";
 
 export interface TemplateSpecInit {
   description?: string;
   displayName?: string;
   tags?: string[];
-  sidecars?: SidecarContainerSpec[];
-  sharedVolumes?: SharedVolumeSpec[];
+  warmProcesses?: WarmProcessSpec[];
   pod?: SandboxTemplateSpec["pod"];
   network?: SandboxNetworkPolicy;
   pool?: PoolStrategy;
@@ -36,29 +32,15 @@ export interface ContainerInit {
   securityContext?: ContainerSpec["securityContext"];
 }
 
-export interface SidecarInit {
+export interface WarmProcessInit {
+  alias?: string;
   command?: string[];
-  args?: string[];
-  env?: EnvVar[];
-  mounts?: ContainerMountSpec[];
-  readinessProbe?: Probe;
-  startupProbe?: Probe;
-}
-
-export interface SharedVolumeInit {
-  sandboxVolumeId?: string;
-  cacheSize?: string;
-  prefetch?: number;
-  bufferSize?: string;
-  writeback?: boolean;
+  cwd?: string;
+  envVars?: Record<string, string>;
 }
 
 export function resources(cpu: string, memory: string): ResourceQuota {
   return { cpu, memory };
-}
-
-export function mount(name: string, mountPath: string): ContainerMountSpec {
-  return { name, mountPath };
 }
 
 export function container(
@@ -75,38 +57,16 @@ export function container(
   };
 }
 
-export function sidecar(
-  name: string,
-  image: string,
-  sidecarResources: ResourceQuota,
-  init: SidecarInit = {},
-): SidecarContainerSpec {
+export function warmProcess(
+  type: WarmProcessSpec["type"],
+  init: WarmProcessInit = {},
+): WarmProcessSpec {
   return {
-    name,
-    image,
-    resources: sidecarResources,
+    type,
+    ...(init.alias ? { alias: init.alias } : {}),
     ...(init.command ? { command: [...init.command] } : {}),
-    ...(init.args ? { args: [...init.args] } : {}),
-    ...(init.env ? { env: [...init.env] } : {}),
-    ...(init.mounts ? { mounts: [...init.mounts] } : {}),
-    ...(init.readinessProbe ? { readinessProbe: init.readinessProbe } : {}),
-    ...(init.startupProbe ? { startupProbe: init.startupProbe } : {}),
-  };
-}
-
-export function sharedVolume(
-  name: string,
-  mountPath: string,
-  init: SharedVolumeInit = {},
-): SharedVolumeSpec {
-  return {
-    name,
-    mountPath,
-    ...(init.sandboxVolumeId ? { sandboxVolumeId: init.sandboxVolumeId } : {}),
-    ...(init.cacheSize ? { cacheSize: init.cacheSize } : {}),
-    ...(init.prefetch !== undefined ? { prefetch: init.prefetch } : {}),
-    ...(init.bufferSize ? { bufferSize: init.bufferSize } : {}),
-    ...(init.writeback !== undefined ? { writeback: init.writeback } : {}),
+    ...(init.cwd ? { cwd: init.cwd } : {}),
+    ...(init.envVars ? { envVars: { ...init.envVars } } : {}),
   };
 }
 
@@ -119,14 +79,13 @@ export function templateSpec(
     ...(init.description ? { description: init.description } : {}),
     ...(init.displayName ? { displayName: init.displayName } : {}),
     ...(init.tags ? { tags: [...init.tags] } : {}),
-    ...(init.sidecars ? { sidecars: [...init.sidecars] } : {}),
-    ...(init.sharedVolumes ? { sharedVolumes: [...init.sharedVolumes] } : {}),
+    ...(init.warmProcesses ? { warmProcesses: [...init.warmProcesses] } : {}),
     ...(init.pod ? { pod: init.pod } : {}),
     ...(init.network ? { network: init.network } : {}),
     ...(init.pool ? { pool: init.pool } : {}),
     ...(init.lifecycle ? { lifecycle: init.lifecycle } : {}),
     ...(init.envVars ? { envVars: { ...init.envVars } } : {}),
-    ...(init.public !== undefined ? { public: init.public } : {}),
+    ...(init.public !== undefined ? { _public: init.public } : {}),
     ...(init.allowedTeams ? { allowedTeams: [...init.allowedTeams] } : {}),
     ...(init.clusterId ? { clusterId: init.clusterId } : {}),
   };

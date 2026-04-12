@@ -19,6 +19,7 @@ import type {
   ErrorEnvelope,
   SuccessAPIKeyListResponse,
   SuccessCreateAPIKeyResponse,
+  SuccessCurrentAPIKeyResponse,
   SuccessMessageResponse,
 } from '../models/index';
 import {
@@ -30,6 +31,8 @@ import {
     SuccessAPIKeyListResponseToJSON,
     SuccessCreateAPIKeyResponseFromJSON,
     SuccessCreateAPIKeyResponseToJSON,
+    SuccessCurrentAPIKeyResponseFromJSON,
+    SuccessCurrentAPIKeyResponseToJSON,
     SuccessMessageResponseFromJSON,
     SuccessMessageResponseToJSON,
 } from '../models/index';
@@ -50,6 +53,45 @@ export interface ApiKeysPostRequest {
  * 
  */
 export class ApiKeysApi extends runtime.BaseAPI {
+
+    /**
+     * Returns the identity and permissions of the currently authenticated API key.
+     * Introspect current API key
+     */
+    async apiKeysCurrentGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessCurrentAPIKeyResponse>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api-keys/current`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessCurrentAPIKeyResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns the identity and permissions of the currently authenticated API key.
+     * Introspect current API key
+     */
+    async apiKeysCurrentGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessCurrentAPIKeyResponse> {
+        const response = await this.apiKeysCurrentGetRaw(initOverrides);
+        return await response.value();
+    }
 
     /**
      * List API keys

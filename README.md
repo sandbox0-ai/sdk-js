@@ -16,6 +16,8 @@ pnpm add sandbox0
 
 - Node.js 18.0.0 or later
 
+Streaming APIs prefer a runtime-native `globalThis.WebSocket` when a Node-compatible host exposes one, and fall back to the `ws` package on older Node runtimes. This keeps the main SDK entry compatible with SandFunc-style runtimes that expose a standard outbound WebSocket client without requiring raw socket access in user code.
+
 ## Configuration
 
 | Environment Variable | Required | Default                   | Description          |
@@ -67,7 +69,7 @@ console.log(`exit=${done.exitCode} state=${done.state}`);
 ## Documentation
 
 - [Sandbox0 docs](https://sandbox0.ai/docs)
-- [Template sidecars and shared volumes](https://sandbox0.ai/docs/template/sidecars)
+- [Template warm processes](https://sandbox0.ai/docs/template/warm-processes)
 - [Volume mounts](https://sandbox0.ai/docs/volume/mounts)
 
 ## Bootstrap Mounts At Claim Time

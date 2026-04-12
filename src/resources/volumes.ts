@@ -249,7 +249,7 @@ export class Volumes {
   ): Promise<FileWatchStream> {
     const wsUrl = this.client.websocketUrl(`/api/v1/sandboxvolumes/${volumeId}/files/watch`);
     const headers = await this.client.wsHeaders();
-    const socket = new WebSocketClient(wsUrl, { headers });
+    const socket = await WebSocketClient.connect(wsUrl, { headers });
     await socket.waitForOpen();
     socket.send(JSON.stringify({ action: "subscribe", path, recursive: !!recursive }));
 

@@ -164,7 +164,7 @@ Sandbox.prototype.watchFiles = async function (
   const client = getClient(this);
   const wsUrl = client.websocketUrl(`/api/v1/sandboxes/${this.id}/files/watch`);
   const headers = await client.wsHeaders();
-  const socket = new WebSocketClient(wsUrl, { headers });
+  const socket = await WebSocketClient.connect(wsUrl, { headers });
   await socket.waitForOpen();
   socket.send(JSON.stringify({ action: "subscribe", path, recursive: !!recursive }));
 
@@ -218,4 +218,3 @@ function parseWsMessage(data: WebSocketRawData): any | null {
     return null;
   }
 }
-

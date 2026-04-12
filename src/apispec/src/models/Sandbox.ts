@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { SandboxSSHConnection } from './SandboxSSHConnection';
+import {
+    SandboxSSHConnectionFromJSON,
+    SandboxSSHConnectionFromJSONTyped,
+    SandboxSSHConnectionToJSON,
+    SandboxSSHConnectionToJSONTyped,
+} from './SandboxSSHConnection';
 import type { ExposedPortConfig } from './ExposedPortConfig';
 import {
     ExposedPortConfigFromJSON,
@@ -95,6 +102,12 @@ export interface Sandbox {
      */
     podName: string;
     /**
+     * 
+     * @type {SandboxSSHConnection}
+     * @memberof Sandbox
+     */
+    ssh?: SandboxSSHConnection;
+    /**
      * Soft expiration timestamp. Zero value means not set.
      * @type {Date}
      * @memberof Sandbox
@@ -159,6 +172,7 @@ export function SandboxFromJSONTyped(json: any, ignoreDiscriminator: boolean): S
         'autoResume': json['auto_resume'],
         'exposedPorts': json['exposed_ports'] == null ? undefined : ((json['exposed_ports'] as Array<any>).map(ExposedPortConfigFromJSON)),
         'podName': json['pod_name'],
+        'ssh': json['ssh'] == null ? undefined : SandboxSSHConnectionFromJSON(json['ssh']),
         'expiresAt': (new Date(json['expires_at'])),
         'hardExpiresAt': (new Date(json['hard_expires_at'])),
         'claimedAt': (new Date(json['claimed_at'])),
@@ -187,6 +201,7 @@ export function SandboxToJSONTyped(value?: Sandbox | null, ignoreDiscriminator: 
         'auto_resume': value['autoResume'],
         'exposed_ports': value['exposedPorts'] == null ? undefined : ((value['exposedPorts'] as Array<any>).map(ExposedPortConfigToJSON)),
         'pod_name': value['podName'],
+        'ssh': SandboxSSHConnectionToJSON(value['ssh']),
         'expires_at': value['expiresAt'].toISOString(),
         'hard_expires_at': value['hardExpiresAt'].toISOString(),
         'claimed_at': value['claimedAt'].toISOString(),

@@ -1,30 +1,32 @@
 
-# HTTPGetAction
+# SandboxProbeSpec
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`path` | string
-`port` | number
-`host` | string
-`scheme` | string
-`httpHeaders` | [Array&lt;HTTPHeader&gt;](HTTPHeader.md)
+`process` | object
+`exec` | [ExecAction](ExecAction.md)
+`httpGet` | [HTTPGetAction](HTTPGetAction.md)
+`tcpSocket` | [TCPSocketAction](TCPSocketAction.md)
+`initialDelaySeconds` | number
+`timeoutSeconds` | number
 
 ## Example
 
 ```typescript
-import type { HTTPGetAction } from 'sandbox0'
+import type { SandboxProbeSpec } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "path": null,
-  "port": null,
-  "host": null,
-  "scheme": null,
-  "httpHeaders": null,
-} satisfies HTTPGetAction
+  "process": null,
+  "exec": null,
+  "httpGet": null,
+  "tcpSocket": null,
+  "initialDelaySeconds": null,
+  "timeoutSeconds": null,
+} satisfies SandboxProbeSpec
 
 console.log(example)
 
@@ -33,7 +35,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as HTTPGetAction
+const exampleParsed = JSON.parse(exampleJSON) as SandboxProbeSpec
 console.log(exampleParsed)
 ```
 

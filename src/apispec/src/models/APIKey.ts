@@ -57,12 +57,6 @@ export interface APIKey {
     name: string;
     /**
      * 
-     * @type {string}
-     * @memberof APIKey
-     */
-    type: string;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof APIKey
      */
@@ -113,7 +107,6 @@ export function instanceOfAPIKey(value: object): value is APIKey {
     if (!('teamId' in value) || value['teamId'] === undefined) return false;
     if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('type' in value) || value['type'] === undefined) return false;
     if (!('roles' in value) || value['roles'] === undefined) return false;
     if (!('isActive' in value) || value['isActive'] === undefined) return false;
     if (!('expiresAt' in value) || value['expiresAt'] === undefined) return false;
@@ -138,7 +131,6 @@ export function APIKeyFromJSONTyped(json: any, ignoreDiscriminator: boolean): AP
         'userId': json['user_id'] == null ? undefined : json['user_id'],
         'createdBy': json['created_by'],
         'name': json['name'],
-        'type': json['type'],
         'roles': json['roles'],
         'isActive': json['is_active'],
         'expiresAt': (new Date(json['expires_at'])),
@@ -166,7 +158,6 @@ export function APIKeyToJSONTyped(value?: APIKey | null, ignoreDiscriminator: bo
         'user_id': value['userId'],
         'created_by': value['createdBy'],
         'name': value['name'],
-        'type': value['type'],
         'roles': value['roles'],
         'is_active': value['isActive'],
         'expires_at': value['expiresAt'].toISOString(),

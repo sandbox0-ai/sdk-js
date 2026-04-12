@@ -6,7 +6,7 @@
 
 Name | Type
 ------------ | -------------
-`port` | [ProbePort](ProbePort.md)
+`port` | number
 `host` | string
 
 ## Example

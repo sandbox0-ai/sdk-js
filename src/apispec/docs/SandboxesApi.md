@@ -742,7 +742,9 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **202** | Pause request accepted; sandbox power state will converge asynchronously |  -  |
+| **200** | Sandbox paused |  -  |
+| **409** | Pause was superseded by a newer power transition |  -  |
+| **504** | Timed out waiting for the sandbox to pause |  -  |
 | **404** | Not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -959,7 +961,9 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **202** | Resume request accepted; sandbox power state will converge asynchronously |  -  |
+| **200** | Sandbox resumed |  -  |
+| **409** | Resume was superseded by a newer power transition |  -  |
+| **504** | Timed out waiting for the sandbox to resume |  -  |
 | **404** | Not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)

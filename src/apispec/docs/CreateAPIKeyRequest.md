@@ -7,7 +7,6 @@
 Name | Type
 ------------ | -------------
 `name` | string
-`type` | string
 `roles` | Array&lt;string&gt;
 `expiresIn` | string
 
@@ -19,7 +18,6 @@ import type { CreateAPIKeyRequest } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "name": null,
-  "type": null,
   "roles": null,
   "expiresIn": null,
 } satisfies CreateAPIKeyRequest

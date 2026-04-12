@@ -13,12 +13,26 @@
  */
 
 import { mapValues } from '../runtime';
+import type { SandboxProbeSet } from './SandboxProbeSet';
+import {
+    SandboxProbeSetFromJSON,
+    SandboxProbeSetFromJSONTyped,
+    SandboxProbeSetToJSON,
+    SandboxProbeSetToJSONTyped,
+} from './SandboxProbeSet';
+
 /**
  * 
  * @export
  * @interface WarmProcessSpec
  */
 export interface WarmProcessSpec {
+    /**
+     * 
+     * @type {string}
+     * @memberof WarmProcessSpec
+     */
+    name?: string;
     /**
      * 
      * @type {string}
@@ -49,6 +63,12 @@ export interface WarmProcessSpec {
      * @memberof WarmProcessSpec
      */
     envVars?: { [key: string]: string; };
+    /**
+     * 
+     * @type {SandboxProbeSet}
+     * @memberof WarmProcessSpec
+     */
+    probes?: SandboxProbeSet;
 }
 
 
@@ -80,11 +100,13 @@ export function WarmProcessSpecFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
+        'name': json['name'] == null ? undefined : json['name'],
         'type': json['type'],
         'alias': json['alias'] == null ? undefined : json['alias'],
         'command': json['command'] == null ? undefined : json['command'],
         'cwd': json['cwd'] == null ? undefined : json['cwd'],
         'envVars': json['envVars'] == null ? undefined : json['envVars'],
+        'probes': json['probes'] == null ? undefined : SandboxProbeSetFromJSON(json['probes']),
     };
 }
 
@@ -99,11 +121,13 @@ export function WarmProcessSpecToJSONTyped(value?: WarmProcessSpec | null, ignor
 
     return {
         
+        'name': value['name'],
         'type': value['type'],
         'alias': value['alias'],
         'command': value['command'],
         'cwd': value['cwd'],
         'envVars': value['envVars'],
+        'probes': SandboxProbeSetToJSON(value['probes']),
     };
 }
 

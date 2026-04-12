@@ -16,6 +16,7 @@ Name | Type
 `autoResume` | boolean
 `exposedPorts` | [Array&lt;ExposedPortConfig&gt;](ExposedPortConfig.md)
 `podName` | string
+`ssh` | [SandboxSSHConnection](SandboxSSHConnection.md)
 `expiresAt` | Date
 `hardExpiresAt` | Date
 `claimedAt` | Date
@@ -38,6 +39,7 @@ const example = {
   "autoResume": null,
   "exposedPorts": null,
   "podName": null,
+  "ssh": null,
   "expiresAt": null,
   "hardExpiresAt": null,
   "claimedAt": null,

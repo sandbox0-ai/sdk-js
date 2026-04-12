@@ -39,13 +39,12 @@ const NULL_ARRAY_KEYS = new Set([
   "providers",
   "requiredDuringSchedulingIgnoredDuringExecution",
   "roles",
-  "sharedVolumes",
-  "sidecars",
   "tags",
   "teams",
   "templates",
   "tolerations",
   "values",
+  "warmProcesses",
 ]);
 
 function normalizeNullStringMap(value: Record<string, unknown>): boolean {

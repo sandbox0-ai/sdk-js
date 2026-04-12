@@ -1,5 +1,5 @@
 
-# SharedVolumeSpec
+# CreateSSHPublicKeyRequest
 
 
 ## Properties
@@ -7,28 +7,18 @@
 Name | Type
 ------------ | -------------
 `name` | string
-`sandboxVolumeId` | string
-`mountPath` | string
-`cacheSize` | string
-`prefetch` | number
-`bufferSize` | string
-`writeback` | boolean
+`publicKey` | string
 
 ## Example
 
 ```typescript
-import type { SharedVolumeSpec } from 'sandbox0'
+import type { CreateSSHPublicKeyRequest } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
   "name": null,
-  "sandboxVolumeId": null,
-  "mountPath": null,
-  "cacheSize": null,
-  "prefetch": null,
-  "bufferSize": null,
-  "writeback": null,
-} satisfies SharedVolumeSpec
+  "publicKey": null,
+} satisfies CreateSSHPublicKeyRequest
 
 console.log(example)
 
@@ -37,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SharedVolumeSpec
+const exampleParsed = JSON.parse(exampleJSON) as CreateSSHPublicKeyRequest
 console.log(exampleParsed)
 ```
 

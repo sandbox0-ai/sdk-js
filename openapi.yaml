@@ -459,6 +459,98 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
+  /users/me/ssh-keys:
+    get:
+      tags: [users]
+      summary: List current user SSH public keys
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: SSH public key list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSSHPublicKeyListResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    post:
+      tags: [users]
+      summary: Create a current user SSH public key
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSSHPublicKeyRequest"
+      responses:
+        "201":
+          description: Created SSH public key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSSHPublicKeyResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: SSH public key already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /users/me/ssh-keys/{id}:
+    delete:
+      tags: [users]
+      summary: Delete a current user SSH public key
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: SSH public key removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessMessageResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: SSH public key not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
   /teams:
     get:
       tags: [teams]
@@ -935,6 +1027,26 @@ paths:
                 $ref: "#/components/schemas/SuccessCreateAPIKeyResponse"
         "400":
           description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api-keys/current:
+    get:
+      tags: [api-keys]
+      summary: Introspect current API key
+      description: Returns the identity and permissions of the currently authenticated API key.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Current API key details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessCurrentAPIKeyResponse"
+        "401":
+          description: API key authentication required
           content:
             application/json:
               schema:
@@ -3290,6 +3402,14 @@ components:
           type: string
         avatar_url:
           type: string
+    CreateSSHPublicKeyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        public_key:
+          type: string
+      required: [name, public_key]
     SuccessUserResponse:
       allOf:
         - $ref: "#/components/schemas/SuccessEnvelope"
@@ -3297,6 +3417,47 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/User"
+    SSHPublicKey:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        public_key:
+          type: string
+        key_type:
+          type: string
+        fingerprint_sha256:
+          type: string
+        comment:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required: [id, name, public_key, key_type, fingerprint_sha256, created_at, updated_at]
+    SuccessSSHPublicKeyResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/SSHPublicKey"
+    SuccessSSHPublicKeyListResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                ssh_keys:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/SSHPublicKey"
     Identity:
       type: object
       properties:
@@ -3581,6 +3742,31 @@ components:
           type: string
           format: date-time
       required: [id, name, type, roles, team_id, expires_at, created_at]
+    CurrentAPIKeyResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        team_id:
+          type: string
+        created_by:
+          type: string
+        type:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        permissions:
+          type: array
+          items:
+            type: string
+        is_active:
+          type: boolean
+        expires_at:
+          type: string
+          format: date-time
+      required: [id, team_id, created_by, type, roles, permissions, is_active, expires_at]
     SuccessCreateAPIKeyResponse:
       allOf:
         - $ref: "#/components/schemas/SuccessEnvelope"
@@ -3588,6 +3774,16 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/CreateAPIKeyResponse"
+    SuccessCurrentAPIKeyResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                api_key:
+                  $ref: "#/components/schemas/CurrentAPIKeyResponse"
     SuccessAPIKeyListResponse:
       allOf:
         - $ref: "#/components/schemas/SuccessEnvelope"
@@ -3797,6 +3993,8 @@ components:
             $ref: "#/components/schemas/ExposedPortConfig"
         pod_name:
           type: string
+        ssh:
+          $ref: "#/components/schemas/SandboxSSHConnection"
         expires_at:
           type: string
           format: date-time
@@ -3824,6 +4022,19 @@ components:
         - hard_expires_at
         - claimed_at
         - created_at
+    SandboxSSHConnection:
+      type: object
+      properties:
+        host:
+          type: string
+        port:
+          type: integer
+        username:
+          type: string
+      required:
+        - host
+        - port
+        - username
     SandboxUpdateConfig:
       type: object
       description: |
@@ -5287,14 +5498,10 @@ components:
             type: string
         mainContainer:
           $ref: "#/components/schemas/ContainerSpec"
-        sidecars:
+        warmProcesses:
           type: array
           items:
-            $ref: "#/components/schemas/SidecarContainerSpec"
-        sharedVolumes:
-          type: array
-          items:
-            $ref: "#/components/schemas/SharedVolumeSpec"
+            $ref: "#/components/schemas/WarmProcessSpec"
         pod:
           $ref: "#/components/schemas/PodSpecOverride"
         network:
@@ -5331,65 +5538,25 @@ components:
         securityContext:
           $ref: "#/components/schemas/SecurityContext"
       required: [image, resources]
-    SidecarContainerSpec:
+    WarmProcessSpec:
       type: object
       properties:
-        name:
+        type:
           type: string
-        image:
+          enum: [repl, cmd]
+        alias:
           type: string
         command:
           type: array
           items:
             type: string
-        args:
-          type: array
-          items:
+        cwd:
+          type: string
+        envVars:
+          type: object
+          additionalProperties:
             type: string
-        env:
-          type: array
-          items:
-            $ref: "#/components/schemas/EnvVar"
-        resources:
-          $ref: "#/components/schemas/ResourceQuota"
-        mounts:
-          type: array
-          items:
-            $ref: "#/components/schemas/ContainerMountSpec"
-        readinessProbe:
-          $ref: "#/components/schemas/Probe"
-        startupProbe:
-          $ref: "#/components/schemas/Probe"
-      required: [name, image, resources]
-    ContainerMountSpec:
-      type: object
-      properties:
-        name:
-          type: string
-        mountPath:
-          type: string
-        readOnly:
-          type: boolean
-      required: [name, mountPath]
-    SharedVolumeSpec:
-      type: object
-      properties:
-        name:
-          type: string
-        sandboxVolumeId:
-          type: string
-        mountPath:
-          type: string
-        cacheSize:
-          type: string
-        prefetch:
-          type: integer
-          format: int32
-        bufferSize:
-          type: string
-        writeback:
-          type: boolean
-      required: [name, mountPath]
+      required: [type]
     EnvVar:
       type: object
       properties:

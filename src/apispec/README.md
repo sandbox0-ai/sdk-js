@@ -18,7 +18,7 @@ import {
   Configuration,
   ApiKeysApi,
 } from 'sandbox0';
-import type { ApiKeysGetRequest } from 'sandbox0';
+import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
@@ -29,7 +29,7 @@ async function example() {
   const api = new ApiKeysApi(config);
 
   try {
-    const data = await api.apiKeysGet();
+    const data = await api.apiKeysCurrentGet();
     console.log(data);
   } catch (error) {
     console.error(error);
@@ -49,6 +49,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 | Class | Method | HTTP request | Description
 | ----- | ------ | ------------ | -------------
+*ApiKeysApi* | [**apiKeysCurrentGet**](docs/ApiKeysApi.md#apikeyscurrentget) | **GET** /api-keys/current | Introspect current API key
 *ApiKeysApi* | [**apiKeysGet**](docs/ApiKeysApi.md#apikeysget) | **GET** /api-keys | List API keys
 *ApiKeysApi* | [**apiKeysIdDeactivatePost**](docs/ApiKeysApi.md#apikeysiddeactivatepost) | **POST** /api-keys/{id}/deactivate | Deactivate API key
 *ApiKeysApi* | [**apiKeysIdDelete**](docs/ApiKeysApi.md#apikeysiddelete) | **DELETE** /api-keys/{id} | Delete API key
@@ -149,6 +150,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 *UsersApi* | [**usersMeIdentitiesGet**](docs/UsersApi.md#usersmeidentitiesget) | **GET** /users/me/identities | List current user identities
 *UsersApi* | [**usersMeIdentitiesIdDelete**](docs/UsersApi.md#usersmeidentitiesiddelete) | **DELETE** /users/me/identities/{id} | Delete a user identity
 *UsersApi* | [**usersMePut**](docs/UsersApi.md#usersmeput) | **PUT** /users/me | Update current user
+*UsersApi* | [**usersMeSshKeysGet**](docs/UsersApi.md#usersmesshkeysget) | **GET** /users/me/ssh-keys | List current user SSH public keys
+*UsersApi* | [**usersMeSshKeysIdDelete**](docs/UsersApi.md#usersmesshkeysiddelete) | **DELETE** /users/me/ssh-keys/{id} | Delete a current user SSH public key
+*UsersApi* | [**usersMeSshKeysPost**](docs/UsersApi.md#usersmesshkeyspost) | **POST** /users/me/ssh-keys | Create a current user SSH public key
 *VolumeSyncApi* | [**apiV1SandboxvolumesIdSyncBootstrapArchiveGet**](docs/VolumeSyncApi.md#apiv1sandboxvolumesidsyncbootstraparchiveget) | **GET** /api/v1/sandboxvolumes/{id}/sync/bootstrap/archive | Download a bootstrap snapshot archive for local-first sync
 *VolumeSyncApi* | [**apiV1SandboxvolumesIdSyncBootstrapPost**](docs/VolumeSyncApi.md#apiv1sandboxvolumesidsyncbootstrappost) | **POST** /api/v1/sandboxvolumes/{id}/sync/bootstrap | Create a bootstrap snapshot and journal anchor for local-first sync
 *VolumeSyncApi* | [**apiV1SandboxvolumesIdSyncChangesGet**](docs/VolumeSyncApi.md#apiv1sandboxvolumesidsyncchangesget) | **GET** /api/v1/sandboxvolumes/{id}/sync/changes | List volume sync journal entries
@@ -177,7 +181,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ClaimMountRequest](docs/ClaimMountRequest.md)
 - [ClaimRequest](docs/ClaimRequest.md)
 - [ClaimResponse](docs/ClaimResponse.md)
-- [ContainerMountSpec](docs/ContainerMountSpec.md)
 - [ContainerSpec](docs/ContainerSpec.md)
 - [ContextExecResponse](docs/ContextExecResponse.md)
 - [ContextInputRequest](docs/ContextInputRequest.md)
@@ -197,6 +200,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [CreateContextRequest](docs/CreateContextRequest.md)
 - [CreateREPLContextRequest](docs/CreateREPLContextRequest.md)
 - [CreateRegionRequest](docs/CreateRegionRequest.md)
+- [CreateSSHPublicKeyRequest](docs/CreateSSHPublicKeyRequest.md)
 - [CreateSandboxVolumeRequest](docs/CreateSandboxVolumeRequest.md)
 - [CreateSnapshotRequest](docs/CreateSnapshotRequest.md)
 - [CreateTeamRequest](docs/CreateTeamRequest.md)
@@ -207,6 +211,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [CredentialSourceResolverKind](docs/CredentialSourceResolverKind.md)
 - [CredentialSourceWriteRequest](docs/CredentialSourceWriteRequest.md)
 - [CredentialSourceWriteSpec](docs/CredentialSourceWriteSpec.md)
+- [CurrentAPIKeyResponse](docs/CurrentAPIKeyResponse.md)
 - [DeviceLoginPollRequest](docs/DeviceLoginPollRequest.md)
 - [DeviceLoginPollResponse](docs/DeviceLoginPollResponse.md)
 - [DeviceLoginStartResponse](docs/DeviceLoginStartResponse.md)
@@ -285,12 +290,14 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ResourceQuota](docs/ResourceQuota.md)
 - [ResourceUsage](docs/ResourceUsage.md)
 - [ResumeSandboxResponse](docs/ResumeSandboxResponse.md)
+- [SSHPublicKey](docs/SSHPublicKey.md)
 - [Sandbox](docs/Sandbox.md)
 - [SandboxConfig](docs/SandboxConfig.md)
 - [SandboxNetworkPolicy](docs/SandboxNetworkPolicy.md)
 - [SandboxPowerState](docs/SandboxPowerState.md)
 - [SandboxRefreshRequest](docs/SandboxRefreshRequest.md)
 - [SandboxResourceUsage](docs/SandboxResourceUsage.md)
+- [SandboxSSHConnection](docs/SandboxSSHConnection.md)
 - [SandboxStatus](docs/SandboxStatus.md)
 - [SandboxSummary](docs/SandboxSummary.md)
 - [SandboxTemplate](docs/SandboxTemplate.md)
@@ -301,8 +308,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxUpdateRequest](docs/SandboxUpdateRequest.md)
 - [SandboxVolume](docs/SandboxVolume.md)
 - [SecurityContext](docs/SecurityContext.md)
-- [SharedVolumeSpec](docs/SharedVolumeSpec.md)
-- [SidecarContainerSpec](docs/SidecarContainerSpec.md)
 - [SignalContextRequest](docs/SignalContextRequest.md)
 - [Snapshot](docs/Snapshot.md)
 - [StaticHeadersSourceSpec](docs/StaticHeadersSourceSpec.md)
@@ -323,6 +328,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessCreatedResponseAllOfData](docs/SuccessCreatedResponseAllOfData.md)
 - [SuccessCredentialSourceListResponse](docs/SuccessCredentialSourceListResponse.md)
 - [SuccessCredentialSourceResponse](docs/SuccessCredentialSourceResponse.md)
+- [SuccessCurrentAPIKeyResponse](docs/SuccessCurrentAPIKeyResponse.md)
+- [SuccessCurrentAPIKeyResponseAllOfData](docs/SuccessCurrentAPIKeyResponseAllOfData.md)
 - [SuccessDeletedResponse](docs/SuccessDeletedResponse.md)
 - [SuccessDeletedResponseAllOfData](docs/SuccessDeletedResponseAllOfData.md)
 - [SuccessDeviceLoginPollResponse](docs/SuccessDeviceLoginPollResponse.md)
@@ -359,6 +366,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessRestoreResponse](docs/SuccessRestoreResponse.md)
 - [SuccessRestoreResponseAllOfData](docs/SuccessRestoreResponseAllOfData.md)
 - [SuccessResumeSandboxResponse](docs/SuccessResumeSandboxResponse.md)
+- [SuccessSSHPublicKeyListResponse](docs/SuccessSSHPublicKeyListResponse.md)
+- [SuccessSSHPublicKeyListResponseAllOfData](docs/SuccessSSHPublicKeyListResponseAllOfData.md)
+- [SuccessSSHPublicKeyResponse](docs/SuccessSSHPublicKeyResponse.md)
 - [SuccessSandboxListResponse](docs/SuccessSandboxListResponse.md)
 - [SuccessSandboxListResponseAllOfData](docs/SuccessSandboxListResponseAllOfData.md)
 - [SuccessSandboxNetworkPolicyResponse](docs/SuccessSandboxNetworkPolicyResponse.md)
@@ -425,6 +435,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [VolumeSyncReseedRequiredDetails](docs/VolumeSyncReseedRequiredDetails.md)
 - [VolumeSyncReseedRequiredErrorEnvelope](docs/VolumeSyncReseedRequiredErrorEnvelope.md)
 - [VolumeSyncReseedRequiredErrorEnvelopeAllOfError](docs/VolumeSyncReseedRequiredErrorEnvelopeAllOfError.md)
+- [WarmProcessSpec](docs/WarmProcessSpec.md)
 - [WebhookConfig](docs/WebhookConfig.md)
 - [WeightedPodAffinityTerm](docs/WeightedPodAffinityTerm.md)
 

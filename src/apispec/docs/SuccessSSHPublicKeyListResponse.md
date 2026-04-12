@@ -1,26 +1,24 @@
 
-# ContainerMountSpec
+# SuccessSSHPublicKeyListResponse
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`name` | string
-`mountPath` | string
-`readOnly` | boolean
+`success` | boolean
+`data` | [SuccessSSHPublicKeyListResponseAllOfData](SuccessSSHPublicKeyListResponseAllOfData.md)
 
 ## Example
 
 ```typescript
-import type { ContainerMountSpec } from 'sandbox0'
+import type { SuccessSSHPublicKeyListResponse } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "name": null,
-  "mountPath": null,
-  "readOnly": null,
-} satisfies ContainerMountSpec
+  "success": null,
+  "data": null,
+} satisfies SuccessSSHPublicKeyListResponse
 
 console.log(example)
 
@@ -29,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as ContainerMountSpec
+const exampleParsed = JSON.parse(exampleJSON) as SuccessSSHPublicKeyListResponse
 console.log(exampleParsed)
 ```
 

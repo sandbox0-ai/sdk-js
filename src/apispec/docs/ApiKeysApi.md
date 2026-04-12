@@ -4,11 +4,76 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
+| [**apiKeysCurrentGet**](ApiKeysApi.md#apikeyscurrentget) | **GET** /api-keys/current | Introspect current API key |
 | [**apiKeysGet**](ApiKeysApi.md#apikeysget) | **GET** /api-keys | List API keys |
 | [**apiKeysIdDeactivatePost**](ApiKeysApi.md#apikeysiddeactivatepost) | **POST** /api-keys/{id}/deactivate | Deactivate API key |
 | [**apiKeysIdDelete**](ApiKeysApi.md#apikeysiddelete) | **DELETE** /api-keys/{id} | Delete API key |
 | [**apiKeysPost**](ApiKeysApi.md#apikeyspost) | **POST** /api-keys | Create API key |
 
+
+
+## apiKeysCurrentGet
+
+> SuccessCurrentAPIKeyResponse apiKeysCurrentGet()
+
+Introspect current API key
+
+Returns the identity and permissions of the currently authenticated API key.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  ApiKeysApi,
+} from 'sandbox0';
+import type { ApiKeysCurrentGetRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new ApiKeysApi(config);
+
+  try {
+    const data = await api.apiKeysCurrentGet();
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**SuccessCurrentAPIKeyResponse**](SuccessCurrentAPIKeyResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Current API key details |  -  |
+| **401** | API key authentication required |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
 ## apiKeysGet

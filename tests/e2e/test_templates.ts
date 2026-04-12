@@ -1,5 +1,6 @@
 import { describe, it, before, skip } from "node:test";
 import assert from "node:assert";
+import { models } from "../../src/index.ts";
 import { loadE2EConfig, newClient, type E2EConfig } from "./helpers.ts";
 
 describe("Templates", () => {
@@ -24,21 +25,12 @@ describe("Templates", () => {
     }
     const source = templates[0];
     const sourceSpec = source.spec!;
-    const sidecars = [
+    const warmProcesses = [
       {
-        name: "codex",
-        image: "busybox:latest",
+        type: models.WarmProcessSpecTypeEnum.Cmd,
+        alias: "codex",
         command: ["sh", "-lc", "touch /tmp/ready; tail -f /dev/null"],
-        resources: {
-          cpu: "250m",
-          memory: "1Gi",
-        },
-        readinessProbe: {
-          exec: { command: ["test", "-f", "/tmp/ready"] },
-          initialDelaySeconds: 1,
-          periodSeconds: 1,
-          failureThreshold: 1,
-        },
+        cwd: "/workspace",
       },
     ];
 
@@ -47,7 +39,7 @@ describe("Templates", () => {
       templateId,
       spec: {
         ...sourceSpec,
-        sidecars,
+        warmProcesses,
       },
     });
     let deleted = false;
@@ -63,16 +55,12 @@ describe("Templates", () => {
 
     try {
       assert.strictEqual(created.templateId, templateId);
-      assert.strictEqual(created.spec?.sidecars?.length, 1);
-      assert.deepStrictEqual(created.spec?.sidecars?.[0]?.readinessProbe?.exec?.command, [
-        "test",
-        "-f",
-        "/tmp/ready",
-      ]);
+      assert.strictEqual(created.spec?.warmProcesses?.length, 1);
+      assert.strictEqual(created.spec?.warmProcesses?.[0]?.type, models.WarmProcessSpecTypeEnum.Cmd);
 
       const fetched = await client.templates.get(templateId);
       assert.strictEqual(fetched.templateId, templateId);
-      assert.strictEqual(fetched.spec?.sidecars?.length, 1);
+      assert.strictEqual(fetched.spec?.warmProcesses?.length, 1);
 
       const updated = await client.templates.update(templateId, {
         spec: {
@@ -81,7 +69,7 @@ describe("Templates", () => {
         },
       });
       assert.strictEqual(updated.templateId, templateId);
-      assert.strictEqual(updated.spec?.sidecars?.length, 1);
+      assert.strictEqual(updated.spec?.warmProcesses?.length, 1);
 
       await client.templates.delete(templateId);
       deleted = true;

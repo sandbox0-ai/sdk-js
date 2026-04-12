@@ -41,20 +41,13 @@ import {
     LifecyclePolicyToJSON,
     LifecyclePolicyToJSONTyped,
 } from './LifecyclePolicy';
-import type { SidecarContainerSpec } from './SidecarContainerSpec';
+import type { WarmProcessSpec } from './WarmProcessSpec';
 import {
-    SidecarContainerSpecFromJSON,
-    SidecarContainerSpecFromJSONTyped,
-    SidecarContainerSpecToJSON,
-    SidecarContainerSpecToJSONTyped,
-} from './SidecarContainerSpec';
-import type { SharedVolumeSpec } from './SharedVolumeSpec';
-import {
-    SharedVolumeSpecFromJSON,
-    SharedVolumeSpecFromJSONTyped,
-    SharedVolumeSpecToJSON,
-    SharedVolumeSpecToJSONTyped,
-} from './SharedVolumeSpec';
+    WarmProcessSpecFromJSON,
+    WarmProcessSpecFromJSONTyped,
+    WarmProcessSpecToJSON,
+    WarmProcessSpecToJSONTyped,
+} from './WarmProcessSpec';
 import type { PodSpecOverride } from './PodSpecOverride';
 import {
     PodSpecOverrideFromJSON,
@@ -95,16 +88,10 @@ export interface SandboxTemplateSpec {
     mainContainer?: ContainerSpec;
     /**
      * 
-     * @type {Array<SidecarContainerSpec>}
+     * @type {Array<WarmProcessSpec>}
      * @memberof SandboxTemplateSpec
      */
-    sidecars?: Array<SidecarContainerSpec>;
-    /**
-     * 
-     * @type {Array<SharedVolumeSpec>}
-     * @memberof SandboxTemplateSpec
-     */
-    sharedVolumes?: Array<SharedVolumeSpec>;
+    warmProcesses?: Array<WarmProcessSpec>;
     /**
      * 
      * @type {PodSpecOverride}
@@ -176,8 +163,7 @@ export function SandboxTemplateSpecFromJSONTyped(json: any, ignoreDiscriminator:
         'displayName': json['displayName'] == null ? undefined : json['displayName'],
         'tags': json['tags'] == null ? undefined : json['tags'],
         'mainContainer': json['mainContainer'] == null ? undefined : ContainerSpecFromJSON(json['mainContainer']),
-        'sidecars': json['sidecars'] == null ? undefined : ((json['sidecars'] as Array<any>).map(SidecarContainerSpecFromJSON)),
-        'sharedVolumes': json['sharedVolumes'] == null ? undefined : ((json['sharedVolumes'] as Array<any>).map(SharedVolumeSpecFromJSON)),
+        'warmProcesses': json['warmProcesses'] == null ? undefined : ((json['warmProcesses'] as Array<any>).map(WarmProcessSpecFromJSON)),
         'pod': json['pod'] == null ? undefined : PodSpecOverrideFromJSON(json['pod']),
         'network': json['network'] == null ? undefined : SandboxNetworkPolicyFromJSON(json['network']),
         'pool': json['pool'] == null ? undefined : PoolStrategyFromJSON(json['pool']),
@@ -204,8 +190,7 @@ export function SandboxTemplateSpecToJSONTyped(value?: SandboxTemplateSpec | nul
         'displayName': value['displayName'],
         'tags': value['tags'],
         'mainContainer': ContainerSpecToJSON(value['mainContainer']),
-        'sidecars': value['sidecars'] == null ? undefined : ((value['sidecars'] as Array<any>).map(SidecarContainerSpecToJSON)),
-        'sharedVolumes': value['sharedVolumes'] == null ? undefined : ((value['sharedVolumes'] as Array<any>).map(SharedVolumeSpecToJSON)),
+        'warmProcesses': value['warmProcesses'] == null ? undefined : ((value['warmProcesses'] as Array<any>).map(WarmProcessSpecToJSON)),
         'pod': PodSpecOverrideToJSON(value['pod']),
         'network': SandboxNetworkPolicyToJSON(value['network']),
         'pool': PoolStrategyToJSON(value['pool']),

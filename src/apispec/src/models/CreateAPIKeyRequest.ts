@@ -27,12 +27,6 @@ export interface CreateAPIKeyRequest {
     name: string;
     /**
      * 
-     * @type {string}
-     * @memberof CreateAPIKeyRequest
-     */
-    type: CreateAPIKeyRequestTypeEnum;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof CreateAPIKeyRequest
      */
@@ -45,23 +39,11 @@ export interface CreateAPIKeyRequest {
     expiresIn?: string;
 }
 
-
-/**
- * @export
- */
-export const CreateAPIKeyRequestTypeEnum = {
-    User: 'user',
-    Service: 'service'
-} as const;
-export type CreateAPIKeyRequestTypeEnum = typeof CreateAPIKeyRequestTypeEnum[keyof typeof CreateAPIKeyRequestTypeEnum];
-
-
 /**
  * Check if a given object implements the CreateAPIKeyRequest interface.
  */
 export function instanceOfCreateAPIKeyRequest(value: object): value is CreateAPIKeyRequest {
     if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('type' in value) || value['type'] === undefined) return false;
     return true;
 }
 
@@ -76,7 +58,6 @@ export function CreateAPIKeyRequestFromJSONTyped(json: any, ignoreDiscriminator:
     return {
         
         'name': json['name'],
-        'type': json['type'],
         'roles': json['roles'] == null ? undefined : json['roles'],
         'expiresIn': json['expires_in'] == null ? undefined : json['expires_in'],
     };
@@ -94,7 +75,6 @@ export function CreateAPIKeyRequestToJSONTyped(value?: CreateAPIKeyRequest | nul
     return {
         
         'name': value['name'],
-        'type': value['type'],
         'roles': value['roles'],
         'expires_in': value['expiresIn'],
     };

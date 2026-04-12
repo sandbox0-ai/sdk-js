@@ -13,14 +13,6 @@
  */
 
 import { mapValues } from '../runtime';
-import type { ProbePort } from './ProbePort';
-import {
-    ProbePortFromJSON,
-    ProbePortFromJSONTyped,
-    ProbePortToJSON,
-    ProbePortToJSONTyped,
-} from './ProbePort';
-
 /**
  * 
  * @export
@@ -29,10 +21,10 @@ import {
 export interface TCPSocketAction {
     /**
      * 
-     * @type {ProbePort}
+     * @type {number}
      * @memberof TCPSocketAction
      */
-    port: ProbePort;
+    port: number;
     /**
      * 
      * @type {string}
@@ -59,7 +51,7 @@ export function TCPSocketActionFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'port': ProbePortFromJSON(json['port']),
+        'port': json['port'],
         'host': json['host'] == null ? undefined : json['host'],
     };
 }
@@ -75,7 +67,7 @@ export function TCPSocketActionToJSONTyped(value?: TCPSocketAction | null, ignor
 
     return {
         
-        'port': ProbePortToJSON(value['port']),
+        'port': value['port'],
         'host': value['host'],
     };
 }

@@ -1,30 +1,26 @@
 
-# HTTPGetAction
+# SandboxProbeSet
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`path` | string
-`port` | number
-`host` | string
-`scheme` | string
-`httpHeaders` | [Array&lt;HTTPHeader&gt;](HTTPHeader.md)
+`startup` | [SandboxProbeSpec](SandboxProbeSpec.md)
+`readiness` | [SandboxProbeSpec](SandboxProbeSpec.md)
+`liveness` | [SandboxProbeSpec](SandboxProbeSpec.md)
 
 ## Example
 
 ```typescript
-import type { HTTPGetAction } from 'sandbox0'
+import type { SandboxProbeSet } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "path": null,
-  "port": null,
-  "host": null,
-  "scheme": null,
-  "httpHeaders": null,
-} satisfies HTTPGetAction
+  "startup": null,
+  "readiness": null,
+  "liveness": null,
+} satisfies SandboxProbeSet
 
 console.log(example)
 
@@ -33,7 +29,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as HTTPGetAction
+const exampleParsed = JSON.parse(exampleJSON) as SandboxProbeSet
 console.log(exampleParsed)
 ```
 

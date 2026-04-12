@@ -1310,12 +1310,24 @@ paths:
       parameters:
         - $ref: "#/components/parameters/SandboxID"
       responses:
-        "202":
-          description: Pause request accepted; sandbox power state will converge asynchronously
+        "200":
+          description: Sandbox paused
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SuccessPauseSandboxResponse"
+        "409":
+          description: Pause was superseded by a newer power transition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "504":
+          description: Timed out waiting for the sandbox to pause
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
         "404":
           description: Not found
           content:
@@ -1333,12 +1345,24 @@ paths:
       parameters:
         - $ref: "#/components/parameters/SandboxID"
       responses:
-        "202":
-          description: Resume request accepted; sandbox power state will converge asynchronously
+        "200":
+          description: Sandbox resumed
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SuccessResumeSandboxResponse"
+        "409":
+          description: Resume was superseded by a newer power transition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "504":
+          description: Timed out waiting for the sandbox to resume
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
         "404":
           description: Not found
           content:
@@ -3668,8 +3692,6 @@ components:
           type: string
         name:
           type: string
-        type:
-          type: string
         roles:
           type: array
           items:
@@ -3696,7 +3718,6 @@ components:
         - team_id
         - created_by
         - name
-        - type
         - roles
         - is_active
         - expires_at
@@ -3707,9 +3728,6 @@ components:
       properties:
         name:
           type: string
-        type:
-          type: string
-          enum: [user, service]
         roles:
           type: array
           items:
@@ -3717,15 +3735,13 @@ components:
         expires_in:
           type: string
           description: "30d, 90d, 180d, 365d, or never"
-      required: [name, type]
+      required: [name]
     CreateAPIKeyResponse:
       type: object
       properties:
         id:
           type: string
         name:
-          type: string
-        type:
           type: string
         roles:
           type: array
@@ -3741,7 +3757,7 @@ components:
         created_at:
           type: string
           format: date-time
-      required: [id, name, type, roles, team_id, expires_at, created_at]
+      required: [id, name, roles, team_id, expires_at, created_at]
     CurrentAPIKeyResponse:
       type: object
       properties:
@@ -3750,8 +3766,6 @@ components:
         team_id:
           type: string
         created_by:
-          type: string
-        type:
           type: string
         roles:
           type: array
@@ -3766,7 +3780,7 @@ components:
         expires_at:
           type: string
           format: date-time
-      required: [id, team_id, created_by, type, roles, permissions, is_active, expires_at]
+      required: [id, team_id, created_by, roles, permissions, is_active, expires_at]
     SuccessCreateAPIKeyResponse:
       allOf:
         - $ref: "#/components/schemas/SuccessEnvelope"
@@ -5541,6 +5555,8 @@ components:
     WarmProcessSpec:
       type: object
       properties:
+        name:
+          type: string
         type:
           type: string
           enum: [repl, cmd]
@@ -5556,7 +5572,38 @@ components:
           type: object
           additionalProperties:
             type: string
+        probes:
+          $ref: "#/components/schemas/SandboxProbeSet"
       required: [type]
+    SandboxProbeSet:
+      type: object
+      properties:
+        startup:
+          $ref: "#/components/schemas/SandboxProbeSpec"
+        readiness:
+          $ref: "#/components/schemas/SandboxProbeSpec"
+        liveness:
+          $ref: "#/components/schemas/SandboxProbeSpec"
+    SandboxProbeSpec:
+      type: object
+      properties:
+        process:
+          $ref: "#/components/schemas/ProcessProbeAction"
+        exec:
+          $ref: "#/components/schemas/ExecAction"
+        httpGet:
+          $ref: "#/components/schemas/HTTPGetAction"
+        tcpSocket:
+          $ref: "#/components/schemas/TCPSocketAction"
+        initialDelaySeconds:
+          type: integer
+          format: int32
+        timeoutSeconds:
+          type: integer
+          format: int32
+    ProcessProbeAction:
+      type: object
+      additionalProperties: false
     EnvVar:
       type: object
       properties:
@@ -5668,10 +5715,8 @@ components:
           type: string
       required: [name, value]
     ProbePort:
-      oneOf:
-        - type: integer
-          format: int32
-        - type: string
+      type: integer
+      format: int32
     PodSpecOverride:
       type: object
       properties:

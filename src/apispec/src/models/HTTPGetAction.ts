@@ -13,13 +13,6 @@
  */
 
 import { mapValues } from '../runtime';
-import type { ProbePort } from './ProbePort';
-import {
-    ProbePortFromJSON,
-    ProbePortFromJSONTyped,
-    ProbePortToJSON,
-    ProbePortToJSONTyped,
-} from './ProbePort';
 import type { HTTPHeader } from './HTTPHeader';
 import {
     HTTPHeaderFromJSON,
@@ -42,10 +35,10 @@ export interface HTTPGetAction {
     path?: string;
     /**
      * 
-     * @type {ProbePort}
+     * @type {number}
      * @memberof HTTPGetAction
      */
-    port: ProbePort;
+    port: number;
     /**
      * 
      * @type {string}
@@ -85,7 +78,7 @@ export function HTTPGetActionFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'path': json['path'] == null ? undefined : json['path'],
-        'port': ProbePortFromJSON(json['port']),
+        'port': json['port'],
         'host': json['host'] == null ? undefined : json['host'],
         'scheme': json['scheme'] == null ? undefined : json['scheme'],
         'httpHeaders': json['httpHeaders'] == null ? undefined : ((json['httpHeaders'] as Array<any>).map(HTTPHeaderFromJSON)),
@@ -104,7 +97,7 @@ export function HTTPGetActionToJSONTyped(value?: HTTPGetAction | null, ignoreDis
     return {
         
         'path': value['path'],
-        'port': ProbePortToJSON(value['port']),
+        'port': value['port'],
         'host': value['host'],
         'scheme': value['scheme'],
         'httpHeaders': value['httpHeaders'] == null ? undefined : ((value['httpHeaders'] as Array<any>).map(HTTPHeaderToJSON)),

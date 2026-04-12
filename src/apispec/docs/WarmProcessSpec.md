@@ -6,11 +6,13 @@
 
 Name | Type
 ------------ | -------------
+`name` | string
 `type` | string
 `alias` | string
 `command` | Array&lt;string&gt;
 `cwd` | string
 `envVars` | { [key: string]: string; }
+`probes` | [SandboxProbeSet](SandboxProbeSet.md)
 
 ## Example
 
@@ -19,11 +21,13 @@ import type { WarmProcessSpec } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
+  "name": null,
   "type": null,
   "alias": null,
   "command": null,
   "cwd": null,
   "envVars": null,
+  "probes": null,
 } satisfies WarmProcessSpec
 
 console.log(example)

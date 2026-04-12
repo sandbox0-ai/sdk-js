@@ -110,7 +110,6 @@ docs/PortSpec.md
 docs/PreStopHook.md
 docs/PreferredSchedulingTerm.md
 docs/Probe.md
-docs/ProbePort.md
 docs/ProcessType.md
 docs/ProjectedHeader.md
 docs/ProjectionSpec.md
@@ -137,6 +136,8 @@ docs/Sandbox.md
 docs/SandboxConfig.md
 docs/SandboxNetworkPolicy.md
 docs/SandboxPowerState.md
+docs/SandboxProbeSet.md
+docs/SandboxProbeSpec.md
 docs/SandboxRefreshRequest.md
 docs/SandboxResourceUsage.md
 docs/SandboxSSHConnection.md
@@ -408,7 +409,6 @@ src/models/PortSpec.ts
 src/models/PreStopHook.ts
 src/models/PreferredSchedulingTerm.ts
 src/models/Probe.ts
-src/models/ProbePort.ts
 src/models/ProcessType.ts
 src/models/ProjectedHeader.ts
 src/models/ProjectionSpec.ts
@@ -433,6 +433,8 @@ src/models/Sandbox.ts
 src/models/SandboxConfig.ts
 src/models/SandboxNetworkPolicy.ts
 src/models/SandboxPowerState.ts
+src/models/SandboxProbeSet.ts
+src/models/SandboxProbeSpec.ts
 src/models/SandboxRefreshRequest.ts
 src/models/SandboxResourceUsage.ts
 src/models/SandboxSSHConnection.ts

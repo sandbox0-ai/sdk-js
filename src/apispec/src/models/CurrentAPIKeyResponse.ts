@@ -39,12 +39,6 @@ export interface CurrentAPIKeyResponse {
     createdBy: string;
     /**
      * 
-     * @type {string}
-     * @memberof CurrentAPIKeyResponse
-     */
-    type: string;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof CurrentAPIKeyResponse
      */
@@ -76,7 +70,6 @@ export function instanceOfCurrentAPIKeyResponse(value: object): value is Current
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('teamId' in value) || value['teamId'] === undefined) return false;
     if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
-    if (!('type' in value) || value['type'] === undefined) return false;
     if (!('roles' in value) || value['roles'] === undefined) return false;
     if (!('permissions' in value) || value['permissions'] === undefined) return false;
     if (!('isActive' in value) || value['isActive'] === undefined) return false;
@@ -97,7 +90,6 @@ export function CurrentAPIKeyResponseFromJSONTyped(json: any, ignoreDiscriminato
         'id': json['id'],
         'teamId': json['team_id'],
         'createdBy': json['created_by'],
-        'type': json['type'],
         'roles': json['roles'],
         'permissions': json['permissions'],
         'isActive': json['is_active'],
@@ -119,7 +111,6 @@ export function CurrentAPIKeyResponseToJSONTyped(value?: CurrentAPIKeyResponse |
         'id': value['id'],
         'team_id': value['teamId'],
         'created_by': value['createdBy'],
-        'type': value['type'],
         'roles': value['roles'],
         'permissions': value['permissions'],
         'is_active': value['isActive'],

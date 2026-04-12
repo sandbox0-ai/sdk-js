@@ -8,7 +8,6 @@ Name | Type
 ------------ | -------------
 `id` | string
 `name` | string
-`type` | string
 `roles` | Array&lt;string&gt;
 `teamId` | string
 `key` | string
@@ -24,7 +23,6 @@ import type { CreateAPIKeyResponse } from 'sandbox0'
 const example = {
   "id": null,
   "name": null,
-  "type": null,
   "roles": null,
   "teamId": null,
   "key": null,

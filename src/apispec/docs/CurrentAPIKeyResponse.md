@@ -9,7 +9,6 @@ Name | Type
 `id` | string
 `teamId` | string
 `createdBy` | string
-`type` | string
 `roles` | Array&lt;string&gt;
 `permissions` | Array&lt;string&gt;
 `isActive` | boolean
@@ -25,7 +24,6 @@ const example = {
   "id": null,
   "teamId": null,
   "createdBy": null,
-  "type": null,
   "roles": null,
   "permissions": null,
   "isActive": null,

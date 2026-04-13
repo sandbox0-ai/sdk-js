@@ -26,7 +26,7 @@ export interface ContextWebSocketInput {
      */
     type: ContextWebSocketInputTypeEnum;
     /**
-     * 
+     * Input bytes encoded as a string. The WebSocket endpoint writes this value exactly as provided and does not append a newline.
      * @type {string}
      * @memberof ContextWebSocketInput
      */

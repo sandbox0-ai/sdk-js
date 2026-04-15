@@ -134,6 +134,7 @@ docs/ResumeSandboxResponse.md
 docs/SSHPublicKey.md
 docs/Sandbox.md
 docs/SandboxConfig.md
+docs/SandboxLogs.md
 docs/SandboxNetworkPolicy.md
 docs/SandboxPowerState.md
 docs/SandboxProbeSet.md
@@ -217,6 +218,7 @@ docs/SuccessSSHPublicKeyListResponseAllOfData.md
 docs/SuccessSSHPublicKeyResponse.md
 docs/SuccessSandboxListResponse.md
 docs/SuccessSandboxListResponseAllOfData.md
+docs/SuccessSandboxLogsResponse.md
 docs/SuccessSandboxNetworkPolicyResponse.md
 docs/SuccessSandboxResponse.md
 docs/SuccessSandboxStatusResponse.md
@@ -431,6 +433,7 @@ src/models/ResumeSandboxResponse.ts
 src/models/SSHPublicKey.ts
 src/models/Sandbox.ts
 src/models/SandboxConfig.ts
+src/models/SandboxLogs.ts
 src/models/SandboxNetworkPolicy.ts
 src/models/SandboxPowerState.ts
 src/models/SandboxProbeSet.ts
@@ -511,6 +514,7 @@ src/models/SuccessSSHPublicKeyListResponseAllOfData.ts
 src/models/SuccessSSHPublicKeyResponse.ts
 src/models/SuccessSandboxListResponse.ts
 src/models/SuccessSandboxListResponseAllOfData.ts
+src/models/SuccessSandboxLogsResponse.ts
 src/models/SuccessSandboxNetworkPolicyResponse.ts
 src/models/SuccessSandboxResponse.ts
 src/models/SuccessSandboxStatusResponse.ts

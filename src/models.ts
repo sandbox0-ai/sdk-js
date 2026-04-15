@@ -55,6 +55,23 @@ export interface FileWatchResponse {
   error?: string;
 }
 
+export interface SandboxLogsOptions {
+  container?: string;
+  tailLines?: number;
+  limitBytes?: number;
+  previous?: boolean;
+  timestamps?: boolean;
+  sinceSeconds?: number;
+}
+
+export interface SandboxLogsStream {
+  body: ReadableStream<Uint8Array>;
+  response: Response;
+  sandboxId?: string;
+  podName?: string;
+  container?: string;
+}
+
 import type { SandboxSummary } from "./apispec/src/models/index";
 
 export type SandboxStatusFilter = SandboxSummary["status"];

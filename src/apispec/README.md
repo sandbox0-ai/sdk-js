@@ -119,6 +119,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SandboxesApi* | [**apiV1SandboxesIdExposedPortsPortDelete**](docs/SandboxesApi.md#apiv1sandboxesidexposedportsportdelete) | **DELETE** /api/v1/sandboxes/{id}/exposed-ports/{port} | Remove a specific exposed port
 *SandboxesApi* | [**apiV1SandboxesIdExposedPortsPut**](docs/SandboxesApi.md#apiv1sandboxesidexposedportsput) | **PUT** /api/v1/sandboxes/{id}/exposed-ports | Update sandbox exposed ports
 *SandboxesApi* | [**apiV1SandboxesIdGet**](docs/SandboxesApi.md#apiv1sandboxesidget) | **GET** /api/v1/sandboxes/{id} | Get sandbox by ID
+*SandboxesApi* | [**apiV1SandboxesIdLogsGet**](docs/SandboxesApi.md#apiv1sandboxesidlogsget) | **GET** /api/v1/sandboxes/{id}/logs | Get sandbox pod logs
 *SandboxesApi* | [**apiV1SandboxesIdNetworkGet**](docs/SandboxesApi.md#apiv1sandboxesidnetworkget) | **GET** /api/v1/sandboxes/{id}/network | Get sandbox network policy
 *SandboxesApi* | [**apiV1SandboxesIdNetworkPut**](docs/SandboxesApi.md#apiv1sandboxesidnetworkput) | **PUT** /api/v1/sandboxes/{id}/network | Update sandbox network policy
 *SandboxesApi* | [**apiV1SandboxesIdPausePost**](docs/SandboxesApi.md#apiv1sandboxesidpausepost) | **POST** /api/v1/sandboxes/{id}/pause | Pause a sandbox
@@ -292,6 +293,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SSHPublicKey](docs/SSHPublicKey.md)
 - [Sandbox](docs/Sandbox.md)
 - [SandboxConfig](docs/SandboxConfig.md)
+- [SandboxLogs](docs/SandboxLogs.md)
 - [SandboxNetworkPolicy](docs/SandboxNetworkPolicy.md)
 - [SandboxPowerState](docs/SandboxPowerState.md)
 - [SandboxProbeSet](docs/SandboxProbeSet.md)
@@ -372,6 +374,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessSSHPublicKeyResponse](docs/SuccessSSHPublicKeyResponse.md)
 - [SuccessSandboxListResponse](docs/SuccessSandboxListResponse.md)
 - [SuccessSandboxListResponseAllOfData](docs/SuccessSandboxListResponseAllOfData.md)
+- [SuccessSandboxLogsResponse](docs/SuccessSandboxLogsResponse.md)
 - [SuccessSandboxNetworkPolicyResponse](docs/SuccessSandboxNetworkPolicyResponse.md)
 - [SuccessSandboxResponse](docs/SuccessSandboxResponse.md)
 - [SuccessSandboxStatusResponse](docs/SuccessSandboxStatusResponse.md)

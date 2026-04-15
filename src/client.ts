@@ -7,6 +7,10 @@ import { Sandboxes } from "./resources/sandboxes";
 import { Templates } from "./resources/templates";
 import { Volumes } from "./resources/volumes";
 import { Sandbox } from "./sandbox";
+import { APIError, apiErrorFromResponse, wrapApiCall } from "./errors";
+import { ensureData } from "./response";
+import type { SandboxLogs } from "./apispec/src/models/index";
+import type { SandboxLogsOptions, SandboxLogsStream } from "./models";
 
 export const DEFAULT_BASE_URL = "https://api.sandbox0.ai";
 
@@ -91,6 +95,51 @@ export class Client {
     return new Sandbox({ id, client: this });
   }
 
+  async getSandboxLogs(
+    sandboxId: string,
+    options?: SandboxLogsOptions,
+  ): Promise<SandboxLogs> {
+    const response = await wrapApiCall(() =>
+      this.apispec.sandboxes.apiV1SandboxesIdLogsGet({
+        id: sandboxId,
+        ...toSandboxLogsRequest(options),
+      }),
+    );
+    return ensureData(response, "get sandbox logs returned empty response");
+  }
+
+  async streamSandboxLogs(
+    sandboxId: string,
+    options?: SandboxLogsOptions,
+  ): Promise<SandboxLogsStream> {
+    const response = await this.fetchRaw(
+      `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/logs`,
+      { ...toSandboxLogsQuery(options), follow: "true" },
+    );
+    const contentType = response.headers.get("content-type") ?? "";
+    if (!contentType.toLowerCase().startsWith("text/plain")) {
+      throw new APIError({
+        statusCode: response.status,
+        code: "unexpected_response",
+        message: `unexpected log stream content type: ${contentType}`,
+      });
+    }
+    if (!response.body) {
+      throw new APIError({
+        statusCode: response.status,
+        code: "unexpected_response",
+        message: "log stream response did not include a body",
+      });
+    }
+    return {
+      body: response.body,
+      response,
+      sandboxId: response.headers.get("x-sandbox-id") ?? undefined,
+      podName: response.headers.get("x-sandbox-pod-name") ?? undefined,
+      container: response.headers.get("x-sandbox-log-container") ?? undefined,
+    };
+  }
+
   websocketUrl(path: string): string {
     const normalizedPath = path.startsWith("/") ? path : `/${path}`;
     const base = new URL(this.baseUrl);
@@ -115,4 +164,73 @@ export class Client {
     }
     return headers;
   }
+
+  private async fetchRaw(
+    path: string,
+    query: Record<string, string | undefined>,
+  ): Promise<Response> {
+    const url = new URL(this.baseUrl);
+    url.pathname = url.pathname.replace(/\/$/, "") + path;
+    url.search = "";
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined) {
+        url.searchParams.set(key, value);
+      }
+    }
+
+    const headers: Record<string, string> = {
+      ...(this.configuration.headers ?? {}),
+    };
+    if (!hasHeader(headers, "authorization")) {
+      const token = (await this.accessToken()).trim();
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+    }
+
+    const fetchApi = this.configuration.fetchApi ?? globalThis.fetch?.bind(globalThis);
+    if (!fetchApi) {
+      throw new Error("fetch API is not available");
+    }
+    const response = await fetchApi(url.toString(), { method: "GET", headers });
+    if (!response.ok) {
+      throw await apiErrorFromResponse(response);
+    }
+    return response;
+  }
+}
+
+function toSandboxLogsRequest(options?: SandboxLogsOptions) {
+  return {
+    container: options?.container,
+    tailLines: options?.tailLines,
+    limitBytes: options?.limitBytes,
+    previous: options?.previous,
+    timestamps: options?.timestamps,
+    sinceSeconds: options?.sinceSeconds,
+  };
+}
+
+function toSandboxLogsQuery(options?: SandboxLogsOptions): Record<string, string | undefined> {
+  return {
+    container: options?.container,
+    tail_lines: numberQuery(options?.tailLines),
+    limit_bytes: numberQuery(options?.limitBytes),
+    previous: boolQuery(options?.previous),
+    timestamps: boolQuery(options?.timestamps),
+    since_seconds: numberQuery(options?.sinceSeconds),
+  };
+}
+
+function numberQuery(value: number | undefined): string | undefined {
+  return value === undefined ? undefined : String(value);
+}
+
+function boolQuery(value: boolean | undefined): string | undefined {
+  return value ? "true" : undefined;
+}
+
+function hasHeader(headers: Record<string, string>, name: string): boolean {
+  const normalized = name.toLowerCase();
+  return Object.keys(headers).some((key) => key.toLowerCase() === normalized);
 }

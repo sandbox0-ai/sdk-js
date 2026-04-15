@@ -64,12 +64,21 @@ export interface SandboxLogsOptions {
   sinceSeconds?: number;
 }
 
+export interface SandboxLogs {
+  sandboxId: string;
+  podName: string;
+  container: string;
+  previous: boolean;
+  logs: string;
+}
+
 export interface SandboxLogsStream {
   body: ReadableStream<Uint8Array>;
   response: Response;
   sandboxId?: string;
   podName?: string;
   container?: string;
+  previous?: boolean;
 }
 
 import type { SandboxSummary } from "./apispec/src/models/index";

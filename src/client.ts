@@ -7,10 +7,8 @@ import { Sandboxes } from "./resources/sandboxes";
 import { Templates } from "./resources/templates";
 import { Volumes } from "./resources/volumes";
 import { Sandbox } from "./sandbox";
-import { APIError, apiErrorFromResponse, wrapApiCall } from "./errors";
-import { ensureData } from "./response";
-import type { SandboxLogs } from "./apispec/src/models/index";
-import type { SandboxLogsOptions, SandboxLogsStream } from "./models";
+import { APIError, apiErrorFromResponse } from "./errors";
+import type { SandboxLogs, SandboxLogsOptions, SandboxLogsStream } from "./models";
 
 export const DEFAULT_BASE_URL = "https://api.sandbox0.ai";
 
@@ -99,13 +97,19 @@ export class Client {
     sandboxId: string,
     options?: SandboxLogsOptions,
   ): Promise<SandboxLogs> {
-    const response = await wrapApiCall(() =>
-      this.apispec.sandboxes.apiV1SandboxesIdLogsGet({
-        id: sandboxId,
-        ...toSandboxLogsRequest(options),
-      }),
+    const response = await this.fetchRaw(
+      `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/logs`,
+      { ...toSandboxLogsQuery(options), follow: "false" },
     );
-    return ensureData(response, "get sandbox logs returned empty response");
+    const contentType = response.headers.get("content-type") ?? "";
+    if (!hasContentTypePrefix(contentType, "text/plain")) {
+      throw new APIError({
+        statusCode: response.status,
+        code: "unexpected_response",
+        message: `unexpected log snapshot content type: ${contentType}`,
+      });
+    }
+    return sandboxLogsFromResponse(response, sandboxId, await response.text(), options);
   }
 
   async streamSandboxLogs(
@@ -117,7 +121,7 @@ export class Client {
       { ...toSandboxLogsQuery(options), follow: "true" },
     );
     const contentType = response.headers.get("content-type") ?? "";
-    if (!contentType.toLowerCase().startsWith("text/plain")) {
+    if (!hasContentTypePrefix(contentType, "text/plain")) {
       throw new APIError({
         statusCode: response.status,
         code: "unexpected_response",
@@ -137,6 +141,7 @@ export class Client {
       sandboxId: response.headers.get("x-sandbox-id") ?? undefined,
       podName: response.headers.get("x-sandbox-pod-name") ?? undefined,
       container: response.headers.get("x-sandbox-log-container") ?? undefined,
+      previous: boolHeader(response.headers.get("x-sandbox-log-previous"), options?.previous ?? false),
     };
   }
 
@@ -200,17 +205,6 @@ export class Client {
   }
 }
 
-function toSandboxLogsRequest(options?: SandboxLogsOptions) {
-  return {
-    container: options?.container,
-    tailLines: options?.tailLines,
-    limitBytes: options?.limitBytes,
-    previous: options?.previous,
-    timestamps: options?.timestamps,
-    sinceSeconds: options?.sinceSeconds,
-  };
-}
-
 function toSandboxLogsQuery(options?: SandboxLogsOptions): Record<string, string | undefined> {
   return {
     container: options?.container,
@@ -233,4 +227,30 @@ function boolQuery(value: boolean | undefined): string | undefined {
 function hasHeader(headers: Record<string, string>, name: string): boolean {
   const normalized = name.toLowerCase();
   return Object.keys(headers).some((key) => key.toLowerCase() === normalized);
+}
+
+function hasContentTypePrefix(contentType: string, expected: string): boolean {
+  return contentType.toLowerCase().startsWith(expected);
+}
+
+function sandboxLogsFromResponse(
+  response: Response,
+  fallbackSandboxId: string,
+  logs: string,
+  options?: SandboxLogsOptions,
+): SandboxLogs {
+  return {
+    sandboxId: response.headers.get("x-sandbox-id") ?? fallbackSandboxId,
+    podName: response.headers.get("x-sandbox-pod-name") ?? "",
+    container: response.headers.get("x-sandbox-log-container") ?? "",
+    previous: boolHeader(response.headers.get("x-sandbox-log-previous"), options?.previous ?? false),
+    logs,
+  };
+}
+
+function boolHeader(value: string | null, fallback: boolean): boolean {
+  if (value === null) {
+    return fallback;
+  }
+  return value.toLowerCase() === "true";
 }

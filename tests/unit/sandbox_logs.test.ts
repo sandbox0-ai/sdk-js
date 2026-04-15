@@ -4,25 +4,22 @@ import { describe, it } from "node:test";
 import { Client } from "../../src/index.ts";
 
 describe("sandbox logs", () => {
-  it("gets a snapshot through the generated API", async () => {
+  it("gets a plain text snapshot with metadata headers", async () => {
     let requestedUrl = "";
     const client = new Client({
       token: "test-token",
       baseUrl: "http://example.test",
       fetch: async (input) => {
         requestedUrl = String(input);
-        return new Response(JSON.stringify({
-          success: true,
-          data: {
-            sandbox_id: "sb_123",
-            pod_name: "pod-a",
-            container: "procd",
-            previous: false,
-            logs: "ready\n",
-          },
-        }), {
+        return new Response("ready\n", {
           status: 200,
-          headers: { "content-type": "application/json" },
+          headers: {
+            "content-type": "text/plain; charset=utf-8",
+            "x-sandbox-id": "sb_123",
+            "x-sandbox-pod-name": "pod-a",
+            "x-sandbox-log-container": "procd",
+            "x-sandbox-log-previous": "true",
+          },
         });
       },
     });
@@ -33,18 +30,22 @@ describe("sandbox logs", () => {
     });
 
     assert.strictEqual(logs.logs, "ready\n");
+    assert.strictEqual(logs.container, "procd");
+    assert.strictEqual(logs.previous, true);
     const url = new URL(requestedUrl);
     assert.strictEqual(url.pathname, "/api/v1/sandboxes/sb_123/logs");
+    assert.strictEqual(url.searchParams.get("follow"), "false");
     assert.strictEqual(url.searchParams.get("tail_lines"), "20");
     assert.strictEqual(url.searchParams.get("timestamps"), "true");
   });
 
-  it("streams logs as a raw readable body", async () => {
+  it("returns plain text stream bodies", async () => {
     let requestedUrl = "";
     let requestedAuth = "";
     const body = new ReadableStream<Uint8Array>({
       start(controller) {
         controller.enqueue(new TextEncoder().encode("line one\n"));
+        controller.close();
       },
     });
     const client = new Client({
@@ -60,6 +61,7 @@ describe("sandbox logs", () => {
             "x-sandbox-id": "sb_123",
             "x-sandbox-pod-name": "pod-a",
             "x-sandbox-log-container": "procd",
+            "x-sandbox-log-previous": "true",
           },
         });
       },
@@ -74,6 +76,7 @@ describe("sandbox logs", () => {
     assert.strictEqual(stream.sandboxId, "sb_123");
     assert.strictEqual(stream.podName, "pod-a");
     assert.strictEqual(stream.container, "procd");
+    assert.strictEqual(stream.previous, true);
 
     const reader = stream.body.getReader();
     const { value } = await reader.read();

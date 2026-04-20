@@ -206,6 +206,12 @@ paths:
           schema:
             type: string
           required: false
+        - name: web_login
+          in: query
+          schema:
+            type: boolean
+          required: false
+          description: When true, the OIDC callback redirects to return_url with a short-lived login_code for server-side exchange.
       responses:
         "302":
           description: Redirect to OIDC provider
@@ -239,7 +245,7 @@ paths:
             type: string
       responses:
         "302":
-          description: Redirect to local CLI return_url with token query parameters when return_url is localhost
+          description: Redirect to local CLI return_url with token query parameters, or to a web return_url with login_code when web_login was requested
         "200":
           description: Tokens issued
           content:
@@ -254,6 +260,36 @@ paths:
                 $ref: "#/components/schemas/ErrorEnvelope"
         "401":
           description: OIDC authorization failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /auth/web-login/exchange:
+    post:
+      tags: [auth]
+      summary: Exchange web login code
+      description: Exchanges a short-lived, one-time browser login handoff code for Sandbox0 tokens.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebLoginExchangeRequest"
+      responses:
+        "200":
+          description: Login code exchanged
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessLoginResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Invalid or expired login code
           content:
             application/json:
               schema:
@@ -1031,6 +1067,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Requested roles exceed caller permissions, or platform scope requires a system admin user session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
   /api-keys/current:
     get:
       tags: [api-keys]
@@ -1302,10 +1344,14 @@ paths:
   /api/v1/sandboxes/{id}/logs:
     get:
       tags: [sandboxes]
-      summary: Get sandbox pod logs
+      summary: Get sandbox process logs
       description: |
-        Returns a bounded snapshot of Kubernetes container logs for the sandbox pod.
-        Set `follow=true` to stream logs as text/plain until the client disconnects.
+        Returns sandbox process output mirrored through the sandbox main container.
+        Procd service logs are filtered out and remain available through Kubernetes pod logs.
+        When `follow=false`, the response is a bounded text/plain snapshot.
+        When `follow=true`, the response is a text/plain stream until the client disconnects.
+        Kubernetes log selection parameters such as `tail_lines` and `limit_bytes`
+        are applied before procd service log filtering.
       security:
         - bearerAuth: []
       x-upstream-service: manager
@@ -1320,7 +1366,7 @@ paths:
             default: procd
         - name: tail_lines
           in: query
-          description: Maximum number of log lines to return from the end of the log.
+          description: Maximum number of Kubernetes log lines read from the end of the log before procd service log filtering.
           schema:
             type: integer
             format: int64
@@ -1338,7 +1384,7 @@ paths:
             maximum: 8388608
         - name: follow
           in: query
-          description: Stream logs until the client disconnects. When true, the response content type is text/plain.
+          description: Stream logs as text/plain until the client disconnects. When false, return a text/plain snapshot.
           schema:
             type: boolean
             default: false
@@ -1363,11 +1409,25 @@ paths:
             minimum: 1
       responses:
         "200":
-          description: Sandbox pod logs
-          content:
-            application/json:
+          description: Sandbox process logs
+          headers:
+            X-Sandbox-ID:
+              description: Sandbox ID for the returned log payload.
               schema:
-                $ref: "#/components/schemas/SuccessSandboxLogsResponse"
+                type: string
+            X-Sandbox-Pod-Name:
+              description: Kubernetes pod name that produced the returned log payload.
+              schema:
+                type: string
+            X-Sandbox-Log-Container:
+              description: Kubernetes container name that produced the returned log payload.
+              schema:
+                type: string
+            X-Sandbox-Log-Previous:
+              description: Whether the returned payload came from a previously terminated container instance.
+              schema:
+                type: boolean
+          content:
             text/plain:
               schema:
                 type: string
@@ -1876,69 +1936,6 @@ paths:
       responses:
         "101":
           description: Switching Protocols
-  /api/v1/sandboxes/{id}/sandboxvolumes/mount:
-    post:
-      tags: [sandbox-volumes]
-      summary: Mount sandbox volume in sandbox
-      security:
-        - bearerAuth: []
-      x-upstream-service: procd
-      x-upstream-path: /api/v1/sandboxvolumes/mount
-      parameters:
-        - $ref: "#/components/parameters/SandboxID"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/MountRequest"
-      responses:
-        "200":
-          description: Volume mounted
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessMountResponse"
-  /api/v1/sandboxes/{id}/sandboxvolumes/unmount:
-    post:
-      tags: [sandbox-volumes]
-      summary: Unmount sandbox volume
-      security:
-        - bearerAuth: []
-      x-upstream-service: procd
-      x-upstream-path: /api/v1/sandboxvolumes/unmount
-      parameters:
-        - $ref: "#/components/parameters/SandboxID"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UnmountRequest"
-      responses:
-        "200":
-          description: Volume unmounted
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessUnmountedResponse"
-  /api/v1/sandboxes/{id}/sandboxvolumes/status:
-    get:
-      tags: [sandbox-volumes]
-      summary: Get sandbox volume mount status
-      security:
-        - bearerAuth: []
-      x-upstream-service: procd
-      x-upstream-path: /api/v1/sandboxvolumes/status
-      parameters:
-        - $ref: "#/components/parameters/SandboxID"
-      responses:
-        "200":
-          description: Mount status
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessMountStatusResponse"
   /api/v1/sandboxes/{id}/files/move:
     post:
       tags: [files]
@@ -3327,16 +3324,6 @@ components:
               properties:
                 signaled:
                   type: boolean
-    SuccessUnmountedResponse:
-      allOf:
-        - $ref: "#/components/schemas/SuccessEnvelope"
-        - type: object
-          properties:
-            data:
-              type: object
-              properties:
-                unmounted:
-                  type: boolean
     AuthProvider:
       type: object
       properties:
@@ -3400,6 +3387,16 @@ components:
         refresh_token:
           type: string
       required: [refresh_token]
+    WebLoginExchangeRequest:
+      type: object
+      properties:
+        login_code:
+          type: string
+          description: Short-lived one-time code returned to the web login callback.
+        return_url:
+          type: string
+          description: Exact return URL used when the login code was created.
+      required: [login_code, return_url]
     ChangePasswordRequest:
       type: object
       properties:
@@ -3784,6 +3781,9 @@ components:
           type: string
         name:
           type: string
+        scope:
+          type: string
+          description: "API key scope. team keys use roles for team-scoped access. platform keys grant system admin access and can only be created or managed by system admin user sessions."
         roles:
           type: array
           items:
@@ -3810,6 +3810,7 @@ components:
         - team_id
         - created_by
         - name
+        - scope
         - roles
         - is_active
         - expires_at
@@ -3820,8 +3821,12 @@ components:
       properties:
         name:
           type: string
+        scope:
+          type: string
+          description: "API key scope: team or platform. Defaults to team. platform keys grant system admin access, require a system admin user session, and do not support roles."
         roles:
           type: array
+          description: "Requested API key roles. Supported roles: admin, developer, builder, viewer. The roles must not grant permissions outside the authenticated caller's permissions."
           items:
             type: string
         expires_in:
@@ -3834,6 +3839,8 @@ components:
         id:
           type: string
         name:
+          type: string
+        scope:
           type: string
         roles:
           type: array
@@ -3849,7 +3856,7 @@ components:
         created_at:
           type: string
           format: date-time
-      required: [id, name, roles, team_id, expires_at, created_at]
+      required: [id, name, scope, roles, team_id, expires_at, created_at]
     CurrentAPIKeyResponse:
       type: object
       properties:
@@ -3858,6 +3865,8 @@ components:
         team_id:
           type: string
         created_by:
+          type: string
+        scope:
           type: string
         roles:
           type: array
@@ -3872,7 +3881,7 @@ components:
         expires_at:
           type: string
           format: date-time
-      required: [id, team_id, created_by, roles, permissions, is_active, expires_at]
+      required: [id, team_id, created_by, scope, roles, permissions, is_active, expires_at]
     SuccessCreateAPIKeyResponse:
       allOf:
         - $ref: "#/components/schemas/SuccessEnvelope"
@@ -3913,19 +3922,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ClaimMountRequest"
-        wait_for_mounts:
-          type: boolean
-          default: false
-          description: |
-            When true, claim waits best-effort for requested bootstrap mounts to
-            reach a terminal state before returning. The wait is bounded by
-            `mount_wait_timeout_ms`.
-        mount_wait_timeout_ms:
-          type: integer
-          format: int32
-          description: |
-            Optional best-effort wait budget in milliseconds for bootstrap
-            mounts when `wait_for_mounts` is true.
       required: []
     ClaimMountRequest:
       type: object
@@ -3934,8 +3930,6 @@ components:
           type: string
         mount_point:
           type: string
-        volume_config:
-          $ref: "#/components/schemas/VolumeConfig"
       required: [sandboxvolume_id, mount_point]
     SandboxConfig:
       type: object
@@ -4014,6 +4008,8 @@ components:
               required: [sandbox_id, exposed_ports]
     WebhookConfig:
       type: object
+      description: |
+        Per-sandbox webhook configuration. Sandbox0 delivers webhook events at least once and consumers should deduplicate by event_id. For sandbox lifecycle events, procd persists signed delivery records to a manager-owned SandboxVolume outside the workspace before dispatch; manager also emits sandbox.deleted during pod deletion cleanup.
       properties:
         url:
           description: Required when webhook is enabled. Target URL that receives event callbacks.
@@ -4193,26 +4189,6 @@ components:
           type: string
         created_at:
           type: string
-    SandboxLogs:
-      type: object
-      properties:
-        sandbox_id:
-          type: string
-        pod_name:
-          type: string
-        container:
-          type: string
-        previous:
-          type: boolean
-        logs:
-          type: string
-          description: Log text returned by Kubernetes for the selected container.
-      required:
-        - sandbox_id
-        - pod_name
-        - container
-        - previous
-        - logs
     SuccessSandboxResponse:
       allOf:
         - $ref: "#/components/schemas/SuccessEnvelope"
@@ -4227,13 +4203,6 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/SandboxStatus"
-    SuccessSandboxLogsResponse:
-      allOf:
-        - $ref: "#/components/schemas/SuccessEnvelope"
-        - type: object
-          properties:
-            data:
-              $ref: "#/components/schemas/SandboxLogs"
     SandboxSummary:
       type: object
       properties:
@@ -4888,30 +4857,6 @@ components:
           type: string
           description: Final process state when the underlying process has exited.
       required: [type]
-    MountRequest:
-      type: object
-      properties:
-        sandboxvolume_id:
-          type: string
-        sandbox_id:
-          type: string
-        mount_point:
-          type: string
-        volume_config:
-          $ref: "#/components/schemas/VolumeConfig"
-      required: [sandboxvolume_id, mount_point]
-    VolumeConfig:
-      type: object
-      properties:
-        cache_size:
-          type: string
-        prefetch:
-          type: integer
-          format: int32
-        buffer_size:
-          type: string
-        writeback:
-          type: boolean
     VolumeAccessMode:
       type: string
       enum: [RWO, ROX, RWX]
@@ -4920,26 +4865,6 @@ components:
         instances. RWO allows read-write mounts on a single instance; ROX allows
         read-only mounts across instances; RWX allows read-write mounts across
         instances.
-    MountResponse:
-      type: object
-      properties:
-        sandboxvolume_id:
-          type: string
-        mount_point:
-          type: string
-        mounted_at:
-          type: string
-        mount_session_id:
-          type: string
-      required: [sandboxvolume_id, mount_point, mounted_at, mount_session_id]
-    UnmountRequest:
-      type: object
-      properties:
-        sandboxvolume_id:
-          type: string
-        mount_session_id:
-          type: string
-      required: [sandboxvolume_id, mount_session_id]
     MountStatus:
       type: object
       properties:
@@ -4955,32 +4880,11 @@ components:
         mounted_duration_sec:
           type: integer
           format: int64
-        mount_session_id:
-          type: string
         error_code:
           type: string
         error_message:
           type: string
       required: [sandboxvolume_id, mount_point, state]
-    SuccessMountResponse:
-      allOf:
-        - $ref: "#/components/schemas/SuccessEnvelope"
-        - type: object
-          properties:
-            data:
-              $ref: "#/components/schemas/MountResponse"
-    SuccessMountStatusResponse:
-      allOf:
-        - $ref: "#/components/schemas/SuccessEnvelope"
-        - type: object
-          properties:
-            data:
-              type: object
-              properties:
-                mounts:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/MountStatus"
     CreateSandboxVolumeRequest:
       type: object
       properties:
@@ -4996,14 +4900,6 @@ components:
           minimum: 0
           default: 0
           description: Default POSIX GID used by external volume access paths that do not carry caller identity. Defaults to 0 when omitted on create.
-        cache_size:
-          type: string
-        prefetch:
-          type: integer
-        buffer_size:
-          type: string
-        writeback:
-          type: boolean
         access_mode:
           $ref: "#/components/schemas/VolumeAccessMode"
           description: Access mode for the volume. Defaults to RWO when omitted.
@@ -5020,14 +4916,6 @@ components:
           format: int64
           minimum: 0
           description: Override the default POSIX GID for external volume access paths. Inherits from the source volume when omitted.
-        cache_size:
-          type: string
-        prefetch:
-          type: integer
-        buffer_size:
-          type: string
-        writeback:
-          type: boolean
         access_mode:
           $ref: "#/components/schemas/VolumeAccessMode"
           description: Access mode for the volume. Defaults to RWO when omitted.
@@ -5053,14 +4941,6 @@ components:
           format: int64
           minimum: 0
           nullable: true
-        cache_size:
-          type: string
-        prefetch:
-          type: integer
-        buffer_size:
-          type: string
-        writeback:
-          type: boolean
         access_mode:
           $ref: "#/components/schemas/VolumeAccessMode"
           description: Configured access mode for the volume.
@@ -5070,7 +4950,7 @@ components:
         updated_at:
           type: string
           format: date-time
-      required: [id, team_id, user_id, cache_size, buffer_size, created_at, updated_at]
+      required: [id, team_id, user_id, created_at, updated_at]
     UpsertSyncReplicaRequest:
       type: object
       properties:
@@ -5637,6 +5517,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/WarmProcessSpec"
+        volumeMounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/VolumeMountSpec"
         pod:
           $ref: "#/components/schemas/PodSpecOverride"
         network:
@@ -5673,6 +5557,16 @@ components:
         securityContext:
           $ref: "#/components/schemas/SecurityContext"
       required: [image, resources]
+    VolumeMountSpec:
+      type: object
+      properties:
+        name:
+          type: string
+        mountPath:
+          type: string
+        readOnly:
+          type: boolean
+      required: [name, mountPath]
     WarmProcessSpec:
       type: object
       properties:

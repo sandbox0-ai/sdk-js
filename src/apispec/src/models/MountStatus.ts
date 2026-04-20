@@ -54,12 +54,6 @@ export interface MountStatus {
      * @type {string}
      * @memberof MountStatus
      */
-    mountSessionId?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MountStatus
-     */
     errorCode?: string;
     /**
      * 
@@ -107,7 +101,6 @@ export function MountStatusFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'state': json['state'],
         'mountedAt': json['mounted_at'] == null ? undefined : json['mounted_at'],
         'mountedDurationSec': json['mounted_duration_sec'] == null ? undefined : json['mounted_duration_sec'],
-        'mountSessionId': json['mount_session_id'] == null ? undefined : json['mount_session_id'],
         'errorCode': json['error_code'] == null ? undefined : json['error_code'],
         'errorMessage': json['error_message'] == null ? undefined : json['error_message'],
     };
@@ -129,7 +122,6 @@ export function MountStatusToJSONTyped(value?: MountStatus | null, ignoreDiscrim
         'state': value['state'],
         'mounted_at': value['mountedAt'],
         'mounted_duration_sec': value['mountedDurationSec'],
-        'mount_session_id': value['mountSessionId'],
         'error_code': value['errorCode'],
         'error_message': value['errorMessage'],
     };

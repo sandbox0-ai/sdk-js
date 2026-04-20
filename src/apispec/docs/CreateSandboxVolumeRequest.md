@@ -8,10 +8,6 @@ Name | Type
 ------------ | -------------
 `defaultPosixUid` | number
 `defaultPosixGid` | number
-`cacheSize` | string
-`prefetch` | number
-`bufferSize` | string
-`writeback` | boolean
 `accessMode` | [VolumeAccessMode](VolumeAccessMode.md)
 
 ## Example
@@ -23,10 +19,6 @@ import type { CreateSandboxVolumeRequest } from 'sandbox0'
 const example = {
   "defaultPosixUid": null,
   "defaultPosixGid": null,
-  "cacheSize": null,
-  "prefetch": null,
-  "bufferSize": null,
-  "writeback": null,
   "accessMode": null,
 } satisfies CreateSandboxVolumeRequest
 

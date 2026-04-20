@@ -11,6 +11,7 @@ Name | Type
 `tags` | Array&lt;string&gt;
 `mainContainer` | [ContainerSpec](ContainerSpec.md)
 `warmProcesses` | [Array&lt;WarmProcessSpec&gt;](WarmProcessSpec.md)
+`volumeMounts` | [Array&lt;VolumeMountSpec&gt;](VolumeMountSpec.md)
 `pod` | [PodSpecOverride](PodSpecOverride.md)
 `network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
 `pool` | [PoolStrategy](PoolStrategy.md)
@@ -32,6 +33,7 @@ const example = {
   "tags": null,
   "mainContainer": null,
   "warmProcesses": null,
+  "volumeMounts": null,
   "pod": null,
   "network": null,
   "pool": null,

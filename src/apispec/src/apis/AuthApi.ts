@@ -26,6 +26,7 @@ import type {
   SuccessDeviceLoginStartResponse,
   SuccessLoginResponse,
   SuccessMessageResponse,
+  WebLoginExchangeRequest,
 } from '../models/index';
 import {
     ChangePasswordRequestFromJSON,
@@ -50,6 +51,8 @@ import {
     SuccessLoginResponseToJSON,
     SuccessMessageResponseFromJSON,
     SuccessMessageResponseToJSON,
+    WebLoginExchangeRequestFromJSON,
+    WebLoginExchangeRequestToJSON,
 } from '../models/index';
 
 export interface AuthChangePasswordPostRequest {
@@ -78,6 +81,7 @@ export interface AuthOidcProviderDeviceStartPostRequest {
 export interface AuthOidcProviderLoginGetRequest {
     provider: string;
     returnUrl?: string;
+    webLogin?: boolean;
 }
 
 export interface AuthRefreshPostRequest {
@@ -86,6 +90,10 @@ export interface AuthRefreshPostRequest {
 
 export interface AuthRegisterPostRequest {
     registerRequest: RegisterRequest;
+}
+
+export interface AuthWebLoginExchangePostRequest {
+    webLoginExchangeRequest: WebLoginExchangeRequest;
 }
 
 /**
@@ -376,6 +384,10 @@ export class AuthApi extends runtime.BaseAPI {
             queryParameters['return_url'] = requestParameters['returnUrl'];
         }
 
+        if (requestParameters['webLogin'] != null) {
+            queryParameters['web_login'] = requestParameters['webLogin'];
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
 
@@ -503,6 +515,47 @@ export class AuthApi extends runtime.BaseAPI {
      */
     async authRegisterPost(requestParameters: AuthRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessLoginResponse> {
         const response = await this.authRegisterPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Exchanges a short-lived, one-time browser login handoff code for Sandbox0 tokens.
+     * Exchange web login code
+     */
+    async authWebLoginExchangePostRaw(requestParameters: AuthWebLoginExchangePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessLoginResponse>> {
+        if (requestParameters['webLoginExchangeRequest'] == null) {
+            throw new runtime.RequiredError(
+                'webLoginExchangeRequest',
+                'Required parameter "webLoginExchangeRequest" was null or undefined when calling authWebLoginExchangePost().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/auth/web-login/exchange`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: WebLoginExchangeRequestToJSON(requestParameters['webLoginExchangeRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessLoginResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Exchanges a short-lived, one-time browser login handoff code for Sandbox0 tokens.
+     * Exchange web login code
+     */
+    async authWebLoginExchangePost(requestParameters: AuthWebLoginExchangePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessLoginResponse> {
+        const response = await this.authWebLoginExchangePostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

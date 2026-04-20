@@ -1,24 +1,24 @@
 
-# SuccessMountResponse
+# WebLoginExchangeRequest
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`success` | boolean
-`data` | [MountResponse](MountResponse.md)
+`loginCode` | string
+`returnUrl` | string
 
 ## Example
 
 ```typescript
-import type { SuccessMountResponse } from 'sandbox0'
+import type { WebLoginExchangeRequest } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "success": null,
-  "data": null,
-} satisfies SuccessMountResponse
+  "loginCode": null,
+  "returnUrl": null,
+} satisfies WebLoginExchangeRequest
 
 console.log(example)
 
@@ -27,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SuccessMountResponse
+const exampleParsed = JSON.parse(exampleJSON) as WebLoginExchangeRequest
 console.log(exampleParsed)
 ```
 

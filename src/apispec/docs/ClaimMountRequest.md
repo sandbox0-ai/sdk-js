@@ -8,7 +8,6 @@ Name | Type
 ------------ | -------------
 `sandboxvolumeId` | string
 `mountPoint` | string
-`volumeConfig` | [VolumeConfig](VolumeConfig.md)
 
 ## Example
 
@@ -19,7 +18,6 @@ import type { ClaimMountRequest } from 'sandbox0'
 const example = {
   "sandboxvolumeId": null,
   "mountPoint": null,
-  "volumeConfig": null,
 } satisfies ClaimMountRequest
 
 console.log(example)

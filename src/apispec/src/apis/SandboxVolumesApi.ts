@@ -18,14 +18,9 @@ import type {
   CreateSandboxVolumeRequest,
   ErrorEnvelope,
   ForkVolumeRequest,
-  MountRequest,
   SuccessDeletedResponse,
-  SuccessMountResponse,
-  SuccessMountStatusResponse,
   SuccessSandboxVolumeListResponse,
   SuccessSandboxVolumeResponse,
-  SuccessUnmountedResponse,
-  UnmountRequest,
 } from '../models/index';
 import {
     CreateSandboxVolumeRequestFromJSON,
@@ -34,37 +29,13 @@ import {
     ErrorEnvelopeToJSON,
     ForkVolumeRequestFromJSON,
     ForkVolumeRequestToJSON,
-    MountRequestFromJSON,
-    MountRequestToJSON,
     SuccessDeletedResponseFromJSON,
     SuccessDeletedResponseToJSON,
-    SuccessMountResponseFromJSON,
-    SuccessMountResponseToJSON,
-    SuccessMountStatusResponseFromJSON,
-    SuccessMountStatusResponseToJSON,
     SuccessSandboxVolumeListResponseFromJSON,
     SuccessSandboxVolumeListResponseToJSON,
     SuccessSandboxVolumeResponseFromJSON,
     SuccessSandboxVolumeResponseToJSON,
-    SuccessUnmountedResponseFromJSON,
-    SuccessUnmountedResponseToJSON,
-    UnmountRequestFromJSON,
-    UnmountRequestToJSON,
 } from '../models/index';
-
-export interface ApiV1SandboxesIdSandboxvolumesMountPostRequest {
-    id: string;
-    mountRequest: MountRequest;
-}
-
-export interface ApiV1SandboxesIdSandboxvolumesStatusGetRequest {
-    id: string;
-}
-
-export interface ApiV1SandboxesIdSandboxvolumesUnmountPostRequest {
-    id: string;
-    unmountRequest: UnmountRequest;
-}
 
 export interface ApiV1SandboxvolumesIdDeleteRequest {
     id: string;
@@ -88,161 +59,6 @@ export interface ApiV1SandboxvolumesPostRequest {
  * 
  */
 export class SandboxVolumesApi extends runtime.BaseAPI {
-
-    /**
-     * Mount sandbox volume in sandbox
-     */
-    async apiV1SandboxesIdSandboxvolumesMountPostRaw(requestParameters: ApiV1SandboxesIdSandboxvolumesMountPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessMountResponse>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling apiV1SandboxesIdSandboxvolumesMountPost().'
-            );
-        }
-
-        if (requestParameters['mountRequest'] == null) {
-            throw new runtime.RequiredError(
-                'mountRequest',
-                'Required parameter "mountRequest" was null or undefined when calling apiV1SandboxesIdSandboxvolumesMountPost().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/api/v1/sandboxes/{id}/sandboxvolumes/mount`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: MountRequestToJSON(requestParameters['mountRequest']),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessMountResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Mount sandbox volume in sandbox
-     */
-    async apiV1SandboxesIdSandboxvolumesMountPost(requestParameters: ApiV1SandboxesIdSandboxvolumesMountPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessMountResponse> {
-        const response = await this.apiV1SandboxesIdSandboxvolumesMountPostRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get sandbox volume mount status
-     */
-    async apiV1SandboxesIdSandboxvolumesStatusGetRaw(requestParameters: ApiV1SandboxesIdSandboxvolumesStatusGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessMountStatusResponse>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling apiV1SandboxesIdSandboxvolumesStatusGet().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/api/v1/sandboxes/{id}/sandboxvolumes/status`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessMountStatusResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Get sandbox volume mount status
-     */
-    async apiV1SandboxesIdSandboxvolumesStatusGet(requestParameters: ApiV1SandboxesIdSandboxvolumesStatusGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessMountStatusResponse> {
-        const response = await this.apiV1SandboxesIdSandboxvolumesStatusGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Unmount sandbox volume
-     */
-    async apiV1SandboxesIdSandboxvolumesUnmountPostRaw(requestParameters: ApiV1SandboxesIdSandboxvolumesUnmountPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessUnmountedResponse>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling apiV1SandboxesIdSandboxvolumesUnmountPost().'
-            );
-        }
-
-        if (requestParameters['unmountRequest'] == null) {
-            throw new runtime.RequiredError(
-                'unmountRequest',
-                'Required parameter "unmountRequest" was null or undefined when calling apiV1SandboxesIdSandboxvolumesUnmountPost().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/api/v1/sandboxes/{id}/sandboxvolumes/unmount`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UnmountRequestToJSON(requestParameters['unmountRequest']),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessUnmountedResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Unmount sandbox volume
-     */
-    async apiV1SandboxesIdSandboxvolumesUnmountPost(requestParameters: ApiV1SandboxesIdSandboxvolumesUnmountPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessUnmountedResponse> {
-        const response = await this.apiV1SandboxesIdSandboxvolumesUnmountPostRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
 
     /**
      * List sandbox volumes

@@ -41,30 +41,6 @@ export interface CreateSandboxVolumeRequest {
     defaultPosixGid?: number;
     /**
      * 
-     * @type {string}
-     * @memberof CreateSandboxVolumeRequest
-     */
-    cacheSize?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateSandboxVolumeRequest
-     */
-    prefetch?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateSandboxVolumeRequest
-     */
-    bufferSize?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CreateSandboxVolumeRequest
-     */
-    writeback?: boolean;
-    /**
-     * 
      * @type {VolumeAccessMode}
      * @memberof CreateSandboxVolumeRequest
      */
@@ -92,10 +68,6 @@ export function CreateSandboxVolumeRequestFromJSONTyped(json: any, ignoreDiscrim
         
         'defaultPosixUid': json['default_posix_uid'] == null ? undefined : json['default_posix_uid'],
         'defaultPosixGid': json['default_posix_gid'] == null ? undefined : json['default_posix_gid'],
-        'cacheSize': json['cache_size'] == null ? undefined : json['cache_size'],
-        'prefetch': json['prefetch'] == null ? undefined : json['prefetch'],
-        'bufferSize': json['buffer_size'] == null ? undefined : json['buffer_size'],
-        'writeback': json['writeback'] == null ? undefined : json['writeback'],
         'accessMode': json['access_mode'] == null ? undefined : VolumeAccessModeFromJSON(json['access_mode']),
     };
 }
@@ -113,10 +85,6 @@ export function CreateSandboxVolumeRequestToJSONTyped(value?: CreateSandboxVolum
         
         'default_posix_uid': value['defaultPosixUid'],
         'default_posix_gid': value['defaultPosixGid'],
-        'cache_size': value['cacheSize'],
-        'prefetch': value['prefetch'],
-        'buffer_size': value['bufferSize'],
-        'writeback': value['writeback'],
         'access_mode': VolumeAccessModeToJSON(value['accessMode']),
     };
 }

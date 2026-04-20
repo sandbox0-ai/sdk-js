@@ -12,10 +12,6 @@ Name | Type
 `sourceVolumeId` | string
 `defaultPosixUid` | number
 `defaultPosixGid` | number
-`cacheSize` | string
-`prefetch` | number
-`bufferSize` | string
-`writeback` | boolean
 `accessMode` | [VolumeAccessMode](VolumeAccessMode.md)
 `createdAt` | Date
 `updatedAt` | Date
@@ -33,10 +29,6 @@ const example = {
   "sourceVolumeId": null,
   "defaultPosixUid": null,
   "defaultPosixGid": null,
-  "cacheSize": null,
-  "prefetch": null,
-  "bufferSize": null,
-  "writeback": null,
   "accessMode": null,
   "createdAt": null,
   "updatedAt": null,

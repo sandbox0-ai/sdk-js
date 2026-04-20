@@ -11,5 +11,4 @@ import "./sandbox_contexts";
 import "./sandbox_files";
 import "./sandbox_network";
 import "./sandbox_exposed_ports";
-import "./sandbox_volumes";
 import "./sandbox_logs";

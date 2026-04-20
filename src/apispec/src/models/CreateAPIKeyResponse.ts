@@ -33,6 +33,12 @@ export interface CreateAPIKeyResponse {
     name: string;
     /**
      * 
+     * @type {string}
+     * @memberof CreateAPIKeyResponse
+     */
+    scope: string;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof CreateAPIKeyResponse
      */
@@ -69,6 +75,7 @@ export interface CreateAPIKeyResponse {
 export function instanceOfCreateAPIKeyResponse(value: object): value is CreateAPIKeyResponse {
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('scope' in value) || value['scope'] === undefined) return false;
     if (!('roles' in value) || value['roles'] === undefined) return false;
     if (!('teamId' in value) || value['teamId'] === undefined) return false;
     if (!('expiresAt' in value) || value['expiresAt'] === undefined) return false;
@@ -88,6 +95,7 @@ export function CreateAPIKeyResponseFromJSONTyped(json: any, ignoreDiscriminator
         
         'id': json['id'],
         'name': json['name'],
+        'scope': json['scope'],
         'roles': json['roles'],
         'teamId': json['team_id'],
         'key': json['key'] == null ? undefined : json['key'],
@@ -109,6 +117,7 @@ export function CreateAPIKeyResponseToJSONTyped(value?: CreateAPIKeyResponse | n
         
         'id': value['id'],
         'name': value['name'],
+        'scope': value['scope'],
         'roles': value['roles'],
         'team_id': value['teamId'],
         'key': value['key'],

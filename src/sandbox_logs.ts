@@ -1,6 +1,5 @@
-import type { SandboxLogs } from "./apispec/src/models/index";
 import type { Client } from "./client";
-import type { SandboxLogsOptions, SandboxLogsStream } from "./models";
+import type { SandboxLogs, SandboxLogsOptions, SandboxLogsStream } from "./models";
 import { Sandbox } from "./sandbox";
 
 function getClient(sandbox: Sandbox): Client {

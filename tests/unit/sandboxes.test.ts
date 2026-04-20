@@ -36,16 +36,12 @@ describe("Sandboxes resource", () => {
     const sandbox = await sandboxes.claim("default", {
       config: { ttl: 300 },
       mounts: [{ sandboxvolumeId: "vol_1", mountPoint: "/workspace/data" }],
-      waitForMounts: true,
-      mountWaitTimeoutMs: 45000,
     });
 
     assert.deepStrictEqual(gotRequest, {
       template: "default",
       config: { ttl: 300 },
       mounts: [{ sandboxvolumeId: "vol_1", mountPoint: "/workspace/data" }],
-      waitForMounts: true,
-      mountWaitTimeoutMs: 45000,
     });
     assert.strictEqual(sandbox.id, "sb_123");
     assert.strictEqual(sandbox.clusterId, "cluster-a");

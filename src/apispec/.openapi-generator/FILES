@@ -90,8 +90,6 @@ docs/ListVolumeSyncConflictsResponse.md
 docs/LoginRequest.md
 docs/LoginResponse.md
 docs/ModelError.md
-docs/MountRequest.md
-docs/MountResponse.md
 docs/MountStatus.md
 docs/MoveFileRequest.md
 docs/NetworkEgressPolicy.md
@@ -134,7 +132,6 @@ docs/ResumeSandboxResponse.md
 docs/SSHPublicKey.md
 docs/Sandbox.md
 docs/SandboxConfig.md
-docs/SandboxLogs.md
 docs/SandboxNetworkPolicy.md
 docs/SandboxPowerState.md
 docs/SandboxProbeSet.md
@@ -197,9 +194,6 @@ docs/SuccessIdentityListResponseAllOfData.md
 docs/SuccessLoginResponse.md
 docs/SuccessMessageResponse.md
 docs/SuccessMessageResponseAllOfData.md
-docs/SuccessMountResponse.md
-docs/SuccessMountStatusResponse.md
-docs/SuccessMountStatusResponseAllOfData.md
 docs/SuccessMovedResponse.md
 docs/SuccessMovedResponseAllOfData.md
 docs/SuccessPauseSandboxResponse.md
@@ -218,7 +212,6 @@ docs/SuccessSSHPublicKeyListResponseAllOfData.md
 docs/SuccessSSHPublicKeyResponse.md
 docs/SuccessSandboxListResponse.md
 docs/SuccessSandboxListResponseAllOfData.md
-docs/SuccessSandboxLogsResponse.md
 docs/SuccessSandboxNetworkPolicyResponse.md
 docs/SuccessSandboxResponse.md
 docs/SuccessSandboxStatusResponse.md
@@ -237,8 +230,6 @@ docs/SuccessTeamResponse.md
 docs/SuccessTemplateListResponse.md
 docs/SuccessTemplateListResponseAllOfData.md
 docs/SuccessTemplateResponse.md
-docs/SuccessUnmountedResponse.md
-docs/SuccessUnmountedResponseAllOfData.md
 docs/SuccessUserResponse.md
 docs/SuccessVolumeSyncAppendResponse.md
 docs/SuccessVolumeSyncBootstrapResponse.md
@@ -264,7 +255,6 @@ docs/Toleration.md
 docs/TrafficRule.md
 docs/TrafficRuleAction.md
 docs/TrafficRuleAppProtocol.md
-docs/UnmountRequest.md
 docs/UpdateExposedPortsRequest.md
 docs/UpdateRegionRequest.md
 docs/UpdateSyncReplicaCursorRequest.md
@@ -275,7 +265,7 @@ docs/UpsertSyncReplicaRequest.md
 docs/User.md
 docs/UsersApi.md
 docs/VolumeAccessMode.md
-docs/VolumeConfig.md
+docs/VolumeMountSpec.md
 docs/VolumeSyncApi.md
 docs/VolumeSyncBootstrap.md
 docs/VolumeSyncBootstrapCompatibilityConflictDetails.md
@@ -288,6 +278,7 @@ docs/VolumeSyncReseedRequiredDetails.md
 docs/VolumeSyncReseedRequiredErrorEnvelope.md
 docs/VolumeSyncReseedRequiredErrorEnvelopeAllOfError.md
 docs/WarmProcessSpec.md
+docs/WebLoginExchangeRequest.md
 docs/WebhookConfig.md
 docs/WeightedPodAffinityTerm.md
 package.json
@@ -391,8 +382,6 @@ src/models/ListVolumeSyncConflictsResponse.ts
 src/models/LoginRequest.ts
 src/models/LoginResponse.ts
 src/models/ModelError.ts
-src/models/MountRequest.ts
-src/models/MountResponse.ts
 src/models/MountStatus.ts
 src/models/MoveFileRequest.ts
 src/models/NetworkEgressPolicy.ts
@@ -433,7 +422,6 @@ src/models/ResumeSandboxResponse.ts
 src/models/SSHPublicKey.ts
 src/models/Sandbox.ts
 src/models/SandboxConfig.ts
-src/models/SandboxLogs.ts
 src/models/SandboxNetworkPolicy.ts
 src/models/SandboxPowerState.ts
 src/models/SandboxProbeSet.ts
@@ -493,9 +481,6 @@ src/models/SuccessIdentityListResponseAllOfData.ts
 src/models/SuccessLoginResponse.ts
 src/models/SuccessMessageResponse.ts
 src/models/SuccessMessageResponseAllOfData.ts
-src/models/SuccessMountResponse.ts
-src/models/SuccessMountStatusResponse.ts
-src/models/SuccessMountStatusResponseAllOfData.ts
 src/models/SuccessMovedResponse.ts
 src/models/SuccessMovedResponseAllOfData.ts
 src/models/SuccessPauseSandboxResponse.ts
@@ -514,7 +499,6 @@ src/models/SuccessSSHPublicKeyListResponseAllOfData.ts
 src/models/SuccessSSHPublicKeyResponse.ts
 src/models/SuccessSandboxListResponse.ts
 src/models/SuccessSandboxListResponseAllOfData.ts
-src/models/SuccessSandboxLogsResponse.ts
 src/models/SuccessSandboxNetworkPolicyResponse.ts
 src/models/SuccessSandboxResponse.ts
 src/models/SuccessSandboxStatusResponse.ts
@@ -533,8 +517,6 @@ src/models/SuccessTeamResponse.ts
 src/models/SuccessTemplateListResponse.ts
 src/models/SuccessTemplateListResponseAllOfData.ts
 src/models/SuccessTemplateResponse.ts
-src/models/SuccessUnmountedResponse.ts
-src/models/SuccessUnmountedResponseAllOfData.ts
 src/models/SuccessUserResponse.ts
 src/models/SuccessVolumeSyncAppendResponse.ts
 src/models/SuccessVolumeSyncBootstrapResponse.ts
@@ -558,7 +540,6 @@ src/models/Toleration.ts
 src/models/TrafficRule.ts
 src/models/TrafficRuleAction.ts
 src/models/TrafficRuleAppProtocol.ts
-src/models/UnmountRequest.ts
 src/models/UpdateExposedPortsRequest.ts
 src/models/UpdateRegionRequest.ts
 src/models/UpdateSyncReplicaCursorRequest.ts
@@ -568,7 +549,7 @@ src/models/UpdateUserRequest.ts
 src/models/UpsertSyncReplicaRequest.ts
 src/models/User.ts
 src/models/VolumeAccessMode.ts
-src/models/VolumeConfig.ts
+src/models/VolumeMountSpec.ts
 src/models/VolumeSyncBootstrap.ts
 src/models/VolumeSyncBootstrapCompatibilityConflictDetails.ts
 src/models/VolumeSyncBootstrapConflictErrorEnvelope.ts
@@ -580,6 +561,7 @@ src/models/VolumeSyncReseedRequiredDetails.ts
 src/models/VolumeSyncReseedRequiredErrorEnvelope.ts
 src/models/VolumeSyncReseedRequiredErrorEnvelopeAllOfError.ts
 src/models/WarmProcessSpec.ts
+src/models/WebLoginExchangeRequest.ts
 src/models/WebhookConfig.ts
 src/models/WeightedPodAffinityTerm.ts
 src/models/index.ts

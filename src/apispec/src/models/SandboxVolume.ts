@@ -65,30 +65,6 @@ export interface SandboxVolume {
     defaultPosixGid?: number | null;
     /**
      * 
-     * @type {string}
-     * @memberof SandboxVolume
-     */
-    cacheSize: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof SandboxVolume
-     */
-    prefetch?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof SandboxVolume
-     */
-    bufferSize: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SandboxVolume
-     */
-    writeback?: boolean;
-    /**
-     * 
      * @type {VolumeAccessMode}
      * @memberof SandboxVolume
      */
@@ -116,8 +92,6 @@ export function instanceOfSandboxVolume(value: object): value is SandboxVolume {
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('teamId' in value) || value['teamId'] === undefined) return false;
     if (!('userId' in value) || value['userId'] === undefined) return false;
-    if (!('cacheSize' in value) || value['cacheSize'] === undefined) return false;
-    if (!('bufferSize' in value) || value['bufferSize'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
@@ -139,10 +113,6 @@ export function SandboxVolumeFromJSONTyped(json: any, ignoreDiscriminator: boole
         'sourceVolumeId': json['source_volume_id'] == null ? undefined : json['source_volume_id'],
         'defaultPosixUid': json['default_posix_uid'] == null ? undefined : json['default_posix_uid'],
         'defaultPosixGid': json['default_posix_gid'] == null ? undefined : json['default_posix_gid'],
-        'cacheSize': json['cache_size'],
-        'prefetch': json['prefetch'] == null ? undefined : json['prefetch'],
-        'bufferSize': json['buffer_size'],
-        'writeback': json['writeback'] == null ? undefined : json['writeback'],
         'accessMode': json['access_mode'] == null ? undefined : VolumeAccessModeFromJSON(json['access_mode']),
         'createdAt': (new Date(json['created_at'])),
         'updatedAt': (new Date(json['updated_at'])),
@@ -166,10 +136,6 @@ export function SandboxVolumeToJSONTyped(value?: SandboxVolume | null, ignoreDis
         'source_volume_id': value['sourceVolumeId'],
         'default_posix_uid': value['defaultPosixUid'],
         'default_posix_gid': value['defaultPosixGid'],
-        'cache_size': value['cacheSize'],
-        'prefetch': value['prefetch'],
-        'buffer_size': value['bufferSize'],
-        'writeback': value['writeback'],
         'access_mode': VolumeAccessModeToJSON(value['accessMode']),
         'created_at': value['createdAt'].toISOString(),
         'updated_at': value['updatedAt'].toISOString(),

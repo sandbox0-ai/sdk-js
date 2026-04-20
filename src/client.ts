@@ -9,8 +9,7 @@ import { Volumes } from "./resources/volumes";
 import { Sandbox } from "./sandbox";
 import { APIError, apiErrorFromResponse, wrapApiCall } from "./errors";
 import { ensureData } from "./response";
-import type { SandboxLogs } from "./apispec/src/models/index";
-import type { SandboxLogsOptions, SandboxLogsStream } from "./models";
+import type { SandboxLogs, SandboxLogsOptions, SandboxLogsStream } from "./models";
 
 export const DEFAULT_BASE_URL = "https://api.sandbox0.ai";
 
@@ -100,12 +99,19 @@ export class Client {
     options?: SandboxLogsOptions,
   ): Promise<SandboxLogs> {
     const response = await wrapApiCall(() =>
-      this.apispec.sandboxes.apiV1SandboxesIdLogsGet({
+      this.apispec.sandboxes.apiV1SandboxesIdLogsGetRaw({
         id: sandboxId,
         ...toSandboxLogsRequest(options),
       }),
     );
-    return ensureData(response, "get sandbox logs returned empty response");
+    const logs = await response.value();
+    return {
+      sandboxId: response.raw.headers.get("x-sandbox-id") ?? sandboxId,
+      podName: response.raw.headers.get("x-sandbox-pod-name") ?? "",
+      container: response.raw.headers.get("x-sandbox-log-container") ?? "",
+      previous: response.raw.headers.get("x-sandbox-log-previous") === "true",
+      logs,
+    };
   }
 
   async streamSandboxLogs(

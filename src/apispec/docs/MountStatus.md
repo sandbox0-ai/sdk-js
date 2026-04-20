@@ -11,7 +11,6 @@ Name | Type
 `state` | string
 `mountedAt` | string
 `mountedDurationSec` | number
-`mountSessionId` | string
 `errorCode` | string
 `errorMessage` | string
 
@@ -27,7 +26,6 @@ const example = {
   "state": null,
   "mountedAt": null,
   "mountedDurationSec": null,
-  "mountSessionId": null,
   "errorCode": null,
   "errorMessage": null,
 } satisfies MountStatus

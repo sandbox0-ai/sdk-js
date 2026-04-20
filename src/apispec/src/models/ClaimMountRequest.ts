@@ -13,14 +13,6 @@
  */
 
 import { mapValues } from '../runtime';
-import type { VolumeConfig } from './VolumeConfig';
-import {
-    VolumeConfigFromJSON,
-    VolumeConfigFromJSONTyped,
-    VolumeConfigToJSON,
-    VolumeConfigToJSONTyped,
-} from './VolumeConfig';
-
 /**
  * 
  * @export
@@ -39,12 +31,6 @@ export interface ClaimMountRequest {
      * @memberof ClaimMountRequest
      */
     mountPoint: string;
-    /**
-     * 
-     * @type {VolumeConfig}
-     * @memberof ClaimMountRequest
-     */
-    volumeConfig?: VolumeConfig;
 }
 
 /**
@@ -68,7 +54,6 @@ export function ClaimMountRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'sandboxvolumeId': json['sandboxvolume_id'],
         'mountPoint': json['mount_point'],
-        'volumeConfig': json['volume_config'] == null ? undefined : VolumeConfigFromJSON(json['volume_config']),
     };
 }
 
@@ -85,7 +70,6 @@ export function ClaimMountRequestToJSONTyped(value?: ClaimMountRequest | null, i
         
         'sandboxvolume_id': value['sandboxvolumeId'],
         'mount_point': value['mountPoint'],
-        'volume_config': VolumeConfigToJSON(value['volumeConfig']),
     };
 }
 

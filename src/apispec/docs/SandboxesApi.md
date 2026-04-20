@@ -11,7 +11,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 | [**apiV1SandboxesIdExposedPortsPortDelete**](SandboxesApi.md#apiv1sandboxesidexposedportsportdelete) | **DELETE** /api/v1/sandboxes/{id}/exposed-ports/{port} | Remove a specific exposed port |
 | [**apiV1SandboxesIdExposedPortsPut**](SandboxesApi.md#apiv1sandboxesidexposedportsput) | **PUT** /api/v1/sandboxes/{id}/exposed-ports | Update sandbox exposed ports |
 | [**apiV1SandboxesIdGet**](SandboxesApi.md#apiv1sandboxesidget) | **GET** /api/v1/sandboxes/{id} | Get sandbox by ID |
-| [**apiV1SandboxesIdLogsGet**](SandboxesApi.md#apiv1sandboxesidlogsget) | **GET** /api/v1/sandboxes/{id}/logs | Get sandbox pod logs |
+| [**apiV1SandboxesIdLogsGet**](SandboxesApi.md#apiv1sandboxesidlogsget) | **GET** /api/v1/sandboxes/{id}/logs | Get sandbox process logs |
 | [**apiV1SandboxesIdNetworkGet**](SandboxesApi.md#apiv1sandboxesidnetworkget) | **GET** /api/v1/sandboxes/{id}/network | Get sandbox network policy |
 | [**apiV1SandboxesIdNetworkPut**](SandboxesApi.md#apiv1sandboxesidnetworkput) | **PUT** /api/v1/sandboxes/{id}/network | Update sandbox network policy |
 | [**apiV1SandboxesIdPausePost**](SandboxesApi.md#apiv1sandboxesidpausepost) | **POST** /api/v1/sandboxes/{id}/pause | Pause a sandbox |
@@ -42,7 +42,7 @@ import type { ApiV1SandboxesGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -124,7 +124,7 @@ import type { ApiV1SandboxesIdDeleteRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -195,7 +195,7 @@ import type { ApiV1SandboxesIdExposedPortsDeleteRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -265,7 +265,7 @@ import type { ApiV1SandboxesIdExposedPortsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -335,7 +335,7 @@ import type { ApiV1SandboxesIdExposedPortsPortDeleteRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -397,7 +397,7 @@ example().catch(console.error);
 
 Update sandbox exposed ports
 
-Replaces all exposed ports for the sandbox. Used to control which ports are publicly accessible via the exposure domain.
+Replaces all exposed ports for the sandbox. Used to control which ports are publicly accessible via the exposure domain. 
 
 ### Example
 
@@ -410,7 +410,7 @@ import type { ApiV1SandboxesIdExposedPortsPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -483,7 +483,7 @@ import type { ApiV1SandboxesIdGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -539,11 +539,11 @@ example().catch(console.error);
 
 ## apiV1SandboxesIdLogsGet
 
-> SuccessSandboxLogsResponse apiV1SandboxesIdLogsGet(id, container, tailLines, limitBytes, follow, previous, timestamps, sinceSeconds)
+> string apiV1SandboxesIdLogsGet(id, container, tailLines, limitBytes, follow, previous, timestamps, sinceSeconds)
 
-Get sandbox pod logs
+Get sandbox process logs
 
-Returns a bounded snapshot of Kubernetes container logs for the sandbox pod. Set &#x60;follow&#x3D;true&#x60; to stream logs as text/plain until the client disconnects.
+Returns sandbox process output mirrored through the sandbox main container. Procd service logs are filtered out and remain available through Kubernetes pod logs. When &#x60;follow&#x3D;false&#x60;, the response is a bounded text/plain snapshot. When &#x60;follow&#x3D;true&#x60;, the response is a text/plain stream until the client disconnects. Kubernetes log selection parameters such as &#x60;tail_lines&#x60; and &#x60;limit_bytes&#x60; are applied before procd service log filtering. 
 
 ### Example
 
@@ -556,7 +556,7 @@ import type { ApiV1SandboxesIdLogsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -567,11 +567,11 @@ async function example() {
     id: id_example,
     // string | Pod container name. Defaults to the sandbox main container. (optional)
     container: container_example,
-    // number | Maximum number of log lines to return from the end of the log. (optional)
+    // number | Maximum number of Kubernetes log lines read from the end of the log before procd service log filtering. (optional)
     tailLines: 789,
     // number | Maximum response log payload bytes read from Kubernetes. Defaults only apply when follow is false. (optional)
     limitBytes: 789,
-    // boolean | Stream logs until the client disconnects. When true, the response content type is text/plain. (optional)
+    // boolean | Stream logs as text/plain until the client disconnects. When false, return a text/plain snapshot. (optional)
     follow: true,
     // boolean | Return logs for the previously terminated container instance. (optional)
     previous: true,
@@ -600,16 +600,16 @@ example().catch(console.error);
 |------------- | ------------- | ------------- | -------------|
 | **id** | `string` |  | [Defaults to `undefined`] |
 | **container** | `string` | Pod container name. Defaults to the sandbox main container. | [Optional] [Defaults to `&#39;procd&#39;`] |
-| **tailLines** | `number` | Maximum number of log lines to return from the end of the log. | [Optional] [Defaults to `200`] |
+| **tailLines** | `number` | Maximum number of Kubernetes log lines read from the end of the log before procd service log filtering. | [Optional] [Defaults to `200`] |
 | **limitBytes** | `number` | Maximum response log payload bytes read from Kubernetes. Defaults only apply when follow is false. | [Optional] [Defaults to `1048576`] |
-| **follow** | `boolean` | Stream logs until the client disconnects. When true, the response content type is text/plain. | [Optional] [Defaults to `false`] |
+| **follow** | `boolean` | Stream logs as text/plain until the client disconnects. When false, return a text/plain snapshot. | [Optional] [Defaults to `false`] |
 | **previous** | `boolean` | Return logs for the previously terminated container instance. | [Optional] [Defaults to `false`] |
 | **timestamps** | `boolean` | Include Kubernetes log timestamps when available. | [Optional] [Defaults to `false`] |
 | **sinceSeconds** | `number` | Only return logs newer than this many seconds. | [Optional] [Defaults to `undefined`] |
 
 ### Return type
 
-[**SuccessSandboxLogsResponse**](SuccessSandboxLogsResponse.md)
+**string**
 
 ### Authorization
 
@@ -618,13 +618,13 @@ example().catch(console.error);
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: `application/json`, `text/plain`
+- **Accept**: `text/plain`, `application/json`
 
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Sandbox pod logs |  -  |
+| **200** | Sandbox process logs |  * X-Sandbox-ID - Sandbox ID for the returned log payload. <br>  * X-Sandbox-Pod-Name - Kubernetes pod name that produced the returned log payload. <br>  * X-Sandbox-Log-Container - Kubernetes container name that produced the returned log payload. <br>  * X-Sandbox-Log-Previous - Whether the returned payload came from a previously terminated container instance. <br>  |
 | **400** | Invalid log query parameters |  -  |
 | **403** | Forbidden |  -  |
 | **404** | Not found |  -  |
@@ -649,7 +649,7 @@ import type { ApiV1SandboxesIdNetworkGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -719,7 +719,7 @@ import type { ApiV1SandboxesIdNetworkPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -791,7 +791,7 @@ import type { ApiV1SandboxesIdPausePostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -863,7 +863,7 @@ import type { ApiV1SandboxesIdPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -937,7 +937,7 @@ import type { ApiV1SandboxesIdRefreshPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -1010,7 +1010,7 @@ import type { ApiV1SandboxesIdResumePostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -1082,7 +1082,7 @@ import type { ApiV1SandboxesIdStatusGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -1152,7 +1152,7 @@ import type { ApiV1SandboxesPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });

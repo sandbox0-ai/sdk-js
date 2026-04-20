@@ -48,6 +48,13 @@ import {
     WarmProcessSpecToJSON,
     WarmProcessSpecToJSONTyped,
 } from './WarmProcessSpec';
+import type { VolumeMountSpec } from './VolumeMountSpec';
+import {
+    VolumeMountSpecFromJSON,
+    VolumeMountSpecFromJSONTyped,
+    VolumeMountSpecToJSON,
+    VolumeMountSpecToJSONTyped,
+} from './VolumeMountSpec';
 import type { PodSpecOverride } from './PodSpecOverride';
 import {
     PodSpecOverrideFromJSON,
@@ -92,6 +99,12 @@ export interface SandboxTemplateSpec {
      * @memberof SandboxTemplateSpec
      */
     warmProcesses?: Array<WarmProcessSpec>;
+    /**
+     * 
+     * @type {Array<VolumeMountSpec>}
+     * @memberof SandboxTemplateSpec
+     */
+    volumeMounts?: Array<VolumeMountSpec>;
     /**
      * 
      * @type {PodSpecOverride}
@@ -164,6 +177,7 @@ export function SandboxTemplateSpecFromJSONTyped(json: any, ignoreDiscriminator:
         'tags': json['tags'] == null ? undefined : json['tags'],
         'mainContainer': json['mainContainer'] == null ? undefined : ContainerSpecFromJSON(json['mainContainer']),
         'warmProcesses': json['warmProcesses'] == null ? undefined : ((json['warmProcesses'] as Array<any>).map(WarmProcessSpecFromJSON)),
+        'volumeMounts': json['volumeMounts'] == null ? undefined : ((json['volumeMounts'] as Array<any>).map(VolumeMountSpecFromJSON)),
         'pod': json['pod'] == null ? undefined : PodSpecOverrideFromJSON(json['pod']),
         'network': json['network'] == null ? undefined : SandboxNetworkPolicyFromJSON(json['network']),
         'pool': json['pool'] == null ? undefined : PoolStrategyFromJSON(json['pool']),
@@ -191,6 +205,7 @@ export function SandboxTemplateSpecToJSONTyped(value?: SandboxTemplateSpec | nul
         'tags': value['tags'],
         'mainContainer': ContainerSpecToJSON(value['mainContainer']),
         'warmProcesses': value['warmProcesses'] == null ? undefined : ((value['warmProcesses'] as Array<any>).map(WarmProcessSpecToJSON)),
+        'volumeMounts': value['volumeMounts'] == null ? undefined : ((value['volumeMounts'] as Array<any>).map(VolumeMountSpecToJSON)),
         'pod': PodSpecOverrideToJSON(value['pod']),
         'network': SandboxNetworkPolicyToJSON(value['network']),
         'pool': PoolStrategyToJSON(value['pool']),

@@ -79,8 +79,6 @@ const volume = await client.volumes.create({});
 
 const sandbox = await client.sandboxes.claim("default", {
   mounts: [{ sandboxvolumeId: volume.id, mountPoint: "/workspace/data" }],
-  waitForMounts: true,
-  mountWaitTimeoutMs: 45_000,
 });
 
 for (const mount of sandbox.bootstrapMounts) {

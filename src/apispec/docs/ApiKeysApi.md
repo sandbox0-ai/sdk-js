@@ -346,6 +346,7 @@ example().catch(console.error);
 |-------------|-------------|------------------|
 | **201** | API key created |  -  |
 | **400** | Invalid request |  -  |
+| **403** | Requested roles exceed caller permissions, or platform scope requires a system admin user session |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

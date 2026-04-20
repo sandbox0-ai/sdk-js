@@ -138,32 +138,14 @@ describe("Volumes", () => {
   it("should isolate writes between source and forked volumes", async () => {
     if (!cfg) return;
     const client = await newClient(cfg);
-    const sandbox = await client.sandboxes.claim(cfg.template);
-    assert.ok(sandbox.id);
 
     const source = await client.volumes.create({});
     assert.ok(source.id);
     let sourceDeleted = false;
     let forkDeleted = false;
-    let sourceSessionId = "";
-    let forkSessionId = "";
     let forkVolumeId = "";
 
     const cleanup = async () => {
-      if (forkSessionId) {
-        try {
-          await sandbox.unmount(forkVolumeId, forkSessionId);
-        } catch {
-          // Ignore cleanup errors
-        }
-      }
-      if (sourceSessionId) {
-        try {
-          await sandbox.unmount(source.id, sourceSessionId);
-        } catch {
-          // Ignore cleanup errors
-        }
-      }
       if (forkVolumeId && !forkDeleted) {
         try {
           await client.volumes.delete(forkVolumeId);
@@ -178,37 +160,19 @@ describe("Volumes", () => {
           // Ignore cleanup errors
         }
       }
-      try {
-        await client.sandboxes.delete(sandbox.id);
-      } catch {
-        // Ignore cleanup errors
-      }
     };
 
     try {
-      const initSession = await sandbox.mount(source.id, `/mnt/src-init-${Date.now()}`);
-      await sandbox.writeFile(`${initSession.mountPoint}/hello.txt`, "source-original\n");
-      await sandbox.unmount(source.id, initSession.mountSessionId);
+      await client.volumes.writeFile(source.id, "/hello.txt", "source-original\n");
 
       const forked = await client.volumes.fork(source.id, {});
       forkVolumeId = forked.id;
       assert.ok(forked.id);
       assert.strictEqual(forked.sourceVolumeId, source.id);
 
-      const sourceSession = await sandbox.mount(source.id, `/mnt/src-${Date.now()}`);
-      sourceSessionId = sourceSession.mountSessionId;
-      const forkSession = await sandbox.mount(forked.id, `/mnt/fork-${Date.now()}`);
-      forkSessionId = forkSession.mountSessionId;
-
-      await sandbox.writeFile(`${forkSession.mountPoint}/hello.txt`, "fork-updated\n");
-
-      const sourceContent = await sandbox.readFile(`${sourceSession.mountPoint}/hello.txt`);
+      await client.volumes.writeFile(forked.id, "/hello.txt", "fork-updated\n");
+      const sourceContent = await client.volumes.readFile(source.id, "/hello.txt");
       assert.strictEqual(Buffer.from(sourceContent).toString("utf-8"), "source-original\n");
-
-      await sandbox.unmount(forked.id, forkSession.mountSessionId);
-      forkSessionId = "";
-      await sandbox.unmount(source.id, sourceSession.mountSessionId);
-      sourceSessionId = "";
 
       await client.volumes.delete(forked.id);
       forkDeleted = true;

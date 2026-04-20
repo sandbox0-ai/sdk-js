@@ -9,8 +9,6 @@ Name | Type
 `template` | string
 `config` | [SandboxConfig](SandboxConfig.md)
 `mounts` | [Array&lt;ClaimMountRequest&gt;](ClaimMountRequest.md)
-`waitForMounts` | boolean
-`mountWaitTimeoutMs` | number
 
 ## Example
 
@@ -22,8 +20,6 @@ const example = {
   "template": null,
   "config": null,
   "mounts": null,
-  "waitForMounts": null,
-  "mountWaitTimeoutMs": null,
 } satisfies ClaimRequest
 
 console.log(example)

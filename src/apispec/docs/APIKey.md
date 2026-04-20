@@ -12,6 +12,7 @@ Name | Type
 `userId` | string
 `createdBy` | string
 `name` | string
+`scope` | string
 `roles` | Array&lt;string&gt;
 `isActive` | boolean
 `expiresAt` | Date
@@ -33,6 +34,7 @@ const example = {
   "userId": null,
   "createdBy": null,
   "name": null,
+  "scope": null,
   "roles": null,
   "isActive": null,
   "expiresAt": null,

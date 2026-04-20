@@ -64,6 +64,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *AuthApi* | [**authProvidersGet**](docs/AuthApi.md#authprovidersget) | **GET** /auth/providers | Get available auth providers
 *AuthApi* | [**authRefreshPost**](docs/AuthApi.md#authrefreshpost) | **POST** /auth/refresh | Refresh access token
 *AuthApi* | [**authRegisterPost**](docs/AuthApi.md#authregisterpost) | **POST** /auth/register | Register a new user
+*AuthApi* | [**authWebLoginExchangePost**](docs/AuthApi.md#authwebloginexchangepost) | **POST** /auth/web-login/exchange | Exchange web login code
 *ContextsApi* | [**apiV1SandboxesIdContextsCtxIdDelete**](docs/ContextsApi.md#apiv1sandboxesidcontextsctxiddelete) | **DELETE** /api/v1/sandboxes/{id}/contexts/{ctx_id} | Delete context
 *ContextsApi* | [**apiV1SandboxesIdContextsCtxIdExecPost**](docs/ContextsApi.md#apiv1sandboxesidcontextsctxidexecpost) | **POST** /api/v1/sandboxes/{id}/contexts/{ctx_id}/exec | Execute context input (sync)
 *ContextsApi* | [**apiV1SandboxesIdContextsCtxIdGet**](docs/ContextsApi.md#apiv1sandboxesidcontextsctxidget) | **GET** /api/v1/sandboxes/{id}/contexts/{ctx_id} | Get context
@@ -104,9 +105,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 *RegionsApi* | [**regionsIdPut**](docs/RegionsApi.md#regionsidput) | **PUT** /regions/{id} | Update a region in the global gateway
 *RegionsApi* | [**regionsPost**](docs/RegionsApi.md#regionspost) | **POST** /regions | Create a region in the global gateway
 *RegistryApi* | [**apiV1RegistryCredentialsPost**](docs/RegistryApi.md#apiv1registrycredentialspost) | **POST** /api/v1/registry/credentials | Get registry credentials for uploads
-*SandboxVolumesApi* | [**apiV1SandboxesIdSandboxvolumesMountPost**](docs/SandboxVolumesApi.md#apiv1sandboxesidsandboxvolumesmountpost) | **POST** /api/v1/sandboxes/{id}/sandboxvolumes/mount | Mount sandbox volume in sandbox
-*SandboxVolumesApi* | [**apiV1SandboxesIdSandboxvolumesStatusGet**](docs/SandboxVolumesApi.md#apiv1sandboxesidsandboxvolumesstatusget) | **GET** /api/v1/sandboxes/{id}/sandboxvolumes/status | Get sandbox volume mount status
-*SandboxVolumesApi* | [**apiV1SandboxesIdSandboxvolumesUnmountPost**](docs/SandboxVolumesApi.md#apiv1sandboxesidsandboxvolumesunmountpost) | **POST** /api/v1/sandboxes/{id}/sandboxvolumes/unmount | Unmount sandbox volume
 *SandboxVolumesApi* | [**apiV1SandboxvolumesGet**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesget) | **GET** /api/v1/sandboxvolumes | List sandbox volumes
 *SandboxVolumesApi* | [**apiV1SandboxvolumesIdDelete**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesiddelete) | **DELETE** /api/v1/sandboxvolumes/{id} | Delete sandbox volume
 *SandboxVolumesApi* | [**apiV1SandboxvolumesIdForkPost**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesidforkpost) | **POST** /api/v1/sandboxvolumes/{id}/fork | Fork sandbox volume
@@ -119,7 +117,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SandboxesApi* | [**apiV1SandboxesIdExposedPortsPortDelete**](docs/SandboxesApi.md#apiv1sandboxesidexposedportsportdelete) | **DELETE** /api/v1/sandboxes/{id}/exposed-ports/{port} | Remove a specific exposed port
 *SandboxesApi* | [**apiV1SandboxesIdExposedPortsPut**](docs/SandboxesApi.md#apiv1sandboxesidexposedportsput) | **PUT** /api/v1/sandboxes/{id}/exposed-ports | Update sandbox exposed ports
 *SandboxesApi* | [**apiV1SandboxesIdGet**](docs/SandboxesApi.md#apiv1sandboxesidget) | **GET** /api/v1/sandboxes/{id} | Get sandbox by ID
-*SandboxesApi* | [**apiV1SandboxesIdLogsGet**](docs/SandboxesApi.md#apiv1sandboxesidlogsget) | **GET** /api/v1/sandboxes/{id}/logs | Get sandbox pod logs
+*SandboxesApi* | [**apiV1SandboxesIdLogsGet**](docs/SandboxesApi.md#apiv1sandboxesidlogsget) | **GET** /api/v1/sandboxes/{id}/logs | Get sandbox process logs
 *SandboxesApi* | [**apiV1SandboxesIdNetworkGet**](docs/SandboxesApi.md#apiv1sandboxesidnetworkget) | **GET** /api/v1/sandboxes/{id}/network | Get sandbox network policy
 *SandboxesApi* | [**apiV1SandboxesIdNetworkPut**](docs/SandboxesApi.md#apiv1sandboxesidnetworkput) | **PUT** /api/v1/sandboxes/{id}/network | Update sandbox network policy
 *SandboxesApi* | [**apiV1SandboxesIdPausePost**](docs/SandboxesApi.md#apiv1sandboxesidpausepost) | **POST** /api/v1/sandboxes/{id}/pause | Pause a sandbox
@@ -251,8 +249,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [LoginRequest](docs/LoginRequest.md)
 - [LoginResponse](docs/LoginResponse.md)
 - [ModelError](docs/ModelError.md)
-- [MountRequest](docs/MountRequest.md)
-- [MountResponse](docs/MountResponse.md)
 - [MountStatus](docs/MountStatus.md)
 - [MoveFileRequest](docs/MoveFileRequest.md)
 - [NetworkEgressPolicy](docs/NetworkEgressPolicy.md)
@@ -293,7 +289,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SSHPublicKey](docs/SSHPublicKey.md)
 - [Sandbox](docs/Sandbox.md)
 - [SandboxConfig](docs/SandboxConfig.md)
-- [SandboxLogs](docs/SandboxLogs.md)
 - [SandboxNetworkPolicy](docs/SandboxNetworkPolicy.md)
 - [SandboxPowerState](docs/SandboxPowerState.md)
 - [SandboxProbeSet](docs/SandboxProbeSet.md)
@@ -353,9 +348,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessLoginResponse](docs/SuccessLoginResponse.md)
 - [SuccessMessageResponse](docs/SuccessMessageResponse.md)
 - [SuccessMessageResponseAllOfData](docs/SuccessMessageResponseAllOfData.md)
-- [SuccessMountResponse](docs/SuccessMountResponse.md)
-- [SuccessMountStatusResponse](docs/SuccessMountStatusResponse.md)
-- [SuccessMountStatusResponseAllOfData](docs/SuccessMountStatusResponseAllOfData.md)
 - [SuccessMovedResponse](docs/SuccessMovedResponse.md)
 - [SuccessMovedResponseAllOfData](docs/SuccessMovedResponseAllOfData.md)
 - [SuccessPauseSandboxResponse](docs/SuccessPauseSandboxResponse.md)
@@ -374,7 +366,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessSSHPublicKeyResponse](docs/SuccessSSHPublicKeyResponse.md)
 - [SuccessSandboxListResponse](docs/SuccessSandboxListResponse.md)
 - [SuccessSandboxListResponseAllOfData](docs/SuccessSandboxListResponseAllOfData.md)
-- [SuccessSandboxLogsResponse](docs/SuccessSandboxLogsResponse.md)
 - [SuccessSandboxNetworkPolicyResponse](docs/SuccessSandboxNetworkPolicyResponse.md)
 - [SuccessSandboxResponse](docs/SuccessSandboxResponse.md)
 - [SuccessSandboxStatusResponse](docs/SuccessSandboxStatusResponse.md)
@@ -393,8 +384,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessTemplateListResponse](docs/SuccessTemplateListResponse.md)
 - [SuccessTemplateListResponseAllOfData](docs/SuccessTemplateListResponseAllOfData.md)
 - [SuccessTemplateResponse](docs/SuccessTemplateResponse.md)
-- [SuccessUnmountedResponse](docs/SuccessUnmountedResponse.md)
-- [SuccessUnmountedResponseAllOfData](docs/SuccessUnmountedResponseAllOfData.md)
 - [SuccessUserResponse](docs/SuccessUserResponse.md)
 - [SuccessVolumeSyncAppendResponse](docs/SuccessVolumeSyncAppendResponse.md)
 - [SuccessVolumeSyncBootstrapResponse](docs/SuccessVolumeSyncBootstrapResponse.md)
@@ -418,7 +407,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [TrafficRule](docs/TrafficRule.md)
 - [TrafficRuleAction](docs/TrafficRuleAction.md)
 - [TrafficRuleAppProtocol](docs/TrafficRuleAppProtocol.md)
-- [UnmountRequest](docs/UnmountRequest.md)
 - [UpdateExposedPortsRequest](docs/UpdateExposedPortsRequest.md)
 - [UpdateRegionRequest](docs/UpdateRegionRequest.md)
 - [UpdateSyncReplicaCursorRequest](docs/UpdateSyncReplicaCursorRequest.md)
@@ -428,7 +416,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [UpsertSyncReplicaRequest](docs/UpsertSyncReplicaRequest.md)
 - [User](docs/User.md)
 - [VolumeAccessMode](docs/VolumeAccessMode.md)
-- [VolumeConfig](docs/VolumeConfig.md)
+- [VolumeMountSpec](docs/VolumeMountSpec.md)
 - [VolumeSyncBootstrap](docs/VolumeSyncBootstrap.md)
 - [VolumeSyncBootstrapCompatibilityConflictDetails](docs/VolumeSyncBootstrapCompatibilityConflictDetails.md)
 - [VolumeSyncBootstrapConflictErrorEnvelope](docs/VolumeSyncBootstrapConflictErrorEnvelope.md)
@@ -440,6 +428,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [VolumeSyncReseedRequiredErrorEnvelope](docs/VolumeSyncReseedRequiredErrorEnvelope.md)
 - [VolumeSyncReseedRequiredErrorEnvelopeAllOfError](docs/VolumeSyncReseedRequiredErrorEnvelopeAllOfError.md)
 - [WarmProcessSpec](docs/WarmProcessSpec.md)
+- [WebLoginExchangeRequest](docs/WebLoginExchangeRequest.md)
 - [WebhookConfig](docs/WebhookConfig.md)
 - [WeightedPodAffinityTerm](docs/WeightedPodAffinityTerm.md)
 

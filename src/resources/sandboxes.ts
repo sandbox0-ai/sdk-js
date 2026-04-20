@@ -22,8 +22,6 @@ import { SandboxSession } from "../sessions";
 export interface ClaimSandboxOptions {
   config?: SandboxConfig;
   mounts?: ClaimMountRequest[];
-  waitForMounts?: boolean;
-  mountWaitTimeoutMs?: number;
 }
 
 function isClaimSandboxOptions(
@@ -31,9 +29,7 @@ function isClaimSandboxOptions(
 ): value is ClaimSandboxOptions {
   return !!value && typeof value === "object" && (
     "config" in value ||
-    "mounts" in value ||
-    "waitForMounts" in value ||
-    "mountWaitTimeoutMs" in value
+    "mounts" in value
   );
 }
 
@@ -51,8 +47,6 @@ function toClaimRequest(
     template,
     config: options.config,
     mounts: options.mounts,
-    waitForMounts: options.waitForMounts,
-    mountWaitTimeoutMs: options.mountWaitTimeoutMs,
   };
 }
 

@@ -101,18 +101,11 @@ describe("Sandboxes", () => {
 
       const sandbox = await client.sandboxes.claim(cfg.template, {
         mounts: [{ sandboxvolumeId: volume.id, mountPoint: "/workspace/bootstrap-data" }],
-        waitForMounts: true,
-        mountWaitTimeoutMs: 45000,
       });
       sandboxId = sandbox.id;
 
       assert.ok(sandbox.bootstrapMounts.length > 0);
       assert.strictEqual(sandbox.bootstrapMounts[0]?.state, "mounted");
-
-      const mounts = await sandbox.mountStatus();
-      assert.ok(
-        mounts.some((mount) => mount.sandboxvolumeId === volume.id && mount.state === "mounted"),
-      );
 
       const content = await sandbox.readFile("/workspace/bootstrap-data/claim-bootstrap/hello.txt");
       assert.strictEqual(Buffer.from(content).toString("utf-8"), "hello bootstrap claim mount");

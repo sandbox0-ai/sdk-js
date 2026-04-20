@@ -26,7 +26,13 @@ export interface CreateAPIKeyRequest {
      */
     name: string;
     /**
-     * 
+     * API key scope: team or platform. Defaults to team. platform keys grant system admin access, require a system admin user session, and do not support roles.
+     * @type {string}
+     * @memberof CreateAPIKeyRequest
+     */
+    scope?: string;
+    /**
+     * Requested API key roles. Supported roles: admin, developer, builder, viewer. The roles must not grant permissions outside the authenticated caller's permissions.
      * @type {Array<string>}
      * @memberof CreateAPIKeyRequest
      */
@@ -58,6 +64,7 @@ export function CreateAPIKeyRequestFromJSONTyped(json: any, ignoreDiscriminator:
     return {
         
         'name': json['name'],
+        'scope': json['scope'] == null ? undefined : json['scope'],
         'roles': json['roles'] == null ? undefined : json['roles'],
         'expiresIn': json['expires_in'] == null ? undefined : json['expires_in'],
     };
@@ -75,6 +82,7 @@ export function CreateAPIKeyRequestToJSONTyped(value?: CreateAPIKeyRequest | nul
     return {
         
         'name': value['name'],
+        'scope': value['scope'],
         'roles': value['roles'],
         'expires_in': value['expiresIn'],
     };

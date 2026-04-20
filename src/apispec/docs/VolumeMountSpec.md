@@ -1,22 +1,26 @@
 
-# SuccessUnmountedResponseAllOfData
+# VolumeMountSpec
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`unmounted` | boolean
+`name` | string
+`mountPath` | string
+`readOnly` | boolean
 
 ## Example
 
 ```typescript
-import type { SuccessUnmountedResponseAllOfData } from 'sandbox0'
+import type { VolumeMountSpec } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "unmounted": null,
-} satisfies SuccessUnmountedResponseAllOfData
+  "name": null,
+  "mountPath": null,
+  "readOnly": null,
+} satisfies VolumeMountSpec
 
 console.log(example)
 
@@ -25,7 +29,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SuccessUnmountedResponseAllOfData
+const exampleParsed = JSON.parse(exampleJSON) as VolumeMountSpec
 console.log(exampleParsed)
 ```
 

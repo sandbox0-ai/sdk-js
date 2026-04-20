@@ -14,6 +14,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 | [**authProvidersGet**](AuthApi.md#authprovidersget) | **GET** /auth/providers | Get available auth providers |
 | [**authRefreshPost**](AuthApi.md#authrefreshpost) | **POST** /auth/refresh | Refresh access token |
 | [**authRegisterPost**](AuthApi.md#authregisterpost) | **POST** /auth/register | Register a new user |
+| [**authWebLoginExchangePost**](AuthApi.md#authwebloginexchangepost) | **POST** /auth/web-login/exchange | Exchange web login code |
 
 
 
@@ -283,7 +284,7 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **302** | Redirect to local CLI return_url with token query parameters when return_url is localhost |  -  |
+| **302** | Redirect to local CLI return_url with token query parameters, or to a web return_url with login_code when web_login was requested |  -  |
 | **200** | Tokens issued |  -  |
 | **400** | Invalid request |  -  |
 | **401** | OIDC authorization failed |  -  |
@@ -430,7 +431,7 @@ No authorization required
 
 ## authOidcProviderLoginGet
 
-> authOidcProviderLoginGet(provider, returnUrl)
+> authOidcProviderLoginGet(provider, returnUrl, webLogin)
 
 Initiate OIDC login
 
@@ -452,6 +453,8 @@ async function example() {
     provider: provider_example,
     // string (optional)
     returnUrl: returnUrl_example,
+    // boolean | When true, the OIDC callback redirects to return_url with a short-lived login_code for server-side exchange. (optional)
+    webLogin: true,
   } satisfies AuthOidcProviderLoginGetRequest;
 
   try {
@@ -473,6 +476,7 @@ example().catch(console.error);
 |------------- | ------------- | ------------- | -------------|
 | **provider** | `string` |  | [Defaults to `undefined`] |
 | **returnUrl** | `string` |  | [Optional] [Defaults to `undefined`] |
+| **webLogin** | `boolean` | When true, the OIDC callback redirects to return_url with a short-lived login_code for server-side exchange. | [Optional] [Defaults to `undefined`] |
 
 ### Return type
 
@@ -687,6 +691,75 @@ No authorization required
 | **400** | Invalid request |  -  |
 | **403** | Registration disabled |  -  |
 | **409** | Email already exists |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## authWebLoginExchangePost
+
+> SuccessLoginResponse authWebLoginExchangePost(webLoginExchangeRequest)
+
+Exchange web login code
+
+Exchanges a short-lived, one-time browser login handoff code for Sandbox0 tokens.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  AuthApi,
+} from 'sandbox0';
+import type { AuthWebLoginExchangePostRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const api = new AuthApi();
+
+  const body = {
+    // WebLoginExchangeRequest
+    webLoginExchangeRequest: ...,
+  } satisfies AuthWebLoginExchangePostRequest;
+
+  try {
+    const data = await api.authWebLoginExchangePost(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **webLoginExchangeRequest** | [WebLoginExchangeRequest](WebLoginExchangeRequest.md) |  | |
+
+### Return type
+
+[**SuccessLoginResponse**](SuccessLoginResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Login code exchanged |  -  |
+| **400** | Invalid request |  -  |
+| **401** | Invalid or expired login code |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

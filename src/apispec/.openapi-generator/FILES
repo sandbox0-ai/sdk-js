@@ -17,6 +17,9 @@ docs/ChangeRequest.md
 docs/ClaimMountRequest.md
 docs/ClaimRequest.md
 docs/ClaimResponse.md
+docs/CloneVolumeFileEntry.md
+docs/CloneVolumeFileResult.md
+docs/CloneVolumeFilesRequest.md
 docs/ContainerSpec.md
 docs/ContextExecResponse.md
 docs/ContextInputRequest.md
@@ -162,6 +165,8 @@ docs/SuccessAPIKeyListResponseAllOfData.md
 docs/SuccessAuthProvidersResponse.md
 docs/SuccessAuthProvidersResponseAllOfData.md
 docs/SuccessClaimResponse.md
+docs/SuccessCloneVolumeFilesResponse.md
+docs/SuccessCloneVolumeFilesResponseAllOfData.md
 docs/SuccessContextExecResponse.md
 docs/SuccessContextListResponse.md
 docs/SuccessContextListResponseAllOfData.md
@@ -313,6 +318,9 @@ src/models/ChangeRequest.ts
 src/models/ClaimMountRequest.ts
 src/models/ClaimRequest.ts
 src/models/ClaimResponse.ts
+src/models/CloneVolumeFileEntry.ts
+src/models/CloneVolumeFileResult.ts
+src/models/CloneVolumeFilesRequest.ts
 src/models/ContainerSpec.ts
 src/models/ContextExecResponse.ts
 src/models/ContextInputRequest.ts
@@ -449,6 +457,8 @@ src/models/SuccessAPIKeyListResponseAllOfData.ts
 src/models/SuccessAuthProvidersResponse.ts
 src/models/SuccessAuthProvidersResponseAllOfData.ts
 src/models/SuccessClaimResponse.ts
+src/models/SuccessCloneVolumeFilesResponse.ts
+src/models/SuccessCloneVolumeFilesResponseAllOfData.ts
 src/models/SuccessContextExecResponse.ts
 src/models/SuccessContextListResponse.ts
 src/models/SuccessContextListResponseAllOfData.ts

@@ -88,7 +88,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 *FilesApi* | [**apiV1SandboxesIdFilesPost**](docs/FilesApi.md#apiv1sandboxesidfilespost) | **POST** /api/v1/sandboxes/{id}/files | Write file or create directory
 *FilesApi* | [**apiV1SandboxesIdFilesStatGet**](docs/FilesApi.md#apiv1sandboxesidfilesstatget) | **GET** /api/v1/sandboxes/{id}/files/stat | Stat a file
 *FilesApi* | [**apiV1SandboxesIdFilesWatchGet**](docs/FilesApi.md#apiv1sandboxesidfileswatchget) | **GET** /api/v1/sandboxes/{id}/files/watch | File watch WebSocket
-*FilesApi* | [**apiV1SandboxvolumesIdFilesClonePost**](docs/FilesApi.md#apiv1sandboxvolumesidfilesclonepost) | **POST** /api/v1/sandboxvolumes/{id}/files/clone | Clone files from sandbox volumes into a target volume
 *FilesApi* | [**apiV1SandboxvolumesIdFilesDelete**](docs/FilesApi.md#apiv1sandboxvolumesidfilesdelete) | **DELETE** /api/v1/sandboxvolumes/{id}/files | Delete volume file or directory
 *FilesApi* | [**apiV1SandboxvolumesIdFilesGet**](docs/FilesApi.md#apiv1sandboxvolumesidfilesget) | **GET** /api/v1/sandboxvolumes/{id}/files | Read volume file content
 *FilesApi* | [**apiV1SandboxvolumesIdFilesListGet**](docs/FilesApi.md#apiv1sandboxvolumesidfileslistget) | **GET** /api/v1/sandboxvolumes/{id}/files/list | List volume directory entries
@@ -181,9 +180,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ClaimMountRequest](docs/ClaimMountRequest.md)
 - [ClaimRequest](docs/ClaimRequest.md)
 - [ClaimResponse](docs/ClaimResponse.md)
-- [CloneVolumeFileEntry](docs/CloneVolumeFileEntry.md)
-- [CloneVolumeFileResult](docs/CloneVolumeFileResult.md)
-- [CloneVolumeFilesRequest](docs/CloneVolumeFilesRequest.md)
 - [ContainerSpec](docs/ContainerSpec.md)
 - [ContextExecResponse](docs/ContextExecResponse.md)
 - [ContextInputRequest](docs/ContextInputRequest.md)
@@ -320,8 +316,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessAuthProvidersResponse](docs/SuccessAuthProvidersResponse.md)
 - [SuccessAuthProvidersResponseAllOfData](docs/SuccessAuthProvidersResponseAllOfData.md)
 - [SuccessClaimResponse](docs/SuccessClaimResponse.md)
-- [SuccessCloneVolumeFilesResponse](docs/SuccessCloneVolumeFilesResponse.md)
-- [SuccessCloneVolumeFilesResponseAllOfData](docs/SuccessCloneVolumeFilesResponseAllOfData.md)
 - [SuccessContextExecResponse](docs/SuccessContextExecResponse.md)
 - [SuccessContextListResponse](docs/SuccessContextListResponse.md)
 - [SuccessContextListResponseAllOfData](docs/SuccessContextListResponseAllOfData.md)

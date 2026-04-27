@@ -114,22 +114,6 @@ describe("Volumes", () => {
       assert.ok(entries.some((entry) => entry.name === "hello.txt"));
 
       await client.volumes.moveFile(volume.id, filePath, movedPath);
-      const clonedPath = `${baseDir}/cloned.txt`;
-      const cloneResults = await client.volumes.cloneFiles(volume.id, {
-        entries: [
-          {
-            sourceVolumeId: volume.id,
-            sourcePath: movedPath,
-            targetPath: clonedPath,
-            createParents: true,
-          },
-        ],
-      });
-      assert.strictEqual(cloneResults.length, 1);
-      assert.strictEqual(cloneResults[0].targetPath, clonedPath);
-
-      const clonedContent = await client.volumes.readFile(volume.id, clonedPath);
-      assert.strictEqual(Buffer.from(clonedContent).toString("utf-8"), "hello volume");
 
       const watch = await client.volumes.watchFiles(volume.id, baseDir, true);
       try {

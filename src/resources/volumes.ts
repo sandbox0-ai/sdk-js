@@ -1,6 +1,4 @@
 import type {
-  CloneVolumeFileResult,
-  CloneVolumeFilesRequest,
   CreateSandboxVolumeRequest,
   FileContentResponse,
   FileInfo,
@@ -242,20 +240,6 @@ export class Volumes {
       }),
     );
     return ensureModel(response, "move volume file returned empty response");
-  }
-
-  async cloneFiles(
-    volumeId: string,
-    request: CloneVolumeFilesRequest,
-  ): Promise<CloneVolumeFileResult[]> {
-    const response = await wrapApiCall(() =>
-      this.client.apispec.files.apiV1SandboxvolumesIdFilesClonePost({
-        id: volumeId,
-        cloneVolumeFilesRequest: request,
-      }),
-    );
-    const data = ensureData(response, "clone volume files returned empty response");
-    return data.entries ?? [];
   }
 
   async watchFiles(

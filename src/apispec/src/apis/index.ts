@@ -14,4 +14,3 @@ export * from './SnapshotsApi';
 export * from './TeamsApi';
 export * from './TemplatesApi';
 export * from './UsersApi';
-export * from './VolumeSyncApi';

@@ -12,6 +12,7 @@ Name | Type
 `network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
 `autoResume` | boolean
 `exposedPorts` | [Array&lt;ExposedPortConfig&gt;](ExposedPortConfig.md)
+`publicGateway` | [PublicGatewayConfig](PublicGatewayConfig.md)
 
 ## Example
 
@@ -25,6 +26,7 @@ const example = {
   "network": null,
   "autoResume": null,
   "exposedPorts": null,
+  "publicGateway": null,
 } satisfies SandboxUpdateConfig
 
 console.log(example)

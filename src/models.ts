@@ -47,6 +47,14 @@ export interface ExposedPortsResponse {
   exposureDomain?: string;
 }
 
+import type { PublicGatewayConfig } from "./apispec/src/models/index";
+
+export interface PublicGatewayResponse {
+  sandboxId: string;
+  publicGateway: PublicGatewayConfig;
+  exposureDomain?: string;
+}
+
 export interface FileWatchResponse {
   type: string;
   watchId?: string;

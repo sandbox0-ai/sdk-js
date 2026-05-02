@@ -15,6 +15,7 @@ Name | Type
 `powerState` | [SandboxPowerState](SandboxPowerState.md)
 `autoResume` | boolean
 `exposedPorts` | [Array&lt;ExposedPortConfig&gt;](ExposedPortConfig.md)
+`publicGateway` | [PublicGatewayConfig](PublicGatewayConfig.md)
 `podName` | string
 `ssh` | [SandboxSSHConnection](SandboxSSHConnection.md)
 `expiresAt` | Date
@@ -38,6 +39,7 @@ const example = {
   "powerState": null,
   "autoResume": null,
   "exposedPorts": null,
+  "publicGateway": null,
   "podName": null,
   "ssh": null,
   "expiresAt": null,

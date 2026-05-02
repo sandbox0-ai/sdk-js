@@ -105,6 +105,11 @@ docs/Probe.md
 docs/ProcessType.md
 docs/ProjectedHeader.md
 docs/ProjectionSpec.md
+docs/PublicGatewayAuth.md
+docs/PublicGatewayCORS.md
+docs/PublicGatewayConfig.md
+docs/PublicGatewayRateLimit.md
+docs/PublicGatewayRoute.md
 docs/REPLConfig.md
 docs/REPLEnvVar.md
 docs/REPLPromptConfig.md
@@ -190,6 +195,8 @@ docs/SuccessMessageResponseAllOfData.md
 docs/SuccessMovedResponse.md
 docs/SuccessMovedResponseAllOfData.md
 docs/SuccessPauseSandboxResponse.md
+docs/SuccessPublicGatewayResponse.md
+docs/SuccessPublicGatewayResponseAllOfData.md
 docs/SuccessRefreshResponse.md
 docs/SuccessRegionListResponse.md
 docs/SuccessRegionListResponseAllOfData.md
@@ -366,6 +373,11 @@ src/models/Probe.ts
 src/models/ProcessType.ts
 src/models/ProjectedHeader.ts
 src/models/ProjectionSpec.ts
+src/models/PublicGatewayAuth.ts
+src/models/PublicGatewayCORS.ts
+src/models/PublicGatewayConfig.ts
+src/models/PublicGatewayRateLimit.ts
+src/models/PublicGatewayRoute.ts
 src/models/REPLConfig.ts
 src/models/REPLEnvVar.ts
 src/models/REPLPromptConfig.ts
@@ -446,6 +458,8 @@ src/models/SuccessMessageResponseAllOfData.ts
 src/models/SuccessMovedResponse.ts
 src/models/SuccessMovedResponseAllOfData.ts
 src/models/SuccessPauseSandboxResponse.ts
+src/models/SuccessPublicGatewayResponse.ts
+src/models/SuccessPublicGatewayResponseAllOfData.ts
 src/models/SuccessRefreshResponse.ts
 src/models/SuccessRegionListResponse.ts
 src/models/SuccessRegionListResponseAllOfData.ts

@@ -1,36 +1,26 @@
 
-# SandboxConfig
+# SuccessPublicGatewayResponseAllOfData
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`envVars` | { [key: string]: string; }
-`ttl` | number
-`hardTtl` | number
-`network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
-`webhook` | [WebhookConfig](WebhookConfig.md)
-`autoResume` | boolean
-`exposedPorts` | [Array&lt;ExposedPortConfig&gt;](ExposedPortConfig.md)
+`sandboxId` | string
 `publicGateway` | [PublicGatewayConfig](PublicGatewayConfig.md)
+`exposureDomain` | string
 
 ## Example
 
 ```typescript
-import type { SandboxConfig } from 'sandbox0'
+import type { SuccessPublicGatewayResponseAllOfData } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "envVars": null,
-  "ttl": null,
-  "hardTtl": null,
-  "network": null,
-  "webhook": null,
-  "autoResume": null,
-  "exposedPorts": null,
+  "sandboxId": null,
   "publicGateway": null,
-} satisfies SandboxConfig
+  "exposureDomain": null,
+} satisfies SuccessPublicGatewayResponseAllOfData
 
 console.log(example)
 
@@ -39,7 +29,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SandboxConfig
+const exampleParsed = JSON.parse(exampleJSON) as SuccessPublicGatewayResponseAllOfData
 console.log(exampleParsed)
 ```
 

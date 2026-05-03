@@ -1,5 +1,6 @@
 .gitignore
 .npmignore
+.openapi-generator-ignore
 README.md
 docs/APIKey.md
 docs/AddTeamMemberRequest.md
@@ -58,7 +59,6 @@ docs/EnvVar.md
 docs/ErrorEnvelope.md
 docs/ExecAction.md
 docs/ExecCandidate.md
-docs/ExposedPortConfig.md
 docs/FileContentResponse.md
 docs/FileInfo.md
 docs/FileWatchError.md
@@ -177,8 +177,6 @@ docs/SuccessDeletedResponseAllOfData.md
 docs/SuccessDeviceLoginPollResponse.md
 docs/SuccessDeviceLoginStartResponse.md
 docs/SuccessEnvelope.md
-docs/SuccessExposedPortsResponse.md
-docs/SuccessExposedPortsResponseAllOfData.md
 docs/SuccessFileListResponse.md
 docs/SuccessFileReadResponse.md
 docs/SuccessFileReadResponseAllOfData.md
@@ -245,7 +243,6 @@ docs/Toleration.md
 docs/TrafficRule.md
 docs/TrafficRuleAction.md
 docs/TrafficRuleAppProtocol.md
-docs/UpdateExposedPortsRequest.md
 docs/UpdateRegionRequest.md
 docs/UpdateTeamMemberRequest.md
 docs/UpdateTeamRequest.md
@@ -328,7 +325,6 @@ src/models/EnvVar.ts
 src/models/ErrorEnvelope.ts
 src/models/ExecAction.ts
 src/models/ExecCandidate.ts
-src/models/ExposedPortConfig.ts
 src/models/FileContentResponse.ts
 src/models/FileInfo.ts
 src/models/FileWatchError.ts
@@ -440,8 +436,6 @@ src/models/SuccessDeletedResponseAllOfData.ts
 src/models/SuccessDeviceLoginPollResponse.ts
 src/models/SuccessDeviceLoginStartResponse.ts
 src/models/SuccessEnvelope.ts
-src/models/SuccessExposedPortsResponse.ts
-src/models/SuccessExposedPortsResponseAllOfData.ts
 src/models/SuccessFileListResponse.ts
 src/models/SuccessFileReadResponse.ts
 src/models/SuccessFileReadResponseAllOfData.ts
@@ -506,7 +500,6 @@ src/models/Toleration.ts
 src/models/TrafficRule.ts
 src/models/TrafficRuleAction.ts
 src/models/TrafficRuleAppProtocol.ts
-src/models/UpdateExposedPortsRequest.ts
 src/models/UpdateRegionRequest.ts
 src/models/UpdateTeamMemberRequest.ts
 src/models/UpdateTeamRequest.ts

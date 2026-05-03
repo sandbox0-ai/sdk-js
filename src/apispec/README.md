@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -112,10 +112,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SandboxVolumesApi* | [**apiV1SandboxvolumesPost**](docs/SandboxVolumesApi.md#apiv1sandboxvolumespost) | **POST** /api/v1/sandboxvolumes | Create sandbox volume
 *SandboxesApi* | [**apiV1SandboxesGet**](docs/SandboxesApi.md#apiv1sandboxesget) | **GET** /api/v1/sandboxes | List sandboxes
 *SandboxesApi* | [**apiV1SandboxesIdDelete**](docs/SandboxesApi.md#apiv1sandboxesiddelete) | **DELETE** /api/v1/sandboxes/{id} | Delete (terminate) a sandbox
-*SandboxesApi* | [**apiV1SandboxesIdExposedPortsDelete**](docs/SandboxesApi.md#apiv1sandboxesidexposedportsdelete) | **DELETE** /api/v1/sandboxes/{id}/exposed-ports | Clear all exposed ports
-*SandboxesApi* | [**apiV1SandboxesIdExposedPortsGet**](docs/SandboxesApi.md#apiv1sandboxesidexposedportsget) | **GET** /api/v1/sandboxes/{id}/exposed-ports | Get sandbox exposed ports
-*SandboxesApi* | [**apiV1SandboxesIdExposedPortsPortDelete**](docs/SandboxesApi.md#apiv1sandboxesidexposedportsportdelete) | **DELETE** /api/v1/sandboxes/{id}/exposed-ports/{port} | Remove a specific exposed port
-*SandboxesApi* | [**apiV1SandboxesIdExposedPortsPut**](docs/SandboxesApi.md#apiv1sandboxesidexposedportsput) | **PUT** /api/v1/sandboxes/{id}/exposed-ports | Update sandbox exposed ports
 *SandboxesApi* | [**apiV1SandboxesIdGet**](docs/SandboxesApi.md#apiv1sandboxesidget) | **GET** /api/v1/sandboxes/{id} | Get sandbox by ID
 *SandboxesApi* | [**apiV1SandboxesIdLogsGet**](docs/SandboxesApi.md#apiv1sandboxesidlogsget) | **GET** /api/v1/sandboxes/{id}/logs | Get sandbox process logs
 *SandboxesApi* | [**apiV1SandboxesIdNetworkGet**](docs/SandboxesApi.md#apiv1sandboxesidnetworkget) | **GET** /api/v1/sandboxes/{id}/network | Get sandbox network policy
@@ -211,7 +207,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ErrorEnvelope](docs/ErrorEnvelope.md)
 - [ExecAction](docs/ExecAction.md)
 - [ExecCandidate](docs/ExecCandidate.md)
-- [ExposedPortConfig](docs/ExposedPortConfig.md)
 - [FileContentResponse](docs/FileContentResponse.md)
 - [FileInfo](docs/FileInfo.md)
 - [FileWatchError](docs/FileWatchError.md)
@@ -323,8 +318,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessDeviceLoginPollResponse](docs/SuccessDeviceLoginPollResponse.md)
 - [SuccessDeviceLoginStartResponse](docs/SuccessDeviceLoginStartResponse.md)
 - [SuccessEnvelope](docs/SuccessEnvelope.md)
-- [SuccessExposedPortsResponse](docs/SuccessExposedPortsResponse.md)
-- [SuccessExposedPortsResponseAllOfData](docs/SuccessExposedPortsResponseAllOfData.md)
 - [SuccessFileListResponse](docs/SuccessFileListResponse.md)
 - [SuccessFileReadResponse](docs/SuccessFileReadResponse.md)
 - [SuccessFileReadResponseAllOfData](docs/SuccessFileReadResponseAllOfData.md)
@@ -389,7 +382,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [TrafficRule](docs/TrafficRule.md)
 - [TrafficRuleAction](docs/TrafficRuleAction.md)
 - [TrafficRuleAppProtocol](docs/TrafficRuleAppProtocol.md)
-- [UpdateExposedPortsRequest](docs/UpdateExposedPortsRequest.md)
 - [UpdateRegionRequest](docs/UpdateRegionRequest.md)
 - [UpdateTeamMemberRequest](docs/UpdateTeamMemberRequest.md)
 - [UpdateTeamRequest](docs/UpdateTeamRequest.md)

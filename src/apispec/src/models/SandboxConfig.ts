@@ -27,13 +27,6 @@ import {
     WebhookConfigToJSON,
     WebhookConfigToJSONTyped,
 } from './WebhookConfig';
-import type { ExposedPortConfig } from './ExposedPortConfig';
-import {
-    ExposedPortConfigFromJSON,
-    ExposedPortConfigFromJSONTyped,
-    ExposedPortConfigToJSON,
-    ExposedPortConfigToJSONTyped,
-} from './ExposedPortConfig';
 import type { PublicGatewayConfig } from './PublicGatewayConfig';
 import {
     PublicGatewayConfigFromJSON,
@@ -88,12 +81,6 @@ export interface SandboxConfig {
     autoResume?: boolean;
     /**
      *
-     * @type {Array<ExposedPortConfig>}
-     * @memberof SandboxConfig
-     */
-    exposedPorts?: Array<ExposedPortConfig>;
-    /**
-     *
      * @type {PublicGatewayConfig}
      * @memberof SandboxConfig
      */
@@ -123,7 +110,6 @@ export function SandboxConfigFromJSONTyped(json: any, ignoreDiscriminator: boole
         'network': json['network'] == null ? undefined : SandboxNetworkPolicyFromJSON(json['network']),
         'webhook': json['webhook'] == null ? undefined : WebhookConfigFromJSON(json['webhook']),
         'autoResume': json['auto_resume'] == null ? undefined : json['auto_resume'],
-        'exposedPorts': json['exposed_ports'] == null ? undefined : ((json['exposed_ports'] as Array<any>).map(ExposedPortConfigFromJSON)),
         'publicGateway': json['public_gateway'] == null ? undefined : PublicGatewayConfigFromJSON(json['public_gateway']),
     };
 }
@@ -145,7 +131,6 @@ export function SandboxConfigToJSONTyped(value?: SandboxConfig | null, ignoreDis
         'network': SandboxNetworkPolicyToJSON(value['network']),
         'webhook': WebhookConfigToJSON(value['webhook']),
         'auto_resume': value['autoResume'],
-        'exposed_ports': value['exposedPorts'] == null ? undefined : ((value['exposedPorts'] as Array<any>).map(ExposedPortConfigToJSON)),
         'public_gateway': PublicGatewayConfigToJSON(value['publicGateway']),
     };
 }

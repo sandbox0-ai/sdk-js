@@ -27,7 +27,6 @@ const NULL_ARRAY_KEYS = new Set([
   "drop",
   "entries",
   "env",
-  "exposed_ports",
   "identities",
   "matchExpressions",
   "matchFields",

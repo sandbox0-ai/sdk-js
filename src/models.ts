@@ -36,17 +36,6 @@ export interface StreamDone {
   state?: string;
 }
 
-export interface ExposedPort {
-  port: number;
-  resume: boolean;
-  publicUrl?: string;
-}
-
-export interface ExposedPortsResponse {
-  ports: ExposedPort[];
-  exposureDomain?: string;
-}
-
 import type { PublicGatewayConfig } from "./apispec/src/models/index";
 
 export interface PublicGatewayResponse {

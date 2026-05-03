@@ -14,7 +14,6 @@ Name | Type
 `paused` | boolean
 `powerState` | [SandboxPowerState](SandboxPowerState.md)
 `autoResume` | boolean
-`exposedPorts` | [Array&lt;ExposedPortConfig&gt;](ExposedPortConfig.md)
 `publicGateway` | [PublicGatewayConfig](PublicGatewayConfig.md)
 `podName` | string
 `ssh` | [SandboxSSHConnection](SandboxSSHConnection.md)
@@ -38,7 +37,6 @@ const example = {
   "paused": null,
   "powerState": null,
   "autoResume": null,
-  "exposedPorts": null,
   "publicGateway": null,
   "podName": null,
   "ssh": null,

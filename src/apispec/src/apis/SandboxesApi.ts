@@ -22,7 +22,6 @@ import type {
   SandboxRefreshRequest,
   SandboxUpdateRequest,
   SuccessClaimResponse,
-  SuccessExposedPortsResponse,
   SuccessMessageResponse,
   SuccessPauseSandboxResponse,
   SuccessPublicGatewayResponse,
@@ -32,7 +31,6 @@ import type {
   SuccessSandboxNetworkPolicyResponse,
   SuccessSandboxResponse,
   SuccessSandboxStatusResponse,
-  UpdateExposedPortsRequest,
 } from '../models/index';
 import {
     ClaimRequestFromJSON,
@@ -49,8 +47,6 @@ import {
     SandboxUpdateRequestToJSON,
     SuccessClaimResponseFromJSON,
     SuccessClaimResponseToJSON,
-    SuccessExposedPortsResponseFromJSON,
-    SuccessExposedPortsResponseToJSON,
     SuccessMessageResponseFromJSON,
     SuccessMessageResponseToJSON,
     SuccessPauseSandboxResponseFromJSON,
@@ -69,8 +65,6 @@ import {
     SuccessSandboxResponseToJSON,
     SuccessSandboxStatusResponseFromJSON,
     SuccessSandboxStatusResponseToJSON,
-    UpdateExposedPortsRequestFromJSON,
-    UpdateExposedPortsRequestToJSON,
 } from '../models/index';
 
 export interface ApiV1SandboxesGetRequest {
@@ -83,24 +77,6 @@ export interface ApiV1SandboxesGetRequest {
 
 export interface ApiV1SandboxesIdDeleteRequest {
     id: string;
-}
-
-export interface ApiV1SandboxesIdExposedPortsDeleteRequest {
-    id: string;
-}
-
-export interface ApiV1SandboxesIdExposedPortsGetRequest {
-    id: string;
-}
-
-export interface ApiV1SandboxesIdExposedPortsPortDeleteRequest {
-    id: string;
-    port: number;
-}
-
-export interface ApiV1SandboxesIdExposedPortsPutRequest {
-    id: string;
-    updateExposedPortsRequest: UpdateExposedPortsRequest;
 }
 
 export interface ApiV1SandboxesIdGetRequest {
@@ -268,206 +244,6 @@ export class SandboxesApi extends runtime.BaseAPI {
      */
     async apiV1SandboxesIdDelete(requestParameters: ApiV1SandboxesIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessMessageResponse> {
         const response = await this.apiV1SandboxesIdDeleteRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Clear all exposed ports
-     */
-    async apiV1SandboxesIdExposedPortsDeleteRaw(requestParameters: ApiV1SandboxesIdExposedPortsDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessExposedPortsResponse>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling apiV1SandboxesIdExposedPortsDelete().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/api/v1/sandboxes/{id}/exposed-ports`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessExposedPortsResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Clear all exposed ports
-     */
-    async apiV1SandboxesIdExposedPortsDelete(requestParameters: ApiV1SandboxesIdExposedPortsDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessExposedPortsResponse> {
-        const response = await this.apiV1SandboxesIdExposedPortsDeleteRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get sandbox exposed ports
-     */
-    async apiV1SandboxesIdExposedPortsGetRaw(requestParameters: ApiV1SandboxesIdExposedPortsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessExposedPortsResponse>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling apiV1SandboxesIdExposedPortsGet().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/api/v1/sandboxes/{id}/exposed-ports`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessExposedPortsResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Get sandbox exposed ports
-     */
-    async apiV1SandboxesIdExposedPortsGet(requestParameters: ApiV1SandboxesIdExposedPortsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessExposedPortsResponse> {
-        const response = await this.apiV1SandboxesIdExposedPortsGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Remove a specific exposed port
-     */
-    async apiV1SandboxesIdExposedPortsPortDeleteRaw(requestParameters: ApiV1SandboxesIdExposedPortsPortDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessExposedPortsResponse>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling apiV1SandboxesIdExposedPortsPortDelete().'
-            );
-        }
-
-        if (requestParameters['port'] == null) {
-            throw new runtime.RequiredError(
-                'port',
-                'Required parameter "port" was null or undefined when calling apiV1SandboxesIdExposedPortsPortDelete().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/api/v1/sandboxes/{id}/exposed-ports/{port}`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"port"}}`, encodeURIComponent(String(requestParameters['port'])));
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessExposedPortsResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Remove a specific exposed port
-     */
-    async apiV1SandboxesIdExposedPortsPortDelete(requestParameters: ApiV1SandboxesIdExposedPortsPortDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessExposedPortsResponse> {
-        const response = await this.apiV1SandboxesIdExposedPortsPortDeleteRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Replaces all exposed ports for the sandbox. Used to control which ports are publicly accessible via the exposure domain.
-     * Update sandbox exposed ports
-     */
-    async apiV1SandboxesIdExposedPortsPutRaw(requestParameters: ApiV1SandboxesIdExposedPortsPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessExposedPortsResponse>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling apiV1SandboxesIdExposedPortsPut().'
-            );
-        }
-
-        if (requestParameters['updateExposedPortsRequest'] == null) {
-            throw new runtime.RequiredError(
-                'updateExposedPortsRequest',
-                'Required parameter "updateExposedPortsRequest" was null or undefined when calling apiV1SandboxesIdExposedPortsPut().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/api/v1/sandboxes/{id}/exposed-ports`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UpdateExposedPortsRequestToJSON(requestParameters['updateExposedPortsRequest']),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessExposedPortsResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Replaces all exposed ports for the sandbox. Used to control which ports are publicly accessible via the exposure domain.
-     * Update sandbox exposed ports
-     */
-    async apiV1SandboxesIdExposedPortsPut(requestParameters: ApiV1SandboxesIdExposedPortsPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessExposedPortsResponse> {
-        const response = await this.apiV1SandboxesIdExposedPortsPutRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

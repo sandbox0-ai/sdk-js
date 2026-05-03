@@ -20,13 +20,6 @@ import {
     SandboxSSHConnectionToJSON,
     SandboxSSHConnectionToJSONTyped,
 } from './SandboxSSHConnection';
-import type { ExposedPortConfig } from './ExposedPortConfig';
-import {
-    ExposedPortConfigFromJSON,
-    ExposedPortConfigFromJSONTyped,
-    ExposedPortConfigToJSON,
-    ExposedPortConfigToJSONTyped,
-} from './ExposedPortConfig';
 import type { PublicGatewayConfig } from './PublicGatewayConfig';
 import {
     PublicGatewayConfigFromJSON,
@@ -96,12 +89,6 @@ export interface Sandbox {
      * @memberof Sandbox
      */
     autoResume: boolean;
-    /**
-     *
-     * @type {Array<ExposedPortConfig>}
-     * @memberof Sandbox
-     */
-    exposedPorts?: Array<ExposedPortConfig>;
     /**
      *
      * @type {PublicGatewayConfig}
@@ -183,7 +170,6 @@ export function SandboxFromJSONTyped(json: any, ignoreDiscriminator: boolean): S
         'paused': json['paused'],
         'powerState': SandboxPowerStateFromJSON(json['power_state']),
         'autoResume': json['auto_resume'],
-        'exposedPorts': json['exposed_ports'] == null ? undefined : ((json['exposed_ports'] as Array<any>).map(ExposedPortConfigFromJSON)),
         'publicGateway': json['public_gateway'] == null ? undefined : PublicGatewayConfigFromJSON(json['public_gateway']),
         'podName': json['pod_name'],
         'ssh': json['ssh'] == null ? undefined : SandboxSSHConnectionFromJSON(json['ssh']),
@@ -213,7 +199,6 @@ export function SandboxToJSONTyped(value?: Sandbox | null, ignoreDiscriminator: 
         'paused': value['paused'],
         'power_state': SandboxPowerStateToJSON(value['powerState']),
         'auto_resume': value['autoResume'],
-        'exposed_ports': value['exposedPorts'] == null ? undefined : ((value['exposedPorts'] as Array<any>).map(ExposedPortConfigToJSON)),
         'public_gateway': PublicGatewayConfigToJSON(value['publicGateway']),
         'pod_name': value['podName'],
         'ssh': SandboxSSHConnectionToJSON(value['ssh']),

@@ -20,13 +20,6 @@ import {
     SandboxNetworkPolicyToJSON,
     SandboxNetworkPolicyToJSONTyped,
 } from './SandboxNetworkPolicy';
-import type { ExposedPortConfig } from './ExposedPortConfig';
-import {
-    ExposedPortConfigFromJSON,
-    ExposedPortConfigFromJSONTyped,
-    ExposedPortConfigToJSON,
-    ExposedPortConfigToJSONTyped,
-} from './ExposedPortConfig';
 import type { PublicGatewayConfig } from './PublicGatewayConfig';
 import {
     PublicGatewayConfigFromJSON,
@@ -71,12 +64,6 @@ export interface SandboxUpdateConfig {
     autoResume?: boolean;
     /**
      *
-     * @type {Array<ExposedPortConfig>}
-     * @memberof SandboxUpdateConfig
-     */
-    exposedPorts?: Array<ExposedPortConfig>;
-    /**
-     *
      * @type {PublicGatewayConfig}
      * @memberof SandboxUpdateConfig
      */
@@ -104,7 +91,6 @@ export function SandboxUpdateConfigFromJSONTyped(json: any, ignoreDiscriminator:
         'hardTtl': json['hard_ttl'] == null ? undefined : json['hard_ttl'],
         'network': json['network'] == null ? undefined : SandboxNetworkPolicyFromJSON(json['network']),
         'autoResume': json['auto_resume'] == null ? undefined : json['auto_resume'],
-        'exposedPorts': json['exposed_ports'] == null ? undefined : ((json['exposed_ports'] as Array<any>).map(ExposedPortConfigFromJSON)),
         'publicGateway': json['public_gateway'] == null ? undefined : PublicGatewayConfigFromJSON(json['public_gateway']),
     };
 }
@@ -124,7 +110,6 @@ export function SandboxUpdateConfigToJSONTyped(value?: SandboxUpdateConfig | nul
         'hard_ttl': value['hardTtl'],
         'network': SandboxNetworkPolicyToJSON(value['network']),
         'auto_resume': value['autoResume'],
-        'exposed_ports': value['exposedPorts'] == null ? undefined : ((value['exposedPorts'] as Array<any>).map(ExposedPortConfigToJSON)),
         'public_gateway': PublicGatewayConfigToJSON(value['publicGateway']),
     };
 }

@@ -12,7 +12,6 @@ Name | Type
 `network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
 `webhook` | [WebhookConfig](WebhookConfig.md)
 `autoResume` | boolean
-`exposedPorts` | [Array&lt;ExposedPortConfig&gt;](ExposedPortConfig.md)
 `publicGateway` | [PublicGatewayConfig](PublicGatewayConfig.md)
 
 ## Example
@@ -28,7 +27,6 @@ const example = {
   "network": null,
   "webhook": null,
   "autoResume": null,
-  "exposedPorts": null,
   "publicGateway": null,
 } satisfies SandboxConfig
 

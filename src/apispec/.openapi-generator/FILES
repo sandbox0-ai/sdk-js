@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 README.md
 docs/APIKey.md
 docs/AddTeamMemberRequest.md
@@ -92,6 +91,9 @@ docs/NodeSelector.md
 docs/NodeSelectorRequirement.md
 docs/NodeSelectorTerm.md
 docs/ObjectMeta.md
+docs/ObservabilityApi.md
+docs/ObservabilityLogRecord.md
+docs/ObservabilityTraceSpan.md
 docs/PTYSize.md
 docs/PauseSandboxResponse.md
 docs/PodAffinity.md
@@ -192,6 +194,10 @@ docs/SuccessMessageResponse.md
 docs/SuccessMessageResponseAllOfData.md
 docs/SuccessMovedResponse.md
 docs/SuccessMovedResponseAllOfData.md
+docs/SuccessObservabilityLogRecordListResponse.md
+docs/SuccessObservabilityLogRecordListResponseAllOfData.md
+docs/SuccessObservabilityTraceSpanListResponse.md
+docs/SuccessObservabilityTraceSpanListResponseAllOfData.md
 docs/SuccessPauseSandboxResponse.md
 docs/SuccessPublicGatewayResponse.md
 docs/SuccessPublicGatewayResponseAllOfData.md
@@ -262,6 +268,7 @@ src/apis/ContextsApi.ts
 src/apis/CredentialSourcesApi.ts
 src/apis/FilesApi.ts
 src/apis/HealthApi.ts
+src/apis/ObservabilityApi.ts
 src/apis/RegionsApi.ts
 src/apis/RegistryApi.ts
 src/apis/SandboxVolumesApi.ts
@@ -356,6 +363,8 @@ src/models/NodeSelector.ts
 src/models/NodeSelectorRequirement.ts
 src/models/NodeSelectorTerm.ts
 src/models/ObjectMeta.ts
+src/models/ObservabilityLogRecord.ts
+src/models/ObservabilityTraceSpan.ts
 src/models/PTYSize.ts
 src/models/PauseSandboxResponse.ts
 src/models/PodAffinity.ts
@@ -451,6 +460,10 @@ src/models/SuccessMessageResponse.ts
 src/models/SuccessMessageResponseAllOfData.ts
 src/models/SuccessMovedResponse.ts
 src/models/SuccessMovedResponseAllOfData.ts
+src/models/SuccessObservabilityLogRecordListResponse.ts
+src/models/SuccessObservabilityLogRecordListResponseAllOfData.ts
+src/models/SuccessObservabilityTraceSpanListResponse.ts
+src/models/SuccessObservabilityTraceSpanListResponseAllOfData.ts
 src/models/SuccessPauseSandboxResponse.ts
 src/models/SuccessPublicGatewayResponse.ts
 src/models/SuccessPublicGatewayResponseAllOfData.ts

@@ -30,7 +30,7 @@ lint:
 lint-examples:
 	@printf "Type-checking sdk-js examples...\n"
 	@npm install >/dev/null
-	@npm run lint:examples
+	@npm run lint:e2e
 
 # Set version in package.json
 set-version:

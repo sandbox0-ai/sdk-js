@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -99,8 +99,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 *HealthApi* | [**metadataGet**](docs/HealthApi.md#metadataget) | **GET** /metadata | Gateway metadata
 *HealthApi* | [**metricsGet**](docs/HealthApi.md#metricsget) | **GET** /metrics | Prometheus metrics
 *HealthApi* | [**readyzGet**](docs/HealthApi.md#readyzget) | **GET** /readyz | Readiness check
-*ObservabilityApi* | [**apiV1ObservabilityLogsGet**](docs/ObservabilityApi.md#apiv1observabilitylogsget) | **GET** /api/v1/observability/logs | Query observability logs
-*ObservabilityApi* | [**apiV1ObservabilityTracesGet**](docs/ObservabilityApi.md#apiv1observabilitytracesget) | **GET** /api/v1/observability/traces | Query observability trace spans
 *RegionsApi* | [**regionsGet**](docs/RegionsApi.md#regionsget) | **GET** /regions | List regions in the global gateway
 *RegionsApi* | [**regionsIdDelete**](docs/RegionsApi.md#regionsiddelete) | **DELETE** /regions/{id} | Delete a region from the global gateway
 *RegionsApi* | [**regionsIdGet**](docs/RegionsApi.md#regionsidget) | **GET** /regions/{id} | Get a region from the global gateway
@@ -240,8 +238,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [NodeSelectorRequirement](docs/NodeSelectorRequirement.md)
 - [NodeSelectorTerm](docs/NodeSelectorTerm.md)
 - [ObjectMeta](docs/ObjectMeta.md)
-- [ObservabilityLogRecord](docs/ObservabilityLogRecord.md)
-- [ObservabilityTraceSpan](docs/ObservabilityTraceSpan.md)
 - [PTYSize](docs/PTYSize.md)
 - [PauseSandboxResponse](docs/PauseSandboxResponse.md)
 - [PodAffinity](docs/PodAffinity.md)
@@ -337,10 +333,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessMessageResponseAllOfData](docs/SuccessMessageResponseAllOfData.md)
 - [SuccessMovedResponse](docs/SuccessMovedResponse.md)
 - [SuccessMovedResponseAllOfData](docs/SuccessMovedResponseAllOfData.md)
-- [SuccessObservabilityLogRecordListResponse](docs/SuccessObservabilityLogRecordListResponse.md)
-- [SuccessObservabilityLogRecordListResponseAllOfData](docs/SuccessObservabilityLogRecordListResponseAllOfData.md)
-- [SuccessObservabilityTraceSpanListResponse](docs/SuccessObservabilityTraceSpanListResponse.md)
-- [SuccessObservabilityTraceSpanListResponseAllOfData](docs/SuccessObservabilityTraceSpanListResponseAllOfData.md)
 - [SuccessPauseSandboxResponse](docs/SuccessPauseSandboxResponse.md)
 - [SuccessPublicGatewayResponse](docs/SuccessPublicGatewayResponse.md)
 - [SuccessPublicGatewayResponseAllOfData](docs/SuccessPublicGatewayResponseAllOfData.md)

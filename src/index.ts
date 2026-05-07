@@ -5,7 +5,6 @@ export { verifyWebhookSignature } from "./webhook_signature";
 export * from "./template_helpers";
 export * from "./models";
 export * from "./sessions";
-export { Observability, type ObservabilityQueryOptions } from "./resources/observability";
 export { apis, models, runtime } from "./apispec_compat";
 export * as apispec from "./apispec_compat";
 import "./sandbox_contexts";

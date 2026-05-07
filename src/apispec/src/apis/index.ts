@@ -6,7 +6,6 @@ export * from './ContextsApi';
 export * from './CredentialSourcesApi';
 export * from './FilesApi';
 export * from './HealthApi';
-export * from './ObservabilityApi';
 export * from './RegionsApi';
 export * from './RegistryApi';
 export * from './SandboxVolumesApi';

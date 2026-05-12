@@ -22,6 +22,7 @@ export const EgressAuthProtocol = {
     Https: 'https',
     Grpc: 'grpc',
     Tls: 'tls',
+    Ssh: 'ssh',
     Socks5: 'socks5',
     Mqtt: 'mqtt',
     Redis: 'redis'

@@ -20,6 +20,13 @@ import {
     EgressAuthProtocolToJSON,
     EgressAuthProtocolToJSONTyped,
 } from './EgressAuthProtocol';
+import type { HTTPMatch } from './HTTPMatch';
+import {
+    HTTPMatchFromJSON,
+    HTTPMatchFromJSONTyped,
+    HTTPMatchToJSON,
+    HTTPMatchToJSONTyped,
+} from './HTTPMatch';
 import type { EgressAuthFailurePolicy } from './EgressAuthFailurePolicy';
 import {
     EgressAuthFailurePolicyFromJSON,
@@ -105,6 +112,12 @@ export interface EgressCredentialRule {
      * @memberof EgressCredentialRule
      */
     ports?: Array<PortSpec>;
+    /**
+     * 
+     * @type {HTTPMatch}
+     * @memberof EgressCredentialRule
+     */
+    httpMatch?: HTTPMatch;
 }
 
 
@@ -135,6 +148,7 @@ export function EgressCredentialRuleFromJSONTyped(json: any, ignoreDiscriminator
         'failurePolicy': json['failurePolicy'] == null ? undefined : EgressAuthFailurePolicyFromJSON(json['failurePolicy']),
         'domains': json['domains'] == null ? undefined : json['domains'],
         'ports': json['ports'] == null ? undefined : ((json['ports'] as Array<any>).map(PortSpecFromJSON)),
+        'httpMatch': json['httpMatch'] == null ? undefined : HTTPMatchFromJSON(json['httpMatch']),
     };
 }
 
@@ -157,6 +171,7 @@ export function EgressCredentialRuleToJSONTyped(value?: EgressCredentialRule | n
         'failurePolicy': EgressAuthFailurePolicyToJSON(value['failurePolicy']),
         'domains': value['domains'],
         'ports': value['ports'] == null ? undefined : ((value['ports'] as Array<any>).map(PortSpecToJSON)),
+        'httpMatch': HTTPMatchToJSON(value['httpMatch']),
     };
 }
 

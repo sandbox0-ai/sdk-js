@@ -20,7 +20,8 @@
 export const CredentialSourceResolverKind = {
     StaticHeaders: 'static_headers',
     StaticTlsClientCertificate: 'static_tls_client_certificate',
-    StaticUsernamePassword: 'static_username_password'
+    StaticUsernamePassword: 'static_username_password',
+    StaticSshPrivateKey: 'static_ssh_private_key'
 } as const;
 export type CredentialSourceResolverKind = typeof CredentialSourceResolverKind[keyof typeof CredentialSourceResolverKind];
 

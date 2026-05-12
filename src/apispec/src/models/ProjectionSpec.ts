@@ -27,6 +27,13 @@ import {
     HTTPHeadersProjectionToJSON,
     HTTPHeadersProjectionToJSONTyped,
 } from './HTTPHeadersProjection';
+import type { SSHProxyProjection } from './SSHProxyProjection';
+import {
+    SSHProxyProjectionFromJSON,
+    SSHProxyProjectionFromJSONTyped,
+    SSHProxyProjectionToJSON,
+    SSHProxyProjectionToJSONTyped,
+} from './SSHProxyProjection';
 
 /**
  * 
@@ -58,6 +65,12 @@ export interface ProjectionSpec {
      * @memberof ProjectionSpec
      */
     usernamePassword?: object;
+    /**
+     * 
+     * @type {SSHProxyProjection}
+     * @memberof ProjectionSpec
+     */
+    sshProxy?: SSHProxyProjection;
 }
 
 
@@ -84,6 +97,7 @@ export function ProjectionSpecFromJSONTyped(json: any, ignoreDiscriminator: bool
         'httpHeaders': json['httpHeaders'] == null ? undefined : HTTPHeadersProjectionFromJSON(json['httpHeaders']),
         'tlsClientCertificate': json['tlsClientCertificate'] == null ? undefined : json['tlsClientCertificate'],
         'usernamePassword': json['usernamePassword'] == null ? undefined : json['usernamePassword'],
+        'sshProxy': json['sshProxy'] == null ? undefined : SSHProxyProjectionFromJSON(json['sshProxy']),
     };
 }
 
@@ -102,6 +116,7 @@ export function ProjectionSpecToJSONTyped(value?: ProjectionSpec | null, ignoreD
         'httpHeaders': HTTPHeadersProjectionToJSON(value['httpHeaders']),
         'tlsClientCertificate': value['tlsClientCertificate'],
         'usernamePassword': value['usernamePassword'],
+        'sshProxy': SSHProxyProjectionToJSON(value['sshProxy']),
     };
 }
 

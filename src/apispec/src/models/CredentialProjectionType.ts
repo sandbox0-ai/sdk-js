@@ -20,7 +20,8 @@
 export const CredentialProjectionType = {
     HttpHeaders: 'http_headers',
     TlsClientCertificate: 'tls_client_certificate',
-    UsernamePassword: 'username_password'
+    UsernamePassword: 'username_password',
+    SshProxy: 'ssh_proxy'
 } as const;
 export type CredentialProjectionType = typeof CredentialProjectionType[keyof typeof CredentialProjectionType];
 

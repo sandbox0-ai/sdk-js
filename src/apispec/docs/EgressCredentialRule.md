@@ -14,6 +14,7 @@ Name | Type
 `failurePolicy` | [EgressAuthFailurePolicy](EgressAuthFailurePolicy.md)
 `domains` | Array&lt;string&gt;
 `ports` | [Array&lt;PortSpec&gt;](PortSpec.md)
+`httpMatch` | [HTTPMatch](HTTPMatch.md)
 
 ## Example
 
@@ -30,6 +31,7 @@ const example = {
   "failurePolicy": null,
   "domains": null,
   "ports": null,
+  "httpMatch": null,
 } satisfies EgressCredentialRule
 
 console.log(example)

@@ -10,6 +10,7 @@ Name | Type
 `httpHeaders` | [HTTPHeadersProjection](HTTPHeadersProjection.md)
 `tlsClientCertificate` | object
 `usernamePassword` | object
+`sshProxy` | [SSHProxyProjection](SSHProxyProjection.md)
 
 ## Example
 
@@ -22,6 +23,7 @@ const example = {
   "httpHeaders": null,
   "tlsClientCertificate": null,
   "usernamePassword": null,
+  "sshProxy": null,
 } satisfies ProjectionSpec
 
 console.log(example)

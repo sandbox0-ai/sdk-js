@@ -20,6 +20,13 @@ import {
     StaticUsernamePasswordSourceSpecToJSON,
     StaticUsernamePasswordSourceSpecToJSONTyped,
 } from './StaticUsernamePasswordSourceSpec';
+import type { StaticSSHPrivateKeySourceSpec } from './StaticSSHPrivateKeySourceSpec';
+import {
+    StaticSSHPrivateKeySourceSpecFromJSON,
+    StaticSSHPrivateKeySourceSpecFromJSONTyped,
+    StaticSSHPrivateKeySourceSpecToJSON,
+    StaticSSHPrivateKeySourceSpecToJSONTyped,
+} from './StaticSSHPrivateKeySourceSpec';
 import type { StaticHeadersSourceSpec } from './StaticHeadersSourceSpec';
 import {
     StaticHeadersSourceSpecFromJSON,
@@ -59,6 +66,12 @@ export interface CredentialSourceWriteSpec {
      * @memberof CredentialSourceWriteSpec
      */
     staticUsernamePassword?: StaticUsernamePasswordSourceSpec;
+    /**
+     * 
+     * @type {StaticSSHPrivateKeySourceSpec}
+     * @memberof CredentialSourceWriteSpec
+     */
+    staticSSHPrivateKey?: StaticSSHPrivateKeySourceSpec;
 }
 
 /**
@@ -81,6 +94,7 @@ export function CredentialSourceWriteSpecFromJSONTyped(json: any, ignoreDiscrimi
         'staticHeaders': json['staticHeaders'] == null ? undefined : StaticHeadersSourceSpecFromJSON(json['staticHeaders']),
         'staticTLSClientCertificate': json['staticTLSClientCertificate'] == null ? undefined : StaticTLSClientCertificateSourceSpecFromJSON(json['staticTLSClientCertificate']),
         'staticUsernamePassword': json['staticUsernamePassword'] == null ? undefined : StaticUsernamePasswordSourceSpecFromJSON(json['staticUsernamePassword']),
+        'staticSSHPrivateKey': json['staticSSHPrivateKey'] == null ? undefined : StaticSSHPrivateKeySourceSpecFromJSON(json['staticSSHPrivateKey']),
     };
 }
 
@@ -98,6 +112,7 @@ export function CredentialSourceWriteSpecToJSONTyped(value?: CredentialSourceWri
         'staticHeaders': StaticHeadersSourceSpecToJSON(value['staticHeaders']),
         'staticTLSClientCertificate': StaticTLSClientCertificateSourceSpecToJSON(value['staticTLSClientCertificate']),
         'staticUsernamePassword': StaticUsernamePasswordSourceSpecToJSON(value['staticUsernamePassword']),
+        'staticSSHPrivateKey': StaticSSHPrivateKeySourceSpecToJSON(value['staticSSHPrivateKey']),
     };
 }
 

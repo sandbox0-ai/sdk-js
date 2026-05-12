@@ -40,7 +40,7 @@ import type { ApiV1SandboxesGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -122,7 +122,7 @@ import type { ApiV1SandboxesIdDeleteRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -193,7 +193,7 @@ import type { ApiV1SandboxesIdGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -253,7 +253,7 @@ example().catch(console.error);
 
 Get sandbox process logs
 
-Returns sandbox process output mirrored through the sandbox main container. Procd service logs are filtered out and remain available through Kubernetes pod logs. When &#x60;follow&#x3D;false&#x60;, the response is a bounded text/plain snapshot. When &#x60;follow&#x3D;true&#x60;, the response is a text/plain stream until the client disconnects. Kubernetes log selection parameters such as &#x60;tail_lines&#x60; and &#x60;limit_bytes&#x60; are applied before procd service log filtering.
+Returns sandbox process output mirrored through the sandbox main container. Procd service logs are filtered out and remain available through Kubernetes pod logs. When &#x60;follow&#x3D;false&#x60;, the response is a bounded text/plain snapshot. When &#x60;follow&#x3D;true&#x60;, the response is a text/plain stream until the client disconnects. Kubernetes log selection parameters such as &#x60;tail_lines&#x60; and &#x60;limit_bytes&#x60; are applied before procd service log filtering. 
 
 ### Example
 
@@ -266,7 +266,7 @@ import type { ApiV1SandboxesIdLogsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -359,7 +359,7 @@ import type { ApiV1SandboxesIdNetworkGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -429,7 +429,7 @@ import type { ApiV1SandboxesIdNetworkPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -501,7 +501,7 @@ import type { ApiV1SandboxesIdPausePostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -573,7 +573,7 @@ import type { ApiV1SandboxesIdPublicGatewayGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -632,7 +632,7 @@ example().catch(console.error);
 
 Update sandbox public gateway policy
 
-Replaces the request-level public gateway policy for sandbox public traffic. When enabled, matching routes control method, path, authentication, CORS, per-route rate limits, timeout, rewrite, and paused sandbox auto-resume.
+Replaces the request-level public gateway policy for sandbox public traffic. When enabled, matching routes control method, path, authentication, CORS, per-route rate limits, timeout, rewrite, and paused sandbox auto-resume. 
 
 ### Example
 
@@ -645,7 +645,7 @@ import type { ApiV1SandboxesIdPublicGatewayPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -719,7 +719,7 @@ import type { ApiV1SandboxesIdPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -793,7 +793,7 @@ import type { ApiV1SandboxesIdRefreshPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -866,7 +866,7 @@ import type { ApiV1SandboxesIdResumePostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -938,7 +938,7 @@ import type { ApiV1SandboxesIdStatusGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -1008,7 +1008,7 @@ import type { ApiV1SandboxesPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });

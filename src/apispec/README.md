@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -223,6 +223,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [HTTPGetAction](docs/HTTPGetAction.md)
 - [HTTPHeader](docs/HTTPHeader.md)
 - [HTTPHeadersProjection](docs/HTTPHeadersProjection.md)
+- [HTTPMatch](docs/HTTPMatch.md)
+- [HTTPValueMatch](docs/HTTPValueMatch.md)
 - [Identity](docs/Identity.md)
 - [LabelSelector](docs/LabelSelector.md)
 - [LabelSelectorRequirement](docs/LabelSelectorRequirement.md)
@@ -271,6 +273,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ResourceQuota](docs/ResourceQuota.md)
 - [ResourceUsage](docs/ResourceUsage.md)
 - [ResumeSandboxResponse](docs/ResumeSandboxResponse.md)
+- [SSHProxyProjection](docs/SSHProxyProjection.md)
 - [SSHPublicKey](docs/SSHPublicKey.md)
 - [Sandbox](docs/Sandbox.md)
 - [SandboxConfig](docs/SandboxConfig.md)
@@ -294,6 +297,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SignalContextRequest](docs/SignalContextRequest.md)
 - [Snapshot](docs/Snapshot.md)
 - [StaticHeadersSourceSpec](docs/StaticHeadersSourceSpec.md)
+- [StaticSSHPrivateKeySourceSpec](docs/StaticSSHPrivateKeySourceSpec.md)
 - [StaticTLSClientCertificateSourceSpec](docs/StaticTLSClientCertificateSourceSpec.md)
 - [StaticUsernamePasswordSourceSpec](docs/StaticUsernamePasswordSourceSpec.md)
 - [SuccessAPIKeyListResponse](docs/SuccessAPIKeyListResponse.md)

@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 README.md
 docs/APIKey.md
 docs/AddTeamMemberRequest.md
@@ -76,6 +75,8 @@ docs/GatewayMetadata.md
 docs/HTTPGetAction.md
 docs/HTTPHeader.md
 docs/HTTPHeadersProjection.md
+docs/HTTPMatch.md
+docs/HTTPValueMatch.md
 docs/HealthApi.md
 docs/Identity.md
 docs/LabelSelector.md
@@ -127,6 +128,7 @@ docs/ResizeContextRequest.md
 docs/ResourceQuota.md
 docs/ResourceUsage.md
 docs/ResumeSandboxResponse.md
+docs/SSHProxyProjection.md
 docs/SSHPublicKey.md
 docs/Sandbox.md
 docs/SandboxConfig.md
@@ -153,6 +155,7 @@ docs/SignalContextRequest.md
 docs/Snapshot.md
 docs/SnapshotsApi.md
 docs/StaticHeadersSourceSpec.md
+docs/StaticSSHPrivateKeySourceSpec.md
 docs/StaticTLSClientCertificateSourceSpec.md
 docs/StaticUsernamePasswordSourceSpec.md
 docs/SuccessAPIKeyListResponse.md
@@ -341,6 +344,8 @@ src/models/GatewayMetadata.ts
 src/models/HTTPGetAction.ts
 src/models/HTTPHeader.ts
 src/models/HTTPHeadersProjection.ts
+src/models/HTTPMatch.ts
+src/models/HTTPValueMatch.ts
 src/models/Identity.ts
 src/models/LabelSelector.ts
 src/models/LabelSelectorRequirement.ts
@@ -389,6 +394,7 @@ src/models/ResizeContextRequest.ts
 src/models/ResourceQuota.ts
 src/models/ResourceUsage.ts
 src/models/ResumeSandboxResponse.ts
+src/models/SSHProxyProjection.ts
 src/models/SSHPublicKey.ts
 src/models/Sandbox.ts
 src/models/SandboxConfig.ts
@@ -412,6 +418,7 @@ src/models/SecurityContext.ts
 src/models/SignalContextRequest.ts
 src/models/Snapshot.ts
 src/models/StaticHeadersSourceSpec.ts
+src/models/StaticSSHPrivateKeySourceSpec.ts
 src/models/StaticTLSClientCertificateSourceSpec.ts
 src/models/StaticUsernamePasswordSourceSpec.ts
 src/models/SuccessAPIKeyListResponse.ts

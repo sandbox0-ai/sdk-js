@@ -9,6 +9,7 @@ Name | Type
 `staticHeaders` | [StaticHeadersSourceSpec](StaticHeadersSourceSpec.md)
 `staticTLSClientCertificate` | [StaticTLSClientCertificateSourceSpec](StaticTLSClientCertificateSourceSpec.md)
 `staticUsernamePassword` | [StaticUsernamePasswordSourceSpec](StaticUsernamePasswordSourceSpec.md)
+`staticSSHPrivateKey` | [StaticSSHPrivateKeySourceSpec](StaticSSHPrivateKeySourceSpec.md)
 
 ## Example
 
@@ -20,6 +21,7 @@ const example = {
   "staticHeaders": null,
   "staticTLSClientCertificate": null,
   "staticUsernamePassword": null,
+  "staticSSHPrivateKey": null,
 } satisfies CredentialSourceWriteSpec
 
 console.log(example)

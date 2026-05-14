@@ -16,31 +16,31 @@ import { mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface PublicGatewayAuth
+ * @interface SandboxAppServiceRouteAuth
  */
-export interface PublicGatewayAuth {
+export interface SandboxAppServiceRouteAuth {
     /**
      * 
      * @type {string}
-     * @memberof PublicGatewayAuth
+     * @memberof SandboxAppServiceRouteAuth
      */
-    mode: PublicGatewayAuthModeEnum;
+    mode: SandboxAppServiceRouteAuthModeEnum;
     /**
      * Hex SHA-256 of the accepted bearer token. Required when mode is bearer.
      * @type {string}
-     * @memberof PublicGatewayAuth
+     * @memberof SandboxAppServiceRouteAuth
      */
     bearerTokenSha256?: string;
     /**
      * Required header name when mode is header.
      * @type {string}
-     * @memberof PublicGatewayAuth
+     * @memberof SandboxAppServiceRouteAuth
      */
     headerName?: string;
     /**
      * Hex SHA-256 of the required header value when mode is header.
      * @type {string}
-     * @memberof PublicGatewayAuth
+     * @memberof SandboxAppServiceRouteAuth
      */
     headerValueSha256?: string;
 }
@@ -49,27 +49,27 @@ export interface PublicGatewayAuth {
 /**
  * @export
  */
-export const PublicGatewayAuthModeEnum = {
+export const SandboxAppServiceRouteAuthModeEnum = {
     None: 'none',
     Bearer: 'bearer',
     Header: 'header'
 } as const;
-export type PublicGatewayAuthModeEnum = typeof PublicGatewayAuthModeEnum[keyof typeof PublicGatewayAuthModeEnum];
+export type SandboxAppServiceRouteAuthModeEnum = typeof SandboxAppServiceRouteAuthModeEnum[keyof typeof SandboxAppServiceRouteAuthModeEnum];
 
 
 /**
- * Check if a given object implements the PublicGatewayAuth interface.
+ * Check if a given object implements the SandboxAppServiceRouteAuth interface.
  */
-export function instanceOfPublicGatewayAuth(value: object): value is PublicGatewayAuth {
+export function instanceOfSandboxAppServiceRouteAuth(value: object): value is SandboxAppServiceRouteAuth {
     if (!('mode' in value) || value['mode'] === undefined) return false;
     return true;
 }
 
-export function PublicGatewayAuthFromJSON(json: any): PublicGatewayAuth {
-    return PublicGatewayAuthFromJSONTyped(json, false);
+export function SandboxAppServiceRouteAuthFromJSON(json: any): SandboxAppServiceRouteAuth {
+    return SandboxAppServiceRouteAuthFromJSONTyped(json, false);
 }
 
-export function PublicGatewayAuthFromJSONTyped(json: any, ignoreDiscriminator: boolean): PublicGatewayAuth {
+export function SandboxAppServiceRouteAuthFromJSONTyped(json: any, ignoreDiscriminator: boolean): SandboxAppServiceRouteAuth {
     if (json == null) {
         return json;
     }
@@ -82,11 +82,11 @@ export function PublicGatewayAuthFromJSONTyped(json: any, ignoreDiscriminator: b
     };
 }
 
-export function PublicGatewayAuthToJSON(json: any): PublicGatewayAuth {
-    return PublicGatewayAuthToJSONTyped(json, false);
+export function SandboxAppServiceRouteAuthToJSON(json: any): SandboxAppServiceRouteAuth {
+    return SandboxAppServiceRouteAuthToJSONTyped(json, false);
 }
 
-export function PublicGatewayAuthToJSONTyped(value?: PublicGatewayAuth | null, ignoreDiscriminator: boolean = false): any {
+export function SandboxAppServiceRouteAuthToJSONTyped(value?: SandboxAppServiceRouteAuth | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }

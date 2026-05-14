@@ -8,6 +8,7 @@ Name | Type
 ------------ | -------------
 `sandboxId` | string
 `services` | [Array&lt;SandboxAppServiceView&gt;](SandboxAppServiceView.md)
+`exposureDomain` | string
 
 ## Example
 
@@ -18,6 +19,7 @@ import type { SuccessSandboxServicesResponseAllOfData } from 'sandbox0'
 const example = {
   "sandboxId": null,
   "services": null,
+  "exposureDomain": null,
 } satisfies SuccessSandboxServicesResponseAllOfData
 
 console.log(example)

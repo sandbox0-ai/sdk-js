@@ -16,59 +16,59 @@ import { mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface PublicGatewayCORS
+ * @interface SandboxAppServiceRouteCORS
  */
-export interface PublicGatewayCORS {
+export interface SandboxAppServiceRouteCORS {
     /**
      * 
      * @type {Array<string>}
-     * @memberof PublicGatewayCORS
+     * @memberof SandboxAppServiceRouteCORS
      */
     allowedOrigins?: Array<string>;
     /**
      * 
      * @type {Array<string>}
-     * @memberof PublicGatewayCORS
+     * @memberof SandboxAppServiceRouteCORS
      */
     allowedMethods?: Array<string>;
     /**
      * 
      * @type {Array<string>}
-     * @memberof PublicGatewayCORS
+     * @memberof SandboxAppServiceRouteCORS
      */
     allowedHeaders?: Array<string>;
     /**
      * 
      * @type {Array<string>}
-     * @memberof PublicGatewayCORS
+     * @memberof SandboxAppServiceRouteCORS
      */
     exposeHeaders?: Array<string>;
     /**
      * 
      * @type {boolean}
-     * @memberof PublicGatewayCORS
+     * @memberof SandboxAppServiceRouteCORS
      */
     allowCredentials?: boolean;
     /**
      * 
      * @type {number}
-     * @memberof PublicGatewayCORS
+     * @memberof SandboxAppServiceRouteCORS
      */
     maxAgeSeconds?: number;
 }
 
 /**
- * Check if a given object implements the PublicGatewayCORS interface.
+ * Check if a given object implements the SandboxAppServiceRouteCORS interface.
  */
-export function instanceOfPublicGatewayCORS(value: object): value is PublicGatewayCORS {
+export function instanceOfSandboxAppServiceRouteCORS(value: object): value is SandboxAppServiceRouteCORS {
     return true;
 }
 
-export function PublicGatewayCORSFromJSON(json: any): PublicGatewayCORS {
-    return PublicGatewayCORSFromJSONTyped(json, false);
+export function SandboxAppServiceRouteCORSFromJSON(json: any): SandboxAppServiceRouteCORS {
+    return SandboxAppServiceRouteCORSFromJSONTyped(json, false);
 }
 
-export function PublicGatewayCORSFromJSONTyped(json: any, ignoreDiscriminator: boolean): PublicGatewayCORS {
+export function SandboxAppServiceRouteCORSFromJSONTyped(json: any, ignoreDiscriminator: boolean): SandboxAppServiceRouteCORS {
     if (json == null) {
         return json;
     }
@@ -83,11 +83,11 @@ export function PublicGatewayCORSFromJSONTyped(json: any, ignoreDiscriminator: b
     };
 }
 
-export function PublicGatewayCORSToJSON(json: any): PublicGatewayCORS {
-    return PublicGatewayCORSToJSONTyped(json, false);
+export function SandboxAppServiceRouteCORSToJSON(json: any): SandboxAppServiceRouteCORS {
+    return SandboxAppServiceRouteCORSToJSONTyped(json, false);
 }
 
-export function PublicGatewayCORSToJSONTyped(value?: PublicGatewayCORS | null, ignoreDiscriminator: boolean = false): any {
+export function SandboxAppServiceRouteCORSToJSONTyped(value?: SandboxAppServiceRouteCORS | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }

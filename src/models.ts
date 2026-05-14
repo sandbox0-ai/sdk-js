@@ -36,16 +36,7 @@ export interface StreamDone {
   state?: string;
 }
 
-import type {
-  PublicGatewayConfig,
-  SandboxAppServiceView,
-} from "./apispec/src/models/index";
-
-export interface PublicGatewayResponse {
-  sandboxId: string;
-  publicGateway: PublicGatewayConfig;
-  exposureDomain?: string;
-}
+import type { SandboxAppServiceView } from "./apispec/src/models/index";
 
 export interface SandboxServicesResponse {
   sandboxId: string;

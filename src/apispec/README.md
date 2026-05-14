@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -123,8 +123,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SandboxesApi* | [**apiV1SandboxesIdNetworkGet**](docs/SandboxesApi.md#apiv1sandboxesidnetworkget) | **GET** /api/v1/sandboxes/{id}/network | Get sandbox network policy
 *SandboxesApi* | [**apiV1SandboxesIdNetworkPut**](docs/SandboxesApi.md#apiv1sandboxesidnetworkput) | **PUT** /api/v1/sandboxes/{id}/network | Update sandbox network policy
 *SandboxesApi* | [**apiV1SandboxesIdPausePost**](docs/SandboxesApi.md#apiv1sandboxesidpausepost) | **POST** /api/v1/sandboxes/{id}/pause | Pause a sandbox
-*SandboxesApi* | [**apiV1SandboxesIdPublicGatewayGet**](docs/SandboxesApi.md#apiv1sandboxesidpublicgatewayget) | **GET** /api/v1/sandboxes/{id}/public-gateway | Get sandbox public gateway policy
-*SandboxesApi* | [**apiV1SandboxesIdPublicGatewayPut**](docs/SandboxesApi.md#apiv1sandboxesidpublicgatewayput) | **PUT** /api/v1/sandboxes/{id}/public-gateway | Update sandbox public gateway policy
 *SandboxesApi* | [**apiV1SandboxesIdPut**](docs/SandboxesApi.md#apiv1sandboxesidput) | **PUT** /api/v1/sandboxes/{id} | Update sandbox configuration
 *SandboxesApi* | [**apiV1SandboxesIdRefreshPost**](docs/SandboxesApi.md#apiv1sandboxesidrefreshpost) | **POST** /api/v1/sandboxes/{id}/refresh | Refresh sandbox TTL
 *SandboxesApi* | [**apiV1SandboxesIdResumePost**](docs/SandboxesApi.md#apiv1sandboxesidresumepost) | **POST** /api/v1/sandboxes/{id}/resume | Resume a sandbox
@@ -270,11 +268,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ProcessType](docs/ProcessType.md)
 - [ProjectedHeader](docs/ProjectedHeader.md)
 - [ProjectionSpec](docs/ProjectionSpec.md)
-- [PublicGatewayAuth](docs/PublicGatewayAuth.md)
-- [PublicGatewayCORS](docs/PublicGatewayCORS.md)
-- [PublicGatewayConfig](docs/PublicGatewayConfig.md)
-- [PublicGatewayRateLimit](docs/PublicGatewayRateLimit.md)
-- [PublicGatewayRoute](docs/PublicGatewayRoute.md)
 - [REPLConfig](docs/REPLConfig.md)
 - [REPLEnvVar](docs/REPLEnvVar.md)
 - [REPLPromptConfig](docs/REPLPromptConfig.md)
@@ -297,6 +290,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxAppServiceHealth](docs/SandboxAppServiceHealth.md)
 - [SandboxAppServiceIngress](docs/SandboxAppServiceIngress.md)
 - [SandboxAppServiceRoute](docs/SandboxAppServiceRoute.md)
+- [SandboxAppServiceRouteAuth](docs/SandboxAppServiceRouteAuth.md)
+- [SandboxAppServiceRouteCORS](docs/SandboxAppServiceRouteCORS.md)
+- [SandboxAppServiceRouteRateLimit](docs/SandboxAppServiceRouteRateLimit.md)
 - [SandboxAppServiceRuntime](docs/SandboxAppServiceRuntime.md)
 - [SandboxAppServiceView](docs/SandboxAppServiceView.md)
 - [SandboxConfig](docs/SandboxConfig.md)
@@ -374,8 +370,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessMovedResponse](docs/SuccessMovedResponse.md)
 - [SuccessMovedResponseAllOfData](docs/SuccessMovedResponseAllOfData.md)
 - [SuccessPauseSandboxResponse](docs/SuccessPauseSandboxResponse.md)
-- [SuccessPublicGatewayResponse](docs/SuccessPublicGatewayResponse.md)
-- [SuccessPublicGatewayResponseAllOfData](docs/SuccessPublicGatewayResponseAllOfData.md)
 - [SuccessRefreshResponse](docs/SuccessRefreshResponse.md)
 - [SuccessRegionListResponse](docs/SuccessRegionListResponse.md)
 - [SuccessRegionListResponseAllOfData](docs/SuccessRegionListResponseAllOfData.md)

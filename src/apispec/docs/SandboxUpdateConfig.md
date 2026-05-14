@@ -1,7 +1,7 @@
 
 # SandboxUpdateConfig
 
-Subset of SandboxConfig fields that can be updated at runtime without restarting the sandbox. Note: env_vars and webhook are not included as they only affect new processes or require restart. 
+Subset of SandboxConfig fields that can be updated at runtime without restarting the sandbox. Note: env_vars and webhook are not included as they only affect new processes or require restart.
 
 ## Properties
 
@@ -11,6 +11,7 @@ Name | Type
 `hardTtl` | number
 `network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
 `autoResume` | boolean
+`services` | [Array&lt;SandboxAppService&gt;](SandboxAppService.md)
 `publicGateway` | [PublicGatewayConfig](PublicGatewayConfig.md)
 
 ## Example
@@ -24,6 +25,7 @@ const example = {
   "hardTtl": null,
   "network": null,
   "autoResume": null,
+  "services": null,
   "publicGateway": null,
 } satisfies SandboxUpdateConfig
 

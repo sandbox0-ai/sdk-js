@@ -14,7 +14,9 @@ Name | Type
 `paused` | boolean
 `powerState` | [SandboxPowerState](SandboxPowerState.md)
 `autoResume` | boolean
+`services` | [Array&lt;SandboxAppService&gt;](SandboxAppService.md)
 `publicGateway` | [PublicGatewayConfig](PublicGatewayConfig.md)
+`mounts` | [Array&lt;ClaimMountRequest&gt;](ClaimMountRequest.md)
 `podName` | string
 `ssh` | [SandboxSSHConnection](SandboxSSHConnection.md)
 `expiresAt` | Date
@@ -37,7 +39,9 @@ const example = {
   "paused": null,
   "powerState": null,
   "autoResume": null,
+  "services": null,
   "publicGateway": null,
+  "mounts": null,
   "podName": null,
   "ssh": null,
   "expiresAt": null,

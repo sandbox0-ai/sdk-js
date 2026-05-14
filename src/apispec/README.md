@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -95,6 +95,12 @@ All URIs are relative to *https://api.sandbox0.ai*
 *FilesApi* | [**apiV1SandboxvolumesIdFilesPost**](docs/FilesApi.md#apiv1sandboxvolumesidfilespost) | **POST** /api/v1/sandboxvolumes/{id}/files | Write volume file or create directory
 *FilesApi* | [**apiV1SandboxvolumesIdFilesStatGet**](docs/FilesApi.md#apiv1sandboxvolumesidfilesstatget) | **GET** /api/v1/sandboxvolumes/{id}/files/stat | Stat a volume file
 *FilesApi* | [**apiV1SandboxvolumesIdFilesWatchGet**](docs/FilesApi.md#apiv1sandboxvolumesidfileswatchget) | **GET** /api/v1/sandboxvolumes/{id}/files/watch | Volume file watch WebSocket
+*FunctionsApi* | [**apiV1FunctionsGet**](docs/FunctionsApi.md#apiv1functionsget) | **GET** /api/v1/functions | List functions
+*FunctionsApi* | [**apiV1FunctionsIdAliasesAliasPut**](docs/FunctionsApi.md#apiv1functionsidaliasesaliasput) | **PUT** /api/v1/functions/{id}/aliases/{alias} | Point a function alias at a revision
+*FunctionsApi* | [**apiV1FunctionsIdGet**](docs/FunctionsApi.md#apiv1functionsidget) | **GET** /api/v1/functions/{id} | Get function
+*FunctionsApi* | [**apiV1FunctionsIdRevisionsGet**](docs/FunctionsApi.md#apiv1functionsidrevisionsget) | **GET** /api/v1/functions/{id}/revisions | List function revisions
+*FunctionsApi* | [**apiV1FunctionsIdRevisionsPost**](docs/FunctionsApi.md#apiv1functionsidrevisionspost) | **POST** /api/v1/functions/{id}/revisions | Create function revision from a sandbox service
+*FunctionsApi* | [**apiV1FunctionsPost**](docs/FunctionsApi.md#apiv1functionspost) | **POST** /api/v1/functions | Create a function from a sandbox service
 *HealthApi* | [**healthzGet**](docs/HealthApi.md#healthzget) | **GET** /healthz | Health check
 *HealthApi* | [**metadataGet**](docs/HealthApi.md#metadataget) | **GET** /metadata | Gateway metadata
 *HealthApi* | [**metricsGet**](docs/HealthApi.md#metricsget) | **GET** /metrics | Prometheus metrics
@@ -122,6 +128,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SandboxesApi* | [**apiV1SandboxesIdPut**](docs/SandboxesApi.md#apiv1sandboxesidput) | **PUT** /api/v1/sandboxes/{id} | Update sandbox configuration
 *SandboxesApi* | [**apiV1SandboxesIdRefreshPost**](docs/SandboxesApi.md#apiv1sandboxesidrefreshpost) | **POST** /api/v1/sandboxes/{id}/refresh | Refresh sandbox TTL
 *SandboxesApi* | [**apiV1SandboxesIdResumePost**](docs/SandboxesApi.md#apiv1sandboxesidresumepost) | **POST** /api/v1/sandboxes/{id}/resume | Resume a sandbox
+*SandboxesApi* | [**apiV1SandboxesIdServicesGet**](docs/SandboxesApi.md#apiv1sandboxesidservicesget) | **GET** /api/v1/sandboxes/{id}/services | List sandbox services
+*SandboxesApi* | [**apiV1SandboxesIdServicesPut**](docs/SandboxesApi.md#apiv1sandboxesidservicesput) | **PUT** /api/v1/sandboxes/{id}/services | Replace sandbox services
 *SandboxesApi* | [**apiV1SandboxesIdStatusGet**](docs/SandboxesApi.md#apiv1sandboxesidstatusget) | **GET** /api/v1/sandboxes/{id}/status | Get sandbox status
 *SandboxesApi* | [**apiV1SandboxesPost**](docs/SandboxesApi.md#apiv1sandboxespost) | **POST** /api/v1/sandboxes | Create (claim) a sandbox
 *SnapshotsApi* | [**apiV1SandboxvolumesIdSnapshotsGet**](docs/SnapshotsApi.md#apiv1sandboxvolumesidsnapshotsget) | **GET** /api/v1/sandboxvolumes/{id}/snapshots | List snapshots
@@ -218,6 +226,15 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [FileWatchUnsubscribeRequest](docs/FileWatchUnsubscribeRequest.md)
 - [FileWatchUnsubscribed](docs/FileWatchUnsubscribed.md)
 - [ForkVolumeRequest](docs/ForkVolumeRequest.md)
+- [Function](docs/Function.md)
+- [FunctionAlias](docs/FunctionAlias.md)
+- [FunctionAliasUpdateRequest](docs/FunctionAliasUpdateRequest.md)
+- [FunctionCreateRequest](docs/FunctionCreateRequest.md)
+- [FunctionRecord](docs/FunctionRecord.md)
+- [FunctionRestoreMount](docs/FunctionRestoreMount.md)
+- [FunctionRevision](docs/FunctionRevision.md)
+- [FunctionRevisionCreateRequest](docs/FunctionRevisionCreateRequest.md)
+- [FunctionSourceRequest](docs/FunctionSourceRequest.md)
 - [GRPCAction](docs/GRPCAction.md)
 - [GatewayMetadata](docs/GatewayMetadata.md)
 - [HTTPGetAction](docs/HTTPGetAction.md)
@@ -276,6 +293,12 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SSHProxyProjection](docs/SSHProxyProjection.md)
 - [SSHPublicKey](docs/SSHPublicKey.md)
 - [Sandbox](docs/Sandbox.md)
+- [SandboxAppService](docs/SandboxAppService.md)
+- [SandboxAppServiceHealth](docs/SandboxAppServiceHealth.md)
+- [SandboxAppServiceIngress](docs/SandboxAppServiceIngress.md)
+- [SandboxAppServiceRoute](docs/SandboxAppServiceRoute.md)
+- [SandboxAppServiceRuntime](docs/SandboxAppServiceRuntime.md)
+- [SandboxAppServiceView](docs/SandboxAppServiceView.md)
 - [SandboxConfig](docs/SandboxConfig.md)
 - [SandboxNetworkPolicy](docs/SandboxNetworkPolicy.md)
 - [SandboxPowerState](docs/SandboxPowerState.md)
@@ -284,6 +307,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxRefreshRequest](docs/SandboxRefreshRequest.md)
 - [SandboxResourceUsage](docs/SandboxResourceUsage.md)
 - [SandboxSSHConnection](docs/SandboxSSHConnection.md)
+- [SandboxServicesUpdateRequest](docs/SandboxServicesUpdateRequest.md)
 - [SandboxStatus](docs/SandboxStatus.md)
 - [SandboxSummary](docs/SandboxSummary.md)
 - [SandboxTemplate](docs/SandboxTemplate.md)
@@ -327,6 +351,18 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessFileReadResponseAllOfData](docs/SuccessFileReadResponseAllOfData.md)
 - [SuccessFileReadResponseAllOfDataOneOf](docs/SuccessFileReadResponseAllOfDataOneOf.md)
 - [SuccessFileStatResponse](docs/SuccessFileStatResponse.md)
+- [SuccessFunctionAliasResponse](docs/SuccessFunctionAliasResponse.md)
+- [SuccessFunctionAliasResponseAllOfData](docs/SuccessFunctionAliasResponseAllOfData.md)
+- [SuccessFunctionCreateResponse](docs/SuccessFunctionCreateResponse.md)
+- [SuccessFunctionCreateResponseAllOfData](docs/SuccessFunctionCreateResponseAllOfData.md)
+- [SuccessFunctionListResponse](docs/SuccessFunctionListResponse.md)
+- [SuccessFunctionListResponseAllOfData](docs/SuccessFunctionListResponseAllOfData.md)
+- [SuccessFunctionResponse](docs/SuccessFunctionResponse.md)
+- [SuccessFunctionResponseAllOfData](docs/SuccessFunctionResponseAllOfData.md)
+- [SuccessFunctionRevisionCreateResponse](docs/SuccessFunctionRevisionCreateResponse.md)
+- [SuccessFunctionRevisionCreateResponseAllOfData](docs/SuccessFunctionRevisionCreateResponseAllOfData.md)
+- [SuccessFunctionRevisionListResponse](docs/SuccessFunctionRevisionListResponse.md)
+- [SuccessFunctionRevisionListResponseAllOfData](docs/SuccessFunctionRevisionListResponseAllOfData.md)
 - [SuccessGatewayMetadataResponse](docs/SuccessGatewayMetadataResponse.md)
 - [SuccessHealthResponse](docs/SuccessHealthResponse.md)
 - [SuccessHealthResponseAllOfData](docs/SuccessHealthResponseAllOfData.md)
@@ -357,6 +393,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessSandboxListResponseAllOfData](docs/SuccessSandboxListResponseAllOfData.md)
 - [SuccessSandboxNetworkPolicyResponse](docs/SuccessSandboxNetworkPolicyResponse.md)
 - [SuccessSandboxResponse](docs/SuccessSandboxResponse.md)
+- [SuccessSandboxServicesResponse](docs/SuccessSandboxServicesResponse.md)
+- [SuccessSandboxServicesResponseAllOfData](docs/SuccessSandboxServicesResponseAllOfData.md)
 - [SuccessSandboxStatusResponse](docs/SuccessSandboxStatusResponse.md)
 - [SuccessSandboxVolumeListResponse](docs/SuccessSandboxVolumeListResponse.md)
 - [SuccessSandboxVolumeResponse](docs/SuccessSandboxVolumeResponse.md)

@@ -12,6 +12,7 @@ Name | Type
 `network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
 `webhook` | [WebhookConfig](WebhookConfig.md)
 `autoResume` | boolean
+`services` | [Array&lt;SandboxAppService&gt;](SandboxAppService.md)
 `publicGateway` | [PublicGatewayConfig](PublicGatewayConfig.md)
 
 ## Example
@@ -27,6 +28,7 @@ const example = {
   "network": null,
   "webhook": null,
   "autoResume": null,
+  "services": null,
   "publicGateway": null,
 } satisfies SandboxConfig
 

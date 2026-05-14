@@ -12,4 +12,15 @@ function unwrapModule<T extends object>(mod: T): T {
 
 export const runtime = unwrapModule(runtimeImport);
 export const apis = unwrapModule(apisImport);
-export const models = unwrapModule(modelsImport);
+const rawModels = unwrapModule(modelsImport);
+type WarmProcessSpecTypeEnumValue = modelsImport.WarmProcessSpecTypeEnum;
+const warmProcessSpecTypeEnum = rawModels.WarmProcessSpecTypeEnum as Record<string, WarmProcessSpecTypeEnumValue>;
+
+export const models = {
+  ...rawModels,
+  WarmProcessSpecTypeEnum: {
+    ...warmProcessSpecTypeEnum,
+    Repl: warmProcessSpecTypeEnum.Repl ?? warmProcessSpecTypeEnum.WarmProcessSpecTypeRepl,
+    Cmd: warmProcessSpecTypeEnum.Cmd ?? warmProcessSpecTypeEnum.WarmProcessSpecTypeCmd,
+  },
+};

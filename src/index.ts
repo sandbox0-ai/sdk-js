@@ -1,6 +1,13 @@
 export { Client, type ClientOptions, DEFAULT_BASE_URL } from "./client";
 export { Sandbox } from "./sandbox";
 export { APIError } from "./errors";
+export { Functions, functionSource } from "./resources/functions";
+export type {
+  CreateFunctionFromSandboxOptions,
+  CreateFunctionRevisionFromSandboxOptions,
+  FunctionCreateResult,
+  FunctionRevisionCreateResult,
+} from "./resources/functions";
 export { verifyWebhookSignature } from "./webhook_signature";
 export * from "./template_helpers";
 export * from "./models";

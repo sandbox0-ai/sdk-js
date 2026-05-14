@@ -16,6 +16,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 | [**apiV1SandboxesIdPut**](SandboxesApi.md#apiv1sandboxesidput) | **PUT** /api/v1/sandboxes/{id} | Update sandbox configuration |
 | [**apiV1SandboxesIdRefreshPost**](SandboxesApi.md#apiv1sandboxesidrefreshpost) | **POST** /api/v1/sandboxes/{id}/refresh | Refresh sandbox TTL |
 | [**apiV1SandboxesIdResumePost**](SandboxesApi.md#apiv1sandboxesidresumepost) | **POST** /api/v1/sandboxes/{id}/resume | Resume a sandbox |
+| [**apiV1SandboxesIdServicesGet**](SandboxesApi.md#apiv1sandboxesidservicesget) | **GET** /api/v1/sandboxes/{id}/services | List sandbox services |
+| [**apiV1SandboxesIdServicesPut**](SandboxesApi.md#apiv1sandboxesidservicesput) | **PUT** /api/v1/sandboxes/{id}/services | Replace sandbox services |
 | [**apiV1SandboxesIdStatusGet**](SandboxesApi.md#apiv1sandboxesidstatusget) | **GET** /api/v1/sandboxes/{id}/status | Get sandbox status |
 | [**apiV1SandboxesPost**](SandboxesApi.md#apiv1sandboxespost) | **POST** /api/v1/sandboxes | Create (claim) a sandbox |
 
@@ -40,7 +42,7 @@ import type { ApiV1SandboxesGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -122,7 +124,7 @@ import type { ApiV1SandboxesIdDeleteRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -193,7 +195,7 @@ import type { ApiV1SandboxesIdGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -253,7 +255,7 @@ example().catch(console.error);
 
 Get sandbox process logs
 
-Returns sandbox process output mirrored through the sandbox main container. Procd service logs are filtered out and remain available through Kubernetes pod logs. When &#x60;follow&#x3D;false&#x60;, the response is a bounded text/plain snapshot. When &#x60;follow&#x3D;true&#x60;, the response is a text/plain stream until the client disconnects. Kubernetes log selection parameters such as &#x60;tail_lines&#x60; and &#x60;limit_bytes&#x60; are applied before procd service log filtering. 
+Returns sandbox process output mirrored through the sandbox main container. Procd service logs are filtered out and remain available through Kubernetes pod logs. When &#x60;follow&#x3D;false&#x60;, the response is a bounded text/plain snapshot. When &#x60;follow&#x3D;true&#x60;, the response is a text/plain stream until the client disconnects. Kubernetes log selection parameters such as &#x60;tail_lines&#x60; and &#x60;limit_bytes&#x60; are applied before procd service log filtering.
 
 ### Example
 
@@ -266,7 +268,7 @@ import type { ApiV1SandboxesIdLogsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -359,7 +361,7 @@ import type { ApiV1SandboxesIdNetworkGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -429,7 +431,7 @@ import type { ApiV1SandboxesIdNetworkPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -501,7 +503,7 @@ import type { ApiV1SandboxesIdPausePostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -573,7 +575,7 @@ import type { ApiV1SandboxesIdPublicGatewayGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -632,7 +634,7 @@ example().catch(console.error);
 
 Update sandbox public gateway policy
 
-Replaces the request-level public gateway policy for sandbox public traffic. When enabled, matching routes control method, path, authentication, CORS, per-route rate limits, timeout, rewrite, and paused sandbox auto-resume. 
+Replaces the request-level public gateway policy for sandbox public traffic. When enabled, matching routes control method, path, authentication, CORS, per-route rate limits, timeout, rewrite, and paused sandbox auto-resume.
 
 ### Example
 
@@ -645,7 +647,7 @@ import type { ApiV1SandboxesIdPublicGatewayPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -719,7 +721,7 @@ import type { ApiV1SandboxesIdPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -793,7 +795,7 @@ import type { ApiV1SandboxesIdRefreshPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -866,7 +868,7 @@ import type { ApiV1SandboxesIdResumePostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -921,6 +923,153 @@ example().catch(console.error);
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
+## apiV1SandboxesIdServicesGet
+
+> SuccessSandboxServicesResponse apiV1SandboxesIdServicesGet(id)
+
+List sandbox services
+
+Lists canonical sandbox services derived from &#x60;services&#x60; or the legacy &#x60;public_gateway&#x60; compatibility projection.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  SandboxesApi,
+} from 'sandbox0';
+import type { ApiV1SandboxesIdServicesGetRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SandboxesApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+  } satisfies ApiV1SandboxesIdServicesGetRequest;
+
+  try {
+    const data = await api.apiV1SandboxesIdServicesGet(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+[**SuccessSandboxServicesResponse**](SuccessSandboxServicesResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Sandbox services |  -  |
+| **404** | Not found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## apiV1SandboxesIdServicesPut
+
+> SuccessSandboxServicesResponse apiV1SandboxesIdServicesPut(id, sandboxServicesUpdateRequest)
+
+Replace sandbox services
+
+Replaces the canonical sandbox services. Public gateway remains available as a compatibility projection.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  SandboxesApi,
+} from 'sandbox0';
+import type { ApiV1SandboxesIdServicesPutRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SandboxesApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // SandboxServicesUpdateRequest
+    sandboxServicesUpdateRequest: ...,
+  } satisfies ApiV1SandboxesIdServicesPutRequest;
+
+  try {
+    const data = await api.apiV1SandboxesIdServicesPut(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **sandboxServicesUpdateRequest** | [SandboxServicesUpdateRequest](SandboxServicesUpdateRequest.md) |  | |
+
+### Return type
+
+[**SuccessSandboxServicesResponse**](SuccessSandboxServicesResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Sandbox services updated |  -  |
+| **400** | Invalid sandbox services |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
 ## apiV1SandboxesIdStatusGet
 
 > SuccessSandboxStatusResponse apiV1SandboxesIdStatusGet(id)
@@ -938,7 +1087,7 @@ import type { ApiV1SandboxesIdStatusGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -1008,7 +1157,7 @@ import type { ApiV1SandboxesPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });

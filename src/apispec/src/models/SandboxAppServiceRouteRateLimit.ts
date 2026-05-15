@@ -16,37 +16,37 @@ import { mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface PublicGatewayRateLimit
+ * @interface SandboxAppServiceRouteRateLimit
  */
-export interface PublicGatewayRateLimit {
+export interface SandboxAppServiceRouteRateLimit {
     /**
      * 
      * @type {number}
-     * @memberof PublicGatewayRateLimit
+     * @memberof SandboxAppServiceRouteRateLimit
      */
     rps: number;
     /**
      * 
      * @type {number}
-     * @memberof PublicGatewayRateLimit
+     * @memberof SandboxAppServiceRouteRateLimit
      */
     burst: number;
 }
 
 /**
- * Check if a given object implements the PublicGatewayRateLimit interface.
+ * Check if a given object implements the SandboxAppServiceRouteRateLimit interface.
  */
-export function instanceOfPublicGatewayRateLimit(value: object): value is PublicGatewayRateLimit {
+export function instanceOfSandboxAppServiceRouteRateLimit(value: object): value is SandboxAppServiceRouteRateLimit {
     if (!('rps' in value) || value['rps'] === undefined) return false;
     if (!('burst' in value) || value['burst'] === undefined) return false;
     return true;
 }
 
-export function PublicGatewayRateLimitFromJSON(json: any): PublicGatewayRateLimit {
-    return PublicGatewayRateLimitFromJSONTyped(json, false);
+export function SandboxAppServiceRouteRateLimitFromJSON(json: any): SandboxAppServiceRouteRateLimit {
+    return SandboxAppServiceRouteRateLimitFromJSONTyped(json, false);
 }
 
-export function PublicGatewayRateLimitFromJSONTyped(json: any, ignoreDiscriminator: boolean): PublicGatewayRateLimit {
+export function SandboxAppServiceRouteRateLimitFromJSONTyped(json: any, ignoreDiscriminator: boolean): SandboxAppServiceRouteRateLimit {
     if (json == null) {
         return json;
     }
@@ -57,11 +57,11 @@ export function PublicGatewayRateLimitFromJSONTyped(json: any, ignoreDiscriminat
     };
 }
 
-export function PublicGatewayRateLimitToJSON(json: any): PublicGatewayRateLimit {
-    return PublicGatewayRateLimitToJSONTyped(json, false);
+export function SandboxAppServiceRouteRateLimitToJSON(json: any): SandboxAppServiceRouteRateLimit {
+    return SandboxAppServiceRouteRateLimitToJSONTyped(json, false);
 }
 
-export function PublicGatewayRateLimitToJSONTyped(value?: PublicGatewayRateLimit | null, ignoreDiscriminator: boolean = false): any {
+export function SandboxAppServiceRouteRateLimitToJSONTyped(value?: SandboxAppServiceRouteRateLimit | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }

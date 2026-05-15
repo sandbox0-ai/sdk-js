@@ -1,5 +1,5 @@
 
-# PublicGatewayCORS
+# SandboxAppServiceRouteCORS
 
 
 ## Properties
@@ -16,7 +16,7 @@ Name | Type
 ## Example
 
 ```typescript
-import type { PublicGatewayCORS } from 'sandbox0'
+import type { SandboxAppServiceRouteCORS } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
@@ -26,7 +26,7 @@ const example = {
   "exposeHeaders": null,
   "allowCredentials": null,
   "maxAgeSeconds": null,
-} satisfies PublicGatewayCORS
+} satisfies SandboxAppServiceRouteCORS
 
 console.log(example)
 
@@ -35,7 +35,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as PublicGatewayCORS
+const exampleParsed = JSON.parse(exampleJSON) as SandboxAppServiceRouteCORS
 console.log(exampleParsed)
 ```
 

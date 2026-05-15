@@ -1,24 +1,28 @@
 
-# SuccessPublicGatewayResponse
+# SandboxAppServiceRouteAuth
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`success` | boolean
-`data` | [SuccessPublicGatewayResponseAllOfData](SuccessPublicGatewayResponseAllOfData.md)
+`mode` | string
+`bearerTokenSha256` | string
+`headerName` | string
+`headerValueSha256` | string
 
 ## Example
 
 ```typescript
-import type { SuccessPublicGatewayResponse } from 'sandbox0'
+import type { SandboxAppServiceRouteAuth } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "success": null,
-  "data": null,
-} satisfies SuccessPublicGatewayResponse
+  "mode": null,
+  "bearerTokenSha256": null,
+  "headerName": null,
+  "headerValueSha256": null,
+} satisfies SandboxAppServiceRouteAuth
 
 console.log(example)
 
@@ -27,7 +31,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SuccessPublicGatewayResponse
+const exampleParsed = JSON.parse(exampleJSON) as SandboxAppServiceRouteAuth
 console.log(exampleParsed)
 ```
 

@@ -39,6 +39,12 @@ export interface SuccessSandboxServicesResponseAllOfData {
      * @memberof SuccessSandboxServicesResponseAllOfData
      */
     services: Array<SandboxAppServiceView>;
+    /**
+     * 
+     * @type {string}
+     * @memberof SuccessSandboxServicesResponseAllOfData
+     */
+    exposureDomain?: string;
 }
 
 /**
@@ -62,6 +68,7 @@ export function SuccessSandboxServicesResponseAllOfDataFromJSONTyped(json: any, 
         
         'sandboxId': json['sandbox_id'],
         'services': ((json['services'] as Array<any>).map(SandboxAppServiceViewFromJSON)),
+        'exposureDomain': json['exposure_domain'] == null ? undefined : json['exposure_domain'],
     };
 }
 
@@ -78,6 +85,7 @@ export function SuccessSandboxServicesResponseAllOfDataToJSONTyped(value?: Succe
         
         'sandbox_id': value['sandboxId'],
         'services': ((value['services'] as Array<any>).map(SandboxAppServiceViewToJSON)),
+        'exposure_domain': value['exposureDomain'],
     };
 }
 

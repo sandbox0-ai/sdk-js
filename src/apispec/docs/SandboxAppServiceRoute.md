@@ -10,9 +10,9 @@ Name | Type
 `pathPrefix` | string
 `methods` | Array&lt;string&gt;
 `rewritePrefix` | string
-`auth` | [PublicGatewayAuth](PublicGatewayAuth.md)
-`cors` | [PublicGatewayCORS](PublicGatewayCORS.md)
-`rateLimit` | [PublicGatewayRateLimit](PublicGatewayRateLimit.md)
+`auth` | [SandboxAppServiceRouteAuth](SandboxAppServiceRouteAuth.md)
+`cors` | [SandboxAppServiceRouteCORS](SandboxAppServiceRouteCORS.md)
+`rateLimit` | [SandboxAppServiceRouteRateLimit](SandboxAppServiceRouteRateLimit.md)
 `timeoutSeconds` | number
 `resume` | boolean
 

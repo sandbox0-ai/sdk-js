@@ -13,27 +13,27 @@
  */
 
 import { mapValues } from '../runtime';
-import type { PublicGatewayRateLimit } from './PublicGatewayRateLimit';
+import type { SandboxAppServiceRouteCORS } from './SandboxAppServiceRouteCORS';
 import {
-    PublicGatewayRateLimitFromJSON,
-    PublicGatewayRateLimitFromJSONTyped,
-    PublicGatewayRateLimitToJSON,
-    PublicGatewayRateLimitToJSONTyped,
-} from './PublicGatewayRateLimit';
-import type { PublicGatewayCORS } from './PublicGatewayCORS';
+    SandboxAppServiceRouteCORSFromJSON,
+    SandboxAppServiceRouteCORSFromJSONTyped,
+    SandboxAppServiceRouteCORSToJSON,
+    SandboxAppServiceRouteCORSToJSONTyped,
+} from './SandboxAppServiceRouteCORS';
+import type { SandboxAppServiceRouteRateLimit } from './SandboxAppServiceRouteRateLimit';
 import {
-    PublicGatewayCORSFromJSON,
-    PublicGatewayCORSFromJSONTyped,
-    PublicGatewayCORSToJSON,
-    PublicGatewayCORSToJSONTyped,
-} from './PublicGatewayCORS';
-import type { PublicGatewayAuth } from './PublicGatewayAuth';
+    SandboxAppServiceRouteRateLimitFromJSON,
+    SandboxAppServiceRouteRateLimitFromJSONTyped,
+    SandboxAppServiceRouteRateLimitToJSON,
+    SandboxAppServiceRouteRateLimitToJSONTyped,
+} from './SandboxAppServiceRouteRateLimit';
+import type { SandboxAppServiceRouteAuth } from './SandboxAppServiceRouteAuth';
 import {
-    PublicGatewayAuthFromJSON,
-    PublicGatewayAuthFromJSONTyped,
-    PublicGatewayAuthToJSON,
-    PublicGatewayAuthToJSONTyped,
-} from './PublicGatewayAuth';
+    SandboxAppServiceRouteAuthFromJSON,
+    SandboxAppServiceRouteAuthFromJSONTyped,
+    SandboxAppServiceRouteAuthToJSON,
+    SandboxAppServiceRouteAuthToJSONTyped,
+} from './SandboxAppServiceRouteAuth';
 
 /**
  * 
@@ -67,22 +67,22 @@ export interface SandboxAppServiceRoute {
     rewritePrefix?: string | null;
     /**
      * 
-     * @type {PublicGatewayAuth}
+     * @type {SandboxAppServiceRouteAuth}
      * @memberof SandboxAppServiceRoute
      */
-    auth?: PublicGatewayAuth;
+    auth?: SandboxAppServiceRouteAuth;
     /**
      * 
-     * @type {PublicGatewayCORS}
+     * @type {SandboxAppServiceRouteCORS}
      * @memberof SandboxAppServiceRoute
      */
-    cors?: PublicGatewayCORS;
+    cors?: SandboxAppServiceRouteCORS;
     /**
      * 
-     * @type {PublicGatewayRateLimit}
+     * @type {SandboxAppServiceRouteRateLimit}
      * @memberof SandboxAppServiceRoute
      */
-    rateLimit?: PublicGatewayRateLimit;
+    rateLimit?: SandboxAppServiceRouteRateLimit;
     /**
      * 
      * @type {number}
@@ -120,9 +120,9 @@ export function SandboxAppServiceRouteFromJSONTyped(json: any, ignoreDiscriminat
         'pathPrefix': json['path_prefix'] == null ? undefined : json['path_prefix'],
         'methods': json['methods'] == null ? undefined : json['methods'],
         'rewritePrefix': json['rewrite_prefix'] == null ? undefined : json['rewrite_prefix'],
-        'auth': json['auth'] == null ? undefined : PublicGatewayAuthFromJSON(json['auth']),
-        'cors': json['cors'] == null ? undefined : PublicGatewayCORSFromJSON(json['cors']),
-        'rateLimit': json['rate_limit'] == null ? undefined : PublicGatewayRateLimitFromJSON(json['rate_limit']),
+        'auth': json['auth'] == null ? undefined : SandboxAppServiceRouteAuthFromJSON(json['auth']),
+        'cors': json['cors'] == null ? undefined : SandboxAppServiceRouteCORSFromJSON(json['cors']),
+        'rateLimit': json['rate_limit'] == null ? undefined : SandboxAppServiceRouteRateLimitFromJSON(json['rate_limit']),
         'timeoutSeconds': json['timeout_seconds'] == null ? undefined : json['timeout_seconds'],
         'resume': json['resume'],
     };
@@ -143,9 +143,9 @@ export function SandboxAppServiceRouteToJSONTyped(value?: SandboxAppServiceRoute
         'path_prefix': value['pathPrefix'],
         'methods': value['methods'],
         'rewrite_prefix': value['rewritePrefix'],
-        'auth': PublicGatewayAuthToJSON(value['auth']),
-        'cors': PublicGatewayCORSToJSON(value['cors']),
-        'rate_limit': PublicGatewayRateLimitToJSON(value['rateLimit']),
+        'auth': SandboxAppServiceRouteAuthToJSON(value['auth']),
+        'cors': SandboxAppServiceRouteCORSToJSON(value['cors']),
+        'rate_limit': SandboxAppServiceRouteRateLimitToJSON(value['rateLimit']),
         'timeout_seconds': value['timeoutSeconds'],
         'resume': value['resume'],
     };

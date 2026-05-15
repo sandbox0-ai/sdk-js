@@ -1,28 +1,24 @@
 
-# PublicGatewayAuth
+# SandboxAppServiceRouteRateLimit
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`mode` | string
-`bearerTokenSha256` | string
-`headerName` | string
-`headerValueSha256` | string
+`rps` | number
+`burst` | number
 
 ## Example
 
 ```typescript
-import type { PublicGatewayAuth } from 'sandbox0'
+import type { SandboxAppServiceRouteRateLimit } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "mode": null,
-  "bearerTokenSha256": null,
-  "headerName": null,
-  "headerValueSha256": null,
-} satisfies PublicGatewayAuth
+  "rps": null,
+  "burst": null,
+} satisfies SandboxAppServiceRouteRateLimit
 
 console.log(example)
 
@@ -31,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as PublicGatewayAuth
+const exampleParsed = JSON.parse(exampleJSON) as SandboxAppServiceRouteRateLimit
 console.log(exampleParsed)
 ```
 

@@ -28,6 +28,12 @@ import {
  */
 export interface CreateSandboxVolumeRequest {
     /**
+     * Optional snapshot ID used to initialize the new volume from immutable snapshot state.
+     * @type {string}
+     * @memberof CreateSandboxVolumeRequest
+     */
+    snapshotId?: string;
+    /**
      * Default POSIX UID used by external volume access paths that do not carry caller identity. Defaults to 0 when omitted on create.
      * @type {number}
      * @memberof CreateSandboxVolumeRequest
@@ -66,6 +72,7 @@ export function CreateSandboxVolumeRequestFromJSONTyped(json: any, ignoreDiscrim
     }
     return {
         
+        'snapshotId': json['snapshot_id'] == null ? undefined : json['snapshot_id'],
         'defaultPosixUid': json['default_posix_uid'] == null ? undefined : json['default_posix_uid'],
         'defaultPosixGid': json['default_posix_gid'] == null ? undefined : json['default_posix_gid'],
         'accessMode': json['access_mode'] == null ? undefined : VolumeAccessModeFromJSON(json['access_mode']),
@@ -83,6 +90,7 @@ export function CreateSandboxVolumeRequestToJSONTyped(value?: CreateSandboxVolum
 
     return {
         
+        'snapshot_id': value['snapshotId'],
         'default_posix_uid': value['defaultPosixUid'],
         'default_posix_gid': value['defaultPosixGid'],
         'access_mode': VolumeAccessModeToJSON(value['accessMode']),

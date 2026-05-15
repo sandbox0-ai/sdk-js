@@ -1,28 +1,24 @@
 
-# CreateSandboxVolumeRequest
+# SuccessFunctionAliasListResponse
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`snapshotId` | string
-`defaultPosixUid` | number
-`defaultPosixGid` | number
-`accessMode` | [VolumeAccessMode](VolumeAccessMode.md)
+`success` | boolean
+`data` | [SuccessFunctionAliasListResponseAllOfData](SuccessFunctionAliasListResponseAllOfData.md)
 
 ## Example
 
 ```typescript
-import type { CreateSandboxVolumeRequest } from 'sandbox0'
+import type { SuccessFunctionAliasListResponse } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "snapshotId": null,
-  "defaultPosixUid": null,
-  "defaultPosixGid": null,
-  "accessMode": null,
-} satisfies CreateSandboxVolumeRequest
+  "success": null,
+  "data": null,
+} satisfies SuccessFunctionAliasListResponse
 
 console.log(example)
 
@@ -31,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as CreateSandboxVolumeRequest
+const exampleParsed = JSON.parse(exampleJSON) as SuccessFunctionAliasListResponse
 console.log(exampleParsed)
 ```
 

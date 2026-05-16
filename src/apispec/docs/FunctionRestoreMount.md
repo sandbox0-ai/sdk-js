@@ -7,6 +7,8 @@
 Name | Type
 ------------ | -------------
 `sandboxvolumeId` | string
+`sourceSandboxvolumeId` | string
+`snapshotId` | string
 `mountPoint` | string
 
 ## Example
@@ -17,6 +19,8 @@ import type { FunctionRestoreMount } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "sandboxvolumeId": null,
+  "sourceSandboxvolumeId": null,
+  "snapshotId": null,
   "mountPoint": null,
 } satisfies FunctionRestoreMount
 

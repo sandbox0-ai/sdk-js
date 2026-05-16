@@ -12,9 +12,11 @@ Name | Type
 `slug` | string
 `domainLabel` | string
 `activeRevisionId` | string
+`enabled` | boolean
 `createdBy` | string
 `createdAt` | Date
 `updatedAt` | Date
+`deletedAt` | Date
 
 ## Example
 
@@ -29,9 +31,11 @@ const example = {
   "slug": null,
   "domainLabel": null,
   "activeRevisionId": null,
+  "enabled": null,
   "createdBy": null,
   "createdAt": null,
   "updatedAt": null,
+  "deletedAt": null,
 } satisfies Function
 
 console.log(example)

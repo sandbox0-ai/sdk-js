@@ -19,12 +19,16 @@ import type {
   FunctionAliasUpdateRequest,
   FunctionCreateRequest,
   FunctionRevisionCreateRequest,
+  FunctionUpdateRequest,
+  SuccessFunctionAliasListResponse,
   SuccessFunctionAliasResponse,
   SuccessFunctionCreateResponse,
   SuccessFunctionListResponse,
   SuccessFunctionResponse,
   SuccessFunctionRevisionCreateResponse,
   SuccessFunctionRevisionListResponse,
+  SuccessFunctionRevisionResponse,
+  SuccessFunctionRuntimeResponse,
 } from '../models/index';
 import {
     ErrorEnvelopeFromJSON,
@@ -35,6 +39,10 @@ import {
     FunctionCreateRequestToJSON,
     FunctionRevisionCreateRequestFromJSON,
     FunctionRevisionCreateRequestToJSON,
+    FunctionUpdateRequestFromJSON,
+    FunctionUpdateRequestToJSON,
+    SuccessFunctionAliasListResponseFromJSON,
+    SuccessFunctionAliasListResponseToJSON,
     SuccessFunctionAliasResponseFromJSON,
     SuccessFunctionAliasResponseToJSON,
     SuccessFunctionCreateResponseFromJSON,
@@ -47,7 +55,16 @@ import {
     SuccessFunctionRevisionCreateResponseToJSON,
     SuccessFunctionRevisionListResponseFromJSON,
     SuccessFunctionRevisionListResponseToJSON,
+    SuccessFunctionRevisionResponseFromJSON,
+    SuccessFunctionRevisionResponseToJSON,
+    SuccessFunctionRuntimeResponseFromJSON,
+    SuccessFunctionRuntimeResponseToJSON,
 } from '../models/index';
+
+export interface ApiV1FunctionsIdAliasesAliasGetRequest {
+    id: string;
+    alias: string;
+}
 
 export interface ApiV1FunctionsIdAliasesAliasPutRequest {
     id: string;
@@ -55,8 +72,21 @@ export interface ApiV1FunctionsIdAliasesAliasPutRequest {
     functionAliasUpdateRequest: FunctionAliasUpdateRequest;
 }
 
+export interface ApiV1FunctionsIdAliasesGetRequest {
+    id: string;
+}
+
+export interface ApiV1FunctionsIdDeleteRequest {
+    id: string;
+}
+
 export interface ApiV1FunctionsIdGetRequest {
     id: string;
+}
+
+export interface ApiV1FunctionsIdPutRequest {
+    id: string;
+    functionUpdateRequest: FunctionUpdateRequest;
 }
 
 export interface ApiV1FunctionsIdRevisionsGetRequest {
@@ -66,6 +96,23 @@ export interface ApiV1FunctionsIdRevisionsGetRequest {
 export interface ApiV1FunctionsIdRevisionsPostRequest {
     id: string;
     functionRevisionCreateRequest: FunctionRevisionCreateRequest;
+}
+
+export interface ApiV1FunctionsIdRevisionsRevisionNumberGetRequest {
+    id: string;
+    revisionNumber: number;
+}
+
+export interface ApiV1FunctionsIdRuntimeGetRequest {
+    id: string;
+}
+
+export interface ApiV1FunctionsIdRuntimeRecyclePostRequest {
+    id: string;
+}
+
+export interface ApiV1FunctionsIdRuntimeRestartPostRequest {
+    id: string;
 }
 
 export interface ApiV1FunctionsPostRequest {
@@ -111,6 +158,59 @@ export class FunctionsApi extends runtime.BaseAPI {
      */
     async apiV1FunctionsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFunctionListResponse> {
         const response = await this.apiV1FunctionsGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get function alias
+     */
+    async apiV1FunctionsIdAliasesAliasGetRaw(requestParameters: ApiV1FunctionsIdAliasesAliasGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFunctionAliasResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1FunctionsIdAliasesAliasGet().'
+            );
+        }
+
+        if (requestParameters['alias'] == null) {
+            throw new runtime.RequiredError(
+                'alias',
+                'Required parameter "alias" was null or undefined when calling apiV1FunctionsIdAliasesAliasGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/functions/{id}/aliases/{alias}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"alias"}}`, encodeURIComponent(String(requestParameters['alias'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessFunctionAliasResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Get function alias
+     */
+    async apiV1FunctionsIdAliasesAliasGet(requestParameters: ApiV1FunctionsIdAliasesAliasGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFunctionAliasResponse> {
+        const response = await this.apiV1FunctionsIdAliasesAliasGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -178,6 +278,98 @@ export class FunctionsApi extends runtime.BaseAPI {
     }
 
     /**
+     * List function aliases
+     */
+    async apiV1FunctionsIdAliasesGetRaw(requestParameters: ApiV1FunctionsIdAliasesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFunctionAliasListResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1FunctionsIdAliasesGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/functions/{id}/aliases`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessFunctionAliasListResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * List function aliases
+     */
+    async apiV1FunctionsIdAliasesGet(requestParameters: ApiV1FunctionsIdAliasesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFunctionAliasListResponse> {
+        const response = await this.apiV1FunctionsIdAliasesGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Soft-deletes the function, disables its host, and schedules best-effort runtime and revision volume cleanup. The function slug and domain label remain reserved.
+     * Delete function
+     */
+    async apiV1FunctionsIdDeleteRaw(requestParameters: ApiV1FunctionsIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFunctionResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1FunctionsIdDelete().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/functions/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessFunctionResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Soft-deletes the function, disables its host, and schedules best-effort runtime and revision volume cleanup. The function slug and domain label remain reserved.
+     * Delete function
+     */
+    async apiV1FunctionsIdDelete(requestParameters: ApiV1FunctionsIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFunctionResponse> {
+        const response = await this.apiV1FunctionsIdDeleteRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get function
      */
     async apiV1FunctionsIdGetRaw(requestParameters: ApiV1FunctionsIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFunctionResponse>> {
@@ -219,6 +411,61 @@ export class FunctionsApi extends runtime.BaseAPI {
      */
     async apiV1FunctionsIdGet(requestParameters: ApiV1FunctionsIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFunctionResponse> {
         const response = await this.apiV1FunctionsIdGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Update function lifecycle state
+     */
+    async apiV1FunctionsIdPutRaw(requestParameters: ApiV1FunctionsIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFunctionResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1FunctionsIdPut().'
+            );
+        }
+
+        if (requestParameters['functionUpdateRequest'] == null) {
+            throw new runtime.RequiredError(
+                'functionUpdateRequest',
+                'Required parameter "functionUpdateRequest" was null or undefined when calling apiV1FunctionsIdPut().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/functions/{id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: FunctionUpdateRequestToJSON(requestParameters['functionUpdateRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessFunctionResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Update function lifecycle state
+     */
+    async apiV1FunctionsIdPut(requestParameters: ApiV1FunctionsIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFunctionResponse> {
+        const response = await this.apiV1FunctionsIdPutRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -319,6 +566,198 @@ export class FunctionsApi extends runtime.BaseAPI {
      */
     async apiV1FunctionsIdRevisionsPost(requestParameters: ApiV1FunctionsIdRevisionsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFunctionRevisionCreateResponse> {
         const response = await this.apiV1FunctionsIdRevisionsPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get function revision
+     */
+    async apiV1FunctionsIdRevisionsRevisionNumberGetRaw(requestParameters: ApiV1FunctionsIdRevisionsRevisionNumberGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFunctionRevisionResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1FunctionsIdRevisionsRevisionNumberGet().'
+            );
+        }
+
+        if (requestParameters['revisionNumber'] == null) {
+            throw new runtime.RequiredError(
+                'revisionNumber',
+                'Required parameter "revisionNumber" was null or undefined when calling apiV1FunctionsIdRevisionsRevisionNumberGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/functions/{id}/revisions/{revision_number}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"revision_number"}}`, encodeURIComponent(String(requestParameters['revisionNumber'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessFunctionRevisionResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Get function revision
+     */
+    async apiV1FunctionsIdRevisionsRevisionNumberGet(requestParameters: ApiV1FunctionsIdRevisionsRevisionNumberGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFunctionRevisionResponse> {
+        const response = await this.apiV1FunctionsIdRevisionsRevisionNumberGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get active function runtime
+     */
+    async apiV1FunctionsIdRuntimeGetRaw(requestParameters: ApiV1FunctionsIdRuntimeGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFunctionRuntimeResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1FunctionsIdRuntimeGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/functions/{id}/runtime`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessFunctionRuntimeResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Get active function runtime
+     */
+    async apiV1FunctionsIdRuntimeGet(requestParameters: ApiV1FunctionsIdRuntimeGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFunctionRuntimeResponse> {
+        const response = await this.apiV1FunctionsIdRuntimeGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Deletes the current restored runtime sandbox when one exists and clears the runtime mapping; the next function request starts a fresh runtime.
+     * Recycle active function runtime
+     */
+    async apiV1FunctionsIdRuntimeRecyclePostRaw(requestParameters: ApiV1FunctionsIdRuntimeRecyclePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFunctionRuntimeResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1FunctionsIdRuntimeRecyclePost().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/functions/{id}/runtime/recycle`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessFunctionRuntimeResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Deletes the current restored runtime sandbox when one exists and clears the runtime mapping; the next function request starts a fresh runtime.
+     * Recycle active function runtime
+     */
+    async apiV1FunctionsIdRuntimeRecyclePost(requestParameters: ApiV1FunctionsIdRuntimeRecyclePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFunctionRuntimeResponse> {
+        const response = await this.apiV1FunctionsIdRuntimeRecyclePostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Deletes the current restored runtime sandbox when one exists and clears the runtime mapping; the next function request starts a fresh runtime.
+     * Restart active function runtime
+     */
+    async apiV1FunctionsIdRuntimeRestartPostRaw(requestParameters: ApiV1FunctionsIdRuntimeRestartPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFunctionRuntimeResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1FunctionsIdRuntimeRestartPost().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/functions/{id}/runtime/restart`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessFunctionRuntimeResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Deletes the current restored runtime sandbox when one exists and clears the runtime mapping; the next function request starts a fresh runtime.
+     * Restart active function runtime
+     */
+    async apiV1FunctionsIdRuntimeRestartPost(requestParameters: ApiV1FunctionsIdRuntimeRestartPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFunctionRuntimeResponse> {
+        const response = await this.apiV1FunctionsIdRuntimeRestartPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

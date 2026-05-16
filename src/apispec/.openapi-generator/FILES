@@ -78,7 +78,10 @@ docs/FunctionRecord.md
 docs/FunctionRestoreMount.md
 docs/FunctionRevision.md
 docs/FunctionRevisionCreateRequest.md
+docs/FunctionRuntimeState.md
+docs/FunctionRuntimeStatus.md
 docs/FunctionSourceRequest.md
+docs/FunctionUpdateRequest.md
 docs/FunctionsApi.md
 docs/GRPCAction.md
 docs/GatewayMetadata.md
@@ -200,6 +203,8 @@ docs/SuccessFileReadResponse.md
 docs/SuccessFileReadResponseAllOfData.md
 docs/SuccessFileReadResponseAllOfDataOneOf.md
 docs/SuccessFileStatResponse.md
+docs/SuccessFunctionAliasListResponse.md
+docs/SuccessFunctionAliasListResponseAllOfData.md
 docs/SuccessFunctionAliasResponse.md
 docs/SuccessFunctionAliasResponseAllOfData.md
 docs/SuccessFunctionCreateResponse.md
@@ -212,6 +217,10 @@ docs/SuccessFunctionRevisionCreateResponse.md
 docs/SuccessFunctionRevisionCreateResponseAllOfData.md
 docs/SuccessFunctionRevisionListResponse.md
 docs/SuccessFunctionRevisionListResponseAllOfData.md
+docs/SuccessFunctionRevisionResponse.md
+docs/SuccessFunctionRevisionResponseAllOfData.md
+docs/SuccessFunctionRuntimeResponse.md
+docs/SuccessFunctionRuntimeResponseAllOfData.md
 docs/SuccessGatewayMetadataResponse.md
 docs/SuccessHealthResponse.md
 docs/SuccessHealthResponseAllOfData.md
@@ -375,7 +384,10 @@ src/models/FunctionRecord.ts
 src/models/FunctionRestoreMount.ts
 src/models/FunctionRevision.ts
 src/models/FunctionRevisionCreateRequest.ts
+src/models/FunctionRuntimeState.ts
+src/models/FunctionRuntimeStatus.ts
 src/models/FunctionSourceRequest.ts
+src/models/FunctionUpdateRequest.ts
 src/models/GRPCAction.ts
 src/models/GatewayMetadata.ts
 src/models/HTTPGetAction.ts
@@ -490,6 +502,8 @@ src/models/SuccessFileReadResponse.ts
 src/models/SuccessFileReadResponseAllOfData.ts
 src/models/SuccessFileReadResponseAllOfDataOneOf.ts
 src/models/SuccessFileStatResponse.ts
+src/models/SuccessFunctionAliasListResponse.ts
+src/models/SuccessFunctionAliasListResponseAllOfData.ts
 src/models/SuccessFunctionAliasResponse.ts
 src/models/SuccessFunctionAliasResponseAllOfData.ts
 src/models/SuccessFunctionCreateResponse.ts
@@ -502,6 +516,10 @@ src/models/SuccessFunctionRevisionCreateResponse.ts
 src/models/SuccessFunctionRevisionCreateResponseAllOfData.ts
 src/models/SuccessFunctionRevisionListResponse.ts
 src/models/SuccessFunctionRevisionListResponseAllOfData.ts
+src/models/SuccessFunctionRevisionResponse.ts
+src/models/SuccessFunctionRevisionResponseAllOfData.ts
+src/models/SuccessFunctionRuntimeResponse.ts
+src/models/SuccessFunctionRuntimeResponseAllOfData.ts
 src/models/SuccessGatewayMetadataResponse.ts
 src/models/SuccessHealthResponse.ts
 src/models/SuccessHealthResponseAllOfData.ts

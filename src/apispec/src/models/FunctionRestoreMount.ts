@@ -20,11 +20,23 @@ import { mapValues } from '../runtime';
  */
 export interface FunctionRestoreMount {
     /**
-     * 
+     * Revision-owned SandboxVolume prepared when the function revision was published.
      * @type {string}
      * @memberof FunctionRestoreMount
      */
     sandboxvolumeId: string;
+    /**
+     * Source SandboxVolume captured when the function revision was published.
+     * @type {string}
+     * @memberof FunctionRestoreMount
+     */
+    sourceSandboxvolumeId?: string;
+    /**
+     * Immutable source volume snapshot captured for this function revision.
+     * @type {string}
+     * @memberof FunctionRestoreMount
+     */
+    snapshotId?: string;
     /**
      * 
      * @type {string}
@@ -53,6 +65,8 @@ export function FunctionRestoreMountFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'sandboxvolumeId': json['sandboxvolume_id'],
+        'sourceSandboxvolumeId': json['source_sandboxvolume_id'] == null ? undefined : json['source_sandboxvolume_id'],
+        'snapshotId': json['snapshot_id'] == null ? undefined : json['snapshot_id'],
         'mountPoint': json['mount_point'],
     };
 }
@@ -69,6 +83,8 @@ export function FunctionRestoreMountToJSONTyped(value?: FunctionRestoreMount | n
     return {
         
         'sandboxvolume_id': value['sandboxvolumeId'],
+        'source_sandboxvolume_id': value['sourceSandboxvolumeId'],
+        'snapshot_id': value['snapshotId'],
         'mount_point': value['mountPoint'],
     };
 }

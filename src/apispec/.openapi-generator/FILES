@@ -53,6 +53,8 @@ docs/EgressAuthFailurePolicy.md
 docs/EgressAuthProtocol.md
 docs/EgressAuthRolloutMode.md
 docs/EgressCredentialRule.md
+docs/EgressProxyPolicy.md
+docs/EgressProxyType.md
 docs/EgressTLSMode.md
 docs/EnvVar.md
 docs/ErrorEnvelope.md
@@ -360,6 +362,8 @@ src/models/EgressAuthFailurePolicy.ts
 src/models/EgressAuthProtocol.ts
 src/models/EgressAuthRolloutMode.ts
 src/models/EgressCredentialRule.ts
+src/models/EgressProxyPolicy.ts
+src/models/EgressProxyType.ts
 src/models/EgressTLSMode.ts
 src/models/EnvVar.ts
 src/models/ErrorEnvelope.ts

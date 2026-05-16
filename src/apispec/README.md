@@ -216,6 +216,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [EgressAuthProtocol](docs/EgressAuthProtocol.md)
 - [EgressAuthRolloutMode](docs/EgressAuthRolloutMode.md)
 - [EgressCredentialRule](docs/EgressCredentialRule.md)
+- [EgressProxyPolicy](docs/EgressProxyPolicy.md)
+- [EgressProxyType](docs/EgressProxyType.md)
 - [EgressTLSMode](docs/EgressTLSMode.md)
 - [EnvVar](docs/EnvVar.md)
 - [ErrorEnvelope](docs/ErrorEnvelope.md)

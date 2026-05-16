@@ -18,14 +18,14 @@
  * @export
  */
 export const EgressAuthProtocol = {
-    Http: 'http',
-    Https: 'https',
-    Grpc: 'grpc',
-    Tls: 'tls',
-    Ssh: 'ssh',
-    Socks5: 'socks5',
-    Mqtt: 'mqtt',
-    Redis: 'redis'
+    EgressAuthProtocolHttp: 'http',
+    EgressAuthProtocolHttps: 'https',
+    EgressAuthProtocolGrpc: 'grpc',
+    EgressAuthProtocolTls: 'tls',
+    EgressAuthProtocolSsh: 'ssh',
+    EgressAuthProtocolSocks5: 'socks5',
+    EgressAuthProtocolMqtt: 'mqtt',
+    EgressAuthProtocolRedis: 'redis'
 } as const;
 export type EgressAuthProtocol = typeof EgressAuthProtocol[keyof typeof EgressAuthProtocol];
 

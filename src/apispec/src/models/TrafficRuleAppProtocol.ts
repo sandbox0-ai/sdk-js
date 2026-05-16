@@ -18,16 +18,16 @@
  * @export
  */
 export const TrafficRuleAppProtocol = {
-    Http: 'http',
-    Tls: 'tls',
-    Ssh: 'ssh',
-    Socks5: 'socks5',
-    Mqtt: 'mqtt',
-    Redis: 'redis',
-    Amqp: 'amqp',
-    Dns: 'dns',
-    Mongodb: 'mongodb',
-    Udp: 'udp'
+    TrafficRuleAppProtocolHttp: 'http',
+    TrafficRuleAppProtocolTls: 'tls',
+    TrafficRuleAppProtocolSsh: 'ssh',
+    TrafficRuleAppProtocolSocks5: 'socks5',
+    TrafficRuleAppProtocolMqtt: 'mqtt',
+    TrafficRuleAppProtocolRedis: 'redis',
+    TrafficRuleAppProtocolAmqp: 'amqp',
+    TrafficRuleAppProtocolDns: 'dns',
+    TrafficRuleAppProtocolMongodb: 'mongodb',
+    TrafficRuleAppProtocolUdp: 'udp'
 } as const;
 export type TrafficRuleAppProtocol = typeof TrafficRuleAppProtocol[keyof typeof TrafficRuleAppProtocol];
 

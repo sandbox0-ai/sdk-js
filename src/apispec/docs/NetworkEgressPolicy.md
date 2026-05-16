@@ -15,6 +15,7 @@ Name | Type
 `deniedPorts` | [Array&lt;PortSpec&gt;](PortSpec.md)
 `trafficRules` | [Array&lt;TrafficRule&gt;](TrafficRule.md)
 `credentialRules` | [Array&lt;EgressCredentialRule&gt;](EgressCredentialRule.md)
+`proxy` | [EgressProxyPolicy](EgressProxyPolicy.md)
 
 ## Example
 
@@ -31,6 +32,7 @@ const example = {
   "deniedPorts": null,
   "trafficRules": null,
   "credentialRules": null,
+  "proxy": null,
 } satisfies NetworkEgressPolicy
 
 console.log(example)

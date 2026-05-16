@@ -48,6 +48,8 @@ export * from './EgressAuthFailurePolicy';
 export * from './EgressAuthProtocol';
 export * from './EgressAuthRolloutMode';
 export * from './EgressCredentialRule';
+export * from './EgressProxyPolicy';
+export * from './EgressProxyType';
 export * from './EgressTLSMode';
 export * from './EnvVar';
 export * from './ErrorEnvelope';

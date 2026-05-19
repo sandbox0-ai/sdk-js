@@ -668,7 +668,7 @@ export class FunctionsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes the current restored runtime sandbox when one exists and clears the runtime mapping; the next function request starts a fresh runtime.
+     * Deletes the current restored runtime pool when one exists and clears the runtime mapping; the next function request starts fresh runtime instances.
      * Recycle active function runtime
      */
     async apiV1FunctionsIdRuntimeRecyclePostRaw(requestParameters: ApiV1FunctionsIdRuntimeRecyclePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFunctionRuntimeResponse>> {
@@ -706,7 +706,7 @@ export class FunctionsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes the current restored runtime sandbox when one exists and clears the runtime mapping; the next function request starts a fresh runtime.
+     * Deletes the current restored runtime pool when one exists and clears the runtime mapping; the next function request starts fresh runtime instances.
      * Recycle active function runtime
      */
     async apiV1FunctionsIdRuntimeRecyclePost(requestParameters: ApiV1FunctionsIdRuntimeRecyclePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFunctionRuntimeResponse> {
@@ -715,7 +715,7 @@ export class FunctionsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes the current restored runtime sandbox when one exists and clears the runtime mapping; the next function request starts a fresh runtime.
+     * Deletes the current restored runtime pool when one exists and clears the runtime mapping; the next function request starts fresh runtime instances.
      * Restart active function runtime
      */
     async apiV1FunctionsIdRuntimeRestartPostRaw(requestParameters: ApiV1FunctionsIdRuntimeRestartPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFunctionRuntimeResponse>> {
@@ -753,7 +753,7 @@ export class FunctionsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes the current restored runtime sandbox when one exists and clears the runtime mapping; the next function request starts a fresh runtime.
+     * Deletes the current restored runtime pool when one exists and clears the runtime mapping; the next function request starts fresh runtime instances.
      * Restart active function runtime
      */
     async apiV1FunctionsIdRuntimeRestartPost(requestParameters: ApiV1FunctionsIdRuntimeRestartPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFunctionRuntimeResponse> {

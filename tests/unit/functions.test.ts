@@ -24,10 +24,19 @@ describe("Functions resource", () => {
     } as any;
 
     const functions = new Functions(client);
-    const result = await functions.createFromSandbox("sbx-1", "web", { name: "web-fn" });
+    const result = await functions.createFromSandbox("sbx-1", "web", {
+      name: "web-fn",
+      autoscaling: functionAutoscaling(1, 3, 7, 60),
+    });
 
     assert.deepStrictEqual(gotRequest, {
       name: "web-fn",
+      autoscaling: {
+        minWarm: 1,
+        maxActive: 3,
+        targetConcurrency: 7,
+        scaleDownAfterSeconds: 60,
+      },
       source: {
         sandboxId: "sbx-1",
         serviceId: "web",
@@ -198,7 +207,11 @@ describe("Functions resource", () => {
     } as any;
 
     const functions = new Functions(client);
-    const updated = await functions.update("fn-1", { name: "new-name", enabled: false });
+    const updated = await functions.update("fn-1", {
+      name: "new-name",
+      enabled: false,
+      autoscaling: functionAutoscaling(0, 5, 10, 120),
+    });
     const deleted = await functions.delete("fn-1");
     const runtime = await functions.getRuntime("fn-1");
     const restarted = await functions.restartRuntime("fn-1");
@@ -210,7 +223,7 @@ describe("Functions resource", () => {
     assert.strictEqual(restarted.state, "idle");
     assert.strictEqual(recycled.state, "idle");
     assert.deepStrictEqual(calls, [
-      'update:fn-1:{"name":"new-name","enabled":false}',
+      'update:fn-1:{"name":"new-name","enabled":false,"autoscaling":{"minWarm":0,"maxActive":5,"targetConcurrency":10,"scaleDownAfterSeconds":120}}',
       "delete:fn-1",
       "runtime:fn-1",
       "restart:fn-1",
@@ -227,6 +240,7 @@ function functionRecord() {
     slug: "web",
     domainLabel: "web",
     enabled: true,
+    autoscaling: functionAutoscaling(),
     createdAt: new Date("2026-05-14T00:00:00Z"),
     updatedAt: new Date("2026-05-14T00:00:00Z"),
     host: "web.sandbox0.site",
@@ -240,9 +254,25 @@ function functionRuntime(state: "active" | "idle" | "disabled") {
     revisionId: "rev-1",
     revisionNumber: 1,
     state,
+    autoscaling: functionAutoscaling(),
     runtimeSandboxId: state === "active" ? "sb-runtime" : undefined,
     runtimeContextId: state === "active" ? "ctx-runtime" : undefined,
     runtimeUpdatedAt: new Date("2026-05-14T00:00:00Z"),
+    instances: [],
+  };
+}
+
+function functionAutoscaling(
+  minWarm = 0,
+  maxActive = 20,
+  targetConcurrency = 80,
+  scaleDownAfterSeconds = 300,
+) {
+  return {
+    minWarm,
+    maxActive,
+    targetConcurrency,
+    scaleDownAfterSeconds,
   };
 }
 

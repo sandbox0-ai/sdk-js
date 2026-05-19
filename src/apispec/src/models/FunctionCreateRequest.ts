@@ -20,6 +20,13 @@ import {
     FunctionSourceRequestToJSON,
     FunctionSourceRequestToJSONTyped,
 } from './FunctionSourceRequest';
+import type { FunctionAutoscaling } from './FunctionAutoscaling';
+import {
+    FunctionAutoscalingFromJSON,
+    FunctionAutoscalingFromJSONTyped,
+    FunctionAutoscalingToJSON,
+    FunctionAutoscalingToJSONTyped,
+} from './FunctionAutoscaling';
 
 /**
  * 
@@ -39,6 +46,12 @@ export interface FunctionCreateRequest {
      * @memberof FunctionCreateRequest
      */
     source: FunctionSourceRequest;
+    /**
+     * 
+     * @type {FunctionAutoscaling}
+     * @memberof FunctionCreateRequest
+     */
+    autoscaling?: FunctionAutoscaling;
 }
 
 /**
@@ -61,6 +74,7 @@ export function FunctionCreateRequestFromJSONTyped(json: any, ignoreDiscriminato
         
         'name': json['name'] == null ? undefined : json['name'],
         'source': FunctionSourceRequestFromJSON(json['source']),
+        'autoscaling': json['autoscaling'] == null ? undefined : FunctionAutoscalingFromJSON(json['autoscaling']),
     };
 }
 
@@ -77,6 +91,7 @@ export function FunctionCreateRequestToJSONTyped(value?: FunctionCreateRequest |
         
         'name': value['name'],
         'source': FunctionSourceRequestToJSON(value['source']),
+        'autoscaling': FunctionAutoscalingToJSON(value['autoscaling']),
     };
 }
 

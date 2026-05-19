@@ -10,9 +10,11 @@ Name | Type
 `revisionId` | string
 `revisionNumber` | number
 `state` | [FunctionRuntimeState](FunctionRuntimeState.md)
+`autoscaling` | [FunctionAutoscaling](FunctionAutoscaling.md)
 `runtimeSandboxId` | string
 `runtimeContextId` | string
 `runtimeUpdatedAt` | Date
+`instances` | [Array&lt;FunctionRuntimeInstance&gt;](FunctionRuntimeInstance.md)
 
 ## Example
 
@@ -25,9 +27,11 @@ const example = {
   "revisionId": null,
   "revisionNumber": null,
   "state": null,
+  "autoscaling": null,
   "runtimeSandboxId": null,
   "runtimeContextId": null,
   "runtimeUpdatedAt": null,
+  "instances": null,
 } satisfies FunctionRuntimeStatus
 
 console.log(example)

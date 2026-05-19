@@ -1,5 +1,5 @@
 
-# Function
+# FunctionRuntimeInstance
 
 
 ## Properties
@@ -8,37 +8,41 @@ Name | Type
 ------------ | -------------
 `id` | string
 `teamId` | string
-`name` | string
-`slug` | string
-`domainLabel` | string
-`activeRevisionId` | string
-`enabled` | boolean
-`autoscaling` | [FunctionAutoscaling](FunctionAutoscaling.md)
-`createdBy` | string
+`functionId` | string
+`revisionId` | string
+`sandboxId` | string
+`contextId` | string
+`state` | [FunctionRuntimeInstanceState](FunctionRuntimeInstanceState.md)
+`lastError` | string
+`readyAt` | Date
+`lastUsedAt` | Date
+`drainingAt` | Date
+`failedAt` | Date
 `createdAt` | Date
 `updatedAt` | Date
-`deletedAt` | Date
 
 ## Example
 
 ```typescript
-import type { Function } from 'sandbox0'
+import type { FunctionRuntimeInstance } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
   "id": null,
   "teamId": null,
-  "name": null,
-  "slug": null,
-  "domainLabel": null,
-  "activeRevisionId": null,
-  "enabled": null,
-  "autoscaling": null,
-  "createdBy": null,
+  "functionId": null,
+  "revisionId": null,
+  "sandboxId": null,
+  "contextId": null,
+  "state": null,
+  "lastError": null,
+  "readyAt": null,
+  "lastUsedAt": null,
+  "drainingAt": null,
+  "failedAt": null,
   "createdAt": null,
   "updatedAt": null,
-  "deletedAt": null,
-} satisfies Function
+} satisfies FunctionRuntimeInstance
 
 console.log(example)
 
@@ -47,7 +51,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as Function
+const exampleParsed = JSON.parse(exampleJSON) as FunctionRuntimeInstance
 console.log(exampleParsed)
 ```
 

@@ -8,6 +8,7 @@ Name | Type
 ------------ | -------------
 `name` | string
 `source` | [FunctionSourceRequest](FunctionSourceRequest.md)
+`autoscaling` | [FunctionAutoscaling](FunctionAutoscaling.md)
 
 ## Example
 
@@ -18,6 +19,7 @@ import type { FunctionCreateRequest } from 'sandbox0'
 const example = {
   "name": null,
   "source": null,
+  "autoscaling": null,
 } satisfies FunctionCreateRequest
 
 console.log(example)

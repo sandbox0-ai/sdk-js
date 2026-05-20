@@ -13,6 +13,20 @@
  */
 
 import { mapValues } from '../runtime';
+import type { FunctionRuntimeInstance } from './FunctionRuntimeInstance';
+import {
+    FunctionRuntimeInstanceFromJSON,
+    FunctionRuntimeInstanceFromJSONTyped,
+    FunctionRuntimeInstanceToJSON,
+    FunctionRuntimeInstanceToJSONTyped,
+} from './FunctionRuntimeInstance';
+import type { FunctionAutoscaling } from './FunctionAutoscaling';
+import {
+    FunctionAutoscalingFromJSON,
+    FunctionAutoscalingFromJSONTyped,
+    FunctionAutoscalingToJSON,
+    FunctionAutoscalingToJSONTyped,
+} from './FunctionAutoscaling';
 import type { FunctionRuntimeState } from './FunctionRuntimeState';
 import {
     FunctionRuntimeStateFromJSON,
@@ -52,13 +66,19 @@ export interface FunctionRuntimeStatus {
      */
     state: FunctionRuntimeState;
     /**
-     * Current restored runtime sandbox, if one exists.
+     * 
+     * @type {FunctionAutoscaling}
+     * @memberof FunctionRuntimeStatus
+     */
+    autoscaling: FunctionAutoscaling;
+    /**
+     * Compatibility summary for one current restored runtime sandbox, if one exists. Use instances for the full runtime pool.
      * @type {string}
      * @memberof FunctionRuntimeStatus
      */
     runtimeSandboxId?: string;
     /**
-     * Current runtime process context, if one exists.
+     * Compatibility summary for one current runtime process context, if one exists. Use instances for the full runtime pool.
      * @type {string}
      * @memberof FunctionRuntimeStatus
      */
@@ -69,6 +89,12 @@ export interface FunctionRuntimeStatus {
      * @memberof FunctionRuntimeStatus
      */
     runtimeUpdatedAt?: Date;
+    /**
+     * 
+     * @type {Array<FunctionRuntimeInstance>}
+     * @memberof FunctionRuntimeStatus
+     */
+    instances?: Array<FunctionRuntimeInstance>;
 }
 
 
@@ -81,6 +107,7 @@ export function instanceOfFunctionRuntimeStatus(value: object): value is Functio
     if (!('revisionId' in value) || value['revisionId'] === undefined) return false;
     if (!('revisionNumber' in value) || value['revisionNumber'] === undefined) return false;
     if (!('state' in value) || value['state'] === undefined) return false;
+    if (!('autoscaling' in value) || value['autoscaling'] === undefined) return false;
     return true;
 }
 
@@ -98,9 +125,11 @@ export function FunctionRuntimeStatusFromJSONTyped(json: any, ignoreDiscriminato
         'revisionId': json['revision_id'],
         'revisionNumber': json['revision_number'],
         'state': FunctionRuntimeStateFromJSON(json['state']),
+        'autoscaling': FunctionAutoscalingFromJSON(json['autoscaling']),
         'runtimeSandboxId': json['runtime_sandbox_id'] == null ? undefined : json['runtime_sandbox_id'],
         'runtimeContextId': json['runtime_context_id'] == null ? undefined : json['runtime_context_id'],
         'runtimeUpdatedAt': json['runtime_updated_at'] == null ? undefined : (new Date(json['runtime_updated_at'])),
+        'instances': json['instances'] == null ? undefined : ((json['instances'] as Array<any>).map(FunctionRuntimeInstanceFromJSON)),
     };
 }
 
@@ -119,9 +148,11 @@ export function FunctionRuntimeStatusToJSONTyped(value?: FunctionRuntimeStatus |
         'revision_id': value['revisionId'],
         'revision_number': value['revisionNumber'],
         'state': FunctionRuntimeStateToJSON(value['state']),
+        'autoscaling': FunctionAutoscalingToJSON(value['autoscaling']),
         'runtime_sandbox_id': value['runtimeSandboxId'],
         'runtime_context_id': value['runtimeContextId'],
         'runtime_updated_at': value['runtimeUpdatedAt'] == null ? value['runtimeUpdatedAt'] : value['runtimeUpdatedAt'].toISOString(),
+        'instances': value['instances'] == null ? undefined : ((value['instances'] as Array<any>).map(FunctionRuntimeInstanceToJSON)),
     };
 }
 

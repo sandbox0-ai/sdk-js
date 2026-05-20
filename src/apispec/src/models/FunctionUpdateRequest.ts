@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { FunctionAutoscaling } from './FunctionAutoscaling';
+import {
+    FunctionAutoscalingFromJSON,
+    FunctionAutoscalingFromJSONTyped,
+    FunctionAutoscalingToJSON,
+    FunctionAutoscalingToJSONTyped,
+} from './FunctionAutoscaling';
+
 /**
  * 
  * @export
@@ -31,6 +39,12 @@ export interface FunctionUpdateRequest {
      * @memberof FunctionUpdateRequest
      */
     enabled?: boolean;
+    /**
+     * 
+     * @type {FunctionAutoscaling}
+     * @memberof FunctionUpdateRequest
+     */
+    autoscaling?: FunctionAutoscaling;
 }
 
 /**
@@ -52,6 +66,7 @@ export function FunctionUpdateRequestFromJSONTyped(json: any, ignoreDiscriminato
         
         'name': json['name'] == null ? undefined : json['name'],
         'enabled': json['enabled'] == null ? undefined : json['enabled'],
+        'autoscaling': json['autoscaling'] == null ? undefined : FunctionAutoscalingFromJSON(json['autoscaling']),
     };
 }
 
@@ -68,6 +83,7 @@ export function FunctionUpdateRequestToJSONTyped(value?: FunctionUpdateRequest |
         
         'name': value['name'],
         'enabled': value['enabled'],
+        'autoscaling': FunctionAutoscalingToJSON(value['autoscaling']),
     };
 }
 

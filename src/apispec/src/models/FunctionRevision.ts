@@ -89,7 +89,7 @@ export interface FunctionRevision {
      */
     serviceSnapshot: SandboxAppService;
     /**
-     * Current restored runtime sandbox, when the source sandbox no longer exists.
+     * Current restored runtime sandbox serving the revision, if one exists.
      * @type {string}
      * @memberof FunctionRevision
      */

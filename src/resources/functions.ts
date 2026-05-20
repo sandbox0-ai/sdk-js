@@ -1,6 +1,7 @@
 import type {
   FunctionAlias,
   FunctionAliasUpdateRequest,
+  FunctionAutoscaling,
   FunctionCreateRequest,
   FunctionRecord,
   FunctionRuntimeStatus,
@@ -28,6 +29,7 @@ export interface FunctionRevisionCreateResult {
 
 export interface CreateFunctionFromSandboxOptions {
   name?: string;
+  autoscaling?: FunctionAutoscaling;
 }
 
 export interface CreateFunctionRevisionFromSandboxOptions {
@@ -95,10 +97,16 @@ export class Functions {
     serviceId: string,
     options: CreateFunctionFromSandboxOptions = {},
   ): Promise<FunctionCreateResult> {
-    return this.create({
-      name: options.name,
+    const request: FunctionCreateRequest = {
       source: functionSource(sandboxId, serviceId),
-    });
+    };
+    if (options.name !== undefined) {
+      request.name = options.name;
+    }
+    if (options.autoscaling !== undefined) {
+      request.autoscaling = options.autoscaling;
+    }
+    return this.create(request);
   }
 
   async listRevisions(functionId: string): Promise<FunctionRevision[]> {
@@ -209,6 +217,8 @@ export class Functions {
     return data.runtime;
   }
 }
+
+export type { FunctionAutoscaling };
 
 function toFunctionCreateResult(data: SuccessFunctionCreateResponseAllOfData): FunctionCreateResult {
   return {

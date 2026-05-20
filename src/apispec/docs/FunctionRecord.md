@@ -13,6 +13,7 @@ Name | Type
 `domainLabel` | string
 `activeRevisionId` | string
 `enabled` | boolean
+`autoscaling` | [FunctionAutoscaling](FunctionAutoscaling.md)
 `createdBy` | string
 `createdAt` | Date
 `updatedAt` | Date
@@ -34,6 +35,7 @@ const example = {
   "domainLabel": null,
   "activeRevisionId": null,
   "enabled": null,
+  "autoscaling": null,
   "createdBy": null,
   "createdAt": null,
   "updatedAt": null,

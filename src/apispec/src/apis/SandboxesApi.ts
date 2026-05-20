@@ -869,6 +869,7 @@ export const ApiV1SandboxesGetStatusEnum = {
     Starting: 'starting',
     Running: 'running',
     Failed: 'failed',
-    Completed: 'completed'
+    Completed: 'completed',
+    Terminating: 'terminating'
 } as const;
 export type ApiV1SandboxesGetStatusEnum = typeof ApiV1SandboxesGetStatusEnum[keyof typeof ApiV1SandboxesGetStatusEnum];

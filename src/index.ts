@@ -5,6 +5,7 @@ export { Functions, functionSource } from "./resources/functions";
 export type {
   CreateFunctionFromSandboxOptions,
   CreateFunctionRevisionFromSandboxOptions,
+  FunctionAutoscaling,
   FunctionCreateResult,
   FunctionRevisionCreateResult,
 } from "./resources/functions";

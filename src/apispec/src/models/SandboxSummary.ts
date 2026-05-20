@@ -91,7 +91,8 @@ export const SandboxSummaryStatusEnum = {
     Starting: 'starting',
     Running: 'running',
     Failed: 'failed',
-    Completed: 'completed'
+    Completed: 'completed',
+    Terminating: 'terminating'
 } as const;
 export type SandboxSummaryStatusEnum = typeof SandboxSummaryStatusEnum[keyof typeof SandboxSummaryStatusEnum];
 

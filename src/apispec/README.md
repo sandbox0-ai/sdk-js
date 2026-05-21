@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -239,10 +239,16 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [FunctionAliasUpdateRequest](docs/FunctionAliasUpdateRequest.md)
 - [FunctionAutoscaling](docs/FunctionAutoscaling.md)
 - [FunctionCreateRequest](docs/FunctionCreateRequest.md)
+- [FunctionEnvRef](docs/FunctionEnvRef.md)
 - [FunctionRecord](docs/FunctionRecord.md)
 - [FunctionRestoreMount](docs/FunctionRestoreMount.md)
 - [FunctionRevision](docs/FunctionRevision.md)
 - [FunctionRevisionCreateRequest](docs/FunctionRevisionCreateRequest.md)
+- [FunctionRevisionInputSourceType](docs/FunctionRevisionInputSourceType.md)
+- [FunctionRevisionMount](docs/FunctionRevisionMount.md)
+- [FunctionRevisionMountSource](docs/FunctionRevisionMountSource.md)
+- [FunctionRevisionSourceType](docs/FunctionRevisionSourceType.md)
+- [FunctionRevisionSpec](docs/FunctionRevisionSpec.md)
 - [FunctionRuntimeEvent](docs/FunctionRuntimeEvent.md)
 - [FunctionRuntimeInstance](docs/FunctionRuntimeInstance.md)
 - [FunctionRuntimeInstanceState](docs/FunctionRuntimeInstanceState.md)
@@ -250,7 +256,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [FunctionRuntimeReadinessState](docs/FunctionRuntimeReadinessState.md)
 - [FunctionRuntimeState](docs/FunctionRuntimeState.md)
 - [FunctionRuntimeStatus](docs/FunctionRuntimeStatus.md)
+- [FunctionSandboxServiceSource](docs/FunctionSandboxServiceSource.md)
 - [FunctionSourceRequest](docs/FunctionSourceRequest.md)
+- [FunctionStaticAsset](docs/FunctionStaticAsset.md)
 - [FunctionUpdateRequest](docs/FunctionUpdateRequest.md)
 - [GRPCAction](docs/GRPCAction.md)
 - [GatewayMetadata](docs/GatewayMetadata.md)

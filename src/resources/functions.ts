@@ -4,6 +4,8 @@ import type {
   FunctionAutoscaling,
   FunctionCreateRequest,
   FunctionRecord,
+  FunctionRevisionInputSourceType,
+  FunctionRevisionSpec,
   FunctionRuntimeStatus,
   FunctionRevision,
   FunctionRevisionCreateRequest,
@@ -40,6 +42,13 @@ export function functionSource(sandboxId: string, serviceId: string): FunctionSo
   return {
     sandboxId,
     serviceId,
+  };
+}
+
+export function functionRevisionSpecSource(spec: FunctionRevisionSpec): FunctionSourceRequest {
+  return {
+    type: "revision_spec" as FunctionRevisionInputSourceType,
+    revisionSpec: spec,
   };
 }
 
@@ -109,6 +118,22 @@ export class Functions {
     return this.create(request);
   }
 
+  async createFromRevisionSpec(
+    spec: FunctionRevisionSpec,
+    options: CreateFunctionFromSandboxOptions = {},
+  ): Promise<FunctionCreateResult> {
+    const request: FunctionCreateRequest = {
+      source: functionRevisionSpecSource(spec),
+    };
+    if (options.name !== undefined) {
+      request.name = options.name;
+    }
+    if (options.autoscaling !== undefined) {
+      request.autoscaling = options.autoscaling;
+    }
+    return this.create(request);
+  }
+
   async listRevisions(functionId: string): Promise<FunctionRevision[]> {
     const response = await wrapApiCall(() =>
       this.client.apispec.functions.apiV1FunctionsIdRevisionsGet({ id: functionId }),
@@ -151,6 +176,17 @@ export class Functions {
   ): Promise<FunctionRevisionCreateResult> {
     return this.createRevision(functionId, {
       source: functionSource(sandboxId, serviceId),
+      promote: options.promote,
+    });
+  }
+
+  async createRevisionFromSpec(
+    functionId: string,
+    spec: FunctionRevisionSpec,
+    options: CreateFunctionRevisionFromSandboxOptions = {},
+  ): Promise<FunctionRevisionCreateResult> {
+    return this.createRevision(functionId, {
+      source: functionRevisionSpecSource(spec),
       promote: options.promote,
     });
   }
@@ -218,7 +254,7 @@ export class Functions {
   }
 }
 
-export type { FunctionAutoscaling };
+export type { FunctionAutoscaling, FunctionRevisionSpec };
 
 function toFunctionCreateResult(data: SuccessFunctionCreateResponseAllOfData): FunctionCreateResult {
   return {

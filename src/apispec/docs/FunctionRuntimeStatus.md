@@ -10,11 +10,17 @@ Name | Type
 `revisionId` | string
 `revisionNumber` | number
 `state` | [FunctionRuntimeState](FunctionRuntimeState.md)
+`phase` | [FunctionRuntimePhase](FunctionRuntimePhase.md)
 `autoscaling` | [FunctionAutoscaling](FunctionAutoscaling.md)
+`readinessState` | [FunctionRuntimeReadinessState](FunctionRuntimeReadinessState.md)
 `runtimeSandboxId` | string
 `runtimeContextId` | string
 `runtimeUpdatedAt` | Date
+`startupDurationMs` | number
+`lastError` | string
+`lastErrorAt` | Date
 `instances` | [Array&lt;FunctionRuntimeInstance&gt;](FunctionRuntimeInstance.md)
+`recentEvents` | [Array&lt;FunctionRuntimeEvent&gt;](FunctionRuntimeEvent.md)
 
 ## Example
 
@@ -27,11 +33,17 @@ const example = {
   "revisionId": null,
   "revisionNumber": null,
   "state": null,
+  "phase": null,
   "autoscaling": null,
+  "readinessState": null,
   "runtimeSandboxId": null,
   "runtimeContextId": null,
   "runtimeUpdatedAt": null,
+  "startupDurationMs": null,
+  "lastError": null,
+  "lastErrorAt": null,
   "instances": null,
+  "recentEvents": null,
 } satisfies FunctionRuntimeStatus
 
 console.log(example)

@@ -1,5 +1,5 @@
 
-# FunctionRuntimeInstance
+# FunctionRuntimeEvent
 
 
 ## Properties
@@ -10,24 +10,20 @@ Name | Type
 `teamId` | string
 `functionId` | string
 `revisionId` | string
-`sandboxId` | string
-`contextId` | string
-`state` | [FunctionRuntimeInstanceState](FunctionRuntimeInstanceState.md)
+`runtimeInstanceId` | string
+`runtimeSandboxId` | string
+`runtimeContextId` | string
+`phase` | [FunctionRuntimePhase](FunctionRuntimePhase.md)
 `readinessState` | [FunctionRuntimeReadinessState](FunctionRuntimeReadinessState.md)
+`reason` | string
+`message` | string
 `startupDurationMs` | number
-`lastError` | string
-`lastErrorAt` | Date
-`readyAt` | Date
-`lastUsedAt` | Date
-`drainingAt` | Date
-`failedAt` | Date
 `createdAt` | Date
-`updatedAt` | Date
 
 ## Example
 
 ```typescript
-import type { FunctionRuntimeInstance } from 'sandbox0'
+import type { FunctionRuntimeEvent } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
@@ -35,20 +31,16 @@ const example = {
   "teamId": null,
   "functionId": null,
   "revisionId": null,
-  "sandboxId": null,
-  "contextId": null,
-  "state": null,
+  "runtimeInstanceId": null,
+  "runtimeSandboxId": null,
+  "runtimeContextId": null,
+  "phase": null,
   "readinessState": null,
+  "reason": null,
+  "message": null,
   "startupDurationMs": null,
-  "lastError": null,
-  "lastErrorAt": null,
-  "readyAt": null,
-  "lastUsedAt": null,
-  "drainingAt": null,
-  "failedAt": null,
   "createdAt": null,
-  "updatedAt": null,
-} satisfies FunctionRuntimeInstance
+} satisfies FunctionRuntimeEvent
 
 console.log(example)
 
@@ -57,7 +49,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as FunctionRuntimeInstance
+const exampleParsed = JSON.parse(exampleJSON) as FunctionRuntimeEvent
 console.log(exampleParsed)
 ```
 

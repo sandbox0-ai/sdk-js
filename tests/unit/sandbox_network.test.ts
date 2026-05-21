@@ -33,6 +33,25 @@ describe("sandbox network", () => {
             appProtocols: [models.TrafficRuleAppProtocol.TrafficRuleAppProtocolTls],
           },
         ],
+        protocolRules: [
+          {
+            name: "internal-mcp",
+            protocol: models.ProtocolRuleProtocol.ProtocolRuleProtocolMcp,
+            domains: ["api.internal.example.com"],
+            ports: [{ port: 443, protocol: "tcp" }],
+            tlsMode: models.EgressTLSMode.TerminateReoriginate,
+            httpMatch: {
+              methods: ["POST"],
+              paths: ["/mcp"],
+            },
+            mcp: {
+              tools: {
+                allowed: ["read_file"],
+                denied: ["run_command"],
+              },
+            },
+          },
+        ],
         proxy: {
           type: models.EgressProxyType.EgressProxyTypeSocks5,
           address: "proxy.example.com:1080",

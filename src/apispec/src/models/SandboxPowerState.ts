@@ -65,8 +65,8 @@ export type SandboxPowerStateDesiredEnum = typeof SandboxPowerStateDesiredEnum[k
  * @export
  */
 export const SandboxPowerStateObservedEnum = {
-    Active: 'active',
-    Paused: 'paused'
+    SandboxPowerStateObservedActive: 'active',
+    SandboxPowerStateObservedPaused: 'paused'
 } as const;
 export type SandboxPowerStateObservedEnum = typeof SandboxPowerStateObservedEnum[keyof typeof SandboxPowerStateObservedEnum];
 

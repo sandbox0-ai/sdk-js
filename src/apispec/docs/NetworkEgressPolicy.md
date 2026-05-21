@@ -14,6 +14,7 @@ Name | Type
 `deniedCidrs` | Array&lt;string&gt;
 `deniedPorts` | [Array&lt;PortSpec&gt;](PortSpec.md)
 `trafficRules` | [Array&lt;TrafficRule&gt;](TrafficRule.md)
+`protocolRules` | [Array&lt;ProtocolRule&gt;](ProtocolRule.md)
 `credentialRules` | [Array&lt;EgressCredentialRule&gt;](EgressCredentialRule.md)
 `proxy` | [EgressProxyPolicy](EgressProxyPolicy.md)
 
@@ -31,6 +32,7 @@ const example = {
   "deniedCidrs": null,
   "deniedPorts": null,
   "trafficRules": null,
+  "protocolRules": null,
   "credentialRules": null,
   "proxy": null,
 } satisfies NetworkEgressPolicy

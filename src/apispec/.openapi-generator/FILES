@@ -81,8 +81,11 @@ docs/FunctionRecord.md
 docs/FunctionRestoreMount.md
 docs/FunctionRevision.md
 docs/FunctionRevisionCreateRequest.md
+docs/FunctionRuntimeEvent.md
 docs/FunctionRuntimeInstance.md
 docs/FunctionRuntimeInstanceState.md
+docs/FunctionRuntimePhase.md
+docs/FunctionRuntimeReadinessState.md
 docs/FunctionRuntimeState.md
 docs/FunctionRuntimeStatus.md
 docs/FunctionSourceRequest.md
@@ -102,6 +105,8 @@ docs/LabelSelectorRequirement.md
 docs/LifecyclePolicy.md
 docs/LoginRequest.md
 docs/LoginResponse.md
+docs/MCPProtocolRule.md
+docs/MCPToolPolicy.md
 docs/ModelError.md
 docs/MountStatus.md
 docs/MoveFileRequest.md
@@ -124,6 +129,8 @@ docs/Probe.md
 docs/ProcessType.md
 docs/ProjectedHeader.md
 docs/ProjectionSpec.md
+docs/ProtocolRule.md
+docs/ProtocolRuleProtocol.md
 docs/REPLConfig.md
 docs/REPLEnvVar.md
 docs/REPLPromptConfig.md
@@ -392,8 +399,11 @@ src/models/FunctionRecord.ts
 src/models/FunctionRestoreMount.ts
 src/models/FunctionRevision.ts
 src/models/FunctionRevisionCreateRequest.ts
+src/models/FunctionRuntimeEvent.ts
 src/models/FunctionRuntimeInstance.ts
 src/models/FunctionRuntimeInstanceState.ts
+src/models/FunctionRuntimePhase.ts
+src/models/FunctionRuntimeReadinessState.ts
 src/models/FunctionRuntimeState.ts
 src/models/FunctionRuntimeStatus.ts
 src/models/FunctionSourceRequest.ts
@@ -411,6 +421,8 @@ src/models/LabelSelectorRequirement.ts
 src/models/LifecyclePolicy.ts
 src/models/LoginRequest.ts
 src/models/LoginResponse.ts
+src/models/MCPProtocolRule.ts
+src/models/MCPToolPolicy.ts
 src/models/ModelError.ts
 src/models/MountStatus.ts
 src/models/MoveFileRequest.ts
@@ -433,6 +445,8 @@ src/models/Probe.ts
 src/models/ProcessType.ts
 src/models/ProjectedHeader.ts
 src/models/ProjectionSpec.ts
+src/models/ProtocolRule.ts
+src/models/ProtocolRuleProtocol.ts
 src/models/REPLConfig.ts
 src/models/REPLEnvVar.ts
 src/models/REPLPromptConfig.ts

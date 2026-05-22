@@ -10,6 +10,9 @@ Name | Type
 `functionId` | string
 `teamId` | string
 `revisionNumber` | number
+`sourceType` | [FunctionRevisionSourceType](FunctionRevisionSourceType.md)
+`revisionSpec` | [FunctionRevisionSpec](FunctionRevisionSpec.md)
+`provenance` | { [key: string]: any; }
 `sourceSandboxId` | string
 `sourceServiceId` | string
 `sourceTemplateId` | string
@@ -32,6 +35,9 @@ const example = {
   "functionId": null,
   "teamId": null,
   "revisionNumber": null,
+  "sourceType": null,
+  "revisionSpec": null,
+  "provenance": null,
   "sourceSandboxId": null,
   "sourceServiceId": null,
   "sourceTemplateId": null,

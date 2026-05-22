@@ -47,6 +47,37 @@ describe("Functions resource", () => {
     assert.strictEqual(result.alias.alias, "production");
   });
 
+  it("creates a function from a revision spec", async () => {
+    let gotRequest: unknown;
+    const client = {
+      apispec: {
+        functions: {
+          apiV1FunctionsPost: async ({ functionCreateRequest }: { functionCreateRequest: unknown }) => {
+            gotRequest = functionCreateRequest;
+            return {
+              data: {
+                _function: functionRecord(),
+                revision: functionRevision(1),
+                alias: functionAlias(1),
+              },
+            };
+          },
+        },
+      },
+    } as any;
+
+    const functions = new Functions(client);
+    await functions.createFromRevisionSpec(functionRevisionSpec(), { name: "web-fn" });
+
+    assert.deepStrictEqual(gotRequest, {
+      name: "web-fn",
+      source: {
+        type: "revision_spec",
+        revisionSpec: functionRevisionSpec(),
+      },
+    });
+  });
+
   it("lists revisions and moves aliases", async () => {
     const calls: string[] = [];
     const client = {
@@ -137,6 +168,9 @@ describe("Functions resource", () => {
     const created = await functions.createRevisionFromSandbox("fn-1", "sbx-1", "web-v2", {
       promote: false,
     });
+    await functions.createRevisionFromSpec("fn-1", functionRevisionSpec(), {
+      promote: false,
+    });
     const aliases = await functions.listAliases("fn-1");
     const gotAlias = await functions.getAlias("fn-1", "production");
     const alias = await functions.setAlias("fn-1", "production", 2);
@@ -151,6 +185,7 @@ describe("Functions resource", () => {
       "list:fn-1",
       "get-revision:fn-1:2",
       'create:fn-1:{"source":{"sandboxId":"sbx-1","serviceId":"web-v2"},"promote":false}',
+      'create:fn-1:{"source":{"type":"revision_spec","revisionSpec":{"templateId":"default","runtimeService":{"id":"web","port":8080},"mounts":[],"staticAssets":[],"envRefs":[]}},"promote":false}',
       "aliases:fn-1",
       "get-alias:fn-1:production",
       "alias:fn-1:production:2",
@@ -282,6 +317,8 @@ function functionRevision(revisionNumber: number) {
     functionId: "fn-1",
     teamId: "team-1",
     revisionNumber,
+    sourceType: "sandbox_service",
+    revisionSpec: functionRevisionSpec(),
     sourceSandboxId: "sbx-1",
     sourceServiceId: "web",
     sourceTemplateId: "default",
@@ -292,6 +329,19 @@ function functionRevision(revisionNumber: number) {
       ingress: { public: true },
     },
     createdAt: new Date("2026-05-14T00:00:00Z"),
+  };
+}
+
+function functionRevisionSpec() {
+  return {
+    templateId: "default",
+    runtimeService: {
+      id: "web",
+      port: 8080,
+    },
+    mounts: [],
+    staticAssets: [],
+    envRefs: [],
   };
 }
 

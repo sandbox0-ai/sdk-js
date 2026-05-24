@@ -1661,8 +1661,8 @@ paths:
                 $ref: "#/components/schemas/SuccessFunctionListResponse"
     post:
       tags: [functions]
-      summary: Create a function from a sandbox service
-      description: Creates a function, revision 1, and the production alias from an existing sandbox service.
+      summary: Create a function
+      description: Creates a function, revision 1, and the production alias from a sandbox-service shortcut or an explicit FunctionRevisionSpec.
       security:
         - bearerAuth: []
       requestBody:
@@ -1679,7 +1679,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SuccessFunctionCreateResponse"
         "400":
-          description: Source service is invalid or not publishable
+          description: Function source is invalid or not publishable
           content:
             application/json:
               schema:
@@ -1791,7 +1791,8 @@ paths:
                 $ref: "#/components/schemas/SuccessFunctionRevisionListResponse"
     post:
       tags: [functions]
-      summary: Create function revision from a sandbox service
+      summary: Create function revision
+      description: Creates a function revision from a sandbox-service shortcut or an explicit FunctionRevisionSpec.
       security:
         - bearerAuth: []
       parameters:
@@ -2809,6 +2810,35 @@ paths:
       responses:
         "101":
           description: Switching Protocols
+  /api/v1/sandboxvolumes/{id}/files/archive:
+    put:
+      tags: [files]
+      summary: Import a tar archive into a volume
+      description: |
+        Streams a tar archive into a volume path. The archive is extracted under the `path` query parameter.
+        Regular files overwrite existing files. Directories are created as needed. The import is not atomic;
+        deployment flows should import into a fresh volume when rollback is required.
+      security:
+        - bearerAuth: []
+      x-upstream-service: storage-proxy
+      x-upstream-path: /sandboxvolumes/{id}/files/archive
+      parameters:
+        - $ref: "#/components/parameters/SandboxVolumeID"
+        - $ref: "#/components/parameters/FilePath"
+      requestBody:
+        required: true
+        content:
+          application/x-tar:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: Archive imported
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessVolumeFileArchiveImportResponse"
   /api/v1/sandboxvolumes/{id}/files:
     get:
       tags: [files]
@@ -5373,6 +5403,29 @@ components:
                   type: array
                   items:
                     $ref: "#/components/schemas/FileInfo"
+    VolumeFileArchiveImportResponse:
+      type: object
+      properties:
+        files:
+          type: integer
+          format: int64
+        directories:
+          type: integer
+          format: int64
+        symlinks:
+          type: integer
+          format: int64
+        bytes:
+          type: integer
+          format: int64
+      required: [files, directories, symlinks, bytes]
+    SuccessVolumeFileArchiveImportResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/VolumeFileArchiveImportResponse"
     MoveFileRequest:
       type: object
       properties:

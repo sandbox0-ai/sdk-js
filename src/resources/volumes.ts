@@ -12,6 +12,7 @@ import type {
   SuccessFileReadResponse,
   SuccessRestoreResponse,
   SuccessMovedResponse,
+  VolumeFileArchiveImportResponse,
   SuccessWrittenResponse,
 } from "../apispec/src/models/index";
 import { models } from "../apispec_compat";
@@ -199,6 +200,22 @@ export class Volumes {
       }),
     );
     return ensureModel(response, "write volume file returned empty response");
+  }
+
+  async importArchive(
+    volumeId: string,
+    path: string,
+    archive: Blob | Uint8Array | ArrayBuffer | string,
+  ): Promise<VolumeFileArchiveImportResponse> {
+    const body = archive instanceof Blob ? archive : new Blob([archive as BlobPart]);
+    const response = await wrapApiCall(() =>
+      this.client.apispec.files.apiV1SandboxvolumesIdFilesArchivePut({
+        id: volumeId,
+        path,
+        body,
+      }),
+    );
+    return ensureData(response, "import volume archive returned empty response");
   }
 
   async mkdir(

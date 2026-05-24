@@ -88,6 +88,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *FilesApi* | [**apiV1SandboxesIdFilesPost**](docs/FilesApi.md#apiv1sandboxesidfilespost) | **POST** /api/v1/sandboxes/{id}/files | Write file or create directory
 *FilesApi* | [**apiV1SandboxesIdFilesStatGet**](docs/FilesApi.md#apiv1sandboxesidfilesstatget) | **GET** /api/v1/sandboxes/{id}/files/stat | Stat a file
 *FilesApi* | [**apiV1SandboxesIdFilesWatchGet**](docs/FilesApi.md#apiv1sandboxesidfileswatchget) | **GET** /api/v1/sandboxes/{id}/files/watch | File watch WebSocket
+*FilesApi* | [**apiV1SandboxvolumesIdFilesArchivePut**](docs/FilesApi.md#apiv1sandboxvolumesidfilesarchiveput) | **PUT** /api/v1/sandboxvolumes/{id}/files/archive | Import a tar archive into a volume
 *FilesApi* | [**apiV1SandboxvolumesIdFilesDelete**](docs/FilesApi.md#apiv1sandboxvolumesidfilesdelete) | **DELETE** /api/v1/sandboxvolumes/{id}/files | Delete volume file or directory
 *FilesApi* | [**apiV1SandboxvolumesIdFilesGet**](docs/FilesApi.md#apiv1sandboxvolumesidfilesget) | **GET** /api/v1/sandboxvolumes/{id}/files | Read volume file content
 *FilesApi* | [**apiV1SandboxvolumesIdFilesListGet**](docs/FilesApi.md#apiv1sandboxvolumesidfileslistget) | **GET** /api/v1/sandboxvolumes/{id}/files/list | List volume directory entries
@@ -103,12 +104,12 @@ All URIs are relative to *https://api.sandbox0.ai*
 *FunctionsApi* | [**apiV1FunctionsIdGet**](docs/FunctionsApi.md#apiv1functionsidget) | **GET** /api/v1/functions/{id} | Get function
 *FunctionsApi* | [**apiV1FunctionsIdPut**](docs/FunctionsApi.md#apiv1functionsidput) | **PUT** /api/v1/functions/{id} | Update function lifecycle state
 *FunctionsApi* | [**apiV1FunctionsIdRevisionsGet**](docs/FunctionsApi.md#apiv1functionsidrevisionsget) | **GET** /api/v1/functions/{id}/revisions | List function revisions
-*FunctionsApi* | [**apiV1FunctionsIdRevisionsPost**](docs/FunctionsApi.md#apiv1functionsidrevisionspost) | **POST** /api/v1/functions/{id}/revisions | Create function revision from a sandbox service
+*FunctionsApi* | [**apiV1FunctionsIdRevisionsPost**](docs/FunctionsApi.md#apiv1functionsidrevisionspost) | **POST** /api/v1/functions/{id}/revisions | Create function revision
 *FunctionsApi* | [**apiV1FunctionsIdRevisionsRevisionNumberGet**](docs/FunctionsApi.md#apiv1functionsidrevisionsrevisionnumberget) | **GET** /api/v1/functions/{id}/revisions/{revision_number} | Get function revision
 *FunctionsApi* | [**apiV1FunctionsIdRuntimeGet**](docs/FunctionsApi.md#apiv1functionsidruntimeget) | **GET** /api/v1/functions/{id}/runtime | Get active function runtime
 *FunctionsApi* | [**apiV1FunctionsIdRuntimeRecyclePost**](docs/FunctionsApi.md#apiv1functionsidruntimerecyclepost) | **POST** /api/v1/functions/{id}/runtime/recycle | Recycle active function runtime
 *FunctionsApi* | [**apiV1FunctionsIdRuntimeRestartPost**](docs/FunctionsApi.md#apiv1functionsidruntimerestartpost) | **POST** /api/v1/functions/{id}/runtime/restart | Restart active function runtime
-*FunctionsApi* | [**apiV1FunctionsPost**](docs/FunctionsApi.md#apiv1functionspost) | **POST** /api/v1/functions | Create a function from a sandbox service
+*FunctionsApi* | [**apiV1FunctionsPost**](docs/FunctionsApi.md#apiv1functionspost) | **POST** /api/v1/functions | Create a function
 *HealthApi* | [**healthzGet**](docs/HealthApi.md#healthzget) | **GET** /healthz | Health check
 *HealthApi* | [**metadataGet**](docs/HealthApi.md#metadataget) | **GET** /metadata | Gateway metadata
 *HealthApi* | [**metricsGet**](docs/HealthApi.md#metricsget) | **GET** /metrics | Prometheus metrics
@@ -443,6 +444,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessTemplateListResponseAllOfData](docs/SuccessTemplateListResponseAllOfData.md)
 - [SuccessTemplateResponse](docs/SuccessTemplateResponse.md)
 - [SuccessUserResponse](docs/SuccessUserResponse.md)
+- [SuccessVolumeFileArchiveImportResponse](docs/SuccessVolumeFileArchiveImportResponse.md)
 - [SuccessWrittenResponse](docs/SuccessWrittenResponse.md)
 - [SuccessWrittenResponseAllOfData](docs/SuccessWrittenResponseAllOfData.md)
 - [TCPSocketAction](docs/TCPSocketAction.md)
@@ -461,6 +463,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [UpdateUserRequest](docs/UpdateUserRequest.md)
 - [User](docs/User.md)
 - [VolumeAccessMode](docs/VolumeAccessMode.md)
+- [VolumeFileArchiveImportResponse](docs/VolumeFileArchiveImportResponse.md)
 - [VolumeMountSpec](docs/VolumeMountSpec.md)
 - [WarmProcessSpec](docs/WarmProcessSpec.md)
 - [WebLoginExchangeRequest](docs/WebLoginExchangeRequest.md)

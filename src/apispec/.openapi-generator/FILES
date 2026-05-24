@@ -288,6 +288,7 @@ docs/SuccessTemplateListResponse.md
 docs/SuccessTemplateListResponseAllOfData.md
 docs/SuccessTemplateResponse.md
 docs/SuccessUserResponse.md
+docs/SuccessVolumeFileArchiveImportResponse.md
 docs/SuccessWrittenResponse.md
 docs/SuccessWrittenResponseAllOfData.md
 docs/TCPSocketAction.md
@@ -309,6 +310,7 @@ docs/UpdateUserRequest.md
 docs/User.md
 docs/UsersApi.md
 docs/VolumeAccessMode.md
+docs/VolumeFileArchiveImportResponse.md
 docs/VolumeMountSpec.md
 docs/WarmProcessSpec.md
 docs/WebLoginExchangeRequest.md
@@ -607,6 +609,7 @@ src/models/SuccessTemplateListResponse.ts
 src/models/SuccessTemplateListResponseAllOfData.ts
 src/models/SuccessTemplateResponse.ts
 src/models/SuccessUserResponse.ts
+src/models/SuccessVolumeFileArchiveImportResponse.ts
 src/models/SuccessWrittenResponse.ts
 src/models/SuccessWrittenResponseAllOfData.ts
 src/models/TCPSocketAction.ts
@@ -625,6 +628,7 @@ src/models/UpdateTeamRequest.ts
 src/models/UpdateUserRequest.ts
 src/models/User.ts
 src/models/VolumeAccessMode.ts
+src/models/VolumeFileArchiveImportResponse.ts
 src/models/VolumeMountSpec.ts
 src/models/WarmProcessSpec.ts
 src/models/WebLoginExchangeRequest.ts

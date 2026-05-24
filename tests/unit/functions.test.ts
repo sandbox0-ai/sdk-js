@@ -185,7 +185,7 @@ describe("Functions resource", () => {
       "list:fn-1",
       "get-revision:fn-1:2",
       'create:fn-1:{"source":{"sandboxId":"sbx-1","serviceId":"web-v2"},"promote":false}',
-      'create:fn-1:{"source":{"type":"revision_spec","revisionSpec":{"templateId":"default","runtimeService":{"id":"web","port":8080},"mounts":[],"staticAssets":[],"envRefs":[]}},"promote":false}',
+      `create:fn-1:${JSON.stringify({ source: { type: "revision_spec", revisionSpec: functionRevisionSpec() }, promote: false })}`,
       "aliases:fn-1",
       "get-alias:fn-1:production",
       "alias:fn-1:production:2",
@@ -326,7 +326,7 @@ function functionRevision(revisionNumber: number) {
     serviceSnapshot: {
       id: "web",
       port: 8080,
-      ingress: { public: true },
+      ingress: { _public: true },
     },
     createdAt: new Date("2026-05-14T00:00:00Z"),
   };
@@ -338,6 +338,7 @@ function functionRevisionSpec() {
     runtimeService: {
       id: "web",
       port: 8080,
+      ingress: { _public: true },
     },
     mounts: [],
     staticAssets: [],

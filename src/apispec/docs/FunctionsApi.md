@@ -12,12 +12,12 @@ All URIs are relative to *https://api.sandbox0.ai*
 | [**apiV1FunctionsIdGet**](FunctionsApi.md#apiv1functionsidget) | **GET** /api/v1/functions/{id} | Get function |
 | [**apiV1FunctionsIdPut**](FunctionsApi.md#apiv1functionsidput) | **PUT** /api/v1/functions/{id} | Update function lifecycle state |
 | [**apiV1FunctionsIdRevisionsGet**](FunctionsApi.md#apiv1functionsidrevisionsget) | **GET** /api/v1/functions/{id}/revisions | List function revisions |
-| [**apiV1FunctionsIdRevisionsPost**](FunctionsApi.md#apiv1functionsidrevisionspost) | **POST** /api/v1/functions/{id}/revisions | Create function revision from a sandbox service |
+| [**apiV1FunctionsIdRevisionsPost**](FunctionsApi.md#apiv1functionsidrevisionspost) | **POST** /api/v1/functions/{id}/revisions | Create function revision |
 | [**apiV1FunctionsIdRevisionsRevisionNumberGet**](FunctionsApi.md#apiv1functionsidrevisionsrevisionnumberget) | **GET** /api/v1/functions/{id}/revisions/{revision_number} | Get function revision |
 | [**apiV1FunctionsIdRuntimeGet**](FunctionsApi.md#apiv1functionsidruntimeget) | **GET** /api/v1/functions/{id}/runtime | Get active function runtime |
 | [**apiV1FunctionsIdRuntimeRecyclePost**](FunctionsApi.md#apiv1functionsidruntimerecyclepost) | **POST** /api/v1/functions/{id}/runtime/recycle | Recycle active function runtime |
 | [**apiV1FunctionsIdRuntimeRestartPost**](FunctionsApi.md#apiv1functionsidruntimerestartpost) | **POST** /api/v1/functions/{id}/runtime/restart | Restart active function runtime |
-| [**apiV1FunctionsPost**](FunctionsApi.md#apiv1functionspost) | **POST** /api/v1/functions | Create a function from a sandbox service |
+| [**apiV1FunctionsPost**](FunctionsApi.md#apiv1functionspost) | **POST** /api/v1/functions | Create a function |
 
 
 
@@ -38,7 +38,7 @@ import type { ApiV1FunctionsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -99,7 +99,7 @@ import type { ApiV1FunctionsIdAliasesAliasGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -172,7 +172,7 @@ import type { ApiV1FunctionsIdAliasesAliasPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -247,7 +247,7 @@ import type { ApiV1FunctionsIdAliasesGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -318,7 +318,7 @@ import type { ApiV1FunctionsIdDeleteRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -388,7 +388,7 @@ import type { ApiV1FunctionsIdGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -458,7 +458,7 @@ import type { ApiV1FunctionsIdPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -531,7 +531,7 @@ import type { ApiV1FunctionsIdRevisionsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -587,7 +587,9 @@ example().catch(console.error);
 
 > SuccessFunctionRevisionCreateResponse apiV1FunctionsIdRevisionsPost(id, functionRevisionCreateRequest)
 
-Create function revision from a sandbox service
+Create function revision
+
+Creates a function revision from a sandbox-service shortcut or an explicit FunctionRevisionSpec.
 
 ### Example
 
@@ -600,7 +602,7 @@ import type { ApiV1FunctionsIdRevisionsPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -672,7 +674,7 @@ import type { ApiV1FunctionsIdRevisionsRevisionNumberGetRequest } from 'sandbox0
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -745,7 +747,7 @@ import type { ApiV1FunctionsIdRuntimeGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -816,7 +818,7 @@ import type { ApiV1FunctionsIdRuntimeRecyclePostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -887,7 +889,7 @@ import type { ApiV1FunctionsIdRuntimeRestartPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -943,9 +945,9 @@ example().catch(console.error);
 
 > SuccessFunctionCreateResponse apiV1FunctionsPost(functionCreateRequest)
 
-Create a function from a sandbox service
+Create a function
 
-Creates a function, revision 1, and the production alias from an existing sandbox service.
+Creates a function, revision 1, and the production alias from a sandbox-service shortcut or an explicit FunctionRevisionSpec.
 
 ### Example
 
@@ -958,7 +960,7 @@ import type { ApiV1FunctionsPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -1006,7 +1008,7 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | Function created |  -  |
-| **400** | Source service is invalid or not publishable |  -  |
+| **400** | Function source is invalid or not publishable |  -  |
 | **409** | Function name already exists |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)

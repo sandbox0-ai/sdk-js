@@ -89,6 +89,12 @@ export interface SandboxAppServiceView {
      * @memberof SandboxAppServiceView
      */
     publishBlockers?: Array<string>;
+    /**
+     * Public HTTPS URL for this service when public exposure is enabled.
+     * @type {string}
+     * @memberof SandboxAppServiceView
+     */
+    publicUrl?: string;
 }
 
 /**
@@ -120,6 +126,7 @@ export function SandboxAppServiceViewFromJSONTyped(json: any, ignoreDiscriminato
         'healthCheck': json['health_check'] == null ? undefined : SandboxAppServiceHealthFromJSON(json['health_check']),
         'publishable': json['publishable'],
         'publishBlockers': json['publish_blockers'] == null ? undefined : json['publish_blockers'],
+        'publicUrl': json['public_url'] == null ? undefined : json['public_url'],
     };
 }
 
@@ -142,6 +149,7 @@ export function SandboxAppServiceViewToJSONTyped(value?: SandboxAppServiceView |
         'health_check': SandboxAppServiceHealthToJSON(value['healthCheck']),
         'publishable': value['publishable'],
         'publish_blockers': value['publishBlockers'],
+        'public_url': value['publicUrl'],
     };
 }
 

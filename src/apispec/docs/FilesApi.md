@@ -39,7 +39,7 @@ import type { ApiV1SandboxesIdFilesDeleteRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -100,7 +100,7 @@ example().catch(console.error);
 
 Read file content
 
-Use query params: - path&#x3D;/tmp/a.txt: target file path When &#x60;Accept&#x60; or &#x60;Content-Type&#x60; is &#x60;application/json&#x60;, returns a base64 JSON payload.
+Use query params: - path&#x3D;/tmp/a.txt: target file path When &#x60;Accept&#x60; or &#x60;Content-Type&#x60; is &#x60;application/json&#x60;, returns a base64 JSON payload. 
 
 ### Example
 
@@ -113,7 +113,7 @@ import type { ApiV1SandboxesIdFilesGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -174,7 +174,7 @@ example().catch(console.error);
 
 List directory entries
 
-Use query params: - path&#x3D;/tmp: target directory path
+Use query params: - path&#x3D;/tmp: target directory path 
 
 ### Example
 
@@ -187,7 +187,7 @@ import type { ApiV1SandboxesIdFilesListGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -259,7 +259,7 @@ import type { ApiV1SandboxesIdFilesMovePostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -333,7 +333,7 @@ import type { ApiV1SandboxesIdFilesPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -404,7 +404,7 @@ example().catch(console.error);
 
 Stat a file
 
-Use query params: - path&#x3D;/tmp/a.txt: target file path
+Use query params: - path&#x3D;/tmp/a.txt: target file path 
 
 ### Example
 
@@ -417,7 +417,7 @@ import type { ApiV1SandboxesIdFilesStatGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -478,7 +478,7 @@ example().catch(console.error);
 
 File watch WebSocket
 
-Upgrades to WebSocket for file watch events. Client messages: - { \&quot;action\&quot;: \&quot;subscribe\&quot;, \&quot;path\&quot;: \&quot;/tmp\&quot;, \&quot;recursive\&quot;: false } - { \&quot;action\&quot;: \&quot;unsubscribe\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot; } Server messages: - { \&quot;type\&quot;: \&quot;subscribed\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot;, \&quot;path\&quot;: \&quot;/tmp\&quot; } - { \&quot;type\&quot;: \&quot;event\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot;, \&quot;event\&quot;: \&quot;write\&quot;, \&quot;path\&quot;: \&quot;/tmp/a.txt\&quot; } - { \&quot;type\&quot;: \&quot;unsubscribed\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot; } - { \&quot;type\&quot;: \&quot;error\&quot;, \&quot;error\&quot;: \&quot;message\&quot; }
+Upgrades to WebSocket for file watch events. Client messages: - { \&quot;action\&quot;: \&quot;subscribe\&quot;, \&quot;path\&quot;: \&quot;/tmp\&quot;, \&quot;recursive\&quot;: false } - { \&quot;action\&quot;: \&quot;unsubscribe\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot; } Server messages: - { \&quot;type\&quot;: \&quot;subscribed\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot;, \&quot;path\&quot;: \&quot;/tmp\&quot; } - { \&quot;type\&quot;: \&quot;event\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot;, \&quot;event\&quot;: \&quot;write\&quot;, \&quot;path\&quot;: \&quot;/tmp/a.txt\&quot; } - { \&quot;type\&quot;: \&quot;unsubscribed\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot; } - { \&quot;type\&quot;: \&quot;error\&quot;, \&quot;error\&quot;: \&quot;message\&quot; } 
 
 ### Example
 
@@ -491,7 +491,7 @@ import type { ApiV1SandboxesIdFilesWatchGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -549,7 +549,7 @@ example().catch(console.error);
 
 Import a tar archive into a volume
 
-Streams a tar archive into a volume path. The archive is extracted under the &#x60;path&#x60; query parameter. Regular files overwrite existing files. Directories are created as needed. The import is not atomic; deployment flows should import into a fresh volume when rollback is required.
+Streams a tar archive into a volume path. The archive is extracted under the &#x60;path&#x60; query parameter. Regular files overwrite existing files. Directories are created as needed. The import is not atomic; deployment flows should import into a fresh volume when rollback is required. 
 
 ### Example
 
@@ -562,7 +562,7 @@ import type { ApiV1SandboxvolumesIdFilesArchivePutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -637,7 +637,7 @@ import type { ApiV1SandboxvolumesIdFilesDeleteRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -698,7 +698,7 @@ example().catch(console.error);
 
 Read volume file content
 
-Use query params: - path&#x3D;/tmp/a.txt: target file path relative to the volume root When &#x60;Accept&#x60; or &#x60;Content-Type&#x60; is &#x60;application/json&#x60;, returns a base64 JSON payload.
+Use query params: - path&#x3D;/tmp/a.txt: target file path relative to the volume root When &#x60;Accept&#x60; or &#x60;Content-Type&#x60; is &#x60;application/json&#x60;, returns a base64 JSON payload. 
 
 ### Example
 
@@ -711,7 +711,7 @@ import type { ApiV1SandboxvolumesIdFilesGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -772,7 +772,7 @@ example().catch(console.error);
 
 List volume directory entries
 
-Use query params: - path&#x3D;/tmp: target directory path relative to the volume root
+Use query params: - path&#x3D;/tmp: target directory path relative to the volume root 
 
 ### Example
 
@@ -785,7 +785,7 @@ import type { ApiV1SandboxvolumesIdFilesListGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -857,7 +857,7 @@ import type { ApiV1SandboxvolumesIdFilesMovePostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -931,7 +931,7 @@ import type { ApiV1SandboxvolumesIdFilesPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -1002,7 +1002,7 @@ example().catch(console.error);
 
 Stat a volume file
 
-Use query params: - path&#x3D;/tmp/a.txt: target file path relative to the volume root
+Use query params: - path&#x3D;/tmp/a.txt: target file path relative to the volume root 
 
 ### Example
 
@@ -1015,7 +1015,7 @@ import type { ApiV1SandboxvolumesIdFilesStatGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -1076,7 +1076,7 @@ example().catch(console.error);
 
 Volume file watch WebSocket
 
-Upgrades to WebSocket for volume file watch events. Client messages: - { \&quot;action\&quot;: \&quot;subscribe\&quot;, \&quot;path\&quot;: \&quot;/tmp\&quot;, \&quot;recursive\&quot;: false } - { \&quot;action\&quot;: \&quot;unsubscribe\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot; } Server messages: - { \&quot;type\&quot;: \&quot;subscribed\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot;, \&quot;path\&quot;: \&quot;/tmp\&quot; } - { \&quot;type\&quot;: \&quot;event\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot;, \&quot;event\&quot;: \&quot;write\&quot;, \&quot;path\&quot;: \&quot;/tmp/a.txt\&quot; } - { \&quot;type\&quot;: \&quot;unsubscribed\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot; } - { \&quot;type\&quot;: \&quot;error\&quot;, \&quot;error\&quot;: \&quot;message\&quot; }
+Upgrades to WebSocket for volume file watch events. Client messages: - { \&quot;action\&quot;: \&quot;subscribe\&quot;, \&quot;path\&quot;: \&quot;/tmp\&quot;, \&quot;recursive\&quot;: false } - { \&quot;action\&quot;: \&quot;unsubscribe\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot; } Server messages: - { \&quot;type\&quot;: \&quot;subscribed\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot;, \&quot;path\&quot;: \&quot;/tmp\&quot; } - { \&quot;type\&quot;: \&quot;event\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot;, \&quot;event\&quot;: \&quot;write\&quot;, \&quot;path\&quot;: \&quot;/tmp/a.txt\&quot; } - { \&quot;type\&quot;: \&quot;unsubscribed\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot; } - { \&quot;type\&quot;: \&quot;error\&quot;, \&quot;error\&quot;: \&quot;message\&quot; } 
 
 ### Example
 
@@ -1089,7 +1089,7 @@ import type { ApiV1SandboxvolumesIdFilesWatchGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });

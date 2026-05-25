@@ -712,7 +712,7 @@ export class SandboxesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Replaces the sandbox services used for public exposure and function publishing.
+     * Replaces the sandbox services used for public exposure.
      * Replace sandbox services
      */
     async apiV1SandboxesIdServicesPutRaw(requestParameters: ApiV1SandboxesIdServicesPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxServicesResponse>> {
@@ -760,7 +760,7 @@ export class SandboxesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Replaces the sandbox services used for public exposure and function publishing.
+     * Replaces the sandbox services used for public exposure.
      * Replace sandbox services
      */
     async apiV1SandboxesIdServicesPut(requestParameters: ApiV1SandboxesIdServicesPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxServicesResponse> {

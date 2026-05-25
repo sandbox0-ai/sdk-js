@@ -1,5 +1,5 @@
 
-# SuccessFunctionResponse
+# SuccessTeamQuotaResponse
 
 
 ## Properties
@@ -7,18 +7,18 @@
 Name | Type
 ------------ | -------------
 `success` | boolean
-`data` | [SuccessFunctionResponseAllOfData](SuccessFunctionResponseAllOfData.md)
+`data` | [TeamQuota](TeamQuota.md)
 
 ## Example
 
 ```typescript
-import type { SuccessFunctionResponse } from 'sandbox0'
+import type { SuccessTeamQuotaResponse } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
   "success": null,
   "data": null,
-} satisfies SuccessFunctionResponse
+} satisfies SuccessTeamQuotaResponse
 
 console.log(example)
 
@@ -27,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SuccessFunctionResponse
+const exampleParsed = JSON.parse(exampleJSON) as SuccessTeamQuotaResponse
 console.log(exampleParsed)
 ```
 

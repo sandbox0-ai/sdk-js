@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -96,24 +96,13 @@ All URIs are relative to *https://api.sandbox0.ai*
 *FilesApi* | [**apiV1SandboxvolumesIdFilesPost**](docs/FilesApi.md#apiv1sandboxvolumesidfilespost) | **POST** /api/v1/sandboxvolumes/{id}/files | Write volume file or create directory
 *FilesApi* | [**apiV1SandboxvolumesIdFilesStatGet**](docs/FilesApi.md#apiv1sandboxvolumesidfilesstatget) | **GET** /api/v1/sandboxvolumes/{id}/files/stat | Stat a volume file
 *FilesApi* | [**apiV1SandboxvolumesIdFilesWatchGet**](docs/FilesApi.md#apiv1sandboxvolumesidfileswatchget) | **GET** /api/v1/sandboxvolumes/{id}/files/watch | Volume file watch WebSocket
-*FunctionsApi* | [**apiV1FunctionsGet**](docs/FunctionsApi.md#apiv1functionsget) | **GET** /api/v1/functions | List functions
-*FunctionsApi* | [**apiV1FunctionsIdAliasesAliasGet**](docs/FunctionsApi.md#apiv1functionsidaliasesaliasget) | **GET** /api/v1/functions/{id}/aliases/{alias} | Get function alias
-*FunctionsApi* | [**apiV1FunctionsIdAliasesAliasPut**](docs/FunctionsApi.md#apiv1functionsidaliasesaliasput) | **PUT** /api/v1/functions/{id}/aliases/{alias} | Point a function alias at a revision
-*FunctionsApi* | [**apiV1FunctionsIdAliasesGet**](docs/FunctionsApi.md#apiv1functionsidaliasesget) | **GET** /api/v1/functions/{id}/aliases | List function aliases
-*FunctionsApi* | [**apiV1FunctionsIdDelete**](docs/FunctionsApi.md#apiv1functionsiddelete) | **DELETE** /api/v1/functions/{id} | Delete function
-*FunctionsApi* | [**apiV1FunctionsIdGet**](docs/FunctionsApi.md#apiv1functionsidget) | **GET** /api/v1/functions/{id} | Get function
-*FunctionsApi* | [**apiV1FunctionsIdPut**](docs/FunctionsApi.md#apiv1functionsidput) | **PUT** /api/v1/functions/{id} | Update function lifecycle state
-*FunctionsApi* | [**apiV1FunctionsIdRevisionsGet**](docs/FunctionsApi.md#apiv1functionsidrevisionsget) | **GET** /api/v1/functions/{id}/revisions | List function revisions
-*FunctionsApi* | [**apiV1FunctionsIdRevisionsPost**](docs/FunctionsApi.md#apiv1functionsidrevisionspost) | **POST** /api/v1/functions/{id}/revisions | Create function revision
-*FunctionsApi* | [**apiV1FunctionsIdRevisionsRevisionNumberGet**](docs/FunctionsApi.md#apiv1functionsidrevisionsrevisionnumberget) | **GET** /api/v1/functions/{id}/revisions/{revision_number} | Get function revision
-*FunctionsApi* | [**apiV1FunctionsIdRuntimeGet**](docs/FunctionsApi.md#apiv1functionsidruntimeget) | **GET** /api/v1/functions/{id}/runtime | Get active function runtime
-*FunctionsApi* | [**apiV1FunctionsIdRuntimeRecyclePost**](docs/FunctionsApi.md#apiv1functionsidruntimerecyclepost) | **POST** /api/v1/functions/{id}/runtime/recycle | Recycle active function runtime
-*FunctionsApi* | [**apiV1FunctionsIdRuntimeRestartPost**](docs/FunctionsApi.md#apiv1functionsidruntimerestartpost) | **POST** /api/v1/functions/{id}/runtime/restart | Restart active function runtime
-*FunctionsApi* | [**apiV1FunctionsPost**](docs/FunctionsApi.md#apiv1functionspost) | **POST** /api/v1/functions | Create a function
 *HealthApi* | [**healthzGet**](docs/HealthApi.md#healthzget) | **GET** /healthz | Health check
 *HealthApi* | [**metadataGet**](docs/HealthApi.md#metadataget) | **GET** /metadata | Gateway metadata
 *HealthApi* | [**metricsGet**](docs/HealthApi.md#metricsget) | **GET** /metrics | Prometheus metrics
 *HealthApi* | [**readyzGet**](docs/HealthApi.md#readyzget) | **GET** /readyz | Readiness check
+*QuotasApi* | [**apiV1QuotasDimensionDelete**](docs/QuotasApi.md#apiv1quotasdimensiondelete) | **DELETE** /api/v1/quotas/{dimension} | Delete team quota
+*QuotasApi* | [**apiV1QuotasDimensionGet**](docs/QuotasApi.md#apiv1quotasdimensionget) | **GET** /api/v1/quotas/{dimension} | Get team quota
+*QuotasApi* | [**apiV1QuotasDimensionPut**](docs/QuotasApi.md#apiv1quotasdimensionput) | **PUT** /api/v1/quotas/{dimension} | Set team quota
 *RegionsApi* | [**regionsGet**](docs/RegionsApi.md#regionsget) | **GET** /regions | List regions in the global gateway
 *RegionsApi* | [**regionsIdDelete**](docs/RegionsApi.md#regionsiddelete) | **DELETE** /regions/{id} | Delete a region from the global gateway
 *RegionsApi* | [**regionsIdGet**](docs/RegionsApi.md#regionsidget) | **GET** /regions/{id} | Get a region from the global gateway
@@ -235,32 +224,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [FileWatchUnsubscribeRequest](docs/FileWatchUnsubscribeRequest.md)
 - [FileWatchUnsubscribed](docs/FileWatchUnsubscribed.md)
 - [ForkVolumeRequest](docs/ForkVolumeRequest.md)
-- [Function](docs/Function.md)
-- [FunctionAlias](docs/FunctionAlias.md)
-- [FunctionAliasUpdateRequest](docs/FunctionAliasUpdateRequest.md)
-- [FunctionAutoscaling](docs/FunctionAutoscaling.md)
-- [FunctionCreateRequest](docs/FunctionCreateRequest.md)
-- [FunctionEnvRef](docs/FunctionEnvRef.md)
-- [FunctionRecord](docs/FunctionRecord.md)
-- [FunctionRestoreMount](docs/FunctionRestoreMount.md)
-- [FunctionRevision](docs/FunctionRevision.md)
-- [FunctionRevisionCreateRequest](docs/FunctionRevisionCreateRequest.md)
-- [FunctionRevisionInputSourceType](docs/FunctionRevisionInputSourceType.md)
-- [FunctionRevisionMount](docs/FunctionRevisionMount.md)
-- [FunctionRevisionMountSource](docs/FunctionRevisionMountSource.md)
-- [FunctionRevisionSourceType](docs/FunctionRevisionSourceType.md)
-- [FunctionRevisionSpec](docs/FunctionRevisionSpec.md)
-- [FunctionRuntimeEvent](docs/FunctionRuntimeEvent.md)
-- [FunctionRuntimeInstance](docs/FunctionRuntimeInstance.md)
-- [FunctionRuntimeInstanceState](docs/FunctionRuntimeInstanceState.md)
-- [FunctionRuntimePhase](docs/FunctionRuntimePhase.md)
-- [FunctionRuntimeReadinessState](docs/FunctionRuntimeReadinessState.md)
-- [FunctionRuntimeState](docs/FunctionRuntimeState.md)
-- [FunctionRuntimeStatus](docs/FunctionRuntimeStatus.md)
-- [FunctionSandboxServiceSource](docs/FunctionSandboxServiceSource.md)
-- [FunctionSourceRequest](docs/FunctionSourceRequest.md)
-- [FunctionStaticAsset](docs/FunctionStaticAsset.md)
-- [FunctionUpdateRequest](docs/FunctionUpdateRequest.md)
 - [GRPCAction](docs/GRPCAction.md)
 - [GatewayMetadata](docs/GatewayMetadata.md)
 - [HTTPGetAction](docs/HTTPGetAction.md)
@@ -300,6 +263,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ProjectionSpec](docs/ProjectionSpec.md)
 - [ProtocolRule](docs/ProtocolRule.md)
 - [ProtocolRuleProtocol](docs/ProtocolRuleProtocol.md)
+- [PutTeamQuotaRequest](docs/PutTeamQuotaRequest.md)
+- [QuotaDimension](docs/QuotaDimension.md)
 - [REPLConfig](docs/REPLConfig.md)
 - [REPLEnvVar](docs/REPLEnvVar.md)
 - [REPLPromptConfig](docs/REPLPromptConfig.md)
@@ -379,24 +344,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessFileReadResponseAllOfData](docs/SuccessFileReadResponseAllOfData.md)
 - [SuccessFileReadResponseAllOfDataOneOf](docs/SuccessFileReadResponseAllOfDataOneOf.md)
 - [SuccessFileStatResponse](docs/SuccessFileStatResponse.md)
-- [SuccessFunctionAliasListResponse](docs/SuccessFunctionAliasListResponse.md)
-- [SuccessFunctionAliasListResponseAllOfData](docs/SuccessFunctionAliasListResponseAllOfData.md)
-- [SuccessFunctionAliasResponse](docs/SuccessFunctionAliasResponse.md)
-- [SuccessFunctionAliasResponseAllOfData](docs/SuccessFunctionAliasResponseAllOfData.md)
-- [SuccessFunctionCreateResponse](docs/SuccessFunctionCreateResponse.md)
-- [SuccessFunctionCreateResponseAllOfData](docs/SuccessFunctionCreateResponseAllOfData.md)
-- [SuccessFunctionListResponse](docs/SuccessFunctionListResponse.md)
-- [SuccessFunctionListResponseAllOfData](docs/SuccessFunctionListResponseAllOfData.md)
-- [SuccessFunctionResponse](docs/SuccessFunctionResponse.md)
-- [SuccessFunctionResponseAllOfData](docs/SuccessFunctionResponseAllOfData.md)
-- [SuccessFunctionRevisionCreateResponse](docs/SuccessFunctionRevisionCreateResponse.md)
-- [SuccessFunctionRevisionCreateResponseAllOfData](docs/SuccessFunctionRevisionCreateResponseAllOfData.md)
-- [SuccessFunctionRevisionListResponse](docs/SuccessFunctionRevisionListResponse.md)
-- [SuccessFunctionRevisionListResponseAllOfData](docs/SuccessFunctionRevisionListResponseAllOfData.md)
-- [SuccessFunctionRevisionResponse](docs/SuccessFunctionRevisionResponse.md)
-- [SuccessFunctionRevisionResponseAllOfData](docs/SuccessFunctionRevisionResponseAllOfData.md)
-- [SuccessFunctionRuntimeResponse](docs/SuccessFunctionRuntimeResponse.md)
-- [SuccessFunctionRuntimeResponseAllOfData](docs/SuccessFunctionRuntimeResponseAllOfData.md)
 - [SuccessGatewayMetadataResponse](docs/SuccessGatewayMetadataResponse.md)
 - [SuccessHealthResponse](docs/SuccessHealthResponse.md)
 - [SuccessHealthResponseAllOfData](docs/SuccessHealthResponseAllOfData.md)
@@ -439,6 +386,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessTeamMemberListResponse](docs/SuccessTeamMemberListResponse.md)
 - [SuccessTeamMemberListResponseAllOfData](docs/SuccessTeamMemberListResponseAllOfData.md)
 - [SuccessTeamMemberResponse](docs/SuccessTeamMemberResponse.md)
+- [SuccessTeamQuotaResponse](docs/SuccessTeamQuotaResponse.md)
 - [SuccessTeamResponse](docs/SuccessTeamResponse.md)
 - [SuccessTemplateListResponse](docs/SuccessTemplateListResponse.md)
 - [SuccessTemplateListResponseAllOfData](docs/SuccessTemplateListResponseAllOfData.md)
@@ -450,6 +398,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [TCPSocketAction](docs/TCPSocketAction.md)
 - [Team](docs/Team.md)
 - [TeamMember](docs/TeamMember.md)
+- [TeamQuota](docs/TeamQuota.md)
 - [Template](docs/Template.md)
 - [TemplateCreateRequest](docs/TemplateCreateRequest.md)
 - [TemplateUpdateRequest](docs/TemplateUpdateRequest.md)

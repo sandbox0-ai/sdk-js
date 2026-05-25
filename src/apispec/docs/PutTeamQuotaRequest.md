@@ -1,22 +1,22 @@
 
-# SuccessFunctionResponseAllOfData
+# PutTeamQuotaRequest
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`_function` | [FunctionRecord](FunctionRecord.md)
+`limitValue` | number
 
 ## Example
 
 ```typescript
-import type { SuccessFunctionResponseAllOfData } from 'sandbox0'
+import type { PutTeamQuotaRequest } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "_function": null,
-} satisfies SuccessFunctionResponseAllOfData
+  "limitValue": null,
+} satisfies PutTeamQuotaRequest
 
 console.log(example)
 
@@ -25,7 +25,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SuccessFunctionResponseAllOfData
+const exampleParsed = JSON.parse(exampleJSON) as PutTeamQuotaRequest
 console.log(exampleParsed)
 ```
 

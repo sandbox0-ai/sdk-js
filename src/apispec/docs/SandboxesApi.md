@@ -853,7 +853,7 @@ example().catch(console.error);
 
 Replace sandbox services
 
-Replaces the sandbox services used for public exposure and function publishing.
+Replaces the sandbox services used for public exposure.
 
 ### Example
 
@@ -1058,6 +1058,7 @@ example().catch(console.error);
 |-------------|-------------|------------------|
 | **201** | Sandbox claimed |  -  |
 | **400** | Invalid request |  -  |
+| **429** | Team quota exceeded |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

@@ -18,8 +18,8 @@
  * @export
  */
 export const EgressAuthRolloutMode = {
-    Enabled: 'enabled',
-    Disabled: 'disabled'
+    EgressAuthRolloutModeEnabled: 'enabled',
+    EgressAuthRolloutModeDisabled: 'disabled'
 } as const;
 export type EgressAuthRolloutMode = typeof EgressAuthRolloutMode[keyof typeof EgressAuthRolloutMode];
 

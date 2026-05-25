@@ -20,7 +20,7 @@ import { mapValues } from '../runtime';
  */
 export interface SandboxAppServiceRuntime {
     /**
-     * Runtime strategy for restarting a service when it is restored as a function runtime.
+     * Runtime strategy for restarting a service process.
      * @type {string}
      * @memberof SandboxAppServiceRuntime
      */
@@ -44,7 +44,7 @@ export interface SandboxAppServiceRuntime {
      */
     envVars?: { [key: string]: string; };
     /**
-     * Warm process alias or context ID used when type is warm_process. Function runtimes require this to reference an existing cmd warm process.
+     * Warm process alias or context ID used when type is warm_process.
      * @type {string}
      * @memberof SandboxAppServiceRuntime
      */

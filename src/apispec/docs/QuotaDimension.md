@@ -1,26 +1,20 @@
 
-# FunctionUpdateRequest
+# QuotaDimension
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`name` | string
-`enabled` | boolean
-`autoscaling` | [FunctionAutoscaling](FunctionAutoscaling.md)
 
 ## Example
 
 ```typescript
-import type { FunctionUpdateRequest } from 'sandbox0'
+import type { QuotaDimension } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "name": null,
-  "enabled": null,
-  "autoscaling": null,
-} satisfies FunctionUpdateRequest
+} satisfies QuotaDimension
 
 console.log(example)
 
@@ -29,7 +23,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as FunctionUpdateRequest
+const exampleParsed = JSON.parse(exampleJSON) as QuotaDimension
 console.log(exampleParsed)
 ```
 

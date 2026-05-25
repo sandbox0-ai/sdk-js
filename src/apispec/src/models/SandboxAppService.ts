@@ -36,7 +36,7 @@ import {
 } from './SandboxAppServiceRuntime';
 
 /**
- * Canonical service model for sandbox exposure and function publishing.
+ * Canonical service model for sandbox exposure.
  * @export
  * @interface SandboxAppService
  */

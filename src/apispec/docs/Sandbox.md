@@ -10,7 +10,7 @@ Name | Type
 `templateId` | string
 `teamId` | string
 `userId` | string
-`status` | string
+`status` | [SandboxLifecycleStatus](SandboxLifecycleStatus.md)
 `paused` | boolean
 `powerState` | [SandboxPowerState](SandboxPowerState.md)
 `autoResume` | boolean

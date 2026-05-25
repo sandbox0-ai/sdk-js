@@ -27,6 +27,13 @@ import {
     ClaimMountRequestToJSON,
     ClaimMountRequestToJSONTyped,
 } from './ClaimMountRequest';
+import type { SandboxLifecycleStatus } from './SandboxLifecycleStatus';
+import {
+    SandboxLifecycleStatusFromJSON,
+    SandboxLifecycleStatusFromJSONTyped,
+    SandboxLifecycleStatusToJSON,
+    SandboxLifecycleStatusToJSONTyped,
+} from './SandboxLifecycleStatus';
 import type { SandboxSSHConnection } from './SandboxSSHConnection';
 import {
     SandboxSSHConnectionFromJSON,
@@ -74,10 +81,10 @@ export interface Sandbox {
     userId?: string;
     /**
      * 
-     * @type {string}
+     * @type {SandboxLifecycleStatus}
      * @memberof Sandbox
      */
-    status: string;
+    status: SandboxLifecycleStatus;
     /**
      * 
      * @type {boolean}
@@ -146,6 +153,8 @@ export interface Sandbox {
     createdAt: Date;
 }
 
+
+
 /**
  * Check if a given object implements the Sandbox interface.
  */
@@ -179,7 +188,7 @@ export function SandboxFromJSONTyped(json: any, ignoreDiscriminator: boolean): S
         'templateId': json['template_id'],
         'teamId': json['team_id'],
         'userId': json['user_id'] == null ? undefined : json['user_id'],
-        'status': json['status'],
+        'status': SandboxLifecycleStatusFromJSON(json['status']),
         'paused': json['paused'],
         'powerState': SandboxPowerStateFromJSON(json['power_state']),
         'autoResume': json['auto_resume'],
@@ -209,7 +218,7 @@ export function SandboxToJSONTyped(value?: Sandbox | null, ignoreDiscriminator: 
         'template_id': value['templateId'],
         'team_id': value['teamId'],
         'user_id': value['userId'],
-        'status': value['status'],
+        'status': SandboxLifecycleStatusToJSON(value['status']),
         'paused': value['paused'],
         'power_state': SandboxPowerStateToJSON(value['powerState']),
         'auto_resume': value['autoResume'],

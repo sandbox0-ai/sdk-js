@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { SandboxLifecycleStatus } from './SandboxLifecycleStatus';
+import {
+    SandboxLifecycleStatusFromJSON,
+    SandboxLifecycleStatusFromJSONTyped,
+    SandboxLifecycleStatusToJSON,
+    SandboxLifecycleStatusToJSONTyped,
+} from './SandboxLifecycleStatus';
 import type { MountStatus } from './MountStatus';
 import {
     MountStatusFromJSON,
@@ -35,10 +42,10 @@ export interface ClaimResponse {
     sandboxId: string;
     /**
      * 
-     * @type {string}
+     * @type {SandboxLifecycleStatus}
      * @memberof ClaimResponse
      */
-    status: string;
+    status: SandboxLifecycleStatus;
     /**
      * 
      * @type {string}
@@ -65,6 +72,8 @@ export interface ClaimResponse {
     bootstrapMounts?: Array<MountStatus>;
 }
 
+
+
 /**
  * Check if a given object implements the ClaimResponse interface.
  */
@@ -87,7 +96,7 @@ export function ClaimResponseFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'sandboxId': json['sandbox_id'],
-        'status': json['status'],
+        'status': SandboxLifecycleStatusFromJSON(json['status']),
         'podName': json['pod_name'],
         'template': json['template'],
         'clusterId': json['cluster_id'] == null ? undefined : json['cluster_id'],
@@ -107,7 +116,7 @@ export function ClaimResponseToJSONTyped(value?: ClaimResponse | null, ignoreDis
     return {
         
         'sandbox_id': value['sandboxId'],
-        'status': value['status'],
+        'status': SandboxLifecycleStatusToJSON(value['status']),
         'pod_name': value['podName'],
         'template': value['template'],
         'cluster_id': value['clusterId'],

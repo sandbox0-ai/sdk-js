@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { SandboxLifecycleStatus } from './SandboxLifecycleStatus';
+import {
+    SandboxLifecycleStatusFromJSON,
+    SandboxLifecycleStatusFromJSONTyped,
+    SandboxLifecycleStatusToJSON,
+    SandboxLifecycleStatusToJSONTyped,
+} from './SandboxLifecycleStatus';
 import type { SandboxPowerState } from './SandboxPowerState';
 import {
     SandboxPowerStateFromJSON,
@@ -41,10 +48,10 @@ export interface SandboxSummary {
     templateId: string;
     /**
      * 
-     * @type {string}
+     * @type {SandboxLifecycleStatus}
      * @memberof SandboxSummary
      */
-    status: SandboxSummaryStatusEnum;
+    status: SandboxLifecycleStatus;
     /**
      * 
      * @type {boolean}
@@ -84,18 +91,6 @@ export interface SandboxSummary {
 }
 
 
-/**
- * @export
- */
-export const SandboxSummaryStatusEnum = {
-    Starting: 'starting',
-    Running: 'running',
-    Failed: 'failed',
-    Completed: 'completed',
-    Terminating: 'terminating'
-} as const;
-export type SandboxSummaryStatusEnum = typeof SandboxSummaryStatusEnum[keyof typeof SandboxSummaryStatusEnum];
-
 
 /**
  * Check if a given object implements the SandboxSummary interface.
@@ -124,7 +119,7 @@ export function SandboxSummaryFromJSONTyped(json: any, ignoreDiscriminator: bool
         
         'id': json['id'],
         'templateId': json['template_id'],
-        'status': json['status'],
+        'status': SandboxLifecycleStatusFromJSON(json['status']),
         'paused': json['paused'],
         'powerState': SandboxPowerStateFromJSON(json['power_state']),
         'clusterId': json['cluster_id'] == null ? undefined : json['cluster_id'],
@@ -147,7 +142,7 @@ export function SandboxSummaryToJSONTyped(value?: SandboxSummary | null, ignoreD
         
         'id': value['id'],
         'template_id': value['templateId'],
-        'status': value['status'],
+        'status': SandboxLifecycleStatusToJSON(value['status']),
         'paused': value['paused'],
         'power_state': SandboxPowerStateToJSON(value['powerState']),
         'cluster_id': value['clusterId'],

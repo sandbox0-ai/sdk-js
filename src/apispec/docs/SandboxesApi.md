@@ -47,8 +47,8 @@ async function example() {
   const api = new SandboxesApi(config);
 
   const body = {
-    // 'starting' | 'running' | 'failed' | 'completed' | 'terminating' | Filter by sandbox status (optional)
-    status: status_example,
+    // SandboxLifecycleStatus | Filter by sandbox status (optional)
+    status: ...,
     // string | Filter by template ID (optional)
     templateId: templateId_example,
     // boolean | Filter by paused state (optional)
@@ -76,7 +76,7 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **status** | `starting`, `running`, `failed`, `completed`, `terminating` | Filter by sandbox status | [Optional] [Defaults to `undefined`] [Enum: starting, running, failed, completed, terminating] |
+| **status** | `SandboxLifecycleStatus` | Filter by sandbox status | [Optional] [Defaults to `undefined`] [Enum: starting, running, failed, completed, terminating, cleaned] |
 | **templateId** | `string` | Filter by template ID | [Optional] [Defaults to `undefined`] |
 | **paused** | `boolean` | Filter by paused state | [Optional] [Defaults to `undefined`] |
 | **limit** | `number` | Maximum number of results per page | [Optional] [Defaults to `50`] |

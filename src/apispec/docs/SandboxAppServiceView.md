@@ -14,6 +14,7 @@ Name | Type
 `healthCheck` | [SandboxAppServiceHealth](SandboxAppServiceHealth.md)
 `publishable` | boolean
 `publishBlockers` | Array&lt;string&gt;
+`publicUrl` | string
 
 ## Example
 
@@ -30,6 +31,7 @@ const example = {
   "healthCheck": null,
   "publishable": null,
   "publishBlockers": null,
+  "publicUrl": null,
 } satisfies SandboxAppServiceView
 
 console.log(example)

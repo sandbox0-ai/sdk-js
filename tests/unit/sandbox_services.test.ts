@@ -25,6 +25,7 @@ describe("sandbox services", () => {
                         routes: [{ id: "api", resume: true }],
                       },
                       publishable: false,
+                      publicUrl: "https://rs-default-api-abcde--p8080.us.sandbox0.app",
                     },
                   ],
                 },
@@ -48,6 +49,7 @@ describe("sandbox services", () => {
     assert.strictEqual(current.sandboxId, "sb_123");
     assert.strictEqual(current.services[0]?.id, "api");
     assert.strictEqual(current.services[0]?.port, 8080);
+    assert.strictEqual(current.services[0]?.publicUrl, "https://rs-default-api-abcde--p8080.us.sandbox0.app");
 
     const cleared = await sandbox.clearServices();
     assert.strictEqual(cleared.services.length, 0);

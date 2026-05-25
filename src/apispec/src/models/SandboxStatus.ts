@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { SandboxLifecycleStatus } from './SandboxLifecycleStatus';
+import {
+    SandboxLifecycleStatusFromJSON,
+    SandboxLifecycleStatusFromJSONTyped,
+    SandboxLifecycleStatusToJSON,
+    SandboxLifecycleStatusToJSONTyped,
+} from './SandboxLifecycleStatus';
+
 /**
  * 
  * @export
@@ -51,10 +59,10 @@ export interface SandboxStatus {
     podName?: string;
     /**
      * 
-     * @type {string}
+     * @type {SandboxLifecycleStatus}
      * @memberof SandboxStatus
      */
-    status?: string;
+    status?: SandboxLifecycleStatus;
     /**
      * 
      * @type {string}
@@ -81,6 +89,8 @@ export interface SandboxStatus {
     createdAt?: string;
 }
 
+
+
 /**
  * Check if a given object implements the SandboxStatus interface.
  */
@@ -103,7 +113,7 @@ export function SandboxStatusFromJSONTyped(json: any, ignoreDiscriminator: boole
         'teamId': json['team_id'] == null ? undefined : json['team_id'],
         'userId': json['user_id'] == null ? undefined : json['user_id'],
         'podName': json['pod_name'] == null ? undefined : json['pod_name'],
-        'status': json['status'] == null ? undefined : json['status'],
+        'status': json['status'] == null ? undefined : SandboxLifecycleStatusFromJSON(json['status']),
         'claimedAt': json['claimed_at'] == null ? undefined : json['claimed_at'],
         'expiresAt': json['expires_at'] == null ? undefined : json['expires_at'],
         'hardExpiresAt': json['hard_expires_at'] == null ? undefined : json['hard_expires_at'],
@@ -127,7 +137,7 @@ export function SandboxStatusToJSONTyped(value?: SandboxStatus | null, ignoreDis
         'team_id': value['teamId'],
         'user_id': value['userId'],
         'pod_name': value['podName'],
-        'status': value['status'],
+        'status': SandboxLifecycleStatusToJSON(value['status']),
         'claimed_at': value['claimedAt'],
         'expires_at': value['expiresAt'],
         'hard_expires_at': value['hardExpiresAt'],

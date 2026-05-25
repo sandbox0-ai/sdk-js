@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ClaimRequest,
   ErrorEnvelope,
+  SandboxLifecycleStatus,
   SandboxNetworkPolicy,
   SandboxRefreshRequest,
   SandboxServicesUpdateRequest,
@@ -37,6 +38,8 @@ import {
     ClaimRequestToJSON,
     ErrorEnvelopeFromJSON,
     ErrorEnvelopeToJSON,
+    SandboxLifecycleStatusFromJSON,
+    SandboxLifecycleStatusToJSON,
     SandboxNetworkPolicyFromJSON,
     SandboxNetworkPolicyToJSON,
     SandboxRefreshRequestFromJSON,
@@ -68,7 +71,7 @@ import {
 } from '../models/index';
 
 export interface ApiV1SandboxesGetRequest {
-    status?: ApiV1SandboxesGetStatusEnum;
+    status?: SandboxLifecycleStatus;
     templateId?: string;
     paused?: boolean;
     limit?: number;
@@ -861,15 +864,3 @@ export class SandboxesApi extends runtime.BaseAPI {
     }
 
 }
-
-/**
- * @export
- */
-export const ApiV1SandboxesGetStatusEnum = {
-    Starting: 'starting',
-    Running: 'running',
-    Failed: 'failed',
-    Completed: 'completed',
-    Terminating: 'terminating'
-} as const;
-export type ApiV1SandboxesGetStatusEnum = typeof ApiV1SandboxesGetStatusEnum[keyof typeof ApiV1SandboxesGetStatusEnum];

@@ -1,32 +1,20 @@
 
-# ClaimResponse
+# SandboxLifecycleStatus
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`sandboxId` | string
-`status` | [SandboxLifecycleStatus](SandboxLifecycleStatus.md)
-`podName` | string
-`template` | string
-`clusterId` | string
-`bootstrapMounts` | [Array&lt;MountStatus&gt;](MountStatus.md)
 
 ## Example
 
 ```typescript
-import type { ClaimResponse } from 'sandbox0'
+import type { SandboxLifecycleStatus } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "sandboxId": null,
-  "status": null,
-  "podName": null,
-  "template": null,
-  "clusterId": null,
-  "bootstrapMounts": null,
-} satisfies ClaimResponse
+} satisfies SandboxLifecycleStatus
 
 console.log(example)
 
@@ -35,7 +23,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as ClaimResponse
+const exampleParsed = JSON.parse(exampleJSON) as SandboxLifecycleStatus
 console.log(exampleParsed)
 ```
 

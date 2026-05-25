@@ -43,7 +43,7 @@ export interface SandboxUpdateConfig {
      */
     ttl?: number;
     /**
-     * 
+     * Hard time-to-live in seconds. When it expires, Sandbox0 cleans the runtime pod and preserves the sandbox identity, services, and public URLs until the sandbox is explicitly deleted.
      * @type {number}
      * @memberof SandboxUpdateConfig
      */

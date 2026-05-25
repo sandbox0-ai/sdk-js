@@ -8,7 +8,7 @@ Name | Type
 ------------ | -------------
 `id` | string
 `templateId` | string
-`status` | string
+`status` | [SandboxLifecycleStatus](SandboxLifecycleStatus.md)
 `paused` | boolean
 `powerState` | [SandboxPowerState](SandboxPowerState.md)
 `clusterId` | string

@@ -11,7 +11,7 @@ Name | Type
 `teamId` | string
 `userId` | string
 `podName` | string
-`status` | string
+`status` | [SandboxLifecycleStatus](SandboxLifecycleStatus.md)
 `claimedAt` | string
 `expiresAt` | string
 `hardExpiresAt` | string

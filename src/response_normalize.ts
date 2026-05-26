@@ -27,7 +27,7 @@ const NULL_ARRAY_KEYS = new Set([
   "drop",
   "entries",
   "env",
-  "functions",
+  "runs",
   "identities",
   "matchExpressions",
   "matchFields",

@@ -44,6 +44,7 @@ export class Client {
   readonly apispec: {
     sandboxes: apisTypes.SandboxesApi;
     contexts: apisTypes.ContextsApi;
+    functions: apisTypes.FunctionsApi;
     files: apisTypes.FilesApi;
     sandboxVolumes: apisTypes.SandboxVolumesApi;
     snapshots: apisTypes.SnapshotsApi;
@@ -77,6 +78,7 @@ export class Client {
     this.apispec = {
       sandboxes: new apis.SandboxesApi(this.configuration),
       contexts: new apis.ContextsApi(this.configuration),
+      functions: new apis.FunctionsApi(this.configuration),
       files: new apis.FilesApi(this.configuration),
       sandboxVolumes: new apis.SandboxVolumesApi(this.configuration),
       snapshots: new apis.SnapshotsApi(this.configuration),

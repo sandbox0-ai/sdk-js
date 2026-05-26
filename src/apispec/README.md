@@ -96,6 +96,14 @@ All URIs are relative to *https://api.sandbox0.ai*
 *FilesApi* | [**apiV1SandboxvolumesIdFilesPost**](docs/FilesApi.md#apiv1sandboxvolumesidfilespost) | **POST** /api/v1/sandboxvolumes/{id}/files | Write volume file or create directory
 *FilesApi* | [**apiV1SandboxvolumesIdFilesStatGet**](docs/FilesApi.md#apiv1sandboxvolumesidfilesstatget) | **GET** /api/v1/sandboxvolumes/{id}/files/stat | Stat a volume file
 *FilesApi* | [**apiV1SandboxvolumesIdFilesWatchGet**](docs/FilesApi.md#apiv1sandboxvolumesidfileswatchget) | **GET** /api/v1/sandboxvolumes/{id}/files/watch | Volume file watch WebSocket
+*FunctionsApi* | [**apiV1FunctionsDeployPost**](docs/FunctionsApi.md#apiv1functionsdeploypost) | **POST** /api/v1/functions/deploy | Deploy a function
+*FunctionsApi* | [**apiV1FunctionsGet**](docs/FunctionsApi.md#apiv1functionsget) | **GET** /api/v1/functions | List functions
+*FunctionsApi* | [**apiV1FunctionsIdActiveRevisionPut**](docs/FunctionsApi.md#apiv1functionsidactiverevisionput) | **PUT** /api/v1/functions/{id}/active-revision | Activate a function revision
+*FunctionsApi* | [**apiV1FunctionsIdDelete**](docs/FunctionsApi.md#apiv1functionsiddelete) | **DELETE** /api/v1/functions/{id} | Delete a function
+*FunctionsApi* | [**apiV1FunctionsIdDeployPost**](docs/FunctionsApi.md#apiv1functionsiddeploypost) | **POST** /api/v1/functions/{id}/deploy | Deploy a new function revision
+*FunctionsApi* | [**apiV1FunctionsIdGet**](docs/FunctionsApi.md#apiv1functionsidget) | **GET** /api/v1/functions/{id} | Get a function
+*FunctionsApi* | [**apiV1FunctionsIdPut**](docs/FunctionsApi.md#apiv1functionsidput) | **PUT** /api/v1/functions/{id} | Update a function
+*FunctionsApi* | [**apiV1FunctionsIdRevisionsGet**](docs/FunctionsApi.md#apiv1functionsidrevisionsget) | **GET** /api/v1/functions/{id}/revisions | List function revisions
 *HealthApi* | [**healthzGet**](docs/HealthApi.md#healthzget) | **GET** /healthz | Health check
 *HealthApi* | [**metadataGet**](docs/HealthApi.md#metadataget) | **GET** /metadata | Gateway metadata
 *HealthApi* | [**metricsGet**](docs/HealthApi.md#metricsget) | **GET** /metrics | Prometheus metrics
@@ -159,6 +167,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 ### Models
 
 - [APIKey](docs/APIKey.md)
+- [ActivateFunctionRevisionRequest](docs/ActivateFunctionRevisionRequest.md)
 - [AddTeamMemberRequest](docs/AddTeamMemberRequest.md)
 - [Affinity](docs/Affinity.md)
 - [ApiV1SandboxesIdFilesGet200Response](docs/ApiV1SandboxesIdFilesGet200Response.md)
@@ -224,6 +233,17 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [FileWatchUnsubscribeRequest](docs/FileWatchUnsubscribeRequest.md)
 - [FileWatchUnsubscribed](docs/FileWatchUnsubscribed.md)
 - [ForkVolumeRequest](docs/ForkVolumeRequest.md)
+- [Function](docs/Function.md)
+- [FunctionDeployRequest](docs/FunctionDeployRequest.md)
+- [FunctionDeployResult](docs/FunctionDeployResult.md)
+- [FunctionRevision](docs/FunctionRevision.md)
+- [FunctionRevisionMount](docs/FunctionRevisionMount.md)
+- [FunctionRevisionSpec](docs/FunctionRevisionSpec.md)
+- [FunctionRevisionStatus](docs/FunctionRevisionStatus.md)
+- [FunctionScalePolicy](docs/FunctionScalePolicy.md)
+- [FunctionSource](docs/FunctionSource.md)
+- [FunctionSourceType](docs/FunctionSourceType.md)
+- [FunctionUpdateRequest](docs/FunctionUpdateRequest.md)
 - [GRPCAction](docs/GRPCAction.md)
 - [GatewayMetadata](docs/GatewayMetadata.md)
 - [HTTPGetAction](docs/HTTPGetAction.md)
@@ -301,6 +321,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxRefreshRequest](docs/SandboxRefreshRequest.md)
 - [SandboxResourceUsage](docs/SandboxResourceUsage.md)
 - [SandboxSSHConnection](docs/SandboxSSHConnection.md)
+- [SandboxServiceFunctionSource](docs/SandboxServiceFunctionSource.md)
 - [SandboxServicesUpdateRequest](docs/SandboxServicesUpdateRequest.md)
 - [SandboxStatus](docs/SandboxStatus.md)
 - [SandboxSummary](docs/SandboxSummary.md)
@@ -314,6 +335,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SecurityContext](docs/SecurityContext.md)
 - [SignalContextRequest](docs/SignalContextRequest.md)
 - [Snapshot](docs/Snapshot.md)
+- [SnapshotFunctionSource](docs/SnapshotFunctionSource.md)
 - [StaticHeadersSourceSpec](docs/StaticHeadersSourceSpec.md)
 - [StaticSSHPrivateKeySourceSpec](docs/StaticSSHPrivateKeySourceSpec.md)
 - [StaticTLSClientCertificateSourceSpec](docs/StaticTLSClientCertificateSourceSpec.md)
@@ -345,6 +367,12 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessFileReadResponseAllOfData](docs/SuccessFileReadResponseAllOfData.md)
 - [SuccessFileReadResponseAllOfDataOneOf](docs/SuccessFileReadResponseAllOfDataOneOf.md)
 - [SuccessFileStatResponse](docs/SuccessFileStatResponse.md)
+- [SuccessFunctionDeployResultResponse](docs/SuccessFunctionDeployResultResponse.md)
+- [SuccessFunctionListResponse](docs/SuccessFunctionListResponse.md)
+- [SuccessFunctionListResponseAllOfData](docs/SuccessFunctionListResponseAllOfData.md)
+- [SuccessFunctionResponse](docs/SuccessFunctionResponse.md)
+- [SuccessFunctionRevisionListResponse](docs/SuccessFunctionRevisionListResponse.md)
+- [SuccessFunctionRevisionListResponseAllOfData](docs/SuccessFunctionRevisionListResponseAllOfData.md)
 - [SuccessGatewayMetadataResponse](docs/SuccessGatewayMetadataResponse.md)
 - [SuccessHealthResponse](docs/SuccessHealthResponse.md)
 - [SuccessHealthResponseAllOfData](docs/SuccessHealthResponseAllOfData.md)

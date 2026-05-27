@@ -135,6 +135,8 @@ export * from './SandboxAppServiceRouteRateLimit';
 export * from './SandboxAppServiceRuntime';
 export * from './SandboxAppServiceView';
 export * from './SandboxConfig';
+export * from './SandboxFunction';
+export * from './SandboxFunctionSource';
 export * from './SandboxLifecycleStatus';
 export * from './SandboxNetworkPolicy';
 export * from './SandboxPowerState';

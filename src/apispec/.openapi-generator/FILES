@@ -145,6 +145,8 @@ docs/SandboxAppServiceRouteRateLimit.md
 docs/SandboxAppServiceRuntime.md
 docs/SandboxAppServiceView.md
 docs/SandboxConfig.md
+docs/SandboxFunction.md
+docs/SandboxFunctionSource.md
 docs/SandboxLifecycleStatus.md
 docs/SandboxNetworkPolicy.md
 docs/SandboxPowerState.md
@@ -430,6 +432,8 @@ src/models/SandboxAppServiceRouteRateLimit.ts
 src/models/SandboxAppServiceRuntime.ts
 src/models/SandboxAppServiceView.ts
 src/models/SandboxConfig.ts
+src/models/SandboxFunction.ts
+src/models/SandboxFunctionSource.ts
 src/models/SandboxLifecycleStatus.ts
 src/models/SandboxNetworkPolicy.ts
 src/models/SandboxPowerState.ts

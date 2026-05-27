@@ -1,32 +1,27 @@
 
-# SandboxAppServiceRuntime
+# SandboxFunction
 
+Function code executed by procd for a sandbox service request. cluster-gateway owns public ingress and carries this source to procd.
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`type` | string
-`command` | Array&lt;string&gt;
-`cwd` | string
-`envVars` | { [key: string]: string; }
-`warmProcessName` | string
-`_function` | [SandboxFunction](SandboxFunction.md)
+`runtime` | string
+`handler` | string
+`source` | [SandboxFunctionSource](SandboxFunctionSource.md)
 
 ## Example
 
 ```typescript
-import type { SandboxAppServiceRuntime } from 'sandbox0'
+import type { SandboxFunction } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "type": null,
-  "command": null,
-  "cwd": null,
-  "envVars": null,
-  "warmProcessName": null,
-  "_function": null,
-} satisfies SandboxAppServiceRuntime
+  "runtime": null,
+  "handler": null,
+  "source": null,
+} satisfies SandboxFunction
 
 console.log(example)
 
@@ -35,10 +30,8 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SandboxAppServiceRuntime
+const exampleParsed = JSON.parse(exampleJSON) as SandboxFunction
 console.log(exampleParsed)
 ```
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
-

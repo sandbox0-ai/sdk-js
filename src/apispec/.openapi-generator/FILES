@@ -72,9 +72,6 @@ docs/FileWatchUnsubscribeRequest.md
 docs/FileWatchUnsubscribed.md
 docs/FilesApi.md
 docs/ForkVolumeRequest.md
-docs/FunctionInvokeRequest.md
-docs/FunctionInvokeResponse.md
-docs/FunctionsApi.md
 docs/GRPCAction.md
 docs/GatewayMetadata.md
 docs/HTTPGetAction.md
@@ -148,6 +145,8 @@ docs/SandboxAppServiceRouteRateLimit.md
 docs/SandboxAppServiceRuntime.md
 docs/SandboxAppServiceView.md
 docs/SandboxConfig.md
+docs/SandboxFunction.md
+docs/SandboxFunctionSource.md
 docs/SandboxLifecycleStatus.md
 docs/SandboxNetworkPolicy.md
 docs/SandboxPowerState.md
@@ -203,7 +202,6 @@ docs/SuccessFileReadResponse.md
 docs/SuccessFileReadResponseAllOfData.md
 docs/SuccessFileReadResponseAllOfDataOneOf.md
 docs/SuccessFileStatResponse.md
-docs/SuccessFunctionInvokeResponse.md
 docs/SuccessGatewayMetadataResponse.md
 docs/SuccessHealthResponse.md
 docs/SuccessHealthResponseAllOfData.md
@@ -287,7 +285,6 @@ src/apis/AuthApi.ts
 src/apis/ContextsApi.ts
 src/apis/CredentialSourcesApi.ts
 src/apis/FilesApi.ts
-src/apis/FunctionsApi.ts
 src/apis/HealthApi.ts
 src/apis/QuotasApi.ts
 src/apis/RegionsApi.ts
@@ -366,8 +363,6 @@ src/models/FileWatchSubscribed.ts
 src/models/FileWatchUnsubscribeRequest.ts
 src/models/FileWatchUnsubscribed.ts
 src/models/ForkVolumeRequest.ts
-src/models/FunctionInvokeRequest.ts
-src/models/FunctionInvokeResponse.ts
 src/models/GRPCAction.ts
 src/models/GatewayMetadata.ts
 src/models/HTTPGetAction.ts
@@ -437,6 +432,8 @@ src/models/SandboxAppServiceRouteRateLimit.ts
 src/models/SandboxAppServiceRuntime.ts
 src/models/SandboxAppServiceView.ts
 src/models/SandboxConfig.ts
+src/models/SandboxFunction.ts
+src/models/SandboxFunctionSource.ts
 src/models/SandboxLifecycleStatus.ts
 src/models/SandboxNetworkPolicy.ts
 src/models/SandboxPowerState.ts
@@ -489,7 +486,6 @@ src/models/SuccessFileReadResponse.ts
 src/models/SuccessFileReadResponseAllOfData.ts
 src/models/SuccessFileReadResponseAllOfDataOneOf.ts
 src/models/SuccessFileStatResponse.ts
-src/models/SuccessFunctionInvokeResponse.ts
 src/models/SuccessGatewayMetadataResponse.ts
 src/models/SuccessHealthResponse.ts
 src/models/SuccessHealthResponseAllOfData.ts

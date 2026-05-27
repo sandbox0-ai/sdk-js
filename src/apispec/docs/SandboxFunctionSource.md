@@ -1,26 +1,27 @@
 
-# FunctionInvokeResponse
+# SandboxFunctionSource
 
+Function source code stored in sandbox service config.
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`status` | number
-`headers` | { [key: string]: Array&lt;string&gt;; }
-`bodyBase64` | string
+`type` | string
+`filename` | string
+`code` | string
 
 ## Example
 
 ```typescript
-import type { FunctionInvokeResponse } from 'sandbox0'
+import type { SandboxFunctionSource } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "status": null,
-  "headers": null,
-  "bodyBase64": null,
-} satisfies FunctionInvokeResponse
+  "type": null,
+  "filename": null,
+  "code": null,
+} satisfies SandboxFunctionSource
 
 console.log(example)
 
@@ -29,10 +30,8 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as FunctionInvokeResponse
+const exampleParsed = JSON.parse(exampleJSON) as SandboxFunctionSource
 console.log(exampleParsed)
 ```
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
-

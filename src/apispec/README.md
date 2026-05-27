@@ -96,7 +96,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 *FilesApi* | [**apiV1SandboxvolumesIdFilesPost**](docs/FilesApi.md#apiv1sandboxvolumesidfilespost) | **POST** /api/v1/sandboxvolumes/{id}/files | Write volume file or create directory
 *FilesApi* | [**apiV1SandboxvolumesIdFilesStatGet**](docs/FilesApi.md#apiv1sandboxvolumesidfilesstatget) | **GET** /api/v1/sandboxvolumes/{id}/files/stat | Stat a volume file
 *FilesApi* | [**apiV1SandboxvolumesIdFilesWatchGet**](docs/FilesApi.md#apiv1sandboxvolumesidfileswatchget) | **GET** /api/v1/sandboxvolumes/{id}/files/watch | Volume file watch WebSocket
-*FunctionsApi* | [**apiV1SandboxesIdFunctionsNameInvokePost**](docs/FunctionsApi.md#apiv1sandboxesidfunctionsnameinvokepost) | **POST** /api/v1/sandboxes/{id}/functions/{name}/invoke | Invoke a sandbox function
 *HealthApi* | [**healthzGet**](docs/HealthApi.md#healthzget) | **GET** /healthz | Health check
 *HealthApi* | [**metadataGet**](docs/HealthApi.md#metadataget) | **GET** /metadata | Gateway metadata
 *HealthApi* | [**metricsGet**](docs/HealthApi.md#metricsget) | **GET** /metrics | Prometheus metrics
@@ -225,8 +224,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [FileWatchUnsubscribeRequest](docs/FileWatchUnsubscribeRequest.md)
 - [FileWatchUnsubscribed](docs/FileWatchUnsubscribed.md)
 - [ForkVolumeRequest](docs/ForkVolumeRequest.md)
-- [FunctionInvokeRequest](docs/FunctionInvokeRequest.md)
-- [FunctionInvokeResponse](docs/FunctionInvokeResponse.md)
 - [GRPCAction](docs/GRPCAction.md)
 - [GatewayMetadata](docs/GatewayMetadata.md)
 - [HTTPGetAction](docs/HTTPGetAction.md)
@@ -296,6 +293,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxAppServiceRuntime](docs/SandboxAppServiceRuntime.md)
 - [SandboxAppServiceView](docs/SandboxAppServiceView.md)
 - [SandboxConfig](docs/SandboxConfig.md)
+- [SandboxFunction](docs/SandboxFunction.md)
+- [SandboxFunctionSource](docs/SandboxFunctionSource.md)
 - [SandboxLifecycleStatus](docs/SandboxLifecycleStatus.md)
 - [SandboxNetworkPolicy](docs/SandboxNetworkPolicy.md)
 - [SandboxPowerState](docs/SandboxPowerState.md)
@@ -348,7 +347,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessFileReadResponseAllOfData](docs/SuccessFileReadResponseAllOfData.md)
 - [SuccessFileReadResponseAllOfDataOneOf](docs/SuccessFileReadResponseAllOfDataOneOf.md)
 - [SuccessFileStatResponse](docs/SuccessFileStatResponse.md)
-- [SuccessFunctionInvokeResponse](docs/SuccessFunctionInvokeResponse.md)
 - [SuccessGatewayMetadataResponse](docs/SuccessGatewayMetadataResponse.md)
 - [SuccessHealthResponse](docs/SuccessHealthResponse.md)
 - [SuccessHealthResponseAllOfData](docs/SuccessHealthResponseAllOfData.md)

@@ -11,6 +11,7 @@ Name | Type
 `cwd` | string
 `envVars` | { [key: string]: string; }
 `warmProcessName` | string
+`_function` | [SandboxFunction](SandboxFunction.md)
 
 ## Example
 
@@ -24,6 +25,7 @@ const example = {
   "cwd": null,
   "envVars": null,
   "warmProcessName": null,
+  "_function": null,
 } satisfies SandboxAppServiceRuntime
 
 console.log(example)

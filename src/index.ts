@@ -8,7 +8,6 @@ export * from "./sessions";
 export { apis, models, runtime } from "./apispec_compat";
 export * as apispec from "./apispec_compat";
 import "./sandbox_contexts";
-import "./sandbox_functions";
 import "./sandbox_files";
 import "./sandbox_network";
 import "./sandbox_services";

@@ -5,7 +5,6 @@ export * from './AuthApi';
 export * from './ContextsApi';
 export * from './CredentialSourcesApi';
 export * from './FilesApi';
-export * from './FunctionsApi';
 export * from './HealthApi';
 export * from './QuotasApi';
 export * from './RegionsApi';

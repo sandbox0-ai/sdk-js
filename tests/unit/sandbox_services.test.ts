@@ -57,5 +57,53 @@ describe("sandbox services", () => {
       id: "sb_123",
       sandboxServicesUpdateRequest: { services: [] },
     });
+
+    await sandbox.updateServices([
+      {
+        id: "handler",
+        port: 49983,
+        runtime: {
+          type: "function",
+          _function: {
+            runtime: "python",
+            handler: "handler",
+            source: {
+              type: "inline",
+              code: "def handler(request):\n    return {'status': 200, 'body': 'ok'}\n",
+            },
+          },
+        },
+        ingress: {
+          public: true,
+          routes: [{ id: "handler", pathPrefix: "/", resume: true }],
+        },
+      },
+    ] as any);
+    assert.deepStrictEqual(gotUpdate, {
+      id: "sb_123",
+      sandboxServicesUpdateRequest: {
+        services: [
+          {
+            id: "handler",
+            port: 49983,
+            runtime: {
+              type: "function",
+              _function: {
+                runtime: "python",
+                handler: "handler",
+                source: {
+                  type: "inline",
+                  code: "def handler(request):\n    return {'status': 200, 'body': 'ok'}\n",
+                },
+              },
+            },
+            ingress: {
+              public: true,
+              routes: [{ id: "handler", pathPrefix: "/", resume: true }],
+            },
+          },
+        ],
+      },
+    });
   });
 });

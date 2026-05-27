@@ -54,7 +54,7 @@ export interface SandboxAppService {
      */
     displayName?: string;
     /**
-     * 
+     * Public exposure routing port. Function services normally use the sandbox procd port.
      * @type {number}
      * @memberof SandboxAppService
      */

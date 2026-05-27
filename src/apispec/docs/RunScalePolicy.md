@@ -10,7 +10,6 @@ Name | Type
 `maxInstances` | number
 `targetConcurrency` | number
 `idleTimeoutSeconds` | number
-`startupTimeoutSeconds` | number
 
 ## Example
 
@@ -22,7 +21,6 @@ const example = {
   "maxInstances": null,
   "targetConcurrency": null,
   "idleTimeoutSeconds": null,
-  "startupTimeoutSeconds": null,
 } satisfies RunScalePolicy
 
 console.log(example)

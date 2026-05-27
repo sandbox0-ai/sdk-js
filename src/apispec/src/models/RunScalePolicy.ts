@@ -37,12 +37,6 @@ export interface RunScalePolicy {
      * @memberof RunScalePolicy
      */
     idleTimeoutSeconds?: number;
-    /**
-     * Maximum seconds to wait for a cold-started service health check.
-     * @type {number}
-     * @memberof RunScalePolicy
-     */
-    startupTimeoutSeconds?: number;
 }
 
 /**
@@ -65,7 +59,6 @@ export function RunScalePolicyFromJSONTyped(json: any, ignoreDiscriminator: bool
         'maxInstances': json['max_instances'] == null ? undefined : json['max_instances'],
         'targetConcurrency': json['target_concurrency'] == null ? undefined : json['target_concurrency'],
         'idleTimeoutSeconds': json['idle_timeout_seconds'] == null ? undefined : json['idle_timeout_seconds'],
-        'startupTimeoutSeconds': json['startup_timeout_seconds'] == null ? undefined : json['startup_timeout_seconds'],
     };
 }
 
@@ -83,7 +76,6 @@ export function RunScalePolicyToJSONTyped(value?: RunScalePolicy | null, ignoreD
         'max_instances': value['maxInstances'],
         'target_concurrency': value['targetConcurrency'],
         'idle_timeout_seconds': value['idleTimeoutSeconds'],
-        'startup_timeout_seconds': value['startupTimeoutSeconds'],
     };
 }
 

@@ -8,6 +8,7 @@ Name | Type
 ------------ | -------------
 `cpu` | string
 `memory` | string
+`ephemeralStorage` | string
 
 ## Example
 
@@ -18,6 +19,7 @@ import type { ResourceQuota } from 'sandbox0'
 const example = {
   "cpu": null,
   "memory": null,
+  "ephemeralStorage": null,
 } satisfies ResourceQuota
 
 console.log(example)

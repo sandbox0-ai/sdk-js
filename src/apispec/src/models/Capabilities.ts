@@ -24,6 +24,12 @@ export interface Capabilities {
      * @type {Array<string>}
      * @memberof Capabilities
      */
+    add?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof Capabilities
+     */
     drop?: Array<string>;
 }
 
@@ -44,6 +50,7 @@ export function CapabilitiesFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
+        'add': json['add'] == null ? undefined : json['add'],
         'drop': json['drop'] == null ? undefined : json['drop'],
     };
 }
@@ -59,6 +66,7 @@ export function CapabilitiesToJSONTyped(value?: Capabilities | null, ignoreDiscr
 
     return {
         
+        'add': value['add'],
         'drop': value['drop'],
     };
 }

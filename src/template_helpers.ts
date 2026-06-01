@@ -1,7 +1,9 @@
 import type {
   ContainerSpec,
+  EmptyDirMountSpec,
   EnvVar,
   LifecyclePolicy,
+  PodSpecOverride,
   PoolStrategy,
   ResourceQuota,
   SandboxNetworkPolicy,
@@ -26,6 +28,14 @@ export interface TemplateSpecInit {
   clusterId?: string;
 }
 
+export interface PodSpecInit {
+  emptyDirMounts?: EmptyDirMountSpec[];
+  nodeSelector?: Record<string, string>;
+  serviceAccountName?: string;
+  affinity?: PodSpecOverride["affinity"];
+  tolerations?: PodSpecOverride["tolerations"];
+}
+
 export interface ContainerInit {
   imagePullPolicy?: string;
   env?: EnvVar[];
@@ -41,6 +51,23 @@ export interface WarmProcessInit {
 
 export function resources(cpu: string, memory: string): ResourceQuota {
   return { cpu, memory };
+}
+
+export function emptyDirMount(mountPath: string, sizeLimit?: string): EmptyDirMountSpec {
+  return {
+    mountPath,
+    ...(sizeLimit ? { sizeLimit } : {}),
+  };
+}
+
+export function podSpec(init: PodSpecInit = {}): PodSpecOverride {
+  return {
+    ...(init.emptyDirMounts ? { emptyDirMounts: [...init.emptyDirMounts] } : {}),
+    ...(init.nodeSelector ? { nodeSelector: { ...init.nodeSelector } } : {}),
+    ...(init.serviceAccountName ? { serviceAccountName: init.serviceAccountName } : {}),
+    ...(init.affinity ? { affinity: init.affinity } : {}),
+    ...(init.tolerations ? { tolerations: [...init.tolerations] } : {}),
+  };
 }
 
 export function container(

@@ -8,7 +8,6 @@ Function source code stored in sandbox service config.
 Name | Type
 ------------ | -------------
 `type` | string
-`filename` | string
 `code` | string
 
 ## Example
@@ -19,7 +18,6 @@ import type { SandboxFunctionSource } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "type": null,
-  "filename": null,
   "code": null,
 } satisfies SandboxFunctionSource
 
@@ -35,3 +33,5 @@ console.log(exampleParsed)
 ```
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+

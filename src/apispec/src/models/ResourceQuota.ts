@@ -31,6 +31,12 @@ export interface ResourceQuota {
      * @memberof ResourceQuota
      */
     memory?: string;
+    /**
+     * Ephemeral storage limit for the sandbox writable layer and container logs. Defaults to 512Mi when omitted.
+     * @type {string}
+     * @memberof ResourceQuota
+     */
+    ephemeralStorage?: string;
 }
 
 /**
@@ -52,6 +58,7 @@ export function ResourceQuotaFromJSONTyped(json: any, ignoreDiscriminator: boole
         
         'cpu': json['cpu'] == null ? undefined : json['cpu'],
         'memory': json['memory'] == null ? undefined : json['memory'],
+        'ephemeralStorage': json['ephemeralStorage'] == null ? undefined : json['ephemeralStorage'],
     };
 }
 
@@ -68,6 +75,7 @@ export function ResourceQuotaToJSONTyped(value?: ResourceQuota | null, ignoreDis
         
         'cpu': value['cpu'],
         'memory': value['memory'],
+        'ephemeralStorage': value['ephemeralStorage'],
     };
 }
 

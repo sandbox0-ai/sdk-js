@@ -2726,6 +2726,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SuccessSnapshotResponse"
+        "409":
+          description: Volume is busy or active RWX snapshot is unsupported
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
     get:
       tags: [snapshots]
       summary: List snapshots
@@ -3816,14 +3822,14 @@ components:
         port:
           type: integer
           format: int32
-          description: Public exposure routing port. Function services normally use the sandbox procd port.
+          description: Public exposure routing port. Required for manual, cmd, and warm_process services. Omit for function services; Sandbox0 assigns the internal function service port.
         runtime:
           $ref: "#/components/schemas/SandboxAppServiceRuntime"
         ingress:
           $ref: "#/components/schemas/SandboxAppServiceIngress"
         health_check:
           $ref: "#/components/schemas/SandboxAppServiceHealth"
-      required: [id, port, ingress]
+      required: [id, ingress]
     SandboxAppServiceRuntime:
       type: object
       properties:
@@ -3870,9 +3876,6 @@ components:
           type: string
           enum: [inline]
           description: Source transport. Only inline source is supported in this version.
-        filename:
-          type: string
-          description: Relative Python filename used when materializing the source. Defaults to main.py.
         code:
           type: string
           description: Inline source code. Limited to 256 KiB.
@@ -5235,24 +5238,61 @@ components:
           type: string
         memory:
           type: string
+        ephemeralStorage:
+          type: string
+          description: Ephemeral storage limit for the sandbox writable layer and container logs. Defaults to 512Mi when omitted.
     SecurityContext:
       type: object
       properties:
         capabilities:
           $ref: "#/components/schemas/Capabilities"
+        privileged:
+          type: boolean
         runAsUser:
           type: integer
           format: int64
         runAsGroup:
           type: integer
           format: int64
+        runAsNonRoot:
+          type: boolean
+        readOnlyRootFilesystem:
+          type: boolean
+        allowPrivilegeEscalation:
+          type: boolean
+        seccompProfile:
+          $ref: "#/components/schemas/SeccompProfile"
+        appArmorProfile:
+          $ref: "#/components/schemas/AppArmorProfile"
     Capabilities:
       type: object
       properties:
+        add:
+          type: array
+          items:
+            type: string
         drop:
           type: array
           items:
             type: string
+    SeccompProfile:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [Unconfined, RuntimeDefault, Localhost]
+        localhostProfile:
+          type: string
+      required: [type]
+    AppArmorProfile:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [Unconfined, RuntimeDefault, Localhost]
+        localhostProfile:
+          type: string
+      required: [type]
     Probe:
       type: object
       properties:
@@ -5348,6 +5388,19 @@ components:
             $ref: "#/components/schemas/Toleration"
         serviceAccountName:
           type: string
+        emptyDirMounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/EmptyDirMountSpec"
+    EmptyDirMountSpec:
+      type: object
+      properties:
+        mountPath:
+          type: string
+        sizeLimit:
+          type: string
+          description: Optional size limit for the Kubernetes emptyDir volume.
+      required: [mountPath]
     Affinity:
       type: object
       properties:

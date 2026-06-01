@@ -6,6 +6,8 @@ import { Templates } from "../../src/resources/templates.ts";
 import { models } from "../../src/index.ts";
 import {
   container,
+  emptyDirMount,
+  podSpec,
   resources,
   templateCreateRequest,
   templateSpec,
@@ -99,6 +101,9 @@ describe("Template models", () => {
   it("builds template requests with helper functions", () => {
     const spec = templateSpec(container("ubuntu:24.04", resources("1", "4Gi")), {
       displayName: "Helper Template",
+      pod: podSpec({
+        emptyDirMounts: [emptyDirMount("/var/lib/docker", "20Gi")],
+      }),
       warmProcesses: [
         warmProcess(models.WarmProcessSpecTypeEnum.Cmd, {
           alias: "helper",
@@ -118,6 +123,14 @@ describe("Template models", () => {
         mainContainer: {
           image: "ubuntu:24.04",
           resources: { cpu: "1", memory: "4Gi" },
+        },
+        pod: {
+          emptyDirMounts: [
+            {
+              mountPath: "/var/lib/docker",
+              sizeLimit: "20Gi",
+            },
+          ],
         },
         displayName: "Helper Template",
         warmProcesses: [

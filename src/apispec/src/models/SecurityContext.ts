@@ -20,6 +20,20 @@ import {
     CapabilitiesToJSON,
     CapabilitiesToJSONTyped,
 } from './Capabilities';
+import type { AppArmorProfile } from './AppArmorProfile';
+import {
+    AppArmorProfileFromJSON,
+    AppArmorProfileFromJSONTyped,
+    AppArmorProfileToJSON,
+    AppArmorProfileToJSONTyped,
+} from './AppArmorProfile';
+import type { SeccompProfile } from './SeccompProfile';
+import {
+    SeccompProfileFromJSON,
+    SeccompProfileFromJSONTyped,
+    SeccompProfileToJSON,
+    SeccompProfileToJSONTyped,
+} from './SeccompProfile';
 
 /**
  * 
@@ -35,6 +49,12 @@ export interface SecurityContext {
     capabilities?: Capabilities;
     /**
      * 
+     * @type {boolean}
+     * @memberof SecurityContext
+     */
+    privileged?: boolean;
+    /**
+     * 
      * @type {number}
      * @memberof SecurityContext
      */
@@ -45,6 +65,36 @@ export interface SecurityContext {
      * @memberof SecurityContext
      */
     runAsGroup?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SecurityContext
+     */
+    runAsNonRoot?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SecurityContext
+     */
+    readOnlyRootFilesystem?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SecurityContext
+     */
+    allowPrivilegeEscalation?: boolean;
+    /**
+     * 
+     * @type {SeccompProfile}
+     * @memberof SecurityContext
+     */
+    seccompProfile?: SeccompProfile;
+    /**
+     * 
+     * @type {AppArmorProfile}
+     * @memberof SecurityContext
+     */
+    appArmorProfile?: AppArmorProfile;
 }
 
 /**
@@ -65,8 +115,14 @@ export function SecurityContextFromJSONTyped(json: any, ignoreDiscriminator: boo
     return {
         
         'capabilities': json['capabilities'] == null ? undefined : CapabilitiesFromJSON(json['capabilities']),
+        'privileged': json['privileged'] == null ? undefined : json['privileged'],
         'runAsUser': json['runAsUser'] == null ? undefined : json['runAsUser'],
         'runAsGroup': json['runAsGroup'] == null ? undefined : json['runAsGroup'],
+        'runAsNonRoot': json['runAsNonRoot'] == null ? undefined : json['runAsNonRoot'],
+        'readOnlyRootFilesystem': json['readOnlyRootFilesystem'] == null ? undefined : json['readOnlyRootFilesystem'],
+        'allowPrivilegeEscalation': json['allowPrivilegeEscalation'] == null ? undefined : json['allowPrivilegeEscalation'],
+        'seccompProfile': json['seccompProfile'] == null ? undefined : SeccompProfileFromJSON(json['seccompProfile']),
+        'appArmorProfile': json['appArmorProfile'] == null ? undefined : AppArmorProfileFromJSON(json['appArmorProfile']),
     };
 }
 
@@ -82,8 +138,14 @@ export function SecurityContextToJSONTyped(value?: SecurityContext | null, ignor
     return {
         
         'capabilities': CapabilitiesToJSON(value['capabilities']),
+        'privileged': value['privileged'],
         'runAsUser': value['runAsUser'],
         'runAsGroup': value['runAsGroup'],
+        'runAsNonRoot': value['runAsNonRoot'],
+        'readOnlyRootFilesystem': value['readOnlyRootFilesystem'],
+        'allowPrivilegeEscalation': value['allowPrivilegeEscalation'],
+        'seccompProfile': SeccompProfileToJSON(value['seccompProfile']),
+        'appArmorProfile': AppArmorProfileToJSON(value['appArmorProfile']),
     };
 }
 

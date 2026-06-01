@@ -1,27 +1,24 @@
 
-# SandboxFunction
+# AppArmorProfile
 
-Function code executed by procd for a sandbox service request. cluster-gateway owns public ingress and carries this source to procd.
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`runtime` | string
-`handler` | string
-`source` | [SandboxFunctionSource](SandboxFunctionSource.md)
+`type` | string
+`localhostProfile` | string
 
 ## Example
 
 ```typescript
-import type { SandboxFunction } from 'sandbox0'
+import type { AppArmorProfile } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "runtime": null,
-  "handler": null,
-  "source": null,
-} satisfies SandboxFunction
+  "type": null,
+  "localhostProfile": null,
+} satisfies AppArmorProfile
 
 console.log(example)
 
@@ -30,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SandboxFunction
+const exampleParsed = JSON.parse(exampleJSON) as AppArmorProfile
 console.log(exampleParsed)
 ```
 

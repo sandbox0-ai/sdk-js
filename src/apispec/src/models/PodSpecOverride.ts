@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { EmptyDirMountSpec } from './EmptyDirMountSpec';
+import {
+    EmptyDirMountSpecFromJSON,
+    EmptyDirMountSpecFromJSONTyped,
+    EmptyDirMountSpecToJSON,
+    EmptyDirMountSpecToJSONTyped,
+} from './EmptyDirMountSpec';
 import type { Toleration } from './Toleration';
 import {
     TolerationFromJSON,
@@ -58,6 +65,12 @@ export interface PodSpecOverride {
      * @memberof PodSpecOverride
      */
     serviceAccountName?: string;
+    /**
+     * 
+     * @type {Array<EmptyDirMountSpec>}
+     * @memberof PodSpecOverride
+     */
+    emptyDirMounts?: Array<EmptyDirMountSpec>;
 }
 
 /**
@@ -81,6 +94,7 @@ export function PodSpecOverrideFromJSONTyped(json: any, ignoreDiscriminator: boo
         'affinity': json['affinity'] == null ? undefined : AffinityFromJSON(json['affinity']),
         'tolerations': json['tolerations'] == null ? undefined : ((json['tolerations'] as Array<any>).map(TolerationFromJSON)),
         'serviceAccountName': json['serviceAccountName'] == null ? undefined : json['serviceAccountName'],
+        'emptyDirMounts': json['emptyDirMounts'] == null ? undefined : ((json['emptyDirMounts'] as Array<any>).map(EmptyDirMountSpecFromJSON)),
     };
 }
 
@@ -99,6 +113,7 @@ export function PodSpecOverrideToJSONTyped(value?: PodSpecOverride | null, ignor
         'affinity': AffinityToJSON(value['affinity']),
         'tolerations': value['tolerations'] == null ? undefined : ((value['tolerations'] as Array<any>).map(TolerationToJSON)),
         'serviceAccountName': value['serviceAccountName'],
+        'emptyDirMounts': value['emptyDirMounts'] == null ? undefined : ((value['emptyDirMounts'] as Array<any>).map(EmptyDirMountSpecToJSON)),
     };
 }
 

@@ -54,11 +54,11 @@ export interface SandboxAppServiceView {
      */
     displayName?: string;
     /**
-     * Public exposure routing port. Function services normally use the sandbox procd port.
+     * Public exposure routing port. Required for manual, cmd, and warm_process services. Omit for function services; Sandbox0 assigns the internal function service port.
      * @type {number}
      * @memberof SandboxAppServiceView
      */
-    port: number;
+    port?: number;
     /**
      * 
      * @type {SandboxAppServiceRuntime}
@@ -102,7 +102,6 @@ export interface SandboxAppServiceView {
  */
 export function instanceOfSandboxAppServiceView(value: object): value is SandboxAppServiceView {
     if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('port' in value) || value['port'] === undefined) return false;
     if (!('ingress' in value) || value['ingress'] === undefined) return false;
     if (!('publishable' in value) || value['publishable'] === undefined) return false;
     return true;
@@ -120,7 +119,7 @@ export function SandboxAppServiceViewFromJSONTyped(json: any, ignoreDiscriminato
         
         'id': json['id'],
         'displayName': json['display_name'] == null ? undefined : json['display_name'],
-        'port': json['port'],
+        'port': json['port'] == null ? undefined : json['port'],
         'runtime': json['runtime'] == null ? undefined : SandboxAppServiceRuntimeFromJSON(json['runtime']),
         'ingress': SandboxAppServiceIngressFromJSON(json['ingress']),
         'healthCheck': json['health_check'] == null ? undefined : SandboxAppServiceHealthFromJSON(json['health_check']),

@@ -6,6 +6,7 @@
 
 Name | Type
 ------------ | -------------
+`add` | Array&lt;string&gt;
 `drop` | Array&lt;string&gt;
 
 ## Example
@@ -15,6 +16,7 @@ import type { Capabilities } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
+  "add": null,
   "drop": null,
 } satisfies Capabilities
 

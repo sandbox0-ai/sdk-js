@@ -8,14 +8,12 @@ import type {
   SandboxTemplateSpec,
   TemplateCreateRequest,
   TemplateUpdateRequest,
-  WarmProcessSpec,
 } from "./apispec/src/models/index";
 
 export interface TemplateSpecInit {
   description?: string;
   displayName?: string;
   tags?: string[];
-  warmProcesses?: WarmProcessSpec[];
   pod?: SandboxTemplateSpec["pod"];
   network?: SandboxNetworkPolicy;
   pool?: PoolStrategy;
@@ -30,13 +28,6 @@ export interface ContainerInit {
   imagePullPolicy?: string;
   env?: EnvVar[];
   securityContext?: ContainerSpec["securityContext"];
-}
-
-export interface WarmProcessInit {
-  alias?: string;
-  command?: string[];
-  cwd?: string;
-  envVars?: Record<string, string>;
 }
 
 export function resources(cpu: string, memory: string): ResourceQuota {
@@ -57,19 +48,6 @@ export function container(
   };
 }
 
-export function warmProcess(
-  type: WarmProcessSpec["type"],
-  init: WarmProcessInit = {},
-): WarmProcessSpec {
-  return {
-    type,
-    ...(init.alias ? { alias: init.alias } : {}),
-    ...(init.command ? { command: [...init.command] } : {}),
-    ...(init.cwd ? { cwd: init.cwd } : {}),
-    ...(init.envVars ? { envVars: { ...init.envVars } } : {}),
-  };
-}
-
 export function templateSpec(
   mainContainer: ContainerSpec,
   init: TemplateSpecInit = {},
@@ -79,7 +57,6 @@ export function templateSpec(
     ...(init.description ? { description: init.description } : {}),
     ...(init.displayName ? { displayName: init.displayName } : {}),
     ...(init.tags ? { tags: [...init.tags] } : {}),
-    ...(init.warmProcesses ? { warmProcesses: [...init.warmProcesses] } : {}),
     ...(init.pod ? { pod: init.pod } : {}),
     ...(init.network ? { network: init.network } : {}),
     ...(init.pool ? { pool: init.pool } : {}),

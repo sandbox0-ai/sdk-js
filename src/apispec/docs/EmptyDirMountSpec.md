@@ -1,26 +1,24 @@
 
-# ResourceQuota
+# EmptyDirMountSpec
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`cpu` | string
-`memory` | string
-`ephemeralStorage` | string
+`mountPath` | string
+`sizeLimit` | string
 
 ## Example
 
 ```typescript
-import type { ResourceQuota } from 'sandbox0'
+import type { EmptyDirMountSpec } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "cpu": null,
-  "memory": null,
-  "ephemeralStorage": null,
-} satisfies ResourceQuota
+  "mountPath": null,
+  "sizeLimit": null,
+} satisfies EmptyDirMountSpec
 
 console.log(example)
 
@@ -29,8 +27,10 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as ResourceQuota
+const exampleParsed = JSON.parse(exampleJSON) as EmptyDirMountSpec
 console.log(exampleParsed)
 ```
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+

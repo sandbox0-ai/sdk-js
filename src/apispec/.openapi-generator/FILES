@@ -6,6 +6,7 @@ docs/AddTeamMemberRequest.md
 docs/Affinity.md
 docs/ApiKeysApi.md
 docs/ApiV1SandboxesIdFilesGet200Response.md
+docs/AppArmorProfile.md
 docs/AuthApi.md
 docs/AuthProvider.md
 docs/CachePolicySpec.md
@@ -56,6 +57,7 @@ docs/EgressCredentialRule.md
 docs/EgressProxyPolicy.md
 docs/EgressProxyType.md
 docs/EgressTLSMode.md
+docs/EmptyDirMountSpec.md
 docs/EnvVar.md
 docs/ErrorEnvelope.md
 docs/ExecAction.md
@@ -150,8 +152,6 @@ docs/SandboxFunctionSource.md
 docs/SandboxLifecycleStatus.md
 docs/SandboxNetworkPolicy.md
 docs/SandboxPowerState.md
-docs/SandboxProbeSet.md
-docs/SandboxProbeSpec.md
 docs/SandboxRefreshRequest.md
 docs/SandboxResourceUsage.md
 docs/SandboxSSHConnection.md
@@ -167,6 +167,7 @@ docs/SandboxUpdateRequest.md
 docs/SandboxVolume.md
 docs/SandboxVolumesApi.md
 docs/SandboxesApi.md
+docs/SeccompProfile.md
 docs/SecurityContext.md
 docs/SignalContextRequest.md
 docs/Snapshot.md
@@ -275,7 +276,6 @@ docs/UsersApi.md
 docs/VolumeAccessMode.md
 docs/VolumeFileArchiveImportResponse.md
 docs/VolumeMountSpec.md
-docs/WarmProcessSpec.md
 docs/WebLoginExchangeRequest.md
 docs/WebhookConfig.md
 docs/WeightedPodAffinityTerm.md
@@ -301,6 +301,7 @@ src/models/APIKey.ts
 src/models/AddTeamMemberRequest.ts
 src/models/Affinity.ts
 src/models/ApiV1SandboxesIdFilesGet200Response.ts
+src/models/AppArmorProfile.ts
 src/models/AuthProvider.ts
 src/models/CachePolicySpec.ts
 src/models/Capabilities.ts
@@ -348,6 +349,7 @@ src/models/EgressCredentialRule.ts
 src/models/EgressProxyPolicy.ts
 src/models/EgressProxyType.ts
 src/models/EgressTLSMode.ts
+src/models/EmptyDirMountSpec.ts
 src/models/EnvVar.ts
 src/models/ErrorEnvelope.ts
 src/models/ExecAction.ts
@@ -437,8 +439,6 @@ src/models/SandboxFunctionSource.ts
 src/models/SandboxLifecycleStatus.ts
 src/models/SandboxNetworkPolicy.ts
 src/models/SandboxPowerState.ts
-src/models/SandboxProbeSet.ts
-src/models/SandboxProbeSpec.ts
 src/models/SandboxRefreshRequest.ts
 src/models/SandboxResourceUsage.ts
 src/models/SandboxSSHConnection.ts
@@ -452,6 +452,7 @@ src/models/SandboxTemplateStatus.ts
 src/models/SandboxUpdateConfig.ts
 src/models/SandboxUpdateRequest.ts
 src/models/SandboxVolume.ts
+src/models/SeccompProfile.ts
 src/models/SecurityContext.ts
 src/models/SignalContextRequest.ts
 src/models/Snapshot.ts
@@ -556,7 +557,6 @@ src/models/User.ts
 src/models/VolumeAccessMode.ts
 src/models/VolumeFileArchiveImportResponse.ts
 src/models/VolumeMountSpec.ts
-src/models/WarmProcessSpec.ts
 src/models/WebLoginExchangeRequest.ts
 src/models/WebhookConfig.ts
 src/models/WeightedPodAffinityTerm.ts

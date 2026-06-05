@@ -10,7 +10,6 @@ Name | Type
 `displayName` | string
 `tags` | Array&lt;string&gt;
 `mainContainer` | [ContainerSpec](ContainerSpec.md)
-`warmProcesses` | [Array&lt;WarmProcessSpec&gt;](WarmProcessSpec.md)
 `volumeMounts` | [Array&lt;VolumeMountSpec&gt;](VolumeMountSpec.md)
 `pod` | [PodSpecOverride](PodSpecOverride.md)
 `network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
@@ -32,7 +31,6 @@ const example = {
   "displayName": null,
   "tags": null,
   "mainContainer": null,
-  "warmProcesses": null,
   "volumeMounts": null,
   "pod": null,
   "network": null,
@@ -56,5 +54,3 @@ console.log(exampleParsed)
 ```
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
-

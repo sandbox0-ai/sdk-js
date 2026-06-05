@@ -69,7 +69,6 @@ console.log(`exit=${done.exitCode} state=${done.state}`);
 ## Documentation
 
 - [Sandbox0 docs](https://sandbox0.ai/docs)
-- [Template warm processes](https://sandbox0.ai/docs/template/warm-processes)
 - [Volume mounts](https://sandbox0.ai/docs/volume/mounts)
 
 ## Bootstrap Mounts At Claim Time

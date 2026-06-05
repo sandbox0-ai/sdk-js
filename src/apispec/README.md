@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -162,6 +162,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [AddTeamMemberRequest](docs/AddTeamMemberRequest.md)
 - [Affinity](docs/Affinity.md)
 - [ApiV1SandboxesIdFilesGet200Response](docs/ApiV1SandboxesIdFilesGet200Response.md)
+- [AppArmorProfile](docs/AppArmorProfile.md)
 - [AuthProvider](docs/AuthProvider.md)
 - [CachePolicySpec](docs/CachePolicySpec.md)
 - [Capabilities](docs/Capabilities.md)
@@ -209,6 +210,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [EgressProxyPolicy](docs/EgressProxyPolicy.md)
 - [EgressProxyType](docs/EgressProxyType.md)
 - [EgressTLSMode](docs/EgressTLSMode.md)
+- [EmptyDirMountSpec](docs/EmptyDirMountSpec.md)
 - [EnvVar](docs/EnvVar.md)
 - [ErrorEnvelope](docs/ErrorEnvelope.md)
 - [ExecAction](docs/ExecAction.md)
@@ -298,8 +300,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxLifecycleStatus](docs/SandboxLifecycleStatus.md)
 - [SandboxNetworkPolicy](docs/SandboxNetworkPolicy.md)
 - [SandboxPowerState](docs/SandboxPowerState.md)
-- [SandboxProbeSet](docs/SandboxProbeSet.md)
-- [SandboxProbeSpec](docs/SandboxProbeSpec.md)
 - [SandboxRefreshRequest](docs/SandboxRefreshRequest.md)
 - [SandboxResourceUsage](docs/SandboxResourceUsage.md)
 - [SandboxSSHConnection](docs/SandboxSSHConnection.md)
@@ -313,6 +313,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxUpdateConfig](docs/SandboxUpdateConfig.md)
 - [SandboxUpdateRequest](docs/SandboxUpdateRequest.md)
 - [SandboxVolume](docs/SandboxVolume.md)
+- [SeccompProfile](docs/SeccompProfile.md)
 - [SecurityContext](docs/SecurityContext.md)
 - [SignalContextRequest](docs/SignalContextRequest.md)
 - [Snapshot](docs/Snapshot.md)
@@ -417,7 +418,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [VolumeAccessMode](docs/VolumeAccessMode.md)
 - [VolumeFileArchiveImportResponse](docs/VolumeFileArchiveImportResponse.md)
 - [VolumeMountSpec](docs/VolumeMountSpec.md)
-- [WarmProcessSpec](docs/WarmProcessSpec.md)
 - [WebLoginExchangeRequest](docs/WebLoginExchangeRequest.md)
 - [WebhookConfig](docs/WebhookConfig.md)
 - [WeightedPodAffinityTerm](docs/WeightedPodAffinityTerm.md)

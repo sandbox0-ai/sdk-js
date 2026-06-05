@@ -26,12 +26,6 @@ export interface SandboxFunctionSource {
      */
     type: SandboxFunctionSourceTypeEnum;
     /**
-     * Relative Python filename used when materializing the source. Defaults to main.py.
-     * @type {string}
-     * @memberof SandboxFunctionSource
-     */
-    filename?: string;
-    /**
      * Inline source code. Limited to 256 KiB.
      * @type {string}
      * @memberof SandboxFunctionSource
@@ -69,7 +63,6 @@ export function SandboxFunctionSourceFromJSONTyped(json: any, ignoreDiscriminato
     return {
 
         'type': json['type'],
-        'filename': json['filename'] == null ? undefined : json['filename'],
         'code': json['code'],
     };
 }
@@ -86,7 +79,6 @@ export function SandboxFunctionSourceToJSONTyped(value?: SandboxFunctionSource |
     return {
 
         'type': value['type'],
-        'filename': value['filename'],
         'code': value['code'],
     };
 }

@@ -10,6 +10,7 @@ Name | Type
 `affinity` | [Affinity](Affinity.md)
 `tolerations` | [Array&lt;Toleration&gt;](Toleration.md)
 `serviceAccountName` | string
+`emptyDirMounts` | [Array&lt;EmptyDirMountSpec&gt;](EmptyDirMountSpec.md)
 
 ## Example
 
@@ -22,6 +23,7 @@ const example = {
   "affinity": null,
   "tolerations": null,
   "serviceAccountName": null,
+  "emptyDirMounts": null,
 } satisfies PodSpecOverride
 
 console.log(example)
@@ -36,5 +38,3 @@ console.log(exampleParsed)
 ```
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
-

@@ -7,8 +7,14 @@
 Name | Type
 ------------ | -------------
 `capabilities` | [Capabilities](Capabilities.md)
+`privileged` | boolean
 `runAsUser` | number
 `runAsGroup` | number
+`runAsNonRoot` | boolean
+`readOnlyRootFilesystem` | boolean
+`allowPrivilegeEscalation` | boolean
+`seccompProfile` | [SeccompProfile](SeccompProfile.md)
+`appArmorProfile` | [AppArmorProfile](AppArmorProfile.md)
 
 ## Example
 
@@ -18,8 +24,14 @@ import type { SecurityContext } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "capabilities": null,
+  "privileged": null,
   "runAsUser": null,
   "runAsGroup": null,
+  "runAsNonRoot": null,
+  "readOnlyRootFilesystem": null,
+  "allowPrivilegeEscalation": null,
+  "seccompProfile": null,
+  "appArmorProfile": null,
 } satisfies SecurityContext
 
 console.log(example)
@@ -34,5 +46,3 @@ console.log(exampleParsed)
 ```
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
-

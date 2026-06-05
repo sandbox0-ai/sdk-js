@@ -43,7 +43,6 @@ const NULL_ARRAY_KEYS = new Set([
   "templates",
   "tolerations",
   "values",
-  "warmProcesses",
 ]);
 
 function normalizeNullStringMap(value: Record<string, unknown>): boolean {

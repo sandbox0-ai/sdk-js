@@ -52,12 +52,7 @@ export interface SandboxAppServiceRuntime {
      */
     envVars?: { [key: string]: string; };
     /**
-     * Warm process alias or context ID used when type is warm_process.
-     * @type {string}
-     * @memberof SandboxAppServiceRuntime
-     */
-    warmProcessName?: string;
-    /**
+     *
      * @type {SandboxFunction}
      * @memberof SandboxAppServiceRuntime
      */
@@ -69,7 +64,6 @@ export interface SandboxAppServiceRuntime {
  * @export
  */
 export const SandboxAppServiceRuntimeTypeEnum = {
-    WarmProcess: 'warm_process',
     Cmd: 'cmd',
     Manual: 'manual',
     Function: 'function'
@@ -99,7 +93,6 @@ export function SandboxAppServiceRuntimeFromJSONTyped(json: any, ignoreDiscrimin
         'command': json['command'] == null ? undefined : json['command'],
         'cwd': json['cwd'] == null ? undefined : json['cwd'],
         'envVars': json['env_vars'] == null ? undefined : json['env_vars'],
-        'warmProcessName': json['warm_process_name'] == null ? undefined : json['warm_process_name'],
         '_function': json['function'] == null ? undefined : SandboxFunctionFromJSON(json['function']),
     };
 }
@@ -119,7 +112,6 @@ export function SandboxAppServiceRuntimeToJSONTyped(value?: SandboxAppServiceRun
         'command': value['command'],
         'cwd': value['cwd'],
         'env_vars': value['envVars'],
-        'warm_process_name': value['warmProcessName'],
         'function': SandboxFunctionToJSON(value['_function']),
     };
 }

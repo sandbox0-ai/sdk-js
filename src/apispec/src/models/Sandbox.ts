@@ -41,13 +41,6 @@ import {
     SandboxSSHConnectionToJSON,
     SandboxSSHConnectionToJSONTyped,
 } from './SandboxSSHConnection';
-import type { SandboxPowerState } from './SandboxPowerState';
-import {
-    SandboxPowerStateFromJSON,
-    SandboxPowerStateFromJSONTyped,
-    SandboxPowerStateToJSON,
-    SandboxPowerStateToJSONTyped,
-} from './SandboxPowerState';
 
 /**
  * 
@@ -86,17 +79,11 @@ export interface Sandbox {
      */
     status: SandboxLifecycleStatus;
     /**
-     * 
+     * True when status is paused and no runtime is attached.
      * @type {boolean}
      * @memberof Sandbox
      */
     paused: boolean;
-    /**
-     * 
-     * @type {SandboxPowerState}
-     * @memberof Sandbox
-     */
-    powerState: SandboxPowerState;
     /**
      * 
      * @type {boolean}
@@ -121,6 +108,12 @@ export interface Sandbox {
      * @memberof Sandbox
      */
     podName: string;
+    /**
+     * Monotonically increasing runtime generation. Resume starts a new generation.
+     * @type {number}
+     * @memberof Sandbox
+     */
+    runtimeGeneration: number;
     /**
      * 
      * @type {SandboxSSHConnection}
@@ -151,6 +144,12 @@ export interface Sandbox {
      * @memberof Sandbox
      */
     createdAt: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof Sandbox
+     */
+    updatedAt: Date;
 }
 
 
@@ -164,13 +163,14 @@ export function instanceOfSandbox(value: object): value is Sandbox {
     if (!('teamId' in value) || value['teamId'] === undefined) return false;
     if (!('status' in value) || value['status'] === undefined) return false;
     if (!('paused' in value) || value['paused'] === undefined) return false;
-    if (!('powerState' in value) || value['powerState'] === undefined) return false;
     if (!('autoResume' in value) || value['autoResume'] === undefined) return false;
     if (!('podName' in value) || value['podName'] === undefined) return false;
+    if (!('runtimeGeneration' in value) || value['runtimeGeneration'] === undefined) return false;
     if (!('expiresAt' in value) || value['expiresAt'] === undefined) return false;
     if (!('hardExpiresAt' in value) || value['hardExpiresAt'] === undefined) return false;
     if (!('claimedAt' in value) || value['claimedAt'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
 }
 
@@ -190,16 +190,17 @@ export function SandboxFromJSONTyped(json: any, ignoreDiscriminator: boolean): S
         'userId': json['user_id'] == null ? undefined : json['user_id'],
         'status': SandboxLifecycleStatusFromJSON(json['status']),
         'paused': json['paused'],
-        'powerState': SandboxPowerStateFromJSON(json['power_state']),
         'autoResume': json['auto_resume'],
         'services': json['services'] == null ? undefined : ((json['services'] as Array<any>).map(SandboxAppServiceFromJSON)),
         'mounts': json['mounts'] == null ? undefined : ((json['mounts'] as Array<any>).map(ClaimMountRequestFromJSON)),
         'podName': json['pod_name'],
+        'runtimeGeneration': json['runtime_generation'],
         'ssh': json['ssh'] == null ? undefined : SandboxSSHConnectionFromJSON(json['ssh']),
         'expiresAt': (new Date(json['expires_at'])),
         'hardExpiresAt': (new Date(json['hard_expires_at'])),
         'claimedAt': (new Date(json['claimed_at'])),
         'createdAt': (new Date(json['created_at'])),
+        'updatedAt': (new Date(json['updated_at'])),
     };
 }
 
@@ -220,16 +221,17 @@ export function SandboxToJSONTyped(value?: Sandbox | null, ignoreDiscriminator: 
         'user_id': value['userId'],
         'status': SandboxLifecycleStatusToJSON(value['status']),
         'paused': value['paused'],
-        'power_state': SandboxPowerStateToJSON(value['powerState']),
         'auto_resume': value['autoResume'],
         'services': value['services'] == null ? undefined : ((value['services'] as Array<any>).map(SandboxAppServiceToJSON)),
         'mounts': value['mounts'] == null ? undefined : ((value['mounts'] as Array<any>).map(ClaimMountRequestToJSON)),
         'pod_name': value['podName'],
+        'runtime_generation': value['runtimeGeneration'],
         'ssh': SandboxSSHConnectionToJSON(value['ssh']),
         'expires_at': value['expiresAt'].toISOString(),
         'hard_expires_at': value['hardExpiresAt'].toISOString(),
         'claimed_at': value['claimedAt'].toISOString(),
         'created_at': value['createdAt'].toISOString(),
+        'updated_at': value['updatedAt'].toISOString(),
     };
 }
 

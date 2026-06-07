@@ -12,16 +12,17 @@ Name | Type
 `userId` | string
 `status` | [SandboxLifecycleStatus](SandboxLifecycleStatus.md)
 `paused` | boolean
-`powerState` | [SandboxPowerState](SandboxPowerState.md)
 `autoResume` | boolean
 `services` | [Array&lt;SandboxAppService&gt;](SandboxAppService.md)
 `mounts` | [Array&lt;ClaimMountRequest&gt;](ClaimMountRequest.md)
 `podName` | string
+`runtimeGeneration` | number
 `ssh` | [SandboxSSHConnection](SandboxSSHConnection.md)
 `expiresAt` | Date
 `hardExpiresAt` | Date
 `claimedAt` | Date
 `createdAt` | Date
+`updatedAt` | Date
 
 ## Example
 
@@ -36,16 +37,17 @@ const example = {
   "userId": null,
   "status": null,
   "paused": null,
-  "powerState": null,
   "autoResume": null,
   "services": null,
   "mounts": null,
   "podName": null,
+  "runtimeGeneration": null,
   "ssh": null,
   "expiresAt": null,
   "hardExpiresAt": null,
   "claimedAt": null,
   "createdAt": null,
+  "updatedAt": null,
 } satisfies Sandbox
 
 console.log(example)

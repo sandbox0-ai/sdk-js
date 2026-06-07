@@ -20,10 +20,11 @@
 export const SandboxLifecycleStatus = {
     SandboxLifecycleStatusStarting: 'starting',
     SandboxLifecycleStatusRunning: 'running',
-    SandboxLifecycleStatusFailed: 'failed',
-    SandboxLifecycleStatusCompleted: 'completed',
+    SandboxLifecycleStatusPausing: 'pausing',
+    SandboxLifecycleStatusPaused: 'paused',
+    SandboxLifecycleStatusResuming: 'resuming',
     SandboxLifecycleStatusTerminating: 'terminating',
-    SandboxLifecycleStatusCleaned: 'cleaned'
+    SandboxLifecycleStatusFailed: 'failed'
 } as const;
 export type SandboxLifecycleStatus = typeof SandboxLifecycleStatus[keyof typeof SandboxLifecycleStatus];
 

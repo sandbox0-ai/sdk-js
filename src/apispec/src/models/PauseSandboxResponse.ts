@@ -13,13 +13,6 @@
  */
 
 import { mapValues } from '../runtime';
-import type { SandboxPowerState } from './SandboxPowerState';
-import {
-    SandboxPowerStateFromJSON,
-    SandboxPowerStateFromJSONTyped,
-    SandboxPowerStateToJSON,
-    SandboxPowerStateToJSONTyped,
-} from './SandboxPowerState';
 import type { SandboxResourceUsage } from './SandboxResourceUsage';
 import {
     SandboxResourceUsageFromJSON,
@@ -48,12 +41,6 @@ export interface PauseSandboxResponse {
     paused: boolean;
     /**
      * 
-     * @type {SandboxPowerState}
-     * @memberof PauseSandboxResponse
-     */
-    powerState: SandboxPowerState;
-    /**
-     * 
      * @type {SandboxResourceUsage}
      * @memberof PauseSandboxResponse
      */
@@ -78,7 +65,6 @@ export interface PauseSandboxResponse {
 export function instanceOfPauseSandboxResponse(value: object): value is PauseSandboxResponse {
     if (!('sandboxId' in value) || value['sandboxId'] === undefined) return false;
     if (!('paused' in value) || value['paused'] === undefined) return false;
-    if (!('powerState' in value) || value['powerState'] === undefined) return false;
     return true;
 }
 
@@ -94,7 +80,6 @@ export function PauseSandboxResponseFromJSONTyped(json: any, ignoreDiscriminator
         
         'sandboxId': json['sandbox_id'],
         'paused': json['paused'],
-        'powerState': SandboxPowerStateFromJSON(json['power_state']),
         'resourceUsage': json['resource_usage'] == null ? undefined : SandboxResourceUsageFromJSON(json['resource_usage']),
         'updatedMemory': json['updated_memory'] == null ? undefined : json['updated_memory'],
         'updatedCpu': json['updated_cpu'] == null ? undefined : json['updated_cpu'],
@@ -114,7 +99,6 @@ export function PauseSandboxResponseToJSONTyped(value?: PauseSandboxResponse | n
         
         'sandbox_id': value['sandboxId'],
         'paused': value['paused'],
-        'power_state': SandboxPowerStateToJSON(value['powerState']),
         'resource_usage': SandboxResourceUsageToJSON(value['resourceUsage']),
         'updated_memory': value['updatedMemory'],
         'updated_cpu': value['updatedCpu'],

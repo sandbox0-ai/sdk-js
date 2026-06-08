@@ -76,7 +76,7 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **status** | `SandboxLifecycleStatus` | Filter by sandbox status | [Optional] [Defaults to `undefined`] [Enum: starting, running, failed, completed, terminating, cleaned] |
+| **status** | `SandboxLifecycleStatus` | Filter by sandbox status | [Optional] [Defaults to `undefined`] [Enum: starting, running, pausing, paused, resuming, terminating, failed] |
 | **templateId** | `string` | Filter by template ID | [Optional] [Defaults to `undefined`] |
 | **paused** | `boolean` | Filter by paused state | [Optional] [Defaults to `undefined`] |
 | **limit** | `number` | Maximum number of results per page | [Optional] [Defaults to `50`] |
@@ -549,8 +549,9 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Sandbox paused |  -  |
-| **409** | Pause was superseded by a newer power transition |  -  |
+| **409** | Another sandbox lifecycle operation is in progress |  -  |
 | **504** | Timed out waiting for the sandbox to pause |  -  |
+| **503** | Sandbox pause requires ctld |  -  |
 | **404** | Not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -768,8 +769,10 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Sandbox resumed |  -  |
-| **409** | Resume was superseded by a newer power transition |  -  |
+| **409** | Another sandbox lifecycle operation is in progress |  -  |
+| **429** | Resume would exceed active runtime quota |  -  |
 | **504** | Timed out waiting for the sandbox to resume |  -  |
+| **503** | Sandbox resume is temporarily unavailable |  -  |
 | **404** | Not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)

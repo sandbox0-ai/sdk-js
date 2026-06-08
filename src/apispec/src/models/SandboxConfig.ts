@@ -48,13 +48,13 @@ export interface SandboxConfig {
      */
     envVars?: { [key: string]: string; };
     /**
-     * 
+     * Runtime soft time-to-live in seconds. When it expires, Sandbox0 checkpoints the writable rootfs, pauses the sandbox, and releases runtime compute while preserving durable sandbox state.
      * @type {number}
      * @memberof SandboxConfig
      */
     ttl?: number;
     /**
-     * Hard time-to-live in seconds. When it expires, Sandbox0 cleans the runtime pod and preserves the sandbox identity, services, and public URLs until the sandbox is explicitly deleted.
+     * Sandbox hard time-to-live in seconds. When it expires, Sandbox0 deletes the sandbox identity and durable state, including paused rootfs checkpoints.
      * @type {number}
      * @memberof SandboxConfig
      */

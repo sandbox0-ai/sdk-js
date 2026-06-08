@@ -20,13 +20,6 @@ import {
     SandboxLifecycleStatusToJSON,
     SandboxLifecycleStatusToJSONTyped,
 } from './SandboxLifecycleStatus';
-import type { SandboxPowerState } from './SandboxPowerState';
-import {
-    SandboxPowerStateFromJSON,
-    SandboxPowerStateFromJSONTyped,
-    SandboxPowerStateToJSON,
-    SandboxPowerStateToJSONTyped,
-} from './SandboxPowerState';
 
 /**
  * 
@@ -53,17 +46,17 @@ export interface SandboxSummary {
      */
     status: SandboxLifecycleStatus;
     /**
-     * 
+     * True when status is paused and no runtime is attached.
      * @type {boolean}
      * @memberof SandboxSummary
      */
     paused: boolean;
     /**
-     * 
-     * @type {SandboxPowerState}
+     * Monotonically increasing runtime generation. Resume starts a new generation.
+     * @type {number}
      * @memberof SandboxSummary
      */
-    powerState: SandboxPowerState;
+    runtimeGeneration: number;
     /**
      * Cluster where sandbox runs (multi-cluster only)
      * @type {string}
@@ -88,6 +81,12 @@ export interface SandboxSummary {
      * @memberof SandboxSummary
      */
     hardExpiresAt: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof SandboxSummary
+     */
+    updatedAt: Date;
 }
 
 
@@ -100,10 +99,11 @@ export function instanceOfSandboxSummary(value: object): value is SandboxSummary
     if (!('templateId' in value) || value['templateId'] === undefined) return false;
     if (!('status' in value) || value['status'] === undefined) return false;
     if (!('paused' in value) || value['paused'] === undefined) return false;
-    if (!('powerState' in value) || value['powerState'] === undefined) return false;
+    if (!('runtimeGeneration' in value) || value['runtimeGeneration'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     if (!('expiresAt' in value) || value['expiresAt'] === undefined) return false;
     if (!('hardExpiresAt' in value) || value['hardExpiresAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
 }
 
@@ -121,11 +121,12 @@ export function SandboxSummaryFromJSONTyped(json: any, ignoreDiscriminator: bool
         'templateId': json['template_id'],
         'status': SandboxLifecycleStatusFromJSON(json['status']),
         'paused': json['paused'],
-        'powerState': SandboxPowerStateFromJSON(json['power_state']),
+        'runtimeGeneration': json['runtime_generation'],
         'clusterId': json['cluster_id'] == null ? undefined : json['cluster_id'],
         'createdAt': (new Date(json['created_at'])),
         'expiresAt': (new Date(json['expires_at'])),
         'hardExpiresAt': (new Date(json['hard_expires_at'])),
+        'updatedAt': (new Date(json['updated_at'])),
     };
 }
 
@@ -144,11 +145,12 @@ export function SandboxSummaryToJSONTyped(value?: SandboxSummary | null, ignoreD
         'template_id': value['templateId'],
         'status': SandboxLifecycleStatusToJSON(value['status']),
         'paused': value['paused'],
-        'power_state': SandboxPowerStateToJSON(value['powerState']),
+        'runtime_generation': value['runtimeGeneration'],
         'cluster_id': value['clusterId'],
         'created_at': value['createdAt'].toISOString(),
         'expires_at': value['expiresAt'].toISOString(),
         'hard_expires_at': value['hardExpiresAt'].toISOString(),
+        'updated_at': value['updatedAt'].toISOString(),
     };
 }
 

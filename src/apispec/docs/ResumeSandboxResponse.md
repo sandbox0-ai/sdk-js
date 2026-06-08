@@ -8,7 +8,6 @@ Name | Type
 ------------ | -------------
 `sandboxId` | string
 `resumed` | boolean
-`powerState` | [SandboxPowerState](SandboxPowerState.md)
 `restoredMemory` | string
 
 ## Example
@@ -20,7 +19,6 @@ import type { ResumeSandboxResponse } from 'sandbox0'
 const example = {
   "sandboxId": null,
   "resumed": null,
-  "powerState": null,
   "restoredMemory": null,
 } satisfies ResumeSandboxResponse
 

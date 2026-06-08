@@ -151,7 +151,6 @@ docs/SandboxFunction.md
 docs/SandboxFunctionSource.md
 docs/SandboxLifecycleStatus.md
 docs/SandboxNetworkPolicy.md
-docs/SandboxPowerState.md
 docs/SandboxRefreshRequest.md
 docs/SandboxResourceUsage.md
 docs/SandboxSSHConnection.md
@@ -438,7 +437,6 @@ src/models/SandboxFunction.ts
 src/models/SandboxFunctionSource.ts
 src/models/SandboxLifecycleStatus.ts
 src/models/SandboxNetworkPolicy.ts
-src/models/SandboxPowerState.ts
 src/models/SandboxRefreshRequest.ts
 src/models/SandboxResourceUsage.ts
 src/models/SandboxSSHConnection.ts

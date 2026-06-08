@@ -10,11 +10,12 @@ Name | Type
 `templateId` | string
 `status` | [SandboxLifecycleStatus](SandboxLifecycleStatus.md)
 `paused` | boolean
-`powerState` | [SandboxPowerState](SandboxPowerState.md)
+`runtimeGeneration` | number
 `clusterId` | string
 `createdAt` | Date
 `expiresAt` | Date
 `hardExpiresAt` | Date
+`updatedAt` | Date
 
 ## Example
 
@@ -27,11 +28,12 @@ const example = {
   "templateId": null,
   "status": null,
   "paused": null,
-  "powerState": null,
+  "runtimeGeneration": null,
   "clusterId": null,
   "createdAt": null,
   "expiresAt": null,
   "hardExpiresAt": null,
+  "updatedAt": null,
 } satisfies SandboxSummary
 
 console.log(example)

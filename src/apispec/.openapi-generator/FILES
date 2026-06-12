@@ -80,6 +80,9 @@ docs/HTTPGetAction.md
 docs/HTTPHeader.md
 docs/HTTPHeadersProjection.md
 docs/HTTPMatch.md
+docs/HTTPMethodPolicy.md
+docs/HTTPPathPolicy.md
+docs/HTTPProtocolRule.md
 docs/HTTPValueMatch.md
 docs/HealthApi.md
 docs/Identity.md
@@ -370,6 +373,9 @@ src/models/HTTPGetAction.ts
 src/models/HTTPHeader.ts
 src/models/HTTPHeadersProjection.ts
 src/models/HTTPMatch.ts
+src/models/HTTPMethodPolicy.ts
+src/models/HTTPPathPolicy.ts
+src/models/HTTPProtocolRule.ts
 src/models/HTTPValueMatch.ts
 src/models/Identity.ts
 src/models/LabelSelector.ts

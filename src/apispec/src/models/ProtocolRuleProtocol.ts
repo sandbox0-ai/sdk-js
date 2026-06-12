@@ -18,6 +18,7 @@
  * @export
  */
 export const ProtocolRuleProtocol = {
+    ProtocolRuleProtocolHttp: 'http',
     ProtocolRuleProtocolMcp: 'mcp'
 } as const;
 export type ProtocolRuleProtocol = typeof ProtocolRuleProtocol[keyof typeof ProtocolRuleProtocol];

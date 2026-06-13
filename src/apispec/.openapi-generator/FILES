@@ -269,6 +269,7 @@ docs/Toleration.md
 docs/TrafficRule.md
 docs/TrafficRuleAction.md
 docs/TrafficRuleAppProtocol.md
+docs/TransferTeamOwnerRequest.md
 docs/UpdateRegionRequest.md
 docs/UpdateTeamMemberRequest.md
 docs/UpdateTeamRequest.md
@@ -553,6 +554,7 @@ src/models/Toleration.ts
 src/models/TrafficRule.ts
 src/models/TrafficRuleAction.ts
 src/models/TrafficRuleAppProtocol.ts
+src/models/TransferTeamOwnerRequest.ts
 src/models/UpdateRegionRequest.ts
 src/models/UpdateTeamMemberRequest.ts
 src/models/UpdateTeamRequest.ts

@@ -49,6 +49,7 @@ export class Client {
     snapshots: apisTypes.SnapshotsApi;
     templates: apisTypes.TemplatesApi;
     credentialSources: apisTypes.CredentialSourcesApi;
+    teams: apisTypes.TeamsApi;
   };
 
   readonly sandboxes: Sandboxes;
@@ -82,6 +83,7 @@ export class Client {
       snapshots: new apis.SnapshotsApi(this.configuration),
       templates: new apis.TemplatesApi(this.configuration),
       credentialSources: new apis.CredentialSourcesApi(this.configuration),
+      teams: new apis.TeamsApi(this.configuration),
     };
 
     this.sandboxes = new Sandboxes(this);

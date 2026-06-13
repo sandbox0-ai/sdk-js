@@ -254,6 +254,7 @@ export * from './Toleration';
 export * from './TrafficRule';
 export * from './TrafficRuleAction';
 export * from './TrafficRuleAppProtocol';
+export * from './TransferTeamOwnerRequest';
 export * from './UpdateRegionRequest';
 export * from './UpdateTeamMemberRequest';
 export * from './UpdateTeamRequest';

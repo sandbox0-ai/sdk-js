@@ -34,6 +34,13 @@ import {
     EgressTLSModeToJSON,
     EgressTLSModeToJSONTyped,
 } from './EgressTLSMode';
+import type { HTTPProtocolRule } from './HTTPProtocolRule';
+import {
+    HTTPProtocolRuleFromJSON,
+    HTTPProtocolRuleFromJSONTyped,
+    HTTPProtocolRuleToJSON,
+    HTTPProtocolRuleToJSONTyped,
+} from './HTTPProtocolRule';
 import type { MCPProtocolRule } from './MCPProtocolRule';
 import {
     MCPProtocolRuleFromJSON,
@@ -93,6 +100,12 @@ export interface ProtocolRule {
     httpMatch?: HTTPMatch;
     /**
      * 
+     * @type {HTTPProtocolRule}
+     * @memberof ProtocolRule
+     */
+    http?: HTTPProtocolRule;
+    /**
+     * 
      * @type {MCPProtocolRule}
      * @memberof ProtocolRule
      */
@@ -125,6 +138,7 @@ export function ProtocolRuleFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'ports': json['ports'] == null ? undefined : ((json['ports'] as Array<any>).map(PortSpecFromJSON)),
         'tlsMode': json['tlsMode'] == null ? undefined : EgressTLSModeFromJSON(json['tlsMode']),
         'httpMatch': json['httpMatch'] == null ? undefined : HTTPMatchFromJSON(json['httpMatch']),
+        'http': json['http'] == null ? undefined : HTTPProtocolRuleFromJSON(json['http']),
         'mcp': json['mcp'] == null ? undefined : MCPProtocolRuleFromJSON(json['mcp']),
     };
 }
@@ -146,6 +160,7 @@ export function ProtocolRuleToJSONTyped(value?: ProtocolRule | null, ignoreDiscr
         'ports': value['ports'] == null ? undefined : ((value['ports'] as Array<any>).map(PortSpecToJSON)),
         'tlsMode': EgressTLSModeToJSON(value['tlsMode']),
         'httpMatch': HTTPMatchToJSON(value['httpMatch']),
+        'http': HTTPProtocolRuleToJSON(value['http']),
         'mcp': MCPProtocolRuleToJSON(value['mcp']),
     };
 }

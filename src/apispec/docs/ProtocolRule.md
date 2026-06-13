@@ -13,6 +13,7 @@ Name | Type
 `ports` | [Array&lt;PortSpec&gt;](PortSpec.md)
 `tlsMode` | [EgressTLSMode](EgressTLSMode.md)
 `httpMatch` | [HTTPMatch](HTTPMatch.md)
+`http` | [HTTPProtocolRule](HTTPProtocolRule.md)
 `mcp` | [MCPProtocolRule](MCPProtocolRule.md)
 
 ## Example
@@ -28,6 +29,7 @@ const example = {
   "ports": null,
   "tlsMode": null,
   "httpMatch": null,
+  "http": null,
   "mcp": null,
 } satisfies ProtocolRule
 

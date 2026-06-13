@@ -49,6 +49,24 @@ export interface TeamMember {
      * @memberof TeamMember
      */
     joinedAt: Date;
+    /**
+     * User email address. Present in team member list responses.
+     * @type {string}
+     * @memberof TeamMember
+     */
+    email?: string;
+    /**
+     * User display name. Present in team member list responses.
+     * @type {string}
+     * @memberof TeamMember
+     */
+    name?: string;
+    /**
+     * User avatar URL. Present in team member list responses.
+     * @type {string}
+     * @memberof TeamMember
+     */
+    avatarUrl?: string;
 }
 
 /**
@@ -78,6 +96,9 @@ export function TeamMemberFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'userId': json['user_id'],
         'role': json['role'],
         'joinedAt': (new Date(json['joined_at'])),
+        'email': json['email'] == null ? undefined : json['email'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'avatarUrl': json['avatar_url'] == null ? undefined : json['avatar_url'],
     };
 }
 
@@ -97,6 +118,9 @@ export function TeamMemberToJSONTyped(value?: TeamMember | null, ignoreDiscrimin
         'user_id': value['userId'],
         'role': value['role'],
         'joined_at': value['joinedAt'].toISOString(),
+        'email': value['email'],
+        'name': value['name'],
+        'avatar_url': value['avatarUrl'],
     };
 }
 

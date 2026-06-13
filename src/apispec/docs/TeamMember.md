@@ -11,6 +11,9 @@ Name | Type
 `userId` | string
 `role` | string
 `joinedAt` | Date
+`email` | string
+`name` | string
+`avatarUrl` | string
 
 ## Example
 
@@ -24,6 +27,9 @@ const example = {
   "userId": null,
   "role": null,
   "joinedAt": null,
+  "email": null,
+  "name": null,
+  "avatarUrl": null,
 } satisfies TeamMember
 
 console.log(example)

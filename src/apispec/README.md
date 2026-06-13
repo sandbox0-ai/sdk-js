@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -140,6 +140,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *TeamsApi* | [**teamsIdMembersPost**](docs/TeamsApi.md#teamsidmemberspost) | **POST** /teams/{id}/members | Add team member
 *TeamsApi* | [**teamsIdMembersUserIdDelete**](docs/TeamsApi.md#teamsidmembersuseriddelete) | **DELETE** /teams/{id}/members/{userId} | Remove team member
 *TeamsApi* | [**teamsIdMembersUserIdPut**](docs/TeamsApi.md#teamsidmembersuseridput) | **PUT** /teams/{id}/members/{userId} | Update team member role
+*TeamsApi* | [**teamsIdOwnerPut**](docs/TeamsApi.md#teamsidownerput) | **PUT** /teams/{id}/owner | Transfer team ownership
 *TeamsApi* | [**teamsIdPut**](docs/TeamsApi.md#teamsidput) | **PUT** /teams/{id} | Update a team
 *TeamsApi* | [**teamsPost**](docs/TeamsApi.md#teamspost) | **POST** /teams | Create a team
 *TemplatesApi* | [**apiV1TemplatesGet**](docs/TemplatesApi.md#apiv1templatesget) | **GET** /api/v1/templates | List templates
@@ -412,6 +413,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [TrafficRule](docs/TrafficRule.md)
 - [TrafficRuleAction](docs/TrafficRuleAction.md)
 - [TrafficRuleAppProtocol](docs/TrafficRuleAppProtocol.md)
+- [TransferTeamOwnerRequest](docs/TransferTeamOwnerRequest.md)
 - [UpdateRegionRequest](docs/UpdateRegionRequest.md)
 - [UpdateTeamMemberRequest](docs/UpdateTeamMemberRequest.md)
 - [UpdateTeamRequest](docs/UpdateTeamRequest.md)

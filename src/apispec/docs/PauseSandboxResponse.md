@@ -8,6 +8,7 @@ Name | Type
 ------------ | -------------
 `sandboxId` | string
 `paused` | boolean
+`status` | [SandboxLifecycleStatus](SandboxLifecycleStatus.md)
 `resourceUsage` | [SandboxResourceUsage](SandboxResourceUsage.md)
 `updatedMemory` | string
 `updatedCpu` | string
@@ -21,6 +22,7 @@ import type { PauseSandboxResponse } from 'sandbox0'
 const example = {
   "sandboxId": null,
   "paused": null,
+  "status": null,
   "resourceUsage": null,
   "updatedMemory": null,
   "updatedCpu": null,

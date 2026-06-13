@@ -11,6 +11,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 | [**teamsIdMembersPost**](TeamsApi.md#teamsidmemberspost) | **POST** /teams/{id}/members | Add team member |
 | [**teamsIdMembersUserIdDelete**](TeamsApi.md#teamsidmembersuseriddelete) | **DELETE** /teams/{id}/members/{userId} | Remove team member |
 | [**teamsIdMembersUserIdPut**](TeamsApi.md#teamsidmembersuseridput) | **PUT** /teams/{id}/members/{userId} | Update team member role |
+| [**teamsIdOwnerPut**](TeamsApi.md#teamsidownerput) | **PUT** /teams/{id}/owner | Transfer team ownership |
 | [**teamsIdPut**](TeamsApi.md#teamsidput) | **PUT** /teams/{id} | Update a team |
 | [**teamsPost**](TeamsApi.md#teamspost) | **POST** /teams | Create a team |
 
@@ -33,7 +34,7 @@ import type { TeamsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -95,7 +96,7 @@ import type { TeamsIdDeleteRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -166,7 +167,7 @@ import type { TeamsIdGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -222,7 +223,7 @@ example().catch(console.error);
 
 ## teamsIdMembersGet
 
-> SuccessTeamMemberListResponse teamsIdMembersGet(id)
+> SuccessTeamMemberListResponse teamsIdMembersGet(id, query)
 
 List team members
 
@@ -237,7 +238,7 @@ import type { TeamsIdMembersGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -246,6 +247,8 @@ async function example() {
   const body = {
     // string
     id: id_example,
+    // string | Search by member email, display name, or user ID. (optional)
+    query: query_example,
   } satisfies TeamsIdMembersGetRequest;
 
   try {
@@ -266,6 +269,7 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | `string` |  | [Defaults to `undefined`] |
+| **query** | `string` | Search by member email, display name, or user ID. | [Optional] [Defaults to `undefined`] |
 
 ### Return type
 
@@ -307,7 +311,7 @@ import type { TeamsIdMembersPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -382,7 +386,7 @@ import type { TeamsIdMembersUserIdDeleteRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -433,6 +437,7 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Member removed |  -  |
+| **400** | Invalid member removal |  -  |
 | **403** | Forbidden |  -  |
 | **404** | Member not found |  -  |
 
@@ -456,7 +461,7 @@ import type { TeamsIdMembersUserIdPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -510,8 +515,86 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Member updated |  -  |
+| **400** | Invalid member role change |  -  |
 | **403** | Forbidden |  -  |
 | **404** | Member not found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## teamsIdOwnerPut
+
+> SuccessTeamResponse teamsIdOwnerPut(id, transferTeamOwnerRequest)
+
+Transfer team ownership
+
+Transfers ownership to an existing team member and promotes the new owner to admin if needed.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  TeamsApi,
+} from 'sandbox0';
+import type { TeamsIdOwnerPutRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new TeamsApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // TransferTeamOwnerRequest
+    transferTeamOwnerRequest: ...,
+  } satisfies TeamsIdOwnerPutRequest;
+
+  try {
+    const data = await api.teamsIdOwnerPut(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **transferTeamOwnerRequest** | [TransferTeamOwnerRequest](TransferTeamOwnerRequest.md) |  | |
+
+### Return type
+
+[**SuccessTeamResponse**](SuccessTeamResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Team owner transferred |  -  |
+| **400** | Invalid request |  -  |
+| **403** | Only the current owner can transfer ownership |  -  |
+| **404** | Team or member not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -535,7 +618,7 @@ import type { TeamsIdPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -611,7 +694,7 @@ import type { TeamsPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });

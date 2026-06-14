@@ -104,6 +104,9 @@ docs/NodeSelectorTerm.md
 docs/ObjectMeta.md
 docs/PTYSize.md
 docs/PauseSandboxResponse.md
+docs/PlaceholderReplacement.md
+docs/PlaceholderSubstitutionLocation.md
+docs/PlaceholderSubstitutionProjection.md
 docs/PodAffinity.md
 docs/PodAffinityTerm.md
 docs/PodSpecOverride.md
@@ -397,6 +400,9 @@ src/models/NodeSelectorTerm.ts
 src/models/ObjectMeta.ts
 src/models/PTYSize.ts
 src/models/PauseSandboxResponse.ts
+src/models/PlaceholderReplacement.ts
+src/models/PlaceholderSubstitutionLocation.ts
+src/models/PlaceholderSubstitutionProjection.ts
 src/models/PodAffinity.ts
 src/models/PodAffinityTerm.ts
 src/models/PodSpecOverride.ts

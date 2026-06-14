@@ -8,6 +8,7 @@ Name | Type
 ------------ | -------------
 `type` | [CredentialProjectionType](CredentialProjectionType.md)
 `httpHeaders` | [HTTPHeadersProjection](HTTPHeadersProjection.md)
+`placeholderSubstitution` | [PlaceholderSubstitutionProjection](PlaceholderSubstitutionProjection.md)
 `tlsClientCertificate` | object
 `usernamePassword` | object
 `sshProxy` | [SSHProxyProjection](SSHProxyProjection.md)
@@ -21,6 +22,7 @@ import type { ProjectionSpec } from 'sandbox0'
 const example = {
   "type": null,
   "httpHeaders": null,
+  "placeholderSubstitution": null,
   "tlsClientCertificate": null,
   "usernamePassword": null,
   "sshProxy": null,

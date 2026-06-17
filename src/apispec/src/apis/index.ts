@@ -9,6 +9,7 @@ export * from './HealthApi';
 export * from './QuotasApi';
 export * from './RegionsApi';
 export * from './RegistryApi';
+export * from './SandboxRootfsApi';
 export * from './SandboxVolumesApi';
 export * from './SandboxesApi';
 export * from './SnapshotsApi';

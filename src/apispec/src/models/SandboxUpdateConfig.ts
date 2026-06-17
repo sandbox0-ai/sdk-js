@@ -30,12 +30,21 @@ import {
 
 /**
  * Subset of SandboxConfig fields that can be updated at runtime without restarting the sandbox.
- * Note: env_vars and webhook are not included as they only affect new processes or require restart.
+ * Note: env_vars only affect new processes. webhook is not included as it requires restart.
  * 
  * @export
  * @interface SandboxUpdateConfig
  */
 export interface SandboxUpdateConfig {
+    /**
+     * Sandbox-level environment variables used as defaults for new procd-managed
+     * processes. Omitting this field preserves the existing environment map; passing
+     * an empty object clears it.
+     * 
+     * @type {{ [key: string]: string; }}
+     * @memberof SandboxUpdateConfig
+     */
+    envVars?: { [key: string]: string; };
     /**
      * Runtime soft time-to-live in seconds. When it expires, Sandbox0 checkpoints the writable rootfs, pauses the sandbox, and releases runtime compute while preserving durable sandbox state.
      * @type {number}
@@ -87,6 +96,7 @@ export function SandboxUpdateConfigFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
+        'envVars': json['env_vars'] == null ? undefined : json['env_vars'],
         'ttl': json['ttl'] == null ? undefined : json['ttl'],
         'hardTtl': json['hard_ttl'] == null ? undefined : json['hard_ttl'],
         'network': json['network'] == null ? undefined : SandboxNetworkPolicyFromJSON(json['network']),
@@ -106,6 +116,7 @@ export function SandboxUpdateConfigToJSONTyped(value?: SandboxUpdateConfig | nul
 
     return {
         
+        'env_vars': value['envVars'],
         'ttl': value['ttl'],
         'hard_ttl': value['hardTtl'],
         'network': SandboxNetworkPolicyToJSON(value['network']),

@@ -114,4 +114,81 @@ describe("Sandboxes", () => {
       await volumeCleanup();
     }
   });
+
+  it("should snapshot restore and fork paused sandbox rootfs", async () => {
+    if (!cfg) return;
+    const client = await newClient(cfg);
+    const source = await client.sandboxes.claim(cfg.template);
+    assert.ok(source.id);
+
+    let forkId = "";
+    let snapshotId = "";
+    const cleanup = async () => {
+      if (snapshotId) {
+        try {
+          await client.sandboxes.deleteRootFSSnapshot(snapshotId);
+        } catch {
+          // Ignore cleanup errors
+        }
+      }
+      if (forkId) {
+        try {
+          await client.sandboxes.delete(forkId);
+        } catch {
+          // Ignore cleanup errors
+        }
+      }
+      try {
+        await client.sandboxes.delete(source.id);
+      } catch {
+        // Ignore cleanup errors
+      }
+    };
+
+    try {
+      const markerPath = "/tmp/sdk-js-rootfs-marker.txt";
+      await source.writeFile(markerPath, "rootfs-v1\n");
+      const paused = await client.sandboxes.pause(source.id);
+      assert.ok(paused.paused);
+
+      const snapshot = await client.sandboxes.createRootFSSnapshot(source.id, {
+        name: "sdk-js-e2e-rootfs",
+      });
+      snapshotId = snapshot.id;
+      assert.ok(snapshot.id);
+
+      const snapshots = await client.sandboxes.listRootFSSnapshots(source.id);
+      assert.ok(snapshots.some((item) => item.id === snapshot.id));
+
+      const fetchedSnapshot = await client.sandboxes.getRootFSSnapshot(snapshot.id);
+      assert.strictEqual(fetchedSnapshot.id, snapshot.id);
+
+      await client.sandboxes.resume(source.id);
+      await source.writeFile(markerPath, "rootfs-v2\n");
+      await client.sandboxes.pause(source.id);
+
+      const restored = await client.sandboxes.restoreRootFS(source.id, {
+        snapshotId: snapshot.id,
+      });
+      assert.strictEqual(restored.snapshotId, snapshot.id);
+
+      const forked = await client.sandboxes.fork(source.id);
+      forkId = forked.sandbox.id;
+      assert.strictEqual(forked.sourceSandboxId, source.id);
+      assert.ok(forkId);
+
+      await client.sandboxes.deleteRootFSSnapshot(snapshot.id);
+      snapshotId = "";
+
+      await client.sandboxes.resume(source.id);
+      await client.sandboxes.resume(forkId);
+
+      const sourceContent = Buffer.from(await source.readFile(markerPath)).toString("utf-8");
+      assert.strictEqual(sourceContent, "rootfs-v1\n");
+      const forkContent = Buffer.from(await client.sandbox(forkId).readFile(markerPath)).toString("utf-8");
+      assert.strictEqual(forkContent, "rootfs-v1\n");
+    } finally {
+      await cleanup();
+    }
+  });
 });

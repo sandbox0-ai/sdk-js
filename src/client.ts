@@ -45,6 +45,7 @@ export class Client {
     sandboxes: apisTypes.SandboxesApi;
     contexts: apisTypes.ContextsApi;
     files: apisTypes.FilesApi;
+    sandboxRootfs: apisTypes.SandboxRootfsApi;
     sandboxVolumes: apisTypes.SandboxVolumesApi;
     snapshots: apisTypes.SnapshotsApi;
     templates: apisTypes.TemplatesApi;
@@ -79,6 +80,7 @@ export class Client {
       sandboxes: new apis.SandboxesApi(this.configuration),
       contexts: new apis.ContextsApi(this.configuration),
       files: new apis.FilesApi(this.configuration),
+      sandboxRootfs: new apis.SandboxRootfsApi(this.configuration),
       sandboxVolumes: new apis.SandboxVolumesApi(this.configuration),
       snapshots: new apis.SnapshotsApi(this.configuration),
       templates: new apis.TemplatesApi(this.configuration),

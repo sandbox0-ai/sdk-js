@@ -1,16 +1,22 @@
 import type {
   ClaimMountRequest,
   ClaimRequest,
+  CreateSandboxRootFSSnapshotRequest,
+  ForkSandboxResponse,
   MountStatus,
   PauseSandboxResponse,
+  RestoreSandboxRootFSRequest,
+  RestoreSandboxRootFSResponse,
   SandboxRefreshRequest,
   RefreshResponse,
   ResumeSandboxResponse,
   Sandbox,
   SandboxConfig,
+  SandboxRootFSSnapshot,
   SandboxStatus,
   SandboxUpdateRequest,
   SuccessMessageResponse,
+  SuccessDeletedResponse,
 } from "../apispec/src/models/index";
 import type { SandboxListOptions, SandboxListResult } from "../models";
 import { ensureData, ensureModel } from "../response";
@@ -159,6 +165,68 @@ export class Sandboxes {
       this.client.apispec.sandboxes.apiV1SandboxesIdRefreshPost(params),
     );
     return ensureData(response, "refresh sandbox returned empty response");
+  }
+
+  async createRootFSSnapshot(
+    sandboxId: string,
+    request?: CreateSandboxRootFSSnapshotRequest,
+  ): Promise<SandboxRootFSSnapshot> {
+    const response = await wrapApiCall(() =>
+      this.client.apispec.sandboxRootfs.apiV1SandboxesIdSnapshotsPost({
+        id: sandboxId,
+        createSandboxRootFSSnapshotRequest: request,
+      }),
+    );
+    return ensureData(response, "create sandbox rootfs snapshot returned empty response");
+  }
+
+  async listRootFSSnapshots(sandboxId: string): Promise<SandboxRootFSSnapshot[]> {
+    const response = await wrapApiCall(() =>
+      this.client.apispec.sandboxRootfs.apiV1SandboxesIdSnapshotsGet({ id: sandboxId }),
+    );
+    const data = ensureData(response, "list sandbox rootfs snapshots returned empty response");
+    return data.snapshots ?? [];
+  }
+
+  async getRootFSSnapshot(snapshotId: string): Promise<SandboxRootFSSnapshot> {
+    const response = await wrapApiCall(() =>
+      this.client.apispec.sandboxRootfs.apiV1SandboxRootfsSnapshotsSnapshotIdGet({
+        snapshotId,
+      }),
+    );
+    return ensureData(response, "get sandbox rootfs snapshot returned empty response");
+  }
+
+  async deleteRootFSSnapshot(snapshotId: string): Promise<SuccessDeletedResponse> {
+    const response = await wrapApiCall(() =>
+      this.client.apispec.sandboxRootfs.apiV1SandboxRootfsSnapshotsSnapshotIdDelete({
+        snapshotId,
+      }),
+    );
+    return ensureModel(response, "delete sandbox rootfs snapshot returned empty response");
+  }
+
+  async restoreRootFS(
+    sandboxId: string,
+    request: RestoreSandboxRootFSRequest,
+  ): Promise<RestoreSandboxRootFSResponse> {
+    const response = await wrapApiCall(() =>
+      this.client.apispec.sandboxRootfs.apiV1SandboxesIdRootfsRestorePost({
+        id: sandboxId,
+        restoreSandboxRootFSRequest: request,
+      }),
+    );
+    return ensureData(response, "restore sandbox rootfs returned empty response");
+  }
+
+  async fork(sandboxId: string, request?: object): Promise<ForkSandboxResponse> {
+    const response = await wrapApiCall(() =>
+      this.client.apispec.sandboxRootfs.apiV1SandboxesIdForkPost({
+        id: sandboxId,
+        body: request ?? {},
+      }),
+    );
+    return ensureData(response, "fork sandbox returned empty response");
   }
 
   sandbox(sandboxId: string): SandboxHandle {

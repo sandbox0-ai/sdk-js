@@ -1,22 +1,22 @@
 
-# TransferTeamOwnerRequest
+# RestoreSandboxRootFSRequest
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`userId` | string
+`snapshotId` | string
 
 ## Example
 
 ```typescript
-import type { TransferTeamOwnerRequest } from 'sandbox0'
+import type { RestoreSandboxRootFSRequest } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "userId": null,
-} satisfies TransferTeamOwnerRequest
+  "snapshotId": null,
+} satisfies RestoreSandboxRootFSRequest
 
 console.log(example)
 
@@ -25,7 +25,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as TransferTeamOwnerRequest
+const exampleParsed = JSON.parse(exampleJSON) as RestoreSandboxRootFSRequest
 console.log(exampleParsed)
 ```
 

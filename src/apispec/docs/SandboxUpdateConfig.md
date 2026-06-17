@@ -1,12 +1,13 @@
 
 # SandboxUpdateConfig
 
-Subset of SandboxConfig fields that can be updated at runtime without restarting the sandbox. Note: env_vars and webhook are not included as they only affect new processes or require restart. 
+Subset of SandboxConfig fields that can be updated at runtime without restarting the sandbox. Note: env_vars only affect new processes. webhook is not included as it requires restart. 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
+`envVars` | { [key: string]: string; }
 `ttl` | number
 `hardTtl` | number
 `network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
@@ -20,6 +21,7 @@ import type { SandboxUpdateConfig } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
+  "envVars": null,
   "ttl": null,
   "hardTtl": null,
   "network": null,

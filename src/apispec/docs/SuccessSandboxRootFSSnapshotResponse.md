@@ -1,22 +1,24 @@
 
-# TransferTeamOwnerRequest
+# SuccessSandboxRootFSSnapshotResponse
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`userId` | string
+`success` | boolean
+`data` | [SandboxRootFSSnapshot](SandboxRootFSSnapshot.md)
 
 ## Example
 
 ```typescript
-import type { TransferTeamOwnerRequest } from 'sandbox0'
+import type { SuccessSandboxRootFSSnapshotResponse } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "userId": null,
-} satisfies TransferTeamOwnerRequest
+  "success": null,
+  "data": null,
+} satisfies SuccessSandboxRootFSSnapshotResponse
 
 console.log(example)
 
@@ -25,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as TransferTeamOwnerRequest
+const exampleParsed = JSON.parse(exampleJSON) as SuccessSandboxRootFSSnapshotResponse
 console.log(exampleParsed)
 ```
 

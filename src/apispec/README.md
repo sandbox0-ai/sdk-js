@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -109,6 +109,12 @@ All URIs are relative to *https://api.sandbox0.ai*
 *RegionsApi* | [**regionsIdPut**](docs/RegionsApi.md#regionsidput) | **PUT** /regions/{id} | Update a region in the global gateway
 *RegionsApi* | [**regionsPost**](docs/RegionsApi.md#regionspost) | **POST** /regions | Create a region in the global gateway
 *RegistryApi* | [**apiV1RegistryCredentialsPost**](docs/RegistryApi.md#apiv1registrycredentialspost) | **POST** /api/v1/registry/credentials | Get registry credentials for uploads
+*SandboxRootfsApi* | [**apiV1SandboxRootfsSnapshotsSnapshotIdDelete**](docs/SandboxRootfsApi.md#apiv1sandboxrootfssnapshotssnapshotiddelete) | **DELETE** /api/v1/sandbox-rootfs-snapshots/{snapshot_id} | Delete sandbox rootfs snapshot
+*SandboxRootfsApi* | [**apiV1SandboxRootfsSnapshotsSnapshotIdGet**](docs/SandboxRootfsApi.md#apiv1sandboxrootfssnapshotssnapshotidget) | **GET** /api/v1/sandbox-rootfs-snapshots/{snapshot_id} | Get sandbox rootfs snapshot
+*SandboxRootfsApi* | [**apiV1SandboxesIdForkPost**](docs/SandboxRootfsApi.md#apiv1sandboxesidforkpost) | **POST** /api/v1/sandboxes/{id}/fork | Fork sandbox from paused rootfs
+*SandboxRootfsApi* | [**apiV1SandboxesIdRootfsRestorePost**](docs/SandboxRootfsApi.md#apiv1sandboxesidrootfsrestorepost) | **POST** /api/v1/sandboxes/{id}/rootfs/restore | Restore sandbox rootfs from snapshot
+*SandboxRootfsApi* | [**apiV1SandboxesIdSnapshotsGet**](docs/SandboxRootfsApi.md#apiv1sandboxesidsnapshotsget) | **GET** /api/v1/sandboxes/{id}/snapshots | List sandbox rootfs snapshots
+*SandboxRootfsApi* | [**apiV1SandboxesIdSnapshotsPost**](docs/SandboxRootfsApi.md#apiv1sandboxesidsnapshotspost) | **POST** /api/v1/sandboxes/{id}/snapshots | Create sandbox rootfs snapshot
 *SandboxVolumesApi* | [**apiV1SandboxvolumesGet**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesget) | **GET** /api/v1/sandboxvolumes | List sandbox volumes
 *SandboxVolumesApi* | [**apiV1SandboxvolumesIdDelete**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesiddelete) | **DELETE** /api/v1/sandboxvolumes/{id} | Delete sandbox volume
 *SandboxVolumesApi* | [**apiV1SandboxvolumesIdForkPost**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesidforkpost) | **POST** /api/v1/sandboxvolumes/{id}/fork | Fork sandbox volume
@@ -191,6 +197,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [CreateREPLContextRequest](docs/CreateREPLContextRequest.md)
 - [CreateRegionRequest](docs/CreateRegionRequest.md)
 - [CreateSSHPublicKeyRequest](docs/CreateSSHPublicKeyRequest.md)
+- [CreateSandboxRootFSSnapshotRequest](docs/CreateSandboxRootFSSnapshotRequest.md)
 - [CreateSandboxVolumeRequest](docs/CreateSandboxVolumeRequest.md)
 - [CreateSnapshotRequest](docs/CreateSnapshotRequest.md)
 - [CreateTeamRequest](docs/CreateTeamRequest.md)
@@ -226,6 +233,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [FileWatchSubscribed](docs/FileWatchSubscribed.md)
 - [FileWatchUnsubscribeRequest](docs/FileWatchUnsubscribeRequest.md)
 - [FileWatchUnsubscribed](docs/FileWatchUnsubscribed.md)
+- [ForkSandboxResponse](docs/ForkSandboxResponse.md)
 - [ForkVolumeRequest](docs/ForkVolumeRequest.md)
 - [GRPCAction](docs/GRPCAction.md)
 - [GatewayMetadata](docs/GatewayMetadata.md)
@@ -288,6 +296,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ResizeContextRequest](docs/ResizeContextRequest.md)
 - [ResourceQuota](docs/ResourceQuota.md)
 - [ResourceUsage](docs/ResourceUsage.md)
+- [RestoreSandboxRootFSRequest](docs/RestoreSandboxRootFSRequest.md)
+- [RestoreSandboxRootFSResponse](docs/RestoreSandboxRootFSResponse.md)
 - [ResumeSandboxResponse](docs/ResumeSandboxResponse.md)
 - [SSHProxyProjection](docs/SSHProxyProjection.md)
 - [SSHPublicKey](docs/SSHPublicKey.md)
@@ -308,6 +318,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxNetworkPolicy](docs/SandboxNetworkPolicy.md)
 - [SandboxRefreshRequest](docs/SandboxRefreshRequest.md)
 - [SandboxResourceUsage](docs/SandboxResourceUsage.md)
+- [SandboxRootFSSnapshot](docs/SandboxRootFSSnapshot.md)
+- [SandboxRootFSSnapshotList](docs/SandboxRootFSSnapshotList.md)
 - [SandboxSSHConnection](docs/SandboxSSHConnection.md)
 - [SandboxServicesUpdateRequest](docs/SandboxServicesUpdateRequest.md)
 - [SandboxStatus](docs/SandboxStatus.md)
@@ -354,6 +366,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessFileReadResponseAllOfData](docs/SuccessFileReadResponseAllOfData.md)
 - [SuccessFileReadResponseAllOfDataOneOf](docs/SuccessFileReadResponseAllOfDataOneOf.md)
 - [SuccessFileStatResponse](docs/SuccessFileStatResponse.md)
+- [SuccessForkSandboxResponse](docs/SuccessForkSandboxResponse.md)
 - [SuccessGatewayMetadataResponse](docs/SuccessGatewayMetadataResponse.md)
 - [SuccessHealthResponse](docs/SuccessHealthResponse.md)
 - [SuccessHealthResponseAllOfData](docs/SuccessHealthResponseAllOfData.md)
@@ -374,6 +387,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessResizedResponseAllOfData](docs/SuccessResizedResponseAllOfData.md)
 - [SuccessRestoreResponse](docs/SuccessRestoreResponse.md)
 - [SuccessRestoreResponseAllOfData](docs/SuccessRestoreResponseAllOfData.md)
+- [SuccessRestoreSandboxRootFSResponse](docs/SuccessRestoreSandboxRootFSResponse.md)
 - [SuccessResumeSandboxResponse](docs/SuccessResumeSandboxResponse.md)
 - [SuccessSSHPublicKeyListResponse](docs/SuccessSSHPublicKeyListResponse.md)
 - [SuccessSSHPublicKeyListResponseAllOfData](docs/SuccessSSHPublicKeyListResponseAllOfData.md)
@@ -382,6 +396,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessSandboxListResponseAllOfData](docs/SuccessSandboxListResponseAllOfData.md)
 - [SuccessSandboxNetworkPolicyResponse](docs/SuccessSandboxNetworkPolicyResponse.md)
 - [SuccessSandboxResponse](docs/SuccessSandboxResponse.md)
+- [SuccessSandboxRootFSSnapshotListResponse](docs/SuccessSandboxRootFSSnapshotListResponse.md)
+- [SuccessSandboxRootFSSnapshotResponse](docs/SuccessSandboxRootFSSnapshotResponse.md)
 - [SuccessSandboxServicesResponse](docs/SuccessSandboxServicesResponse.md)
 - [SuccessSandboxServicesResponseAllOfData](docs/SuccessSandboxServicesResponseAllOfData.md)
 - [SuccessSandboxStatusResponse](docs/SuccessSandboxStatusResponse.md)

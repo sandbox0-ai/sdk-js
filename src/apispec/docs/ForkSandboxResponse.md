@@ -1,22 +1,24 @@
 
-# TransferTeamOwnerRequest
+# ForkSandboxResponse
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`userId` | string
+`sourceSandboxId` | string
+`sandbox` | [Sandbox](Sandbox.md)
 
 ## Example
 
 ```typescript
-import type { TransferTeamOwnerRequest } from 'sandbox0'
+import type { ForkSandboxResponse } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "userId": null,
-} satisfies TransferTeamOwnerRequest
+  "sourceSandboxId": null,
+  "sandbox": null,
+} satisfies ForkSandboxResponse
 
 console.log(example)
 
@@ -25,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as TransferTeamOwnerRequest
+const exampleParsed = JSON.parse(exampleJSON) as ForkSandboxResponse
 console.log(exampleParsed)
 ```
 

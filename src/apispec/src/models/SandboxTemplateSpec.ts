@@ -34,13 +34,6 @@ import {
     ContainerSpecToJSON,
     ContainerSpecToJSONTyped,
 } from './ContainerSpec';
-import type { LifecyclePolicy } from './LifecyclePolicy';
-import {
-    LifecyclePolicyFromJSON,
-    LifecyclePolicyFromJSONTyped,
-    LifecyclePolicyToJSON,
-    LifecyclePolicyToJSONTyped,
-} from './LifecyclePolicy';
 import type { VolumeMountSpec } from './VolumeMountSpec';
 import {
     VolumeMountSpecFromJSON,
@@ -112,28 +105,10 @@ export interface SandboxTemplateSpec {
     pool?: PoolStrategy;
     /**
      * 
-     * @type {LifecyclePolicy}
-     * @memberof SandboxTemplateSpec
-     */
-    lifecycle?: LifecyclePolicy;
-    /**
-     * 
      * @type {{ [key: string]: string; }}
      * @memberof SandboxTemplateSpec
      */
     envVars?: { [key: string]: string; };
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SandboxTemplateSpec
-     */
-    _public?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof SandboxTemplateSpec
-     */
-    allowedTeams?: Array<string>;
     /**
      * 
      * @type {string}
@@ -167,10 +142,7 @@ export function SandboxTemplateSpecFromJSONTyped(json: any, ignoreDiscriminator:
         'pod': json['pod'] == null ? undefined : PodSpecOverrideFromJSON(json['pod']),
         'network': json['network'] == null ? undefined : SandboxNetworkPolicyFromJSON(json['network']),
         'pool': json['pool'] == null ? undefined : PoolStrategyFromJSON(json['pool']),
-        'lifecycle': json['lifecycle'] == null ? undefined : LifecyclePolicyFromJSON(json['lifecycle']),
         'envVars': json['envVars'] == null ? undefined : json['envVars'],
-        '_public': json['public'] == null ? undefined : json['public'],
-        'allowedTeams': json['allowedTeams'] == null ? undefined : json['allowedTeams'],
         'clusterId': json['clusterId'] == null ? undefined : json['clusterId'],
     };
 }
@@ -194,10 +166,7 @@ export function SandboxTemplateSpecToJSONTyped(value?: SandboxTemplateSpec | nul
         'pod': PodSpecOverrideToJSON(value['pod']),
         'network': SandboxNetworkPolicyToJSON(value['network']),
         'pool': PoolStrategyToJSON(value['pool']),
-        'lifecycle': LifecyclePolicyToJSON(value['lifecycle']),
         'envVars': value['envVars'],
-        'public': value['_public'],
-        'allowedTeams': value['allowedTeams'],
         'clusterId': value['clusterId'],
     };
 }

@@ -7,6 +7,8 @@
 Name | Type
 ------------ | -------------
 `outputRaw` | string
+`exitCode` | number
+`state` | string
 
 ## Example
 
@@ -16,6 +18,8 @@ import type { ContextExecResponse } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "outputRaw": null,
+  "exitCode": null,
+  "state": null,
 } satisfies ContextExecResponse
 
 console.log(example)

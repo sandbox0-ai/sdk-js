@@ -15,6 +15,8 @@ Name | Type
 `paused` | boolean
 `createdAt` | string
 `outputRaw` | string
+`exitCode` | number
+`state` | string
 
 ## Example
 
@@ -32,6 +34,8 @@ const example = {
   "paused": null,
   "createdAt": null,
   "outputRaw": null,
+  "exitCode": null,
+  "state": null,
 } satisfies ContextResponse
 
 console.log(example)

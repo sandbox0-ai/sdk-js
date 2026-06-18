@@ -41,6 +41,12 @@ export interface ClaimRequest {
      */
     template?: string;
     /**
+     * Optional sandbox rootfs snapshot ID used to initialize the claimed sandbox writable root filesystem.
+     * @type {string}
+     * @memberof ClaimRequest
+     */
+    snapshotId?: string;
+    /**
      * 
      * @type {SandboxConfig}
      * @memberof ClaimRequest
@@ -72,6 +78,7 @@ export function ClaimRequestFromJSONTyped(json: any, ignoreDiscriminator: boolea
     return {
         
         'template': json['template'] == null ? undefined : json['template'],
+        'snapshotId': json['snapshot_id'] == null ? undefined : json['snapshot_id'],
         'config': json['config'] == null ? undefined : SandboxConfigFromJSON(json['config']),
         'mounts': json['mounts'] == null ? undefined : ((json['mounts'] as Array<any>).map(ClaimMountRequestFromJSON)),
     };
@@ -89,6 +96,7 @@ export function ClaimRequestToJSONTyped(value?: ClaimRequest | null, ignoreDiscr
     return {
         
         'template': value['template'],
+        'snapshot_id': value['snapshotId'],
         'config': SandboxConfigToJSON(value['config']),
         'mounts': value['mounts'] == null ? undefined : ((value['mounts'] as Array<any>).map(ClaimMountRequestToJSON)),
     };

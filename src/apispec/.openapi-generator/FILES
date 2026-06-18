@@ -90,7 +90,6 @@ docs/HealthApi.md
 docs/Identity.md
 docs/LabelSelector.md
 docs/LabelSelectorRequirement.md
-docs/LifecyclePolicy.md
 docs/LoginRequest.md
 docs/LoginResponse.md
 docs/MCPProtocolRule.md
@@ -114,7 +113,6 @@ docs/PodAffinityTerm.md
 docs/PodSpecOverride.md
 docs/PoolStrategy.md
 docs/PortSpec.md
-docs/PreStopHook.md
 docs/PreferredSchedulingTerm.md
 docs/Probe.md
 docs/ProcessType.md
@@ -398,7 +396,6 @@ src/models/HTTPValueMatch.ts
 src/models/Identity.ts
 src/models/LabelSelector.ts
 src/models/LabelSelectorRequirement.ts
-src/models/LifecyclePolicy.ts
 src/models/LoginRequest.ts
 src/models/LoginResponse.ts
 src/models/MCPProtocolRule.ts
@@ -422,7 +419,6 @@ src/models/PodAffinityTerm.ts
 src/models/PodSpecOverride.ts
 src/models/PoolStrategy.ts
 src/models/PortSpec.ts
-src/models/PreStopHook.ts
 src/models/PreferredSchedulingTerm.ts
 src/models/Probe.ts
 src/models/ProcessType.ts

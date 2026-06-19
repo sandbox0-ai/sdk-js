@@ -14,10 +14,7 @@ Name | Type
 `pod` | [PodSpecOverride](PodSpecOverride.md)
 `network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
 `pool` | [PoolStrategy](PoolStrategy.md)
-`lifecycle` | [LifecyclePolicy](LifecyclePolicy.md)
 `envVars` | { [key: string]: string; }
-`_public` | boolean
-`allowedTeams` | Array&lt;string&gt;
 `clusterId` | string
 
 ## Example
@@ -35,10 +32,7 @@ const example = {
   "pod": null,
   "network": null,
   "pool": null,
-  "lifecycle": null,
   "envVars": null,
-  "_public": null,
-  "allowedTeams": null,
   "clusterId": null,
 } satisfies SandboxTemplateSpec
 

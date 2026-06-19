@@ -7,6 +7,7 @@
 Name | Type
 ------------ | -------------
 `template` | string
+`snapshotId` | string
 `config` | [SandboxConfig](SandboxConfig.md)
 `mounts` | [Array&lt;ClaimMountRequest&gt;](ClaimMountRequest.md)
 
@@ -18,6 +19,7 @@ import type { ClaimRequest } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "template": null,
+  "snapshotId": null,
   "config": null,
   "mounts": null,
 } satisfies ClaimRequest

@@ -25,6 +25,18 @@ export interface ContextExecResponse {
      * @memberof ContextExecResponse
      */
     outputRaw: string;
+    /**
+     * Present when the underlying process has exited.
+     * @type {number}
+     * @memberof ContextExecResponse
+     */
+    exitCode?: number;
+    /**
+     * Final process state when the underlying process has exited.
+     * @type {string}
+     * @memberof ContextExecResponse
+     */
+    state?: string;
 }
 
 /**
@@ -46,6 +58,8 @@ export function ContextExecResponseFromJSONTyped(json: any, ignoreDiscriminator:
     return {
         
         'outputRaw': json['output_raw'],
+        'exitCode': json['exit_code'] == null ? undefined : json['exit_code'],
+        'state': json['state'] == null ? undefined : json['state'],
     };
 }
 
@@ -61,6 +75,8 @@ export function ContextExecResponseToJSONTyped(value?: ContextExecResponse | nul
     return {
         
         'output_raw': value['outputRaw'],
+        'exit_code': value['exitCode'],
+        'state': value['state'],
     };
 }
 

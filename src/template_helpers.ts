@@ -1,7 +1,6 @@
 import type {
   ContainerSpec,
   EnvVar,
-  LifecyclePolicy,
   PoolStrategy,
   ResourceQuota,
   SandboxNetworkPolicy,
@@ -17,10 +16,7 @@ export interface TemplateSpecInit {
   pod?: SandboxTemplateSpec["pod"];
   network?: SandboxNetworkPolicy;
   pool?: PoolStrategy;
-  lifecycle?: LifecyclePolicy;
   envVars?: Record<string, string>;
-  public?: boolean;
-  allowedTeams?: string[];
   clusterId?: string;
 }
 
@@ -60,10 +56,7 @@ export function templateSpec(
     ...(init.pod ? { pod: init.pod } : {}),
     ...(init.network ? { network: init.network } : {}),
     ...(init.pool ? { pool: init.pool } : {}),
-    ...(init.lifecycle ? { lifecycle: init.lifecycle } : {}),
     ...(init.envVars ? { envVars: { ...init.envVars } } : {}),
-    ...(init.public !== undefined ? { _public: init.public } : {}),
-    ...(init.allowedTeams ? { allowedTeams: [...init.allowedTeams] } : {}),
     ...(init.clusterId ? { clusterId: init.clusterId } : {}),
   };
 }

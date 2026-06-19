@@ -28,6 +28,7 @@ import { SandboxSession } from "../sessions";
 export interface ClaimSandboxOptions {
   config?: SandboxConfig;
   mounts?: ClaimMountRequest[];
+  snapshotId?: string;
 }
 
 function isClaimSandboxOptions(
@@ -35,7 +36,8 @@ function isClaimSandboxOptions(
 ): value is ClaimSandboxOptions {
   return !!value && typeof value === "object" && (
     "config" in value ||
-    "mounts" in value
+    "mounts" in value ||
+    "snapshotId" in value
   );
 }
 
@@ -53,6 +55,7 @@ function toClaimRequest(
     template,
     config: options.config,
     mounts: options.mounts,
+    snapshotId: options.snapshotId,
   };
 }
 

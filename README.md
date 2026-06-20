@@ -73,6 +73,8 @@ console.log(`exit=${done.exitCode} state=${done.state}`);
 
 ## Bootstrap Mounts At Claim Time
 
+Mount points must be declared in the sandbox template's `volumeMounts`. If the template declares volume mounts, include a mount for every declared path in the claim request.
+
 ```typescript
 const volume = await client.volumes.create({});
 

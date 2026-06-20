@@ -27,6 +27,11 @@ import { SandboxSession } from "../sessions";
 
 export interface ClaimSandboxOptions {
   config?: SandboxConfig;
+  /**
+   * Existing volumes to bind to template-declared mount points during claim.
+   * If the template declares volumeMounts, every declared mount point must be
+   * present here.
+   */
   mounts?: ClaimMountRequest[];
   snapshotId?: string;
 }

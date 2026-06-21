@@ -4,7 +4,9 @@ import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const distRoot = path.resolve(__dirname, "../dist");
+const distRoot = process.argv[2]
+  ? path.resolve(process.cwd(), process.argv[2])
+  : path.resolve(__dirname, "../dist");
 
 const rewritePatterns = [
   /(\bimport\s+(?:type\s+)?[^'"\n]*?\sfrom\s*)(['"])(\.\.?\/[^'"]+)\2/g,

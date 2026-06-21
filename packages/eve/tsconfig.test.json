@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "paths": {
+      "sandbox0": [
+        "../../src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "tests"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "name": "@sandbox0/eve",
+  "version": "0.1.0",
+  "description": "Vercel Eve sandbox backend adapter for Sandbox0",
+  "license": "Apache-2.0",
+  "author": "Sandbox0 Team",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node ../../scripts/fix-esm-imports.mjs dist",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "TSX_TSCONFIG_PATH=tsconfig.test.json node --import tsx --test tests/*.test.ts",
+    "test:e2e": "node --import tsx --test e2e/*.test.ts"
+  },
+  "keywords": [
+    "sandbox0",
+    "eve",
+    "sandbox",
+    "agent"
+  ],
+  "peerDependencies": {
+    "eve": ">=0.11.0"
+  },
+  "dependencies": {
+    "sandbox0": "^0.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sandbox0-ai/sdk-js",
+    "directory": "packages/eve"
+  }
+}

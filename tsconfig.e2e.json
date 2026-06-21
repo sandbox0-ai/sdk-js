@@ -2,10 +2,20 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "allowImportingTsExtensions": true,
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "sandbox0": [
+        "./src/index.ts"
+      ]
+    }
   },
   "include": [
     "src",
-    "tests/e2e"
+    "tests/e2e/**/*.ts",
+    "packages/eve/src/**/*.ts",
+    "packages/eve/e2e/*.ts"
+  ],
+  "exclude": [
+    "packages/eve/e2e/fixtures"
   ]
 }

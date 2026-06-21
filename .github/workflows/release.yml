@@ -19,15 +19,30 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Extract version from tag
         id: version
         run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
 
-      - name: Update version in package.json
-        run: npm version ${{ steps.version.outputs.VERSION }} --no-git-tag-version
+      - name: Update package versions
+        env:
+          VERSION: ${{ steps.version.outputs.VERSION }}
+        run: |
+          npm version "$VERSION" --no-git-tag-version
+          (cd packages/eve && npm version "$VERSION" --no-git-tag-version)
+          node - <<'NODE'
+          const fs = require("node:fs");
+
+          const version = process.env.VERSION;
+          const packagePath = "packages/eve/package.json";
+          const pkg = JSON.parse(fs.readFileSync(packagePath, "utf8"));
+
+          pkg.dependencies = { ...pkg.dependencies, sandbox0: `^${version}` };
+
+          fs.writeFileSync(packagePath, `${JSON.stringify(pkg, null, 2)}\n`);
+          NODE
 
       - name: Install dependencies
         run: npm ci
@@ -39,9 +54,15 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
+        run: npm run build:eve
 
-      - name: Publish to npm
+      - name: Publish sandbox0 to npm
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish @sandbox0/eve to npm
+        working-directory: packages/eve
         run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

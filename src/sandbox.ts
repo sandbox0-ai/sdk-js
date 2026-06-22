@@ -393,6 +393,10 @@ export class Sandbox {
       sandboxId: this.id,
       contextId: contextResp.id,
       outputRaw: contextResp.outputRaw ?? "",
+      stdout: contextResp.stdout ?? "",
+      stderr: contextResp.stderr ?? "",
+      exitCode: contextResp.exitCode,
+      state: contextResp.state,
     };
   }
 

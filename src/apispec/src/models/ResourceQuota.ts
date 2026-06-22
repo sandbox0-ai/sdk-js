@@ -32,7 +32,7 @@ export interface ResourceQuota {
      */
     memory?: string;
     /**
-     * Ephemeral storage limit for the sandbox writable layer and container logs. Defaults to 512Mi when omitted.
+     * Ephemeral storage limit for the sandbox writable layer and container logs. Defaults to 8Gi when omitted.
      * @type {string}
      * @memberof ResourceQuota
      */

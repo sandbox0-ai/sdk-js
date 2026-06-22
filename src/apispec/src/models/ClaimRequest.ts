@@ -53,7 +53,7 @@ export interface ClaimRequest {
      */
     config?: SandboxConfig;
     /**
-     * 
+     * Optional claim-time Sandbox Volume bindings. A claim may bind any subset of template-declared mount points; omitted declared mount points remain writable rootfs-backed directories and are included in rootfs checkpoints.
      * @type {Array<ClaimMountRequest>}
      * @memberof ClaimRequest
      */

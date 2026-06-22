@@ -8,6 +8,10 @@ export interface CmdResult {
   sandboxId: string;
   contextId: string;
   outputRaw: string;
+  stdout: string;
+  stderr: string;
+  exitCode?: number;
+  state?: string;
 }
 
 export type StreamInputType = "input" | "resize" | "signal";

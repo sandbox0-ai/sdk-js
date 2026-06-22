@@ -82,6 +82,18 @@ export interface ContextResponse {
      */
     outputRaw?: string;
     /**
+     * Captured stdout for non-PTY CMD contexts when available.
+     * @type {string}
+     * @memberof ContextResponse
+     */
+    stdout?: string;
+    /**
+     * Captured stderr for non-PTY CMD contexts when available.
+     * @type {string}
+     * @memberof ContextResponse
+     */
+    stderr?: string;
+    /**
      * Present when the underlying process has exited.
      * @type {number}
      * @memberof ContextResponse
@@ -128,6 +140,8 @@ export function ContextResponseFromJSONTyped(json: any, ignoreDiscriminator: boo
         'paused': json['paused'],
         'createdAt': json['created_at'],
         'outputRaw': json['output_raw'] == null ? undefined : json['output_raw'],
+        'stdout': json['stdout'] == null ? undefined : json['stdout'],
+        'stderr': json['stderr'] == null ? undefined : json['stderr'],
         'exitCode': json['exit_code'] == null ? undefined : json['exit_code'],
         'state': json['state'] == null ? undefined : json['state'],
     };
@@ -153,6 +167,8 @@ export function ContextResponseToJSONTyped(value?: ContextResponse | null, ignor
         'paused': value['paused'],
         'created_at': value['createdAt'],
         'output_raw': value['outputRaw'],
+        'stdout': value['stdout'],
+        'stderr': value['stderr'],
         'exit_code': value['exitCode'],
         'state': value['state'],
     };

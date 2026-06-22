@@ -26,6 +26,18 @@ export interface ContextExecResponse {
      */
     outputRaw: string;
     /**
+     * Captured stdout for non-PTY CMD contexts when available.
+     * @type {string}
+     * @memberof ContextExecResponse
+     */
+    stdout?: string;
+    /**
+     * Captured stderr for non-PTY CMD contexts when available.
+     * @type {string}
+     * @memberof ContextExecResponse
+     */
+    stderr?: string;
+    /**
      * Present when the underlying process has exited.
      * @type {number}
      * @memberof ContextExecResponse
@@ -58,6 +70,8 @@ export function ContextExecResponseFromJSONTyped(json: any, ignoreDiscriminator:
     return {
         
         'outputRaw': json['output_raw'],
+        'stdout': json['stdout'] == null ? undefined : json['stdout'],
+        'stderr': json['stderr'] == null ? undefined : json['stderr'],
         'exitCode': json['exit_code'] == null ? undefined : json['exit_code'],
         'state': json['state'] == null ? undefined : json['state'],
     };
@@ -75,6 +89,8 @@ export function ContextExecResponseToJSONTyped(value?: ContextExecResponse | nul
     return {
         
         'output_raw': value['outputRaw'],
+        'stdout': value['stdout'],
+        'stderr': value['stderr'],
         'exit_code': value['exitCode'],
         'state': value['state'],
     };

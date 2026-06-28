@@ -7,6 +7,7 @@
 Name | Type
 ------------ | -------------
 `envVars` | { [key: string]: string; }
+`resources` | [SandboxResourceConfig](SandboxResourceConfig.md)
 `ttl` | number
 `hardTtl` | number
 `network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
@@ -22,6 +23,7 @@ import type { SandboxConfig } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "envVars": null,
+  "resources": null,
   "ttl": null,
   "hardTtl": null,
   "network": null,

@@ -14,6 +14,7 @@ Name | Type
 `paused` | boolean
 `autoResume` | boolean
 `services` | [Array&lt;SandboxAppService&gt;](SandboxAppService.md)
+`resources` | [SandboxResourceConfig](SandboxResourceConfig.md)
 `mounts` | [Array&lt;ClaimMountRequest&gt;](ClaimMountRequest.md)
 `podName` | string
 `runtimeGeneration` | number
@@ -39,6 +40,7 @@ const example = {
   "paused": null,
   "autoResume": null,
   "services": null,
+  "resources": null,
   "mounts": null,
   "podName": null,
   "runtimeGeneration": null,

@@ -159,6 +159,7 @@ docs/SandboxFunctionSource.md
 docs/SandboxLifecycleStatus.md
 docs/SandboxNetworkPolicy.md
 docs/SandboxRefreshRequest.md
+docs/SandboxResourceConfig.md
 docs/SandboxResourceUsage.md
 docs/SandboxRootFSSnapshot.md
 docs/SandboxRootFSSnapshotList.md
@@ -465,6 +466,7 @@ src/models/SandboxFunctionSource.ts
 src/models/SandboxLifecycleStatus.ts
 src/models/SandboxNetworkPolicy.ts
 src/models/SandboxRefreshRequest.ts
+src/models/SandboxResourceConfig.ts
 src/models/SandboxResourceUsage.ts
 src/models/SandboxRootFSSnapshot.ts
 src/models/SandboxRootFSSnapshotList.ts

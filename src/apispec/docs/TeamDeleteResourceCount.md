@@ -1,34 +1,24 @@
 
-# TeamQuota
+# TeamDeleteResourceCount
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`teamId` | string
-`dimension` | [QuotaDimension](QuotaDimension.md)
-`limitValue` | number
-`current` | number
-`remaining` | number
-`unlimited` | boolean
-`unit` | string
+`category` | string
+`count` | number
 
 ## Example
 
 ```typescript
-import type { TeamQuota } from 'sandbox0'
+import type { TeamDeleteResourceCount } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "teamId": null,
-  "dimension": null,
-  "limitValue": null,
-  "current": null,
-  "remaining": null,
-  "unlimited": null,
-  "unit": null,
-} satisfies TeamQuota
+  "category": null,
+  "count": null,
+} satisfies TeamDeleteResourceCount
 
 console.log(example)
 
@@ -37,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as TeamQuota
+const exampleParsed = JSON.parse(exampleJSON) as TeamDeleteResourceCount
 console.log(exampleParsed)
 ```
 

@@ -20,9 +20,7 @@
 export const SandboxLifecycleStatus = {
     SandboxLifecycleStatusStarting: 'starting',
     SandboxLifecycleStatusRunning: 'running',
-    SandboxLifecycleStatusPausing: 'pausing',
     SandboxLifecycleStatusPaused: 'paused',
-    SandboxLifecycleStatusResuming: 'resuming',
     SandboxLifecycleStatusTerminating: 'terminating',
     SandboxLifecycleStatusFailed: 'failed'
 } as const;

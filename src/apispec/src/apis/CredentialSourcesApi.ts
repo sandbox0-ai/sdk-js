@@ -184,6 +184,7 @@ export class CredentialSourcesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Replace the secret material for an existing credential source. The resolver kind is immutable for a source name; create a new source when changing resolver kinds.
      * Update credential source
      */
     async apiV1CredentialSourcesNamePutRaw(requestParameters: ApiV1CredentialSourcesNamePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessCredentialSourceResponse>> {
@@ -231,6 +232,7 @@ export class CredentialSourcesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Replace the secret material for an existing credential source. The resolver kind is immutable for a source name; create a new source when changing resolver kinds.
      * Update credential source
      */
     async apiV1CredentialSourcesNamePut(requestParameters: ApiV1CredentialSourcesNamePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessCredentialSourceResponse> {

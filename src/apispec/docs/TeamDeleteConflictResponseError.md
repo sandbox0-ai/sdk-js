@@ -1,34 +1,26 @@
 
-# TeamQuota
+# TeamDeleteConflictResponseError
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`teamId` | string
-`dimension` | [QuotaDimension](QuotaDimension.md)
-`limitValue` | number
-`current` | number
-`remaining` | number
-`unlimited` | boolean
-`unit` | string
+`code` | string
+`message` | string
+`details` | [TeamDeleteConflictDetails](TeamDeleteConflictDetails.md)
 
 ## Example
 
 ```typescript
-import type { TeamQuota } from 'sandbox0'
+import type { TeamDeleteConflictResponseError } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "teamId": null,
-  "dimension": null,
-  "limitValue": null,
-  "current": null,
-  "remaining": null,
-  "unlimited": null,
-  "unit": null,
-} satisfies TeamQuota
+  "code": null,
+  "message": null,
+  "details": null,
+} satisfies TeamDeleteConflictResponseError
 
 console.log(example)
 
@@ -37,7 +29,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as TeamQuota
+const exampleParsed = JSON.parse(exampleJSON) as TeamDeleteConflictResponseError
 console.log(exampleParsed)
 ```
 

@@ -904,6 +904,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Team has resources that must be removed before deletion
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamDeleteConflictResponse"
   /teams/{id}/owner:
     put:
       tags: [teams]
@@ -1313,56 +1319,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-    put:
-      tags: [quotas]
-      summary: Set team quota
-      security:
-        - bearerAuth: []
-      x-upstream-service: manager
-      x-upstream-path: /api/v1/quotas/{dimension}
-      parameters:
-        - $ref: "#/components/parameters/QuotaDimension"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PutTeamQuotaRequest"
-      responses:
-        "200":
-          description: Updated team quota
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessTeamQuotaResponse"
-        "400":
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorEnvelope"
-    delete:
-      tags: [quotas]
-      summary: Delete team quota
-      security:
-        - bearerAuth: []
-      x-upstream-service: manager
-      x-upstream-path: /api/v1/quotas/{dimension}
-      parameters:
-        - $ref: "#/components/parameters/QuotaDimension"
-      responses:
-        "200":
-          description: Deleted team quota
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessDeletedResponse"
-        "400":
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorEnvelope"
   /api/v1/sandboxes/{id}:
     get:
       tags: [sandboxes]
@@ -1603,7 +1559,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SuccessPauseSandboxResponse"
         "409":
-          description: Another sandbox lifecycle operation is in progress
+          description: Sandbox lifecycle state conflicts with this operation
           content:
             application/json:
               schema:
@@ -1644,7 +1600,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SuccessResumeSandboxResponse"
         "409":
-          description: Another sandbox lifecycle operation is in progress
+          description: Sandbox lifecycle state conflicts with this operation
           content:
             application/json:
               schema:
@@ -2596,6 +2552,7 @@ paths:
     put:
       tags: [credential-sources]
       summary: Update credential source
+      description: Replace the secret material for an existing credential source. The resolver kind is immutable for a source name; create a new source when changing resolver kinds.
       security:
         - bearerAuth: []
       x-upstream-service: manager
@@ -2619,6 +2576,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SuccessCredentialSourceResponse"
+        "400":
+          description: Invalid credential source update
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
         "404":
           description: Credential source not found
           content:
@@ -3277,15 +3240,26 @@ components:
           type: integer
           format: int64
           nullable: true
-      required: [team_id, dimension]
-    PutTeamQuotaRequest:
-      type: object
-      properties:
-        limit_value:
+        current:
           type: integer
           format: int64
           minimum: 0
-      required: [limit_value]
+        remaining:
+          type: integer
+          format: int64
+          minimum: 0
+          nullable: true
+        unlimited:
+          type: boolean
+        unit:
+          type: string
+          enum:
+            - count
+            - millicpu
+            - MiB
+            - GB
+            - bytes
+      required: [team_id, dimension, limit_value, current, remaining, unlimited, unit]
     SuccessRegistryCredentialsResponse:
       allOf:
         - $ref: "#/components/schemas/SuccessEnvelope"
@@ -3683,6 +3657,52 @@ components:
           type: string
           format: date-time
       required: [id, name, slug, created_at, updated_at]
+    TeamDeleteResourceCount:
+      type: object
+      properties:
+        category:
+          type: string
+          description: Machine-readable resource category that still references the team.
+        count:
+          type: integer
+          format: int64
+          description: Number of resources in this category.
+      required: [category, count]
+    TeamDeleteConflictDetails:
+      type: object
+      properties:
+        team_id:
+          type: string
+        blocking_resources:
+          type: array
+          description: Resources that must be removed before the team can be deleted.
+          items:
+            $ref: "#/components/schemas/TeamDeleteResourceCount"
+        retained_resources:
+          type: array
+          description: Historical resources retained by policy. These do not block deletion.
+          items:
+            $ref: "#/components/schemas/TeamDeleteResourceCount"
+        retention_policy:
+          type: string
+          description: Summary of the historical metering retention policy for team deletion.
+      required: [team_id, blocking_resources]
+    TeamDeleteConflictResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              $ref: "#/components/schemas/TeamDeleteConflictDetails"
+          required: [code, message]
+      required: [success, error]
     Region:
       type: object
       properties:
@@ -4150,6 +4170,12 @@ components:
         handler:
           type: string
           description: Python callable name. Defaults to handler.
+        max_concurrency:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 1024
+          description: Maximum in-flight executions for this function service inside one sandbox runtime. Omit or set to 0 for unlimited.
         source:
           $ref: "#/components/schemas/SandboxFunctionSource"
       required: [runtime, source]
@@ -4200,6 +4226,9 @@ components:
           format: int32
         resume:
           type: boolean
+          description: |
+            Allows this public route to wake a paused sandbox when sandbox auto_resume is true.
+            Resume-enabled public routes require a restartable service runtime: cmd or function.
       required: [id, resume]
     SandboxAppServiceHealth:
       type: object
@@ -4288,13 +4317,11 @@ components:
               $ref: "#/components/schemas/ClaimResponse"
     SandboxLifecycleStatus:
       type: string
-      enum: [starting, running, pausing, paused, resuming, terminating, failed]
+      enum: [starting, running, paused, terminating, failed]
       x-enum-varnames:
         - SandboxLifecycleStatusStarting
         - SandboxLifecycleStatusRunning
-        - SandboxLifecycleStatusPausing
         - SandboxLifecycleStatusPaused
-        - SandboxLifecycleStatusResuming
         - SandboxLifecycleStatusTerminating
         - SandboxLifecycleStatusFailed
     Sandbox:
@@ -4312,7 +4339,7 @@ components:
           $ref: "#/components/schemas/SandboxLifecycleStatus"
         paused:
           type: boolean
-          description: True when status is paused and no runtime is attached.
+          description: True when status is paused.
         auto_resume:
           type: boolean
         services:
@@ -4557,7 +4584,7 @@ components:
           $ref: "#/components/schemas/SandboxLifecycleStatus"
         paused:
           type: boolean
-          description: True when status is paused and no runtime is attached.
+          description: True when status is paused.
         runtime_generation:
           type: integer
           format: int64
@@ -4706,10 +4733,10 @@ components:
           type: string
         paused:
           type: boolean
-          description: True when checkpoint completion has finished and the sandbox is paused.
+          description: True when checkpoint persistence has finished, runtime deletion has been accepted, and the sandbox is paused.
         status:
           $ref: "#/components/schemas/SandboxLifecycleStatus"
-          description: Current lifecycle status. Async pause requests usually return pausing.
+          description: Current committed lifecycle status.
         resource_usage:
           $ref: "#/components/schemas/SandboxResourceUsage"
         updated_memory:

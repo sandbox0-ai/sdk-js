@@ -120,7 +120,6 @@ docs/ProjectedHeader.md
 docs/ProjectionSpec.md
 docs/ProtocolRule.md
 docs/ProtocolRuleProtocol.md
-docs/PutTeamQuotaRequest.md
 docs/QuotaDimension.md
 docs/QuotasApi.md
 docs/REPLConfig.md
@@ -270,6 +269,10 @@ docs/SuccessWrittenResponse.md
 docs/SuccessWrittenResponseAllOfData.md
 docs/TCPSocketAction.md
 docs/Team.md
+docs/TeamDeleteConflictDetails.md
+docs/TeamDeleteConflictResponse.md
+docs/TeamDeleteConflictResponseError.md
+docs/TeamDeleteResourceCount.md
 docs/TeamMember.md
 docs/TeamQuota.md
 docs/TeamsApi.md
@@ -426,7 +429,6 @@ src/models/ProjectedHeader.ts
 src/models/ProjectionSpec.ts
 src/models/ProtocolRule.ts
 src/models/ProtocolRuleProtocol.ts
-src/models/PutTeamQuotaRequest.ts
 src/models/QuotaDimension.ts
 src/models/REPLConfig.ts
 src/models/REPLEnvVar.ts
@@ -569,6 +571,10 @@ src/models/SuccessWrittenResponse.ts
 src/models/SuccessWrittenResponseAllOfData.ts
 src/models/TCPSocketAction.ts
 src/models/Team.ts
+src/models/TeamDeleteConflictDetails.ts
+src/models/TeamDeleteConflictResponse.ts
+src/models/TeamDeleteConflictResponseError.ts
+src/models/TeamDeleteResourceCount.ts
 src/models/TeamMember.ts
 src/models/TeamQuota.ts
 src/models/Template.ts

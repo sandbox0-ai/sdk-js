@@ -29,6 +29,7 @@ export interface ClaimSandboxOptions {
   config?: SandboxConfig;
   mounts?: ClaimMountRequest[];
   snapshotId?: string;
+  memory?: string;
 }
 
 function isClaimSandboxOptions(
@@ -37,8 +38,19 @@ function isClaimSandboxOptions(
   return !!value && typeof value === "object" && (
     "config" in value ||
     "mounts" in value ||
-    "snapshotId" in value
+    "snapshotId" in value ||
+    "memory" in value
   );
+}
+
+function withMemory(config: SandboxConfig | undefined, memory: string | undefined): SandboxConfig | undefined {
+  if (!memory) {
+    return config;
+  }
+  return {
+    ...config,
+    resources: { ...config?.resources, memory },
+  };
 }
 
 function toClaimRequest(
@@ -53,7 +65,7 @@ function toClaimRequest(
   }
   return {
     template,
-    config: options.config,
+    config: withMemory(options.config, options.memory),
     mounts: options.mounts,
     snapshotId: options.snapshotId,
   };
@@ -127,6 +139,14 @@ export class Sandboxes {
       }),
     );
     return ensureData(response, "update sandbox returned empty response");
+  }
+
+  async updateMemory(sandboxId: string, memory: string): Promise<Sandbox> {
+    return this.update(sandboxId, {
+      config: {
+        resources: { memory },
+      },
+    });
   }
 
   async delete(sandboxId: string): Promise<SuccessMessageResponse> {

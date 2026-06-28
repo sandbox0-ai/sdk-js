@@ -35,13 +35,14 @@ describe("Sandboxes resource", () => {
     const sandboxes = new Sandboxes(client);
     const sandbox = await sandboxes.claim("default", {
       config: { ttl: 300 },
+      memory: "512Mi",
       mounts: [{ sandboxvolumeId: "vol_1", mountPoint: "/workspace/data" }],
       snapshotId: "snap_123",
     });
 
     assert.deepStrictEqual(gotRequest, {
       template: "default",
-      config: { ttl: 300 },
+      config: { ttl: 300, resources: { memory: "512Mi" } },
       mounts: [{ sandboxvolumeId: "vol_1", mountPoint: "/workspace/data" }],
       snapshotId: "snap_123",
     });
@@ -79,6 +80,44 @@ describe("Sandboxes resource", () => {
       config: { ttl: 120 },
     });
     assert.deepStrictEqual(sandbox.bootstrapMounts, []);
+  });
+
+  it("updates sandbox memory through a convenience request", async () => {
+    let gotRequest: unknown;
+    const client = {
+      apispec: {
+        sandboxes: {
+          apiV1SandboxesIdPut: async (request: unknown) => {
+            gotRequest = request;
+            return {
+              data: {
+                id: "sb_123",
+                templateId: "default",
+                status: "running",
+                paused: false,
+                autoResume: true,
+                resources: { memory: "2Gi" },
+                createdAt: new Date(),
+                updatedAt: new Date(),
+              },
+            };
+          },
+        },
+      },
+    } as any;
+
+    const sandboxes = new Sandboxes(client);
+    const sandbox = await sandboxes.updateMemory("sb_123", "2Gi");
+
+    assert.deepStrictEqual(gotRequest, {
+      id: "sb_123",
+      sandboxUpdateRequest: {
+        config: {
+          resources: { memory: "2Gi" },
+        },
+      },
+    });
+    assert.deepStrictEqual(sandbox.resources, { memory: "2Gi" });
   });
 
   it("routes sandbox rootfs operations through generated API", async () => {

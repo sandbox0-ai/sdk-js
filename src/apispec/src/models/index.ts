@@ -149,6 +149,7 @@ export * from './SandboxFunctionSource';
 export * from './SandboxLifecycleStatus';
 export * from './SandboxNetworkPolicy';
 export * from './SandboxRefreshRequest';
+export * from './SandboxResourceConfig';
 export * from './SandboxResourceUsage';
 export * from './SandboxRootFSSnapshot';
 export * from './SandboxRootFSSnapshotList';

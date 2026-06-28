@@ -16,86 +16,26 @@
 import * as runtime from '../runtime';
 import type {
   ErrorEnvelope,
-  PutTeamQuotaRequest,
   QuotaDimension,
-  SuccessDeletedResponse,
   SuccessTeamQuotaResponse,
 } from '../models/index';
 import {
     ErrorEnvelopeFromJSON,
     ErrorEnvelopeToJSON,
-    PutTeamQuotaRequestFromJSON,
-    PutTeamQuotaRequestToJSON,
     QuotaDimensionFromJSON,
     QuotaDimensionToJSON,
-    SuccessDeletedResponseFromJSON,
-    SuccessDeletedResponseToJSON,
     SuccessTeamQuotaResponseFromJSON,
     SuccessTeamQuotaResponseToJSON,
 } from '../models/index';
 
-export interface ApiV1QuotasDimensionDeleteRequest {
-    dimension: QuotaDimension;
-}
-
 export interface ApiV1QuotasDimensionGetRequest {
     dimension: QuotaDimension;
-}
-
-export interface ApiV1QuotasDimensionPutRequest {
-    dimension: QuotaDimension;
-    putTeamQuotaRequest: PutTeamQuotaRequest;
 }
 
 /**
  * 
  */
 export class QuotasApi extends runtime.BaseAPI {
-
-    /**
-     * Delete team quota
-     */
-    async apiV1QuotasDimensionDeleteRaw(requestParameters: ApiV1QuotasDimensionDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessDeletedResponse>> {
-        if (requestParameters['dimension'] == null) {
-            throw new runtime.RequiredError(
-                'dimension',
-                'Required parameter "dimension" was null or undefined when calling apiV1QuotasDimensionDelete().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/api/v1/quotas/{dimension}`;
-        urlPath = urlPath.replace(`{${"dimension"}}`, encodeURIComponent(String(requestParameters['dimension'])));
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessDeletedResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Delete team quota
-     */
-    async apiV1QuotasDimensionDelete(requestParameters: ApiV1QuotasDimensionDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessDeletedResponse> {
-        const response = await this.apiV1QuotasDimensionDeleteRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
 
     /**
      * Get team quota
@@ -139,61 +79,6 @@ export class QuotasApi extends runtime.BaseAPI {
      */
     async apiV1QuotasDimensionGet(requestParameters: ApiV1QuotasDimensionGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessTeamQuotaResponse> {
         const response = await this.apiV1QuotasDimensionGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Set team quota
-     */
-    async apiV1QuotasDimensionPutRaw(requestParameters: ApiV1QuotasDimensionPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessTeamQuotaResponse>> {
-        if (requestParameters['dimension'] == null) {
-            throw new runtime.RequiredError(
-                'dimension',
-                'Required parameter "dimension" was null or undefined when calling apiV1QuotasDimensionPut().'
-            );
-        }
-
-        if (requestParameters['putTeamQuotaRequest'] == null) {
-            throw new runtime.RequiredError(
-                'putTeamQuotaRequest',
-                'Required parameter "putTeamQuotaRequest" was null or undefined when calling apiV1QuotasDimensionPut().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/api/v1/quotas/{dimension}`;
-        urlPath = urlPath.replace(`{${"dimension"}}`, encodeURIComponent(String(requestParameters['dimension'])));
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: PutTeamQuotaRequestToJSON(requestParameters['putTeamQuotaRequest']),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessTeamQuotaResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Set team quota
-     */
-    async apiV1QuotasDimensionPut(requestParameters: ApiV1QuotasDimensionPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessTeamQuotaResponse> {
-        const response = await this.apiV1QuotasDimensionPutRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

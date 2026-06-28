@@ -41,7 +41,7 @@ export interface PauseSandboxResponse {
      */
     sandboxId: string;
     /**
-     * True when checkpoint completion has finished and the sandbox is paused.
+     * True when checkpoint persistence has finished, runtime deletion has been accepted, and the sandbox is paused.
      * @type {boolean}
      * @memberof PauseSandboxResponse
      */

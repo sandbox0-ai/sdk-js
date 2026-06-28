@@ -9,6 +9,7 @@ Name | Type
 ------------ | -------------
 `runtime` | string
 `handler` | string
+`maxConcurrency` | number
 `source` | [SandboxFunctionSource](SandboxFunctionSource.md)
 
 ## Example
@@ -20,6 +21,7 @@ import type { SandboxFunction } from 'sandbox0'
 const example = {
   "runtime": null,
   "handler": null,
+  "maxConcurrency": null,
   "source": null,
 } satisfies SandboxFunction
 

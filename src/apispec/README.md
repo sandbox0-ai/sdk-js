@@ -100,9 +100,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *HealthApi* | [**metadataGet**](docs/HealthApi.md#metadataget) | **GET** /metadata | Gateway metadata
 *HealthApi* | [**metricsGet**](docs/HealthApi.md#metricsget) | **GET** /metrics | Prometheus metrics
 *HealthApi* | [**readyzGet**](docs/HealthApi.md#readyzget) | **GET** /readyz | Readiness check
-*QuotasApi* | [**apiV1QuotasDimensionDelete**](docs/QuotasApi.md#apiv1quotasdimensiondelete) | **DELETE** /api/v1/quotas/{dimension} | Delete team quota
 *QuotasApi* | [**apiV1QuotasDimensionGet**](docs/QuotasApi.md#apiv1quotasdimensionget) | **GET** /api/v1/quotas/{dimension} | Get team quota
-*QuotasApi* | [**apiV1QuotasDimensionPut**](docs/QuotasApi.md#apiv1quotasdimensionput) | **PUT** /api/v1/quotas/{dimension} | Set team quota
 *RegionsApi* | [**regionsGet**](docs/RegionsApi.md#regionsget) | **GET** /regions | List regions in the global gateway
 *RegionsApi* | [**regionsIdDelete**](docs/RegionsApi.md#regionsiddelete) | **DELETE** /regions/{id} | Delete a region from the global gateway
 *RegionsApi* | [**regionsIdGet**](docs/RegionsApi.md#regionsidget) | **GET** /regions/{id} | Get a region from the global gateway
@@ -278,7 +276,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ProjectionSpec](docs/ProjectionSpec.md)
 - [ProtocolRule](docs/ProtocolRule.md)
 - [ProtocolRuleProtocol](docs/ProtocolRuleProtocol.md)
-- [PutTeamQuotaRequest](docs/PutTeamQuotaRequest.md)
 - [QuotaDimension](docs/QuotaDimension.md)
 - [REPLConfig](docs/REPLConfig.md)
 - [REPLEnvVar](docs/REPLEnvVar.md)
@@ -421,6 +418,10 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessWrittenResponseAllOfData](docs/SuccessWrittenResponseAllOfData.md)
 - [TCPSocketAction](docs/TCPSocketAction.md)
 - [Team](docs/Team.md)
+- [TeamDeleteConflictDetails](docs/TeamDeleteConflictDetails.md)
+- [TeamDeleteConflictResponse](docs/TeamDeleteConflictResponse.md)
+- [TeamDeleteConflictResponseError](docs/TeamDeleteConflictResponseError.md)
+- [TeamDeleteResourceCount](docs/TeamDeleteResourceCount.md)
 - [TeamMember](docs/TeamMember.md)
 - [TeamQuota](docs/TeamQuota.md)
 - [Template](docs/Template.md)

@@ -218,6 +218,8 @@ example().catch(console.error);
 
 Update credential source
 
+Replace the secret material for an existing credential source. The resolver kind is immutable for a source name; create a new source when changing resolver kinds.
+
 ### Example
 
 ```ts
@@ -280,6 +282,7 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Credential source updated |  -  |
+| **400** | Invalid credential source update |  -  |
 | **404** | Credential source not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)

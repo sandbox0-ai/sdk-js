@@ -90,6 +90,8 @@ export interface SandboxAppServiceRoute {
      */
     timeoutSeconds?: number;
     /**
+     * Allows this public route to wake a paused sandbox when sandbox auto_resume is true.
+     * Resume-enabled public routes require a restartable service runtime: cmd or function.
      * 
      * @type {boolean}
      * @memberof SandboxAppServiceRoute

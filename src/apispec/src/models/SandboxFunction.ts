@@ -40,6 +40,12 @@ export interface SandboxFunction {
      */
     handler?: string;
     /**
+     * Maximum in-flight executions for this function service inside one sandbox runtime. Omit or set to 0 for unlimited.
+     * @type {number}
+     * @memberof SandboxFunction
+     */
+    maxConcurrency?: number;
+    /**
      * 
      * @type {SandboxFunctionSource}
      * @memberof SandboxFunction
@@ -78,6 +84,7 @@ export function SandboxFunctionFromJSONTyped(json: any, ignoreDiscriminator: boo
         
         'runtime': json['runtime'],
         'handler': json['handler'] == null ? undefined : json['handler'],
+        'maxConcurrency': json['max_concurrency'] == null ? undefined : json['max_concurrency'],
         'source': SandboxFunctionSourceFromJSON(json['source']),
     };
 }
@@ -95,6 +102,7 @@ export function SandboxFunctionToJSONTyped(value?: SandboxFunction | null, ignor
         
         'runtime': value['runtime'],
         'handler': value['handler'],
+        'max_concurrency': value['maxConcurrency'],
         'source': SandboxFunctionSourceToJSON(value['source']),
     };
 }

@@ -79,7 +79,7 @@ export interface Sandbox {
      */
     status: SandboxLifecycleStatus;
     /**
-     * True when status is paused and no runtime is attached.
+     * True when status is paused.
      * @type {boolean}
      * @memberof Sandbox
      */

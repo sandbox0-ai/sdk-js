@@ -146,6 +146,7 @@ example().catch(console.error);
 | **200** | Team deleted |  -  |
 | **403** | Forbidden |  -  |
 | **404** | Team not found |  -  |
+| **409** | Team has resources that must be removed before deletion |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

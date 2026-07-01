@@ -2,6 +2,7 @@ import type {
   ClaimMountRequest,
   ClaimRequest,
   CreateSandboxRootFSSnapshotRequest,
+  ForkSandboxRequest,
   ForkSandboxResponse,
   MountStatus,
   PauseSandboxResponse,
@@ -242,11 +243,11 @@ export class Sandboxes {
     return ensureData(response, "restore sandbox rootfs returned empty response");
   }
 
-  async fork(sandboxId: string, request?: object): Promise<ForkSandboxResponse> {
+  async fork(sandboxId: string, request?: ForkSandboxRequest): Promise<ForkSandboxResponse> {
     const response = await wrapApiCall(() =>
       this.client.apispec.sandboxRootfs.apiV1SandboxesIdForkPost({
         id: sandboxId,
-        body: request ?? {},
+        forkSandboxRequest: request ?? {},
       }),
     );
     return ensureData(response, "fork sandbox returned empty response");

@@ -68,6 +68,8 @@ export * from './FileWatchSubscribeRequest';
 export * from './FileWatchSubscribed';
 export * from './FileWatchUnsubscribeRequest';
 export * from './FileWatchUnsubscribed';
+export * from './ForkSandboxConfig';
+export * from './ForkSandboxRequest';
 export * from './ForkSandboxResponse';
 export * from './ForkVolumeRequest';
 export * from './GRPCAction';

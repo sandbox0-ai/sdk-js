@@ -177,7 +177,7 @@ describe("Sandboxes resource", () => {
     const fetched = await sandboxes.getRootFSSnapshot("snap_1");
     const deleted = await sandboxes.deleteRootFSSnapshot("snap_1");
     const restored = await sandboxes.restoreRootFS("sb_1", { snapshotId: "snap_1" });
-    const forked = await sandboxes.fork("sb_1");
+    const forked = await sandboxes.fork("sb_1", { config: { ttl: 60, hardTtl: 120 } });
 
     assert.strictEqual(snapshot.id, "snap_1");
     assert.strictEqual(snapshots.length, 1);
@@ -196,6 +196,9 @@ describe("Sandboxes resource", () => {
       id: "sb_1",
       restoreSandboxRootFSRequest: { snapshotId: "snap_1" },
     });
-    assert.deepStrictEqual(calls.fork, { id: "sb_1", body: {} });
+    assert.deepStrictEqual(calls.fork, {
+      id: "sb_1",
+      forkSandboxRequest: { config: { ttl: 60, hardTtl: 120 } },
+    });
   });
 });

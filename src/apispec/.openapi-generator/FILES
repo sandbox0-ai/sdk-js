@@ -74,6 +74,8 @@ docs/FileWatchSubscribed.md
 docs/FileWatchUnsubscribeRequest.md
 docs/FileWatchUnsubscribed.md
 docs/FilesApi.md
+docs/ForkSandboxConfig.md
+docs/ForkSandboxRequest.md
 docs/ForkSandboxResponse.md
 docs/ForkVolumeRequest.md
 docs/GRPCAction.md
@@ -385,6 +387,8 @@ src/models/FileWatchSubscribeRequest.ts
 src/models/FileWatchSubscribed.ts
 src/models/FileWatchUnsubscribeRequest.ts
 src/models/FileWatchUnsubscribed.ts
+src/models/ForkSandboxConfig.ts
+src/models/ForkSandboxRequest.ts
 src/models/ForkSandboxResponse.ts
 src/models/ForkVolumeRequest.ts
 src/models/GRPCAction.ts

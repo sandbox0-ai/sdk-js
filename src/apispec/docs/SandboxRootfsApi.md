@@ -155,7 +155,7 @@ example().catch(console.error);
 
 ## apiV1SandboxesIdForkPost
 
-> SuccessForkSandboxResponse apiV1SandboxesIdForkPost(id, body)
+> SuccessForkSandboxResponse apiV1SandboxesIdForkPost(id, forkSandboxRequest)
 
 Fork sandbox from paused rootfs
 
@@ -179,8 +179,8 @@ async function example() {
   const body = {
     // string
     id: id_example,
-    // object (optional)
-    body: Object,
+    // ForkSandboxRequest (optional)
+    forkSandboxRequest: ...,
   } satisfies ApiV1SandboxesIdForkPostRequest;
 
   try {
@@ -201,7 +201,7 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | `string` |  | [Defaults to `undefined`] |
-| **body** | `object` |  | [Optional] |
+| **forkSandboxRequest** | [ForkSandboxRequest](ForkSandboxRequest.md) |  | [Optional] |
 
 ### Return type
 

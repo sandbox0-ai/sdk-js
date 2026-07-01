@@ -231,6 +231,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [FileWatchSubscribed](docs/FileWatchSubscribed.md)
 - [FileWatchUnsubscribeRequest](docs/FileWatchUnsubscribeRequest.md)
 - [FileWatchUnsubscribed](docs/FileWatchUnsubscribed.md)
+- [ForkSandboxConfig](docs/ForkSandboxConfig.md)
+- [ForkSandboxRequest](docs/ForkSandboxRequest.md)
 - [ForkSandboxResponse](docs/ForkSandboxResponse.md)
 - [ForkVolumeRequest](docs/ForkVolumeRequest.md)
 - [GRPCAction](docs/GRPCAction.md)

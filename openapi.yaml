@@ -16,6 +16,8 @@ tags:
   - name: api-keys
   - name: sandboxes
   - name: contexts
+  - name: observability
+  - name: audit
   - name: files
   - name: templates
   - name: registry
@@ -1433,98 +1435,74 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-  /api/v1/sandboxes/{id}/logs:
+  /api/v1/sandboxes/{id}/observability/events:
     get:
-      tags: [sandboxes]
-      summary: Get sandbox process logs
+      tags: [observability]
+      summary: Query historical sandbox observability events
       description: |
-        Returns sandbox process output mirrored through the sandbox main container.
-        Procd service logs are filtered out and remain available through Kubernetes pod logs.
-        When `follow=false`, the response is a bounded text/plain snapshot.
-        When `follow=true`, the response is a text/plain stream until the client disconnects.
-        Kubernetes log selection parameters such as `tail_lines` and `limit_bytes`
-        are applied before procd service log filtering.
+        Queries the asynchronous per-sandbox observability projection for lifecycle,
+        network audit, and runtime stats events. This endpoint does not expose backend SQL
+        and does not replace the metering usage truth stored in PostgreSQL.
       security:
         - bearerAuth: []
-      x-upstream-service: manager
-      x-upstream-path: /api/v1/sandboxes/{id}/logs
+      x-upstream-service: cluster-gateway
       parameters:
         - $ref: "#/components/parameters/SandboxID"
-        - name: container
+        - name: start_time
           in: query
-          description: Pod container name. Defaults to the sandbox main container.
+          description: Include events that occurred at or after this RFC3339 timestamp.
           schema:
             type: string
-            default: procd
-        - name: tail_lines
+            format: date-time
+        - name: end_time
           in: query
-          description: Maximum number of Kubernetes log lines read from the end of the log before procd service log filtering.
+          description: Include events that occurred at or before this RFC3339 timestamp.
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          description: Maximum number of events to return. Values above 1000 are capped.
           schema:
             type: integer
-            format: int64
-            default: 200
+            default: 100
             minimum: 1
-            maximum: 5000
-        - name: limit_bytes
+            maximum: 1000
+        - name: cursor
           in: query
-          description: Maximum response log payload bytes read from Kubernetes. Defaults only apply when follow is false.
+          description: Opaque pagination cursor returned by a previous response. When watch is true, this must be a watch resume cursor from an NDJSON watermark line.
           schema:
-            type: integer
-            format: int64
-            default: 1048576
-            minimum: 1
-            maximum: 8388608
-        - name: follow
+            type: string
+        - name: watch
           in: query
-          description: Stream logs as text/plain until the client disconnects. When false, return a text/plain snapshot.
+          description: Stream matching records as application/x-ndjson in ingestion order until the client disconnects. When watch is true, end_time is not supported. Without cursor or start_time, streaming starts at request time.
           schema:
             type: boolean
             default: false
-        - name: previous
+        - name: source
           in: query
-          description: Return logs for the previously terminated container instance.
           schema:
-            type: boolean
-            default: false
-        - name: timestamps
+            $ref: "#/components/schemas/ObservabilityEventSource"
+        - name: event_type
           in: query
-          description: Include Kubernetes log timestamps when available.
           schema:
-            type: boolean
-            default: false
-        - name: since_seconds
+            $ref: "#/components/schemas/SandboxObservabilityEventType"
+        - name: outcome
           in: query
-          description: Only return logs newer than this many seconds.
           schema:
-            type: integer
-            format: int64
-            minimum: 1
+            $ref: "#/components/schemas/SandboxObservabilityOutcome"
       responses:
         "200":
-          description: Sandbox process logs
-          headers:
-            X-Sandbox-ID:
-              description: Sandbox ID for the returned log payload.
-              schema:
-                type: string
-            X-Sandbox-Pod-Name:
-              description: Kubernetes pod name that produced the returned log payload.
-              schema:
-                type: string
-            X-Sandbox-Log-Container:
-              description: Kubernetes container name that produced the returned log payload.
-              schema:
-                type: string
-            X-Sandbox-Log-Previous:
-              description: Whether the returned payload came from a previously terminated container instance.
-              schema:
-                type: boolean
+          description: Historical sandbox observability events
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
+                $ref: "#/components/schemas/SuccessSandboxObservabilityEventsResponse"
+            application/x-ndjson:
+              schema:
+                $ref: "#/components/schemas/SandboxObservabilityWatchLine"
         "400":
-          description: Invalid log query parameters
+          description: Invalid query parameters
           content:
             application/json:
               schema:
@@ -1535,8 +1513,261 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-        "404":
-          description: Not found
+        "503":
+          description: Historical observability backend disabled or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/observability/logs:
+    get:
+      tags: [observability]
+      summary: Query historical sandbox logs
+      description: |
+        Queries the asynchronous per-sandbox log projection. This endpoint is for
+        historical log lookup and is separate from live log streaming.
+      security:
+        - bearerAuth: []
+      x-upstream-service: cluster-gateway
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: start_time
+          in: query
+          description: Include log entries that occurred at or after this RFC3339 timestamp.
+          schema:
+            type: string
+            format: date-time
+        - name: end_time
+          in: query
+          description: Include log entries that occurred at or before this RFC3339 timestamp.
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          description: Maximum number of log entries to return. Values above 1000 are capped.
+          schema:
+            type: integer
+            default: 100
+            minimum: 1
+            maximum: 1000
+        - name: cursor
+          in: query
+          description: Opaque pagination cursor returned by a previous response. When watch is true, this must be a watch resume cursor from an NDJSON watermark line.
+          schema:
+            type: string
+        - name: watch
+          in: query
+          description: Stream matching records as application/x-ndjson in ingestion order until the client disconnects. When watch is true, end_time is not supported. Without cursor or start_time, streaming starts at request time.
+          schema:
+            type: boolean
+            default: false
+        - name: context_id
+          in: query
+          description: Restrict results to a sandbox process context.
+          schema:
+            type: string
+        - name: stream
+          in: query
+          schema:
+            $ref: "#/components/schemas/SandboxObservabilityLogStream"
+      responses:
+        "200":
+          description: Historical sandbox logs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxObservabilityLogsResponse"
+            application/x-ndjson:
+              schema:
+                $ref: "#/components/schemas/SandboxObservabilityWatchLine"
+        "400":
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Historical observability backend disabled or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/observability/metrics:
+    get:
+      tags: [observability]
+      summary: Query historical sandbox metric samples
+      description: |
+        Queries the asynchronous per-sandbox metric sample projection. This endpoint is
+        separate from platform service metrics and PostgreSQL metering usage truth.
+      security:
+        - bearerAuth: []
+      x-upstream-service: cluster-gateway
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: start_time
+          in: query
+          description: Include samples that occurred at or after this RFC3339 timestamp.
+          schema:
+            type: string
+            format: date-time
+        - name: end_time
+          in: query
+          description: Include samples that occurred at or before this RFC3339 timestamp.
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          description: Maximum number of samples to return. Values above 1000 are capped.
+          schema:
+            type: integer
+            default: 100
+            minimum: 1
+            maximum: 1000
+        - name: cursor
+          in: query
+          description: Opaque pagination cursor returned by a previous response. When watch is true, this must be a watch resume cursor from an NDJSON watermark line.
+          schema:
+            type: string
+        - name: watch
+          in: query
+          description: Stream matching records as application/x-ndjson in ingestion order until the client disconnects. When watch is true, end_time is not supported. Without cursor or start_time, streaming starts at request time.
+          schema:
+            type: boolean
+            default: false
+        - name: context_id
+          in: query
+          description: Restrict results to a sandbox process context.
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Metric name filter. This parameter may be repeated.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        - name: names
+          in: query
+          description: Comma-separated metric name filter.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Historical sandbox metric samples
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxObservabilityMetricsResponse"
+            application/x-ndjson:
+              schema:
+                $ref: "#/components/schemas/SandboxObservabilityWatchLine"
+        "400":
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Historical observability backend disabled or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/audit/events:
+    get:
+      tags: [audit]
+      summary: Query historical sandbox audit events
+      description: |
+        Queries the audit-focused projection for a sandbox. Network audit events are
+        included in scope; file audit is intentionally not included.
+      security:
+        - bearerAuth: []
+      x-upstream-service: cluster-gateway
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: start_time
+          in: query
+          description: Include events that occurred at or after this RFC3339 timestamp.
+          schema:
+            type: string
+            format: date-time
+        - name: end_time
+          in: query
+          description: Include events that occurred at or before this RFC3339 timestamp.
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          description: Maximum number of events to return. Values above 1000 are capped.
+          schema:
+            type: integer
+            default: 100
+            minimum: 1
+            maximum: 1000
+        - name: cursor
+          in: query
+          description: Opaque pagination cursor returned by a previous response. When watch is true, this must be a watch resume cursor from an NDJSON watermark line.
+          schema:
+            type: string
+        - name: watch
+          in: query
+          description: Stream matching records as application/x-ndjson in ingestion order until the client disconnects. When watch is true, end_time is not supported. Without cursor or start_time, streaming starts at request time.
+          schema:
+            type: boolean
+            default: false
+        - name: source
+          in: query
+          schema:
+            $ref: "#/components/schemas/ObservabilityEventSource"
+        - name: event_type
+          in: query
+          schema:
+            $ref: "#/components/schemas/SandboxObservabilityEventType"
+        - name: outcome
+          in: query
+          schema:
+            $ref: "#/components/schemas/SandboxObservabilityOutcome"
+      responses:
+        "200":
+          description: Historical sandbox audit events
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxObservabilityEventsResponse"
+            application/x-ndjson:
+              schema:
+                $ref: "#/components/schemas/SandboxObservabilityWatchLine"
+        "400":
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Historical observability backend disabled or unavailable
           content:
             application/json:
               schema:
@@ -2118,24 +2349,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SuccessSignaledResponse"
-  /api/v1/sandboxes/{id}/contexts/{ctx_id}/stats:
-    get:
-      tags: [contexts]
-      summary: Get context stats
-      security:
-        - bearerAuth: []
-      x-upstream-service: procd
-      x-upstream-path: /api/v1/contexts/{ctx_id}/stats
-      parameters:
-        - $ref: "#/components/parameters/SandboxID"
-        - $ref: "#/components/parameters/ContextID"
-      responses:
-        "200":
-          description: Context stats
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessContextStatsResponse"
   /api/v1/sandboxes/{id}/contexts/{ctx_id}/ws:
     get:
       tags: [contexts]
@@ -4756,6 +4969,221 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ContextResourceUsage"
+    ObservabilityEventSource:
+      type: string
+      enum: [manager, netd, procd]
+    SandboxObservabilityEventType:
+      type: string
+      enum: [lifecycle, network_audit, runtime_stats]
+    SandboxObservabilityOutcome:
+      type: string
+      enum: [completed, denied, error, succeeded, failed]
+    SandboxObservabilityEvent:
+      type: object
+      properties:
+        team_id:
+          type: string
+        sandbox_id:
+          type: string
+        region_id:
+          type: string
+        cluster_id:
+          type: string
+        occurred_at:
+          type: string
+          format: date-time
+        ingested_at:
+          type: string
+          format: date-time
+        source:
+          $ref: "#/components/schemas/ObservabilityEventSource"
+        event_type:
+          $ref: "#/components/schemas/SandboxObservabilityEventType"
+        outcome:
+          $ref: "#/components/schemas/SandboxObservabilityOutcome"
+        cursor:
+          type: string
+        watermark:
+          type: string
+        attributes:
+          type: object
+          additionalProperties: true
+      required:
+        - team_id
+        - sandbox_id
+        - region_id
+        - cluster_id
+        - occurred_at
+        - ingested_at
+        - source
+        - event_type
+        - cursor
+        - watermark
+    SandboxObservabilityEventsResponse:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/SandboxObservabilityEvent"
+        next_cursor:
+          type: string
+        watermark:
+          type: string
+      required: [events]
+    SandboxObservabilityLogStream:
+      type: string
+      enum: [stdout, stderr, pty]
+    SandboxObservabilityLogEntry:
+      type: object
+      properties:
+        team_id:
+          type: string
+        sandbox_id:
+          type: string
+        region_id:
+          type: string
+        cluster_id:
+          type: string
+        context_id:
+          type: string
+        process_id:
+          type: string
+        occurred_at:
+          type: string
+          format: date-time
+        ingested_at:
+          type: string
+          format: date-time
+        stream:
+          $ref: "#/components/schemas/SandboxObservabilityLogStream"
+        message:
+          type: string
+        cursor:
+          type: string
+        attributes:
+          type: object
+          additionalProperties: true
+      required:
+        - team_id
+        - sandbox_id
+        - region_id
+        - cluster_id
+        - occurred_at
+        - ingested_at
+        - message
+        - cursor
+    SandboxObservabilityLogsResponse:
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: "#/components/schemas/SandboxObservabilityLogEntry"
+        next_cursor:
+          type: string
+        watermark:
+          type: string
+      required: [logs]
+    SandboxObservabilityMetricSample:
+      type: object
+      properties:
+        team_id:
+          type: string
+        sandbox_id:
+          type: string
+        region_id:
+          type: string
+        cluster_id:
+          type: string
+        context_id:
+          type: string
+        occurred_at:
+          type: string
+          format: date-time
+        ingested_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        unit:
+          type: string
+        value:
+          type: number
+          format: double
+        cursor:
+          type: string
+        attributes:
+          type: object
+          additionalProperties: true
+      required:
+        - team_id
+        - sandbox_id
+        - region_id
+        - cluster_id
+        - occurred_at
+        - ingested_at
+        - name
+        - value
+        - cursor
+    SandboxObservabilityMetricsResponse:
+      type: object
+      properties:
+        samples:
+          type: array
+          items:
+            $ref: "#/components/schemas/SandboxObservabilityMetricSample"
+        next_cursor:
+          type: string
+        watermark:
+          type: string
+      required: [samples]
+    SandboxObservabilityWatchLine:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [event, log, metric_sample, watermark, heartbeat, error]
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/SandboxObservabilityEvent"
+            - $ref: "#/components/schemas/SandboxObservabilityLogEntry"
+            - $ref: "#/components/schemas/SandboxObservabilityMetricSample"
+        cursor:
+          type: string
+          description: Watch resume cursor. Present on watermark lines.
+        watermark:
+          type: string
+          description: Backend watermark for the emitted batch.
+        time:
+          type: string
+          format: date-time
+          description: Heartbeat timestamp.
+        error:
+          type: string
+          description: Stream error message.
+      required: [type]
+    SuccessSandboxObservabilityEventsResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/SandboxObservabilityEventsResponse"
+    SuccessSandboxObservabilityLogsResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/SandboxObservabilityLogsResponse"
+    SuccessSandboxObservabilityMetricsResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/SandboxObservabilityMetricsResponse"
     PauseSandboxResponse:
       type: object
       properties:
@@ -4981,22 +5409,6 @@ components:
           type: string
           description: Final process state when the underlying process has exited.
       required: [id, type, running, paused, created_at]
-    ContextStatsResponse:
-      type: object
-      properties:
-        context_id:
-          type: string
-        type:
-          type: string
-        alias:
-          type: string
-          description: Alias for the REPL or CLI tool (e.g., python, node, bash, redis-cli)
-        running:
-          type: boolean
-        paused:
-          type: boolean
-        usage:
-          $ref: "#/components/schemas/ResourceUsage"
     ContextInputRequest:
       type: object
       properties:
@@ -5059,13 +5471,6 @@ components:
                   type: array
                   items:
                     $ref: "#/components/schemas/ContextResponse"
-    SuccessContextStatsResponse:
-      allOf:
-        - $ref: "#/components/schemas/SuccessEnvelope"
-        - type: object
-          properties:
-            data:
-              $ref: "#/components/schemas/ContextStatsResponse"
     SuccessContextExecResponse:
       allOf:
         - $ref: "#/components/schemas/SuccessEnvelope"

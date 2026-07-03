@@ -1,6 +1,6 @@
 import type * as runtimeTypes from "./apispec/src/runtime";
 import type * as apisTypes from "./apispec/src/apis/index";
-import { apis, runtime } from "./apispec_compat";
+import { apis, models, runtime } from "./apispec_compat";
 import { normalizeNullMapMiddleware } from "./response_normalize";
 import { CredentialSources } from "./resources/credential_sources";
 import { Sandboxes } from "./resources/sandboxes";
@@ -9,7 +9,18 @@ import { Volumes } from "./resources/volumes";
 import { Sandbox } from "./sandbox";
 import { APIError, apiErrorFromResponse, wrapApiCall } from "./errors";
 import { ensureData } from "./response";
-import type { SandboxLogs, SandboxLogsOptions, SandboxLogsStream } from "./models";
+import type {
+  SandboxObservabilityEventOptions,
+  SandboxObservabilityEventWatchOptions,
+  SandboxObservabilityEvents,
+  SandboxObservabilityLogOptions,
+  SandboxObservabilityLogWatchOptions,
+  SandboxObservabilityLogs,
+  SandboxObservabilityMetricOptions,
+  SandboxObservabilityMetricWatchOptions,
+  SandboxObservabilityMetrics,
+  SandboxObservabilityWatchStream,
+} from "./models";
 
 export const DEFAULT_BASE_URL = "https://api.sandbox0.ai";
 
@@ -51,6 +62,8 @@ export class Client {
     templates: apisTypes.TemplatesApi;
     credentialSources: apisTypes.CredentialSourcesApi;
     teams: apisTypes.TeamsApi;
+    observability: apisTypes.ObservabilityApi;
+    audit: apisTypes.AuditApi;
   };
 
   readonly sandboxes: Sandboxes;
@@ -86,6 +99,8 @@ export class Client {
       templates: new apis.TemplatesApi(this.configuration),
       credentialSources: new apis.CredentialSourcesApi(this.configuration),
       teams: new apis.TeamsApi(this.configuration),
+      observability: new apis.ObservabilityApi(this.configuration),
+      audit: new apis.AuditApi(this.configuration),
     };
 
     this.sandboxes = new Sandboxes(this);
@@ -98,56 +113,96 @@ export class Client {
     return new Sandbox({ id, client: this });
   }
 
-  async getSandboxLogs(
+  async listSandboxObservabilityEvents(
     sandboxId: string,
-    options?: SandboxLogsOptions,
-  ): Promise<SandboxLogs> {
+    options?: SandboxObservabilityEventOptions,
+  ): Promise<SandboxObservabilityEvents> {
     const response = await wrapApiCall(() =>
-      this.apispec.sandboxes.apiV1SandboxesIdLogsGetRaw({
+      this.apispec.observability.apiV1SandboxesIdObservabilityEventsGet({
         id: sandboxId,
-        ...toSandboxLogsRequest(options),
+        ...options,
       }),
     );
-    const logs = await response.value();
-    return {
-      sandboxId: response.raw.headers.get("x-sandbox-id") ?? sandboxId,
-      podName: response.raw.headers.get("x-sandbox-pod-name") ?? "",
-      container: response.raw.headers.get("x-sandbox-log-container") ?? "",
-      previous: response.raw.headers.get("x-sandbox-log-previous") === "true",
-      logs,
-    };
+    return ensureData(response, "list sandbox observability events returned empty response");
   }
 
-  async streamSandboxLogs(
+  async listSandboxAuditEvents(
     sandboxId: string,
-    options?: SandboxLogsOptions,
-  ): Promise<SandboxLogsStream> {
-    const response = await this.fetchRaw(
-      `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/logs`,
-      { ...toSandboxLogsQuery(options), follow: "true" },
+    options?: SandboxObservabilityEventOptions,
+  ): Promise<SandboxObservabilityEvents> {
+    const response = await wrapApiCall(() =>
+      this.apispec.audit.apiV1SandboxesIdAuditEventsGet({
+        id: sandboxId,
+        ...options,
+      }),
     );
-    const contentType = response.headers.get("content-type") ?? "";
-    if (!contentType.toLowerCase().startsWith("text/plain")) {
-      throw new APIError({
-        statusCode: response.status,
-        code: "unexpected_response",
-        message: `unexpected log stream content type: ${contentType}`,
-      });
-    }
-    if (!response.body) {
-      throw new APIError({
-        statusCode: response.status,
-        code: "unexpected_response",
-        message: "log stream response did not include a body",
-      });
-    }
-    return {
-      body: response.body,
-      response,
-      sandboxId: response.headers.get("x-sandbox-id") ?? undefined,
-      podName: response.headers.get("x-sandbox-pod-name") ?? undefined,
-      container: response.headers.get("x-sandbox-log-container") ?? undefined,
-    };
+    return ensureData(response, "list sandbox audit events returned empty response");
+  }
+
+  async listSandboxObservabilityLogs(
+    sandboxId: string,
+    options?: SandboxObservabilityLogOptions,
+  ): Promise<SandboxObservabilityLogs> {
+    const response = await wrapApiCall(() =>
+      this.apispec.observability.apiV1SandboxesIdObservabilityLogsGet({
+        id: sandboxId,
+        ...options,
+      }),
+    );
+    return ensureData(response, "list sandbox observability logs returned empty response");
+  }
+
+  async listSandboxObservabilityMetrics(
+    sandboxId: string,
+    options?: SandboxObservabilityMetricOptions,
+  ): Promise<SandboxObservabilityMetrics> {
+    const response = await wrapApiCall(() =>
+      this.apispec.observability.apiV1SandboxesIdObservabilityMetricsGet({
+        id: sandboxId,
+        ...options,
+      }),
+    );
+    return ensureData(response, "list sandbox observability metrics returned empty response");
+  }
+
+  async watchSandboxObservabilityEvents(
+    sandboxId: string,
+    options?: SandboxObservabilityEventWatchOptions,
+  ): Promise<SandboxObservabilityWatchStream> {
+    return this.watchSandboxObservability(
+      `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/observability/events`,
+      toSandboxObservabilityEventQuery(options),
+    );
+  }
+
+  async watchSandboxAuditEvents(
+    sandboxId: string,
+    options?: SandboxObservabilityEventWatchOptions,
+  ): Promise<SandboxObservabilityWatchStream> {
+    return this.watchSandboxObservability(
+      `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/audit/events`,
+      toSandboxObservabilityEventQuery(options),
+    );
+  }
+
+  async watchSandboxObservabilityLogs(
+    sandboxId: string,
+    options?: SandboxObservabilityLogWatchOptions,
+  ): Promise<SandboxObservabilityWatchStream> {
+    return this.watchSandboxObservability(
+      `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/observability/logs`,
+      toSandboxObservabilityLogQuery(options),
+    );
+  }
+
+  async watchSandboxObservabilityMetrics(
+    sandboxId: string,
+    options?: SandboxObservabilityMetricWatchOptions,
+  ): Promise<SandboxObservabilityWatchStream> {
+    return this.watchSandboxObservability(
+      `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/observability/metrics`,
+      toSandboxObservabilityMetricQuery(options),
+    );
   }
 
   websocketUrl(path: string): string {
@@ -175,9 +230,37 @@ export class Client {
     return headers;
   }
 
+  private async watchSandboxObservability(
+    path: string,
+    query: Record<string, string | undefined>,
+  ): Promise<SandboxObservabilityWatchStream> {
+    const response = await this.fetchRaw(
+      path,
+      { ...query, watch: "true" },
+      { Accept: "application/x-ndjson" },
+    );
+    const contentType = response.headers.get("content-type") ?? "";
+    if (!contentType.toLowerCase().startsWith("application/x-ndjson")) {
+      throw new APIError({
+        statusCode: response.status,
+        code: "unexpected_response",
+        message: `unexpected observability watch content type: ${contentType}`,
+      });
+    }
+    if (!response.body) {
+      throw new APIError({
+        statusCode: response.status,
+        code: "unexpected_response",
+        message: "observability watch response did not include a body",
+      });
+    }
+    return createSandboxObservabilityWatchStream(response);
+  }
+
   private async fetchRaw(
     path: string,
     query: Record<string, string | undefined>,
+    extraHeaders?: Record<string, string>,
   ): Promise<Response> {
     const url = new URL(this.baseUrl);
     url.pathname = url.pathname.replace(/\/$/, "") + path;
@@ -190,6 +273,7 @@ export class Client {
 
     const headers: Record<string, string> = {
       ...(this.configuration.headers ?? {}),
+      ...(extraHeaders ?? {}),
     };
     if (!hasHeader(headers, "authorization")) {
       const token = (await this.accessToken()).trim();
@@ -210,25 +294,49 @@ export class Client {
   }
 }
 
-function toSandboxLogsRequest(options?: SandboxLogsOptions) {
+function toSandboxObservabilityQuery(
+  options?: {
+    startTime?: Date;
+    limit?: number;
+    cursor?: string;
+  },
+): Record<string, string | undefined> {
   return {
-    container: options?.container,
-    tailLines: options?.tailLines,
-    limitBytes: options?.limitBytes,
-    previous: options?.previous,
-    timestamps: options?.timestamps,
-    sinceSeconds: options?.sinceSeconds,
+    start_time: dateQuery(options?.startTime),
+    limit: numberQuery(options?.limit),
+    cursor: options?.cursor,
   };
 }
 
-function toSandboxLogsQuery(options?: SandboxLogsOptions): Record<string, string | undefined> {
+function toSandboxObservabilityEventQuery(
+  options?: SandboxObservabilityEventWatchOptions,
+): Record<string, string | undefined> {
   return {
-    container: options?.container,
-    tail_lines: numberQuery(options?.tailLines),
-    limit_bytes: numberQuery(options?.limitBytes),
-    previous: boolQuery(options?.previous),
-    timestamps: boolQuery(options?.timestamps),
-    since_seconds: numberQuery(options?.sinceSeconds),
+    ...toSandboxObservabilityQuery(options),
+    source: options?.source,
+    event_type: options?.eventType,
+    outcome: options?.outcome,
+  };
+}
+
+function toSandboxObservabilityLogQuery(
+  options?: SandboxObservabilityLogWatchOptions,
+): Record<string, string | undefined> {
+  return {
+    ...toSandboxObservabilityQuery(options),
+    context_id: options?.contextId,
+    stream: options?.stream,
+  };
+}
+
+function toSandboxObservabilityMetricQuery(
+  options?: SandboxObservabilityMetricWatchOptions,
+): Record<string, string | undefined> {
+  return {
+    ...toSandboxObservabilityQuery(options),
+    context_id: options?.contextId,
+    name: options?.name?.join(","),
+    names: options?.names,
   };
 }
 
@@ -236,8 +344,55 @@ function numberQuery(value: number | undefined): string | undefined {
   return value === undefined ? undefined : String(value);
 }
 
-function boolQuery(value: boolean | undefined): string | undefined {
-  return value ? "true" : undefined;
+function dateQuery(value: Date | undefined): string | undefined {
+  return value === undefined ? undefined : value.toISOString();
+}
+
+function createSandboxObservabilityWatchStream(
+  response: Response,
+): SandboxObservabilityWatchStream {
+  const body = response.body;
+  if (!body) {
+    throw new APIError({
+      statusCode: response.status,
+      code: "unexpected_response",
+      message: "observability watch response did not include a body",
+    });
+  }
+  return {
+    body,
+    response,
+    async *[Symbol.asyncIterator]() {
+      const reader = body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      try {
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) {
+            break;
+          }
+          buffer += decoder.decode(value, { stream: true });
+          let newlineIndex = buffer.indexOf("\n");
+          while (newlineIndex >= 0) {
+            const line = buffer.slice(0, newlineIndex).trim();
+            buffer = buffer.slice(newlineIndex + 1);
+            if (line) {
+              yield models.SandboxObservabilityWatchLineFromJSON(JSON.parse(line));
+            }
+            newlineIndex = buffer.indexOf("\n");
+          }
+        }
+        buffer += decoder.decode();
+        const line = buffer.trim();
+        if (line) {
+          yield models.SandboxObservabilityWatchLineFromJSON(JSON.parse(line));
+        }
+      } finally {
+        reader.releaseLock();
+      }
+    },
+  };
 }
 
 function hasHeader(headers: Record<string, string>, name: string): boolean {

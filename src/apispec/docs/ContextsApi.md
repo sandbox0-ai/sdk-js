@@ -11,7 +11,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 | [**apiV1SandboxesIdContextsCtxIdResizePost**](ContextsApi.md#apiv1sandboxesidcontextsctxidresizepost) | **POST** /api/v1/sandboxes/{id}/contexts/{ctx_id}/resize | Resize context PTY |
 | [**apiV1SandboxesIdContextsCtxIdRestartPost**](ContextsApi.md#apiv1sandboxesidcontextsctxidrestartpost) | **POST** /api/v1/sandboxes/{id}/contexts/{ctx_id}/restart | Restart context |
 | [**apiV1SandboxesIdContextsCtxIdSignalPost**](ContextsApi.md#apiv1sandboxesidcontextsctxidsignalpost) | **POST** /api/v1/sandboxes/{id}/contexts/{ctx_id}/signal | Send signal to context |
-| [**apiV1SandboxesIdContextsCtxIdStatsGet**](ContextsApi.md#apiv1sandboxesidcontextsctxidstatsget) | **GET** /api/v1/sandboxes/{id}/contexts/{ctx_id}/stats | Get context stats |
 | [**apiV1SandboxesIdContextsCtxIdWsGet**](ContextsApi.md#apiv1sandboxesidcontextsctxidwsget) | **GET** /api/v1/sandboxes/{id}/contexts/{ctx_id}/ws | Context WebSocket (I/O) |
 | [**apiV1SandboxesIdContextsGet**](ContextsApi.md#apiv1sandboxesidcontextsget) | **GET** /api/v1/sandboxes/{id}/contexts | List contexts |
 | [**apiV1SandboxesIdContextsPost**](ContextsApi.md#apiv1sandboxesidcontextspost) | **POST** /api/v1/sandboxes/{id}/contexts | Create a context |
@@ -534,78 +533,6 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Signal sent |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
-
-## apiV1SandboxesIdContextsCtxIdStatsGet
-
-> SuccessContextStatsResponse apiV1SandboxesIdContextsCtxIdStatsGet(id, ctxId)
-
-Get context stats
-
-### Example
-
-```ts
-import {
-  Configuration,
-  ContextsApi,
-} from 'sandbox0';
-import type { ApiV1SandboxesIdContextsCtxIdStatsGetRequest } from 'sandbox0';
-
-async function example() {
-  console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
-    // Configure HTTP bearer authorization: bearerAuth
-    accessToken: "YOUR BEARER TOKEN",
-  });
-  const api = new ContextsApi(config);
-
-  const body = {
-    // string
-    id: id_example,
-    // string
-    ctxId: ctxId_example,
-  } satisfies ApiV1SandboxesIdContextsCtxIdStatsGetRequest;
-
-  try {
-    const data = await api.apiV1SandboxesIdContextsCtxIdStatsGet(body);
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-// Run the test
-example().catch(console.error);
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **id** | `string` |  | [Defaults to `undefined`] |
-| **ctxId** | `string` |  | [Defaults to `undefined`] |
-
-### Return type
-
-[**SuccessContextStatsResponse**](SuccessContextStatsResponse.md)
-
-### Authorization
-
-[bearerAuth](../README.md#bearerAuth)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: `application/json`
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Context stats |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

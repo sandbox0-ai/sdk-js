@@ -86,17 +86,6 @@ export interface ApiV1SandboxesIdGetRequest {
     id: string;
 }
 
-export interface ApiV1SandboxesIdLogsGetRequest {
-    id: string;
-    container?: string;
-    tailLines?: number;
-    limitBytes?: number;
-    follow?: boolean;
-    previous?: boolean;
-    timestamps?: boolean;
-    sinceSeconds?: number;
-}
-
 export interface ApiV1SandboxesIdNetworkGetRequest {
     id: string;
 }
@@ -292,85 +281,6 @@ export class SandboxesApi extends runtime.BaseAPI {
      */
     async apiV1SandboxesIdGet(requestParameters: ApiV1SandboxesIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxResponse> {
         const response = await this.apiV1SandboxesIdGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Returns sandbox process output mirrored through the sandbox main container. Procd service logs are filtered out and remain available through Kubernetes pod logs. When `follow=false`, the response is a bounded text/plain snapshot. When `follow=true`, the response is a text/plain stream until the client disconnects. Kubernetes log selection parameters such as `tail_lines` and `limit_bytes` are applied before procd service log filtering. 
-     * Get sandbox process logs
-     */
-    async apiV1SandboxesIdLogsGetRaw(requestParameters: ApiV1SandboxesIdLogsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling apiV1SandboxesIdLogsGet().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['container'] != null) {
-            queryParameters['container'] = requestParameters['container'];
-        }
-
-        if (requestParameters['tailLines'] != null) {
-            queryParameters['tail_lines'] = requestParameters['tailLines'];
-        }
-
-        if (requestParameters['limitBytes'] != null) {
-            queryParameters['limit_bytes'] = requestParameters['limitBytes'];
-        }
-
-        if (requestParameters['follow'] != null) {
-            queryParameters['follow'] = requestParameters['follow'];
-        }
-
-        if (requestParameters['previous'] != null) {
-            queryParameters['previous'] = requestParameters['previous'];
-        }
-
-        if (requestParameters['timestamps'] != null) {
-            queryParameters['timestamps'] = requestParameters['timestamps'];
-        }
-
-        if (requestParameters['sinceSeconds'] != null) {
-            queryParameters['since_seconds'] = requestParameters['sinceSeconds'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/api/v1/sandboxes/{id}/logs`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        if (this.isJsonMime(response.headers.get('content-type'))) {
-            return new runtime.JSONApiResponse<string>(response);
-        } else {
-            return new runtime.TextApiResponse(response) as any;
-        }
-    }
-
-    /**
-     * Returns sandbox process output mirrored through the sandbox main container. Procd service logs are filtered out and remain available through Kubernetes pod logs. When `follow=false`, the response is a bounded text/plain snapshot. When `follow=true`, the response is a text/plain stream until the client disconnects. Kubernetes log selection parameters such as `tail_lines` and `limit_bytes` are applied before procd service log filtering. 
-     * Get sandbox process logs
-     */
-    async apiV1SandboxesIdLogsGet(requestParameters: ApiV1SandboxesIdLogsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
-        const response = await this.apiV1SandboxesIdLogsGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -7,6 +7,7 @@ docs/Affinity.md
 docs/ApiKeysApi.md
 docs/ApiV1SandboxesIdFilesGet200Response.md
 docs/AppArmorProfile.md
+docs/AuditApi.md
 docs/AuthApi.md
 docs/AuthProvider.md
 docs/CachePolicySpec.md
@@ -20,7 +21,6 @@ docs/ContextExecResponse.md
 docs/ContextInputRequest.md
 docs/ContextResourceUsage.md
 docs/ContextResponse.md
-docs/ContextStatsResponse.md
 docs/ContextWebSocketDone.md
 docs/ContextWebSocketInput.md
 docs/ContextWebSocketOutput.md
@@ -105,6 +105,8 @@ docs/NodeSelector.md
 docs/NodeSelectorRequirement.md
 docs/NodeSelectorTerm.md
 docs/ObjectMeta.md
+docs/ObservabilityApi.md
+docs/ObservabilityEventSource.md
 docs/PTYSize.md
 docs/PauseSandboxResponse.md
 docs/PlaceholderReplacement.md
@@ -160,6 +162,17 @@ docs/SandboxFunction.md
 docs/SandboxFunctionSource.md
 docs/SandboxLifecycleStatus.md
 docs/SandboxNetworkPolicy.md
+docs/SandboxObservabilityEvent.md
+docs/SandboxObservabilityEventType.md
+docs/SandboxObservabilityEventsResponse.md
+docs/SandboxObservabilityLogEntry.md
+docs/SandboxObservabilityLogStream.md
+docs/SandboxObservabilityLogsResponse.md
+docs/SandboxObservabilityMetricSample.md
+docs/SandboxObservabilityMetricsResponse.md
+docs/SandboxObservabilityOutcome.md
+docs/SandboxObservabilityWatchLine.md
+docs/SandboxObservabilityWatchLineData.md
 docs/SandboxRefreshRequest.md
 docs/SandboxResourceConfig.md
 docs/SandboxResourceUsage.md
@@ -197,7 +210,6 @@ docs/SuccessContextExecResponse.md
 docs/SuccessContextListResponse.md
 docs/SuccessContextListResponseAllOfData.md
 docs/SuccessContextResponse.md
-docs/SuccessContextStatsResponse.md
 docs/SuccessCreateAPIKeyResponse.md
 docs/SuccessCreatedResponse.md
 docs/SuccessCreatedResponseAllOfData.md
@@ -244,6 +256,9 @@ docs/SuccessSSHPublicKeyResponse.md
 docs/SuccessSandboxListResponse.md
 docs/SuccessSandboxListResponseAllOfData.md
 docs/SuccessSandboxNetworkPolicyResponse.md
+docs/SuccessSandboxObservabilityEventsResponse.md
+docs/SuccessSandboxObservabilityLogsResponse.md
+docs/SuccessSandboxObservabilityMetricsResponse.md
 docs/SuccessSandboxResponse.md
 docs/SuccessSandboxRootFSSnapshotListResponse.md
 docs/SuccessSandboxRootFSSnapshotResponse.md
@@ -302,11 +317,13 @@ docs/WebhookConfig.md
 docs/WeightedPodAffinityTerm.md
 package.json
 src/apis/ApiKeysApi.ts
+src/apis/AuditApi.ts
 src/apis/AuthApi.ts
 src/apis/ContextsApi.ts
 src/apis/CredentialSourcesApi.ts
 src/apis/FilesApi.ts
 src/apis/HealthApi.ts
+src/apis/ObservabilityApi.ts
 src/apis/QuotasApi.ts
 src/apis/RegionsApi.ts
 src/apis/RegistryApi.ts
@@ -336,7 +353,6 @@ src/models/ContextExecResponse.ts
 src/models/ContextInputRequest.ts
 src/models/ContextResourceUsage.ts
 src/models/ContextResponse.ts
-src/models/ContextStatsResponse.ts
 src/models/ContextWebSocketDone.ts
 src/models/ContextWebSocketInput.ts
 src/models/ContextWebSocketOutput.ts
@@ -417,6 +433,7 @@ src/models/NodeSelector.ts
 src/models/NodeSelectorRequirement.ts
 src/models/NodeSelectorTerm.ts
 src/models/ObjectMeta.ts
+src/models/ObservabilityEventSource.ts
 src/models/PTYSize.ts
 src/models/PauseSandboxResponse.ts
 src/models/PlaceholderReplacement.ts
@@ -469,6 +486,17 @@ src/models/SandboxFunction.ts
 src/models/SandboxFunctionSource.ts
 src/models/SandboxLifecycleStatus.ts
 src/models/SandboxNetworkPolicy.ts
+src/models/SandboxObservabilityEvent.ts
+src/models/SandboxObservabilityEventType.ts
+src/models/SandboxObservabilityEventsResponse.ts
+src/models/SandboxObservabilityLogEntry.ts
+src/models/SandboxObservabilityLogStream.ts
+src/models/SandboxObservabilityLogsResponse.ts
+src/models/SandboxObservabilityMetricSample.ts
+src/models/SandboxObservabilityMetricsResponse.ts
+src/models/SandboxObservabilityOutcome.ts
+src/models/SandboxObservabilityWatchLine.ts
+src/models/SandboxObservabilityWatchLineData.ts
 src/models/SandboxRefreshRequest.ts
 src/models/SandboxResourceConfig.ts
 src/models/SandboxResourceUsage.ts
@@ -502,7 +530,6 @@ src/models/SuccessContextExecResponse.ts
 src/models/SuccessContextListResponse.ts
 src/models/SuccessContextListResponseAllOfData.ts
 src/models/SuccessContextResponse.ts
-src/models/SuccessContextStatsResponse.ts
 src/models/SuccessCreateAPIKeyResponse.ts
 src/models/SuccessCreatedResponse.ts
 src/models/SuccessCreatedResponseAllOfData.ts
@@ -549,6 +576,9 @@ src/models/SuccessSSHPublicKeyResponse.ts
 src/models/SuccessSandboxListResponse.ts
 src/models/SuccessSandboxListResponseAllOfData.ts
 src/models/SuccessSandboxNetworkPolicyResponse.ts
+src/models/SuccessSandboxObservabilityEventsResponse.ts
+src/models/SuccessSandboxObservabilityLogsResponse.ts
+src/models/SuccessSandboxObservabilityMetricsResponse.ts
 src/models/SuccessSandboxResponse.ts
 src/models/SuccessSandboxRootFSSnapshotListResponse.ts
 src/models/SuccessSandboxRootFSSnapshotResponse.ts

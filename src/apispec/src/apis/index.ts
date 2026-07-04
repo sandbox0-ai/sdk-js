@@ -1,11 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './ApiKeysApi';
+export * from './AuditApi';
 export * from './AuthApi';
 export * from './ContextsApi';
 export * from './CredentialSourcesApi';
 export * from './FilesApi';
 export * from './HealthApi';
+export * from './ObservabilityApi';
 export * from './QuotasApi';
 export * from './RegionsApi';
 export * from './RegistryApi';

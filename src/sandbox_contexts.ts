@@ -1,7 +1,6 @@
 import type {
   ContextExecResponse,
   ContextResponse,
-  ContextStatsResponse,
   CreateContextRequest,
   ResizeContextRequest,
   SignalContextRequest,
@@ -34,7 +33,6 @@ declare module "./sandbox" {
       cols: number,
     ): Promise<SuccessResizedResponse>;
     contextSignal(contextId: string, signal: string): Promise<SuccessSignaledResponse>;
-    contextStats(contextId: string): Promise<ContextStatsResponse>;
   }
 }
 
@@ -175,18 +173,4 @@ Sandbox.prototype.contextSignal = async function (
     }),
   );
   return ensureModel(response, "context signal returned empty response");
-};
-
-Sandbox.prototype.contextStats = async function (
-  this: Sandbox,
-  contextId: string,
-): Promise<ContextStatsResponse> {
-  const client = getClient(this);
-  const response = await wrapApiCall(() =>
-    client.apispec.contexts.apiV1SandboxesIdContextsCtxIdStatsGet({
-      id: this.id,
-      ctxId: contextId,
-    }),
-  );
-  return ensureData(response, "context stats returned empty response");
 };

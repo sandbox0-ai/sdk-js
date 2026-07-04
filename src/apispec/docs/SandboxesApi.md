@@ -7,7 +7,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 | [**apiV1SandboxesGet**](SandboxesApi.md#apiv1sandboxesget) | **GET** /api/v1/sandboxes | List sandboxes |
 | [**apiV1SandboxesIdDelete**](SandboxesApi.md#apiv1sandboxesiddelete) | **DELETE** /api/v1/sandboxes/{id} | Delete (terminate) a sandbox |
 | [**apiV1SandboxesIdGet**](SandboxesApi.md#apiv1sandboxesidget) | **GET** /api/v1/sandboxes/{id} | Get sandbox by ID |
-| [**apiV1SandboxesIdLogsGet**](SandboxesApi.md#apiv1sandboxesidlogsget) | **GET** /api/v1/sandboxes/{id}/logs | Get sandbox process logs |
 | [**apiV1SandboxesIdNetworkGet**](SandboxesApi.md#apiv1sandboxesidnetworkget) | **GET** /api/v1/sandboxes/{id}/network | Get sandbox network policy |
 | [**apiV1SandboxesIdNetworkPut**](SandboxesApi.md#apiv1sandboxesidnetworkput) | **PUT** /api/v1/sandboxes/{id}/network | Update sandbox network policy |
 | [**apiV1SandboxesIdPausePost**](SandboxesApi.md#apiv1sandboxesidpausepost) | **POST** /api/v1/sandboxes/{id}/pause | Pause a sandbox |
@@ -241,101 +240,6 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Sandbox |  -  |
-| **403** | Forbidden |  -  |
-| **404** | Not found |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
-
-## apiV1SandboxesIdLogsGet
-
-> string apiV1SandboxesIdLogsGet(id, container, tailLines, limitBytes, follow, previous, timestamps, sinceSeconds)
-
-Get sandbox process logs
-
-Returns sandbox process output mirrored through the sandbox main container. Procd service logs are filtered out and remain available through Kubernetes pod logs. When &#x60;follow&#x3D;false&#x60;, the response is a bounded text/plain snapshot. When &#x60;follow&#x3D;true&#x60;, the response is a text/plain stream until the client disconnects. Kubernetes log selection parameters such as &#x60;tail_lines&#x60; and &#x60;limit_bytes&#x60; are applied before procd service log filtering. 
-
-### Example
-
-```ts
-import {
-  Configuration,
-  SandboxesApi,
-} from 'sandbox0';
-import type { ApiV1SandboxesIdLogsGetRequest } from 'sandbox0';
-
-async function example() {
-  console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
-    // Configure HTTP bearer authorization: bearerAuth
-    accessToken: "YOUR BEARER TOKEN",
-  });
-  const api = new SandboxesApi(config);
-
-  const body = {
-    // string
-    id: id_example,
-    // string | Pod container name. Defaults to the sandbox main container. (optional)
-    container: container_example,
-    // number | Maximum number of Kubernetes log lines read from the end of the log before procd service log filtering. (optional)
-    tailLines: 789,
-    // number | Maximum response log payload bytes read from Kubernetes. Defaults only apply when follow is false. (optional)
-    limitBytes: 789,
-    // boolean | Stream logs as text/plain until the client disconnects. When false, return a text/plain snapshot. (optional)
-    follow: true,
-    // boolean | Return logs for the previously terminated container instance. (optional)
-    previous: true,
-    // boolean | Include Kubernetes log timestamps when available. (optional)
-    timestamps: true,
-    // number | Only return logs newer than this many seconds. (optional)
-    sinceSeconds: 789,
-  } satisfies ApiV1SandboxesIdLogsGetRequest;
-
-  try {
-    const data = await api.apiV1SandboxesIdLogsGet(body);
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-// Run the test
-example().catch(console.error);
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **id** | `string` |  | [Defaults to `undefined`] |
-| **container** | `string` | Pod container name. Defaults to the sandbox main container. | [Optional] [Defaults to `&#39;procd&#39;`] |
-| **tailLines** | `number` | Maximum number of Kubernetes log lines read from the end of the log before procd service log filtering. | [Optional] [Defaults to `200`] |
-| **limitBytes** | `number` | Maximum response log payload bytes read from Kubernetes. Defaults only apply when follow is false. | [Optional] [Defaults to `1048576`] |
-| **follow** | `boolean` | Stream logs as text/plain until the client disconnects. When false, return a text/plain snapshot. | [Optional] [Defaults to `false`] |
-| **previous** | `boolean` | Return logs for the previously terminated container instance. | [Optional] [Defaults to `false`] |
-| **timestamps** | `boolean` | Include Kubernetes log timestamps when available. | [Optional] [Defaults to `false`] |
-| **sinceSeconds** | `number` | Only return logs newer than this many seconds. | [Optional] [Defaults to `undefined`] |
-
-### Return type
-
-**string**
-
-### Authorization
-
-[bearerAuth](../README.md#bearerAuth)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: `text/plain`, `application/json`
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Sandbox process logs |  * X-Sandbox-ID - Sandbox ID for the returned log payload. <br>  * X-Sandbox-Pod-Name - Kubernetes pod name that produced the returned log payload. <br>  * X-Sandbox-Log-Container - Kubernetes container name that produced the returned log payload. <br>  * X-Sandbox-Log-Previous - Whether the returned payload came from a previously terminated container instance. <br>  |
-| **400** | Invalid log query parameters |  -  |
 | **403** | Forbidden |  -  |
 | **404** | Not found |  -  |
 

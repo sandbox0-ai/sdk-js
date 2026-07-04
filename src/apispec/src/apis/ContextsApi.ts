@@ -22,7 +22,6 @@ import type {
   SuccessContextExecResponse,
   SuccessContextListResponse,
   SuccessContextResponse,
-  SuccessContextStatsResponse,
   SuccessDeletedResponse,
   SuccessResizedResponse,
   SuccessSignaledResponse,
@@ -43,8 +42,6 @@ import {
     SuccessContextListResponseToJSON,
     SuccessContextResponseFromJSON,
     SuccessContextResponseToJSON,
-    SuccessContextStatsResponseFromJSON,
-    SuccessContextStatsResponseToJSON,
     SuccessDeletedResponseFromJSON,
     SuccessDeletedResponseToJSON,
     SuccessResizedResponseFromJSON,
@@ -92,11 +89,6 @@ export interface ApiV1SandboxesIdContextsCtxIdSignalPostRequest {
     id: string;
     ctxId: string;
     signalContextRequest: SignalContextRequest;
-}
-
-export interface ApiV1SandboxesIdContextsCtxIdStatsGetRequest {
-    id: string;
-    ctxId: string;
 }
 
 export interface ApiV1SandboxesIdContextsCtxIdWsGetRequest {
@@ -530,59 +522,6 @@ export class ContextsApi extends runtime.BaseAPI {
      */
     async apiV1SandboxesIdContextsCtxIdSignalPost(requestParameters: ApiV1SandboxesIdContextsCtxIdSignalPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSignaledResponse> {
         const response = await this.apiV1SandboxesIdContextsCtxIdSignalPostRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get context stats
-     */
-    async apiV1SandboxesIdContextsCtxIdStatsGetRaw(requestParameters: ApiV1SandboxesIdContextsCtxIdStatsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessContextStatsResponse>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling apiV1SandboxesIdContextsCtxIdStatsGet().'
-            );
-        }
-
-        if (requestParameters['ctxId'] == null) {
-            throw new runtime.RequiredError(
-                'ctxId',
-                'Required parameter "ctxId" was null or undefined when calling apiV1SandboxesIdContextsCtxIdStatsGet().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("bearerAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/api/v1/sandboxes/{id}/contexts/{ctx_id}/stats`;
-        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
-        urlPath = urlPath.replace(`{${"ctx_id"}}`, encodeURIComponent(String(requestParameters['ctxId'])));
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessContextStatsResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Get context stats
-     */
-    async apiV1SandboxesIdContextsCtxIdStatsGet(requestParameters: ApiV1SandboxesIdContextsCtxIdStatsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessContextStatsResponse> {
-        const response = await this.apiV1SandboxesIdContextsCtxIdStatsGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

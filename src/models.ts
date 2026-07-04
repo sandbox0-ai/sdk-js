@@ -1,3 +1,16 @@
+import type {
+  ObservabilityEventSource,
+  SandboxAppServiceView,
+  SandboxObservabilityEventType,
+  SandboxObservabilityEventsResponse,
+  SandboxObservabilityLogStream,
+  SandboxObservabilityLogsResponse,
+  SandboxObservabilityMetricsResponse,
+  SandboxObservabilityOutcome,
+  SandboxObservabilityWatchLine,
+  SandboxSummary,
+} from "./apispec/src/models/index";
+
 export interface RunResult {
   sandboxId: string;
   contextId: string;
@@ -40,8 +53,6 @@ export interface StreamDone {
   state?: string;
 }
 
-import type { SandboxAppServiceView } from "./apispec/src/models/index";
-
 export interface SandboxServicesResponse {
   sandboxId: string;
   services: SandboxAppServiceView[];
@@ -55,32 +66,64 @@ export interface FileWatchResponse {
   error?: string;
 }
 
-export interface SandboxLogsOptions {
-  container?: string;
-  tailLines?: number;
-  limitBytes?: number;
-  previous?: boolean;
-  timestamps?: boolean;
-  sinceSeconds?: number;
+export interface SandboxObservabilityQueryOptions {
+  startTime?: Date;
+  endTime?: Date;
+  limit?: number;
+  cursor?: string;
 }
 
-export interface SandboxLogs {
-  sandboxId: string;
-  podName: string;
-  container: string;
-  previous: boolean;
-  logs: string;
+export type SandboxObservabilityWatchOptions = Omit<
+  SandboxObservabilityQueryOptions,
+  "endTime"
+>;
+
+export interface SandboxObservabilityEventOptions extends SandboxObservabilityQueryOptions {
+  source?: ObservabilityEventSource;
+  eventType?: SandboxObservabilityEventType;
+  outcome?: SandboxObservabilityOutcome;
 }
 
-export interface SandboxLogsStream {
+export interface SandboxObservabilityEventWatchOptions
+  extends SandboxObservabilityWatchOptions {
+  source?: ObservabilityEventSource;
+  eventType?: SandboxObservabilityEventType;
+  outcome?: SandboxObservabilityOutcome;
+}
+
+export interface SandboxObservabilityLogOptions extends SandboxObservabilityQueryOptions {
+  contextId?: string;
+  stream?: SandboxObservabilityLogStream;
+}
+
+export interface SandboxObservabilityLogWatchOptions
+  extends SandboxObservabilityWatchOptions {
+  contextId?: string;
+  stream?: SandboxObservabilityLogStream;
+}
+
+export interface SandboxObservabilityMetricOptions extends SandboxObservabilityQueryOptions {
+  contextId?: string;
+  name?: string[];
+  names?: string;
+}
+
+export interface SandboxObservabilityMetricWatchOptions
+  extends SandboxObservabilityWatchOptions {
+  contextId?: string;
+  name?: string[];
+  names?: string;
+}
+
+export interface SandboxObservabilityWatchStream
+  extends AsyncIterable<SandboxObservabilityWatchLine> {
   body: ReadableStream<Uint8Array>;
   response: Response;
-  sandboxId?: string;
-  podName?: string;
-  container?: string;
 }
 
-import type { SandboxSummary } from "./apispec/src/models/index";
+export type SandboxObservabilityEvents = SandboxObservabilityEventsResponse;
+export type SandboxObservabilityLogs = SandboxObservabilityLogsResponse;
+export type SandboxObservabilityMetrics = SandboxObservabilityMetricsResponse;
 
 export type SandboxStatusFilter = SandboxSummary["status"];
 

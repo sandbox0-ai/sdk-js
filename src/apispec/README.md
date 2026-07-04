@@ -54,6 +54,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *ApiKeysApi* | [**apiKeysIdDeactivatePost**](docs/ApiKeysApi.md#apikeysiddeactivatepost) | **POST** /api-keys/{id}/deactivate | Deactivate API key
 *ApiKeysApi* | [**apiKeysIdDelete**](docs/ApiKeysApi.md#apikeysiddelete) | **DELETE** /api-keys/{id} | Delete API key
 *ApiKeysApi* | [**apiKeysPost**](docs/ApiKeysApi.md#apikeyspost) | **POST** /api-keys | Create API key
+*AuditApi* | [**apiV1SandboxesIdAuditEventsGet**](docs/AuditApi.md#apiv1sandboxesidauditeventsget) | **GET** /api/v1/sandboxes/{id}/audit/events | Query historical sandbox audit events
 *AuthApi* | [**authChangePasswordPost**](docs/AuthApi.md#authchangepasswordpost) | **POST** /auth/change-password | Change password
 *AuthApi* | [**authLoginPost**](docs/AuthApi.md#authloginpost) | **POST** /auth/login | Login with email and password
 *AuthApi* | [**authLogoutPost**](docs/AuthApi.md#authlogoutpost) | **POST** /auth/logout | Logout
@@ -72,7 +73,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 *ContextsApi* | [**apiV1SandboxesIdContextsCtxIdResizePost**](docs/ContextsApi.md#apiv1sandboxesidcontextsctxidresizepost) | **POST** /api/v1/sandboxes/{id}/contexts/{ctx_id}/resize | Resize context PTY
 *ContextsApi* | [**apiV1SandboxesIdContextsCtxIdRestartPost**](docs/ContextsApi.md#apiv1sandboxesidcontextsctxidrestartpost) | **POST** /api/v1/sandboxes/{id}/contexts/{ctx_id}/restart | Restart context
 *ContextsApi* | [**apiV1SandboxesIdContextsCtxIdSignalPost**](docs/ContextsApi.md#apiv1sandboxesidcontextsctxidsignalpost) | **POST** /api/v1/sandboxes/{id}/contexts/{ctx_id}/signal | Send signal to context
-*ContextsApi* | [**apiV1SandboxesIdContextsCtxIdStatsGet**](docs/ContextsApi.md#apiv1sandboxesidcontextsctxidstatsget) | **GET** /api/v1/sandboxes/{id}/contexts/{ctx_id}/stats | Get context stats
 *ContextsApi* | [**apiV1SandboxesIdContextsCtxIdWsGet**](docs/ContextsApi.md#apiv1sandboxesidcontextsctxidwsget) | **GET** /api/v1/sandboxes/{id}/contexts/{ctx_id}/ws | Context WebSocket (I/O)
 *ContextsApi* | [**apiV1SandboxesIdContextsGet**](docs/ContextsApi.md#apiv1sandboxesidcontextsget) | **GET** /api/v1/sandboxes/{id}/contexts | List contexts
 *ContextsApi* | [**apiV1SandboxesIdContextsPost**](docs/ContextsApi.md#apiv1sandboxesidcontextspost) | **POST** /api/v1/sandboxes/{id}/contexts | Create a context
@@ -100,6 +100,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 *HealthApi* | [**metadataGet**](docs/HealthApi.md#metadataget) | **GET** /metadata | Gateway metadata
 *HealthApi* | [**metricsGet**](docs/HealthApi.md#metricsget) | **GET** /metrics | Prometheus metrics
 *HealthApi* | [**readyzGet**](docs/HealthApi.md#readyzget) | **GET** /readyz | Readiness check
+*ObservabilityApi* | [**apiV1SandboxesIdObservabilityEventsGet**](docs/ObservabilityApi.md#apiv1sandboxesidobservabilityeventsget) | **GET** /api/v1/sandboxes/{id}/observability/events | Query historical sandbox observability events
+*ObservabilityApi* | [**apiV1SandboxesIdObservabilityLogsGet**](docs/ObservabilityApi.md#apiv1sandboxesidobservabilitylogsget) | **GET** /api/v1/sandboxes/{id}/observability/logs | Query historical sandbox logs
+*ObservabilityApi* | [**apiV1SandboxesIdObservabilityMetricsGet**](docs/ObservabilityApi.md#apiv1sandboxesidobservabilitymetricsget) | **GET** /api/v1/sandboxes/{id}/observability/metrics | Query historical sandbox metric samples
 *QuotasApi* | [**apiV1QuotasDimensionGet**](docs/QuotasApi.md#apiv1quotasdimensionget) | **GET** /api/v1/quotas/{dimension} | Get team quota
 *RegionsApi* | [**regionsGet**](docs/RegionsApi.md#regionsget) | **GET** /regions | List regions in the global gateway
 *RegionsApi* | [**regionsIdDelete**](docs/RegionsApi.md#regionsiddelete) | **DELETE** /regions/{id} | Delete a region from the global gateway
@@ -121,7 +124,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SandboxesApi* | [**apiV1SandboxesGet**](docs/SandboxesApi.md#apiv1sandboxesget) | **GET** /api/v1/sandboxes | List sandboxes
 *SandboxesApi* | [**apiV1SandboxesIdDelete**](docs/SandboxesApi.md#apiv1sandboxesiddelete) | **DELETE** /api/v1/sandboxes/{id} | Delete (terminate) a sandbox
 *SandboxesApi* | [**apiV1SandboxesIdGet**](docs/SandboxesApi.md#apiv1sandboxesidget) | **GET** /api/v1/sandboxes/{id} | Get sandbox by ID
-*SandboxesApi* | [**apiV1SandboxesIdLogsGet**](docs/SandboxesApi.md#apiv1sandboxesidlogsget) | **GET** /api/v1/sandboxes/{id}/logs | Get sandbox process logs
 *SandboxesApi* | [**apiV1SandboxesIdNetworkGet**](docs/SandboxesApi.md#apiv1sandboxesidnetworkget) | **GET** /api/v1/sandboxes/{id}/network | Get sandbox network policy
 *SandboxesApi* | [**apiV1SandboxesIdNetworkPut**](docs/SandboxesApi.md#apiv1sandboxesidnetworkput) | **PUT** /api/v1/sandboxes/{id}/network | Update sandbox network policy
 *SandboxesApi* | [**apiV1SandboxesIdPausePost**](docs/SandboxesApi.md#apiv1sandboxesidpausepost) | **POST** /api/v1/sandboxes/{id}/pause | Pause a sandbox
@@ -180,7 +182,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ContextInputRequest](docs/ContextInputRequest.md)
 - [ContextResourceUsage](docs/ContextResourceUsage.md)
 - [ContextResponse](docs/ContextResponse.md)
-- [ContextStatsResponse](docs/ContextStatsResponse.md)
 - [ContextWebSocketDone](docs/ContextWebSocketDone.md)
 - [ContextWebSocketInput](docs/ContextWebSocketInput.md)
 - [ContextWebSocketOutput](docs/ContextWebSocketOutput.md)
@@ -261,6 +262,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [NodeSelectorRequirement](docs/NodeSelectorRequirement.md)
 - [NodeSelectorTerm](docs/NodeSelectorTerm.md)
 - [ObjectMeta](docs/ObjectMeta.md)
+- [ObservabilityEventSource](docs/ObservabilityEventSource.md)
 - [PTYSize](docs/PTYSize.md)
 - [PauseSandboxResponse](docs/PauseSandboxResponse.md)
 - [PlaceholderReplacement](docs/PlaceholderReplacement.md)
@@ -313,6 +315,17 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxFunctionSource](docs/SandboxFunctionSource.md)
 - [SandboxLifecycleStatus](docs/SandboxLifecycleStatus.md)
 - [SandboxNetworkPolicy](docs/SandboxNetworkPolicy.md)
+- [SandboxObservabilityEvent](docs/SandboxObservabilityEvent.md)
+- [SandboxObservabilityEventType](docs/SandboxObservabilityEventType.md)
+- [SandboxObservabilityEventsResponse](docs/SandboxObservabilityEventsResponse.md)
+- [SandboxObservabilityLogEntry](docs/SandboxObservabilityLogEntry.md)
+- [SandboxObservabilityLogStream](docs/SandboxObservabilityLogStream.md)
+- [SandboxObservabilityLogsResponse](docs/SandboxObservabilityLogsResponse.md)
+- [SandboxObservabilityMetricSample](docs/SandboxObservabilityMetricSample.md)
+- [SandboxObservabilityMetricsResponse](docs/SandboxObservabilityMetricsResponse.md)
+- [SandboxObservabilityOutcome](docs/SandboxObservabilityOutcome.md)
+- [SandboxObservabilityWatchLine](docs/SandboxObservabilityWatchLine.md)
+- [SandboxObservabilityWatchLineData](docs/SandboxObservabilityWatchLineData.md)
 - [SandboxRefreshRequest](docs/SandboxRefreshRequest.md)
 - [SandboxResourceConfig](docs/SandboxResourceConfig.md)
 - [SandboxResourceUsage](docs/SandboxResourceUsage.md)
@@ -346,7 +359,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessContextListResponse](docs/SuccessContextListResponse.md)
 - [SuccessContextListResponseAllOfData](docs/SuccessContextListResponseAllOfData.md)
 - [SuccessContextResponse](docs/SuccessContextResponse.md)
-- [SuccessContextStatsResponse](docs/SuccessContextStatsResponse.md)
 - [SuccessCreateAPIKeyResponse](docs/SuccessCreateAPIKeyResponse.md)
 - [SuccessCreatedResponse](docs/SuccessCreatedResponse.md)
 - [SuccessCreatedResponseAllOfData](docs/SuccessCreatedResponseAllOfData.md)
@@ -393,6 +405,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessSandboxListResponse](docs/SuccessSandboxListResponse.md)
 - [SuccessSandboxListResponseAllOfData](docs/SuccessSandboxListResponseAllOfData.md)
 - [SuccessSandboxNetworkPolicyResponse](docs/SuccessSandboxNetworkPolicyResponse.md)
+- [SuccessSandboxObservabilityEventsResponse](docs/SuccessSandboxObservabilityEventsResponse.md)
+- [SuccessSandboxObservabilityLogsResponse](docs/SuccessSandboxObservabilityLogsResponse.md)
+- [SuccessSandboxObservabilityMetricsResponse](docs/SuccessSandboxObservabilityMetricsResponse.md)
 - [SuccessSandboxResponse](docs/SuccessSandboxResponse.md)
 - [SuccessSandboxRootFSSnapshotListResponse](docs/SuccessSandboxRootFSSnapshotListResponse.md)
 - [SuccessSandboxRootFSSnapshotResponse](docs/SuccessSandboxRootFSSnapshotResponse.md)

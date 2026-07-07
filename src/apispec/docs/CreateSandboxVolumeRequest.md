@@ -7,6 +7,8 @@
 Name | Type
 ------------ | -------------
 `snapshotId` | string
+`backend` | [VolumeBackend](VolumeBackend.md)
+`s3` | [CreateSandboxVolumeS3Config](CreateSandboxVolumeS3Config.md)
 `defaultPosixUid` | number
 `defaultPosixGid` | number
 `accessMode` | [VolumeAccessMode](VolumeAccessMode.md)
@@ -19,6 +21,8 @@ import type { CreateSandboxVolumeRequest } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "snapshotId": null,
+  "backend": null,
+  "s3": null,
   "defaultPosixUid": null,
   "defaultPosixGid": null,
   "accessMode": null,

@@ -13,6 +13,8 @@ Name | Type
 `defaultPosixUid` | number
 `defaultPosixGid` | number
 `accessMode` | [VolumeAccessMode](VolumeAccessMode.md)
+`backend` | [VolumeBackend](VolumeBackend.md)
+`s3` | [SandboxVolumeS3Config](SandboxVolumeS3Config.md)
 `createdAt` | Date
 `updatedAt` | Date
 
@@ -30,6 +32,8 @@ const example = {
   "defaultPosixUid": null,
   "defaultPosixGid": null,
   "accessMode": null,
+  "backend": null,
+  "s3": null,
   "createdAt": null,
   "updatedAt": null,
 } satisfies SandboxVolume

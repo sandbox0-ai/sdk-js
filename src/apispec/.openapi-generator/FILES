@@ -38,6 +38,7 @@ docs/CreateRegionRequest.md
 docs/CreateSSHPublicKeyRequest.md
 docs/CreateSandboxRootFSSnapshotRequest.md
 docs/CreateSandboxVolumeRequest.md
+docs/CreateSandboxVolumeS3Config.md
 docs/CreateSnapshotRequest.md
 docs/CreateTeamRequest.md
 docs/CredentialBinding.md
@@ -190,6 +191,7 @@ docs/SandboxTemplateStatus.md
 docs/SandboxUpdateConfig.md
 docs/SandboxUpdateRequest.md
 docs/SandboxVolume.md
+docs/SandboxVolumeS3Config.md
 docs/SandboxVolumesApi.md
 docs/SandboxesApi.md
 docs/SeccompProfile.md
@@ -310,6 +312,7 @@ docs/UpdateUserRequest.md
 docs/User.md
 docs/UsersApi.md
 docs/VolumeAccessMode.md
+docs/VolumeBackend.md
 docs/VolumeFileArchiveImportResponse.md
 docs/VolumeMountSpec.md
 docs/WebLoginExchangeRequest.md
@@ -369,6 +372,7 @@ src/models/CreateRegionRequest.ts
 src/models/CreateSSHPublicKeyRequest.ts
 src/models/CreateSandboxRootFSSnapshotRequest.ts
 src/models/CreateSandboxVolumeRequest.ts
+src/models/CreateSandboxVolumeS3Config.ts
 src/models/CreateSnapshotRequest.ts
 src/models/CreateTeamRequest.ts
 src/models/CredentialBinding.ts
@@ -513,6 +517,7 @@ src/models/SandboxTemplateStatus.ts
 src/models/SandboxUpdateConfig.ts
 src/models/SandboxUpdateRequest.ts
 src/models/SandboxVolume.ts
+src/models/SandboxVolumeS3Config.ts
 src/models/SeccompProfile.ts
 src/models/SecurityContext.ts
 src/models/SignalContextRequest.ts
@@ -627,6 +632,7 @@ src/models/UpdateTeamRequest.ts
 src/models/UpdateUserRequest.ts
 src/models/User.ts
 src/models/VolumeAccessMode.ts
+src/models/VolumeBackend.ts
 src/models/VolumeFileArchiveImportResponse.ts
 src/models/VolumeMountSpec.ts
 src/models/WebLoginExchangeRequest.ts

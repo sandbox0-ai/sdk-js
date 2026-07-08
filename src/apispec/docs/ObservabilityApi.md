@@ -16,7 +16,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 Query historical sandbox observability events
 
-Queries the asynchronous per-sandbox observability projection for lifecycle, network audit, and runtime stats events. This endpoint does not expose backend SQL and does not replace the metering usage truth stored in PostgreSQL. 
+Queries the asynchronous per-sandbox observability projection for lifecycle, network audit, and runtime stats events. This endpoint does not expose backend SQL and reads tables that are separate from the metering usage ledger.
 
 ### Example
 
@@ -29,7 +29,7 @@ import type { ApiV1SandboxesIdObservabilityEventsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -114,7 +114,7 @@ example().catch(console.error);
 
 Query historical sandbox logs
 
-Queries the asynchronous per-sandbox log projection. This endpoint is for historical log lookup and is separate from live log streaming. 
+Queries the asynchronous per-sandbox log projection. This endpoint is for historical log lookup and is separate from live log streaming.
 
 ### Example
 
@@ -127,7 +127,7 @@ import type { ApiV1SandboxesIdObservabilityLogsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -209,7 +209,7 @@ example().catch(console.error);
 
 Query historical sandbox metric samples
 
-Queries the asynchronous per-sandbox metric sample projection. This endpoint is separate from platform service metrics and PostgreSQL metering usage truth. 
+Queries the asynchronous per-sandbox metric sample projection. This endpoint is separate from platform service metrics and metering usage truth.
 
 ### Example
 
@@ -222,7 +222,7 @@ import type { ApiV1SandboxesIdObservabilityMetricsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });

@@ -1,12 +1,15 @@
 import type { ErrorEnvelope } from "./apispec/src/models/index";
 import { runtime } from "./apispec_compat";
 
+export const CLAIM_START_THROTTLED_CODE = "claim_start_throttled";
+
 export class APIError extends Error {
   statusCode: number;
   code?: string;
   details?: unknown;
   requestId?: string;
   body?: string;
+  retryAfter?: number;
 
   constructor(params: {
     statusCode: number;
@@ -15,6 +18,7 @@ export class APIError extends Error {
     details?: unknown;
     requestId?: string;
     body?: string;
+    retryAfter?: number;
   }) {
     super(params.message);
     this.name = "APIError";
@@ -23,6 +27,7 @@ export class APIError extends Error {
     this.details = params.details;
     this.requestId = params.requestId;
     this.body = params.body;
+    this.retryAfter = params.retryAfter;
   }
 }
 
@@ -34,9 +39,29 @@ function getRequestId(response: Response): string | undefined {
   );
 }
 
+function getRetryAfter(response: Response): number | undefined {
+  const value = response.headers.get("retry-after");
+  if (!value) {
+    return undefined;
+  }
+  const trimmed = value.trim();
+  if (!/^\d+$/.test(trimmed)) {
+    return undefined;
+  }
+  const seconds = Number.parseInt(trimmed, 10);
+  return Number.isFinite(seconds) && seconds >= 0 ? seconds : undefined;
+}
+
+export function isClaimStartThrottled(error: unknown): error is APIError {
+  return error instanceof APIError
+    && error.statusCode === 429
+    && error.code === CLAIM_START_THROTTLED_CODE;
+}
+
 export async function apiErrorFromResponse(response: Response): Promise<APIError> {
   const statusCode = response.status;
   const requestId = getRequestId(response);
+  const retryAfter = getRetryAfter(response);
   let bodyText = "";
   let code = "unexpected_response";
   let message = response.statusText || "request failed";
@@ -65,6 +90,7 @@ export async function apiErrorFromResponse(response: Response): Promise<APIError
     details,
     requestId,
     body: bodyText || undefined,
+    retryAfter,
   });
 }
 

@@ -38,29 +38,29 @@ export interface CreateSandboxVolumeS3Config {
      */
     prefix?: string;
     /**
-     * Optional region override. Defaults to the storage-proxy S3 region when omitted.
+     * AWS region for the target bucket. Required for provider aws unless endpoint_url is provided.
      * @type {string}
      * @memberof CreateSandboxVolumeS3Config
      */
     region?: string;
     /**
-     * Optional endpoint override. Required for ali and r2.
+     * Optional endpoint override. Required for ali and r2. For aws, endpoint_url can be used instead of region for S3-compatible endpoints.
      * @type {string}
      * @memberof CreateSandboxVolumeS3Config
      */
     endpointUrl?: string;
     /**
-     * Optional access key override. Must be provided together with secret_key.
+     * Access key for this S3 backend volume. Required with secret_key. Stored encrypted and omitted from API responses.
      * @type {string}
      * @memberof CreateSandboxVolumeS3Config
      */
-    accessKey?: string;
+    accessKey: string;
     /**
-     * Optional secret key override. Must be provided together with access_key.
+     * Secret key for this S3 backend volume. Required with access_key. Stored encrypted and omitted from API responses.
      * @type {string}
      * @memberof CreateSandboxVolumeS3Config
      */
-    secretKey?: string;
+    secretKey: string;
     /**
      * Optional temporary credential session token.
      * @type {string}
@@ -86,6 +86,8 @@ export type CreateSandboxVolumeS3ConfigProviderEnum = typeof CreateSandboxVolume
  */
 export function instanceOfCreateSandboxVolumeS3Config(value: object): value is CreateSandboxVolumeS3Config {
     if (!('bucket' in value) || value['bucket'] === undefined) return false;
+    if (!('accessKey' in value) || value['accessKey'] === undefined) return false;
+    if (!('secretKey' in value) || value['secretKey'] === undefined) return false;
     return true;
 }
 
@@ -104,8 +106,8 @@ export function CreateSandboxVolumeS3ConfigFromJSONTyped(json: any, ignoreDiscri
         'prefix': json['prefix'] == null ? undefined : json['prefix'],
         'region': json['region'] == null ? undefined : json['region'],
         'endpointUrl': json['endpoint_url'] == null ? undefined : json['endpoint_url'],
-        'accessKey': json['access_key'] == null ? undefined : json['access_key'],
-        'secretKey': json['secret_key'] == null ? undefined : json['secret_key'],
+        'accessKey': json['access_key'],
+        'secretKey': json['secret_key'],
         'sessionToken': json['session_token'] == null ? undefined : json['session_token'],
     };
 }

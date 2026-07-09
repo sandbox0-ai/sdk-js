@@ -169,7 +169,8 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Fork sandbox from paused rootfs
+     * Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes. 
+     * Fork sandbox rootfs
      */
     async apiV1SandboxesIdForkPostRaw(requestParameters: ApiV1SandboxesIdForkPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessForkSandboxResponse>> {
         if (requestParameters['id'] == null) {
@@ -209,7 +210,8 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Fork sandbox from paused rootfs
+     * Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes. 
+     * Fork sandbox rootfs
      */
     async apiV1SandboxesIdForkPost(requestParameters: ApiV1SandboxesIdForkPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessForkSandboxResponse> {
         const response = await this.apiV1SandboxesIdForkPostRaw(requestParameters, initOverrides);
@@ -317,6 +319,7 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates an immutable snapshot record from the source sandbox writable rootfs. A paused source is snapshotted from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the snapshot operation completes. 
      * Create sandbox rootfs snapshot
      */
     async apiV1SandboxesIdSnapshotsPostRaw(requestParameters: ApiV1SandboxesIdSnapshotsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRootFSSnapshotResponse>> {
@@ -357,6 +360,7 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates an immutable snapshot record from the source sandbox writable rootfs. A paused source is snapshotted from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the snapshot operation completes. 
      * Create sandbox rootfs snapshot
      */
     async apiV1SandboxesIdSnapshotsPost(requestParameters: ApiV1SandboxesIdSnapshotsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRootFSSnapshotResponse> {

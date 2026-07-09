@@ -1,4 +1,4 @@
-import type { ErrorEnvelope } from "./apispec/src/models/index";
+import type { ErrorEnvelope, Sandbox } from "./apispec/src/models/index";
 import { runtime } from "./apispec_compat";
 
 export const CLAIM_START_THROTTLED_CODE = "claim_start_throttled";
@@ -28,6 +28,24 @@ export class APIError extends Error {
     this.requestId = params.requestId;
     this.body = params.body;
     this.retryAfter = params.retryAfter;
+  }
+}
+
+export class SandboxWaitTimeoutError extends Error {
+  readonly sandboxId: string;
+  readonly timeoutMs: number;
+  readonly lastSandbox?: Sandbox;
+
+  constructor(params: {
+    sandboxId: string;
+    timeoutMs: number;
+    lastSandbox?: Sandbox;
+  }) {
+    super(`timed out waiting for sandbox ${params.sandboxId} after ${params.timeoutMs}ms`);
+    this.name = "SandboxWaitTimeoutError";
+    this.sandboxId = params.sandboxId;
+    this.timeoutMs = params.timeoutMs;
+    this.lastSandbox = params.lastSandbox;
   }
 }
 

@@ -23,6 +23,8 @@ import {
 
 /**
  * Optional fork overrides. Omit config to inherit the source sandbox configuration.
+ * The source sandbox may be running or paused; running sources are checkpointed
+ * before the paused child sandbox is created.
  * 
  * @export
  * @interface ForkSandboxRequest

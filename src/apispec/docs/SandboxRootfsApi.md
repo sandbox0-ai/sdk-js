@@ -6,7 +6,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 |------------- | ------------- | -------------|
 | [**apiV1SandboxRootfsSnapshotsSnapshotIdDelete**](SandboxRootfsApi.md#apiv1sandboxrootfssnapshotssnapshotiddelete) | **DELETE** /api/v1/sandbox-rootfs-snapshots/{snapshot_id} | Delete sandbox rootfs snapshot |
 | [**apiV1SandboxRootfsSnapshotsSnapshotIdGet**](SandboxRootfsApi.md#apiv1sandboxrootfssnapshotssnapshotidget) | **GET** /api/v1/sandbox-rootfs-snapshots/{snapshot_id} | Get sandbox rootfs snapshot |
-| [**apiV1SandboxesIdForkPost**](SandboxRootfsApi.md#apiv1sandboxesidforkpost) | **POST** /api/v1/sandboxes/{id}/fork | Fork sandbox from paused rootfs |
+| [**apiV1SandboxesIdForkPost**](SandboxRootfsApi.md#apiv1sandboxesidforkpost) | **POST** /api/v1/sandboxes/{id}/fork | Fork sandbox rootfs |
 | [**apiV1SandboxesIdRootfsRestorePost**](SandboxRootfsApi.md#apiv1sandboxesidrootfsrestorepost) | **POST** /api/v1/sandboxes/{id}/rootfs/restore | Restore sandbox rootfs from snapshot |
 | [**apiV1SandboxesIdSnapshotsGet**](SandboxRootfsApi.md#apiv1sandboxesidsnapshotsget) | **GET** /api/v1/sandboxes/{id}/snapshots | List sandbox rootfs snapshots |
 | [**apiV1SandboxesIdSnapshotsPost**](SandboxRootfsApi.md#apiv1sandboxesidsnapshotspost) | **POST** /api/v1/sandboxes/{id}/snapshots | Create sandbox rootfs snapshot |
@@ -157,7 +157,9 @@ example().catch(console.error);
 
 > SuccessForkSandboxResponse apiV1SandboxesIdForkPost(id, forkSandboxRequest)
 
-Fork sandbox from paused rootfs
+Fork sandbox rootfs
+
+Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes. 
 
 ### Example
 
@@ -221,7 +223,8 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | Sandbox forked |  -  |
-| **409** | Source sandbox is not paused or rootfs state is unavailable |  -  |
+| **409** | Source sandbox is not running or paused, another lifecycle operation is active, or rootfs state is unavailable |  -  |
+| **503** | Running-source fork requires ctld checkpoint support |  -  |
 | **404** | Not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -377,6 +380,8 @@ example().catch(console.error);
 
 Create sandbox rootfs snapshot
 
+Creates an immutable snapshot record from the source sandbox writable rootfs. A paused source is snapshotted from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the snapshot operation completes. 
+
 ### Example
 
 ```ts
@@ -439,7 +444,8 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | Sandbox rootfs snapshot created |  -  |
-| **409** | Sandbox is not paused or rootfs state is unavailable |  -  |
+| **409** | Source sandbox is not running or paused, another lifecycle operation is active, or rootfs state is unavailable |  -  |
+| **503** | Running-source snapshot requires ctld checkpoint support |  -  |
 | **404** | Not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)

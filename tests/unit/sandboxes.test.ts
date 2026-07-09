@@ -1,6 +1,7 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 
+import { SandboxWaitTimeoutError } from "../../src/errors.ts";
 import { Sandboxes } from "../../src/resources/sandboxes.ts";
 
 describe("Sandboxes resource", () => {
@@ -201,4 +202,194 @@ describe("Sandboxes resource", () => {
       forkSandboxRequest: { config: { ttl: 60, hardTtl: 120 } },
     });
   });
+
+  it("waits for committed lifecycle details", async () => {
+    const observations = [
+      sandboxDetails({ status: "running", paused: false, runtimeGeneration: 2 }),
+      sandboxDetails({ status: "paused", paused: true, runtimeGeneration: 2 }),
+    ];
+    let calls = 0;
+    const sandboxes = new Sandboxes(sandboxClient({
+      get: async () => ({ data: observations[Math.min(calls++, observations.length - 1)] }),
+    }));
+
+    const sandbox = await sandboxes.waitForLifecycle(
+      "sb_1",
+      (current) => current.status === "paused" && current.paused,
+      { timeoutMs: 100, pollIntervalMs: 1 },
+    );
+
+    assert.strictEqual(sandbox.status, "paused");
+    assert.strictEqual(calls, 2);
+  });
+
+  it("reports the last observation when a lifecycle wait times out", async () => {
+    const running = sandboxDetails({
+      status: "running",
+      paused: false,
+      runtimeGeneration: 3,
+    });
+    const sandboxes = new Sandboxes(sandboxClient({
+      get: async () => ({ data: running }),
+    }));
+
+    await assert.rejects(
+      sandboxes.waitForLifecycle("sb_1", () => false, {
+        timeoutMs: 0,
+        pollIntervalMs: 1,
+      }),
+      (error: unknown) => {
+        assert.ok(error instanceof SandboxWaitTimeoutError);
+        assert.strictEqual(error.sandboxId, "sb_1");
+        assert.strictEqual(error.timeoutMs, 0);
+        assert.strictEqual(error.lastSandbox?.runtimeGeneration, 3);
+        return true;
+      },
+    );
+  });
+
+  it("does not start a lifecycle wait with a pre-aborted signal", async () => {
+    const controller = new AbortController();
+    let calls = 0;
+    const sandboxes = new Sandboxes(sandboxClient({
+      get: async () => {
+        calls += 1;
+        return {
+          data: sandboxDetails({
+            status: "running",
+            paused: false,
+            runtimeGeneration: 1,
+          }),
+        };
+      },
+    }));
+    controller.abort();
+
+    await assert.rejects(
+      sandboxes.waitForLifecycle("sb_1", () => false, {
+        timeoutMs: 100,
+        pollIntervalMs: 1,
+        signal: controller.signal,
+      }),
+      (error: unknown) => error instanceof Error && error.name === "AbortError",
+    );
+    assert.strictEqual(calls, 0);
+  });
+
+  it("stops immediately when aborted while entering the polling sleep", async () => {
+    const controller = new AbortController();
+    const sandboxes = new Sandboxes(sandboxClient({
+      get: async () => ({
+        data: sandboxDetails({
+          status: "running",
+          paused: false,
+          runtimeGeneration: 1,
+        }),
+      }),
+    }));
+    const startedAt = Date.now();
+
+    await assert.rejects(
+      sandboxes.waitForLifecycle("sb_1", () => {
+        queueMicrotask(() => controller.abort());
+        return false;
+      }, {
+        timeoutMs: 1_000,
+        pollIntervalMs: 500,
+        signal: controller.signal,
+      }),
+      (error: unknown) => error instanceof Error && error.name === "AbortError",
+    );
+    assert.ok(Date.now() - startedAt < 250);
+  });
+
+  it("waits for pause commit and a new runtime generation after resume", async () => {
+    const pauseObservations = [
+      sandboxDetails({ status: "running", paused: false, runtimeGeneration: 7 }),
+      sandboxDetails({ status: "paused", paused: true, runtimeGeneration: 7 }),
+    ];
+    let pauseGetCalls = 0;
+    let pauseCalls = 0;
+    const pauseSandboxes = new Sandboxes(sandboxClient({
+      get: async () => ({
+        data: pauseObservations[Math.min(pauseGetCalls++, pauseObservations.length - 1)],
+      }),
+      pause: async () => {
+        pauseCalls += 1;
+        return { data: { sandboxId: "sb_1", paused: false, status: "running" } };
+      },
+    }));
+
+    const paused = await pauseSandboxes.pauseAndWait("sb_1", {
+      timeoutMs: 100,
+      pollIntervalMs: 1,
+    });
+    assert.strictEqual(paused.paused, true);
+    assert.strictEqual(pauseCalls, 1);
+
+    const resumeObservations = [
+      sandboxDetails({ status: "paused", paused: true, runtimeGeneration: 7 }),
+      sandboxDetails({ status: "running", paused: false, runtimeGeneration: 7 }),
+      sandboxDetails({ status: "running", paused: false, runtimeGeneration: 8 }),
+    ];
+    let resumeGetCalls = 0;
+    let resumeCalls = 0;
+    const resumeSandboxes = new Sandboxes(sandboxClient({
+      get: async () => ({
+        data: resumeObservations[Math.min(
+          resumeGetCalls++,
+          resumeObservations.length - 1,
+        )],
+      }),
+      resume: async () => {
+        resumeCalls += 1;
+        return { data: { sandboxId: "sb_1", resumed: true } };
+      },
+    }));
+
+    const resumed = await resumeSandboxes.resumeAndWait("sb_1", {
+      timeoutMs: 100,
+      pollIntervalMs: 1,
+    });
+    assert.strictEqual(resumed.status, "running");
+    assert.strictEqual(resumed.runtimeGeneration, 8);
+    assert.strictEqual(resumeCalls, 1);
+    assert.strictEqual(resumeGetCalls, 3);
+  });
 });
+
+function sandboxDetails(overrides: {
+  status: "starting" | "running" | "paused" | "terminating" | "failed";
+  paused: boolean;
+  runtimeGeneration: number;
+}) {
+  return {
+    id: "sb_1",
+    templateId: "default",
+    teamId: "team_1",
+    autoResume: true,
+    podName: overrides.paused ? "" : "sandbox-pod",
+    expiresAt: new Date("2026-07-10T00:00:00Z"),
+    hardExpiresAt: new Date("2026-07-11T00:00:00Z"),
+    claimedAt: new Date("2026-07-09T00:00:00Z"),
+    createdAt: new Date("2026-07-09T00:00:00Z"),
+    updatedAt: new Date("2026-07-10T00:00:00Z"),
+    ...overrides,
+  };
+}
+
+function sandboxClient(handlers: {
+  get: () => Promise<unknown>;
+  pause?: () => Promise<unknown>;
+  resume?: () => Promise<unknown>;
+}) {
+  return {
+    apispec: {
+      sandboxes: {
+        apiV1SandboxesIdGet: handlers.get,
+        apiV1SandboxesIdPausePost: handlers.pause,
+        apiV1SandboxesIdResumePost: handlers.resume,
+      },
+    },
+  } as any;
+}

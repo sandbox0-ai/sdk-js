@@ -8,6 +8,7 @@ import type {
   SandboxObservabilityMetricsResponse,
   SandboxObservabilityOutcome,
   SandboxObservabilityWatchLine,
+  Sandbox,
   SandboxSummary,
 } from "./apispec/src/models/index";
 
@@ -140,3 +141,16 @@ export interface SandboxListResult {
   count: number;
   hasMore: boolean;
 }
+
+export interface SandboxLifecycleWaitOptions {
+  /** Maximum polling duration. Defaults to 60 seconds. */
+  timeoutMs?: number;
+  /** Delay between observations. Defaults to 500 milliseconds. */
+  pollIntervalMs?: number;
+  /** Stops waiting locally. It does not roll back a lifecycle request already accepted by the server. */
+  signal?: AbortSignal;
+}
+
+export type SandboxLifecyclePredicate = (
+  sandbox: Sandbox,
+) => boolean | Promise<boolean>;

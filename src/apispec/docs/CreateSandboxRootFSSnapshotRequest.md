@@ -1,6 +1,7 @@
 
 # CreateSandboxRootFSSnapshotRequest
 
+Optional snapshot metadata. The source sandbox may be running or paused; running sources are checkpointed before the snapshot record is created. 
 
 ## Properties
 

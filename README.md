@@ -85,6 +85,25 @@ for (const mount of sandbox.bootstrapMounts) {
 }
 ```
 
+## Wait For Lifecycle Changes
+
+Pause is accepted before its rootfs checkpoint is fully committed. Use the
+waiting helpers when the next operation depends on committed lifecycle state:
+
+```typescript
+const paused = await client.sandboxes.pauseAndWait(sandbox.id, {
+  timeoutMs: 120_000,
+  signal: abortController.signal,
+});
+
+const resumed = await client.sandboxes.resumeAndWait(paused.id);
+console.log(resumed.status, resumed.runtimeGeneration);
+```
+
+`waitForLifecycle()` is available for other committed-state conditions. Aborting
+a wait stops polling locally; it does not undo a pause or resume already accepted
+by Sandbox0.
+
 ## Links
 
 - [Documentation](https://sandbox0.ai/docs)

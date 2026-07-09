@@ -19,9 +19,14 @@ import type {
   SuccessMessageResponse,
   SuccessDeletedResponse,
 } from "../apispec/src/models/index";
-import type { SandboxListOptions, SandboxListResult } from "../models";
+import type {
+  SandboxLifecyclePredicate,
+  SandboxLifecycleWaitOptions,
+  SandboxListOptions,
+  SandboxListResult,
+} from "../models";
 import { ensureData, ensureModel } from "../response";
-import { wrapApiCall } from "../errors";
+import { SandboxWaitTimeoutError, wrapApiCall } from "../errors";
 import type { Client } from "../client";
 import { Sandbox as SandboxHandle } from "../sandbox";
 import { SandboxSession } from "../sessions";
@@ -32,6 +37,9 @@ export interface ClaimSandboxOptions {
   snapshotId?: string;
   memory?: string;
 }
+
+const DEFAULT_LIFECYCLE_TIMEOUT_MS = 60_000;
+const DEFAULT_LIFECYCLE_POLL_INTERVAL_MS = 500;
 
 function isClaimSandboxOptions(
   value: SandboxConfig | ClaimSandboxOptions | undefined,
@@ -126,10 +134,51 @@ export class Sandboxes {
   }
 
   async get(sandboxId: string): Promise<Sandbox> {
+    return this.getWithSignal(sandboxId);
+  }
+
+  private async getWithSignal(sandboxId: string, signal?: AbortSignal): Promise<Sandbox> {
     const response = await wrapApiCall(() =>
-      this.client.apispec.sandboxes.apiV1SandboxesIdGet({ id: sandboxId }),
+      this.client.apispec.sandboxes.apiV1SandboxesIdGet(
+        { id: sandboxId },
+        signal ? { signal } : undefined,
+      ),
     );
     return ensureData(response, "get sandbox returned empty response");
+  }
+
+  /**
+   * Polls committed sandbox details until the predicate matches.
+   *
+   * Abort stops the local wait but cannot undo a lifecycle request that the
+   * server has already accepted.
+   */
+  async waitForLifecycle(
+    sandboxId: string,
+    predicate: SandboxLifecyclePredicate,
+    options: SandboxLifecycleWaitOptions = {},
+  ): Promise<Sandbox> {
+    const timeoutMs = options.timeoutMs ?? DEFAULT_LIFECYCLE_TIMEOUT_MS;
+    const pollIntervalMs = options.pollIntervalMs ?? DEFAULT_LIFECYCLE_POLL_INTERVAL_MS;
+    validateWaitDuration("timeoutMs", timeoutMs, true);
+    validateWaitDuration("pollIntervalMs", pollIntervalMs, false);
+
+    const startedAt = Date.now();
+    let lastSandbox: Sandbox | undefined;
+    while (true) {
+      throwIfAborted(options.signal);
+      lastSandbox = await this.getWithSignal(sandboxId, options.signal);
+      throwIfAborted(options.signal);
+      if (await predicate(lastSandbox)) {
+        return lastSandbox;
+      }
+
+      const remainingMs = timeoutMs - (Date.now() - startedAt);
+      if (remainingMs <= 0) {
+        throw new SandboxWaitTimeoutError({ sandboxId, timeoutMs, lastSandbox });
+      }
+      await sleepWithSignal(Math.min(pollIntervalMs, remainingMs), options.signal);
+    }
   }
 
   async update(sandboxId: string, request: SandboxUpdateRequest): Promise<Sandbox> {
@@ -171,11 +220,49 @@ export class Sandboxes {
     return ensureData(response, "pause sandbox returned empty response");
   }
 
+  /** Requests a pause and waits for its durable checkpoint to commit. */
+  async pauseAndWait(
+    sandboxId: string,
+    options?: SandboxLifecycleWaitOptions,
+  ): Promise<Sandbox> {
+    throwIfAborted(options?.signal);
+    await this.pause(sandboxId);
+    return this.waitForLifecycle(
+      sandboxId,
+      (sandbox) => sandbox.status === "paused" && sandbox.paused,
+      options,
+    );
+  }
+
   async resume(sandboxId: string): Promise<ResumeSandboxResponse> {
     const response = await wrapApiCall(() =>
       this.client.apispec.sandboxes.apiV1SandboxesIdResumePost({ id: sandboxId }),
     );
     return ensureData(response, "resume sandbox returned empty response");
+  }
+
+  /** Requests a resume and waits for the committed running generation. */
+  async resumeAndWait(
+    sandboxId: string,
+    options?: SandboxLifecycleWaitOptions,
+  ): Promise<Sandbox> {
+    throwIfAborted(options?.signal);
+    const before = await this.getWithSignal(sandboxId, options?.signal);
+    throwIfAborted(options?.signal);
+    await this.resume(sandboxId);
+
+    const minimumRuntimeGeneration = before.paused || before.status === "paused"
+      ? before.runtimeGeneration + 1
+      : before.runtimeGeneration;
+    return this.waitForLifecycle(
+      sandboxId,
+      (sandbox) => (
+        sandbox.status === "running"
+        && !sandbox.paused
+        && sandbox.runtimeGeneration >= minimumRuntimeGeneration
+      ),
+      options,
+    );
   }
 
   async refresh(
@@ -256,4 +343,62 @@ export class Sandboxes {
   sandbox(sandboxId: string): SandboxHandle {
     return new SandboxHandle({ id: sandboxId, client: this.client });
   }
+}
+
+function validateWaitDuration(name: string, value: number, allowZero: boolean): void {
+  if (!Number.isFinite(value) || (allowZero ? value < 0 : value <= 0)) {
+    const requirement = allowZero ? "a finite number >= 0" : "a finite number > 0";
+    throw new RangeError(`${name} must be ${requirement}`);
+  }
+}
+
+function throwIfAborted(signal?: AbortSignal): void {
+  if (!signal?.aborted) {
+    return;
+  }
+  throw abortReason(signal);
+}
+
+function abortReason(signal: AbortSignal): unknown {
+  if (signal.reason !== undefined) {
+    return signal.reason;
+  }
+  const error = new Error("sandbox lifecycle wait was aborted");
+  error.name = "AbortError";
+  return error;
+}
+
+function sleepWithSignal(durationMs: number, signal?: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) {
+      reject(abortReason(signal));
+      return;
+    }
+
+    let settled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const onAbort = () => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      if (timer !== undefined) {
+        clearTimeout(timer);
+      }
+      signal?.removeEventListener("abort", onAbort);
+      reject(signal ? abortReason(signal) : new Error("sandbox lifecycle wait was aborted"));
+    };
+    timer = setTimeout(() => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      signal?.removeEventListener("abort", onAbort);
+      resolve();
+    }, durationMs);
+    signal?.addEventListener("abort", onAbort, { once: true });
+    if (signal?.aborted) {
+      onAbort();
+    }
+  });
 }

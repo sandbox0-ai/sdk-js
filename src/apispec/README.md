@@ -103,6 +103,14 @@ All URIs are relative to *https://api.sandbox0.ai*
 *ObservabilityApi* | [**apiV1SandboxesIdObservabilityEventsGet**](docs/ObservabilityApi.md#apiv1sandboxesidobservabilityeventsget) | **GET** /api/v1/sandboxes/{id}/observability/events | Query historical sandbox observability events
 *ObservabilityApi* | [**apiV1SandboxesIdObservabilityLogsGet**](docs/ObservabilityApi.md#apiv1sandboxesidobservabilitylogsget) | **GET** /api/v1/sandboxes/{id}/observability/logs | Query historical sandbox logs
 *ObservabilityApi* | [**apiV1SandboxesIdObservabilityMetricsGet**](docs/ObservabilityApi.md#apiv1sandboxesidobservabilitymetricsget) | **GET** /api/v1/sandboxes/{id}/observability/metrics | Query historical sandbox metric samples
+*ProcessesApi* | [**apiV1SandboxesIdProcessesGet**](docs/ProcessesApi.md#apiv1sandboxesidprocessesget) | **GET** /api/v1/sandboxes/{id}/processes | List process sessions
+*ProcessesApi* | [**apiV1SandboxesIdProcessesPost**](docs/ProcessesApi.md#apiv1sandboxesidprocessespost) | **POST** /api/v1/sandboxes/{id}/processes | Create a process session
+*ProcessesApi* | [**apiV1SandboxesIdProcessesProcessIdChannelsChannelPtySizePut**](docs/ProcessesApi.md#apiv1sandboxesidprocessesprocessidchannelschannelptysizeput) | **PUT** /api/v1/sandboxes/{id}/processes/{process_id}/channels/{channel}/pty-size | Resize process PTY channel
+*ProcessesApi* | [**apiV1SandboxesIdProcessesProcessIdDelete**](docs/ProcessesApi.md#apiv1sandboxesidprocessesprocessiddelete) | **DELETE** /api/v1/sandboxes/{id}/processes/{process_id} | Delete process session
+*ProcessesApi* | [**apiV1SandboxesIdProcessesProcessIdEventsGet**](docs/ProcessesApi.md#apiv1sandboxesidprocessesprocessideventsget) | **GET** /api/v1/sandboxes/{id}/processes/{process_id}/events | Stream process events
+*ProcessesApi* | [**apiV1SandboxesIdProcessesProcessIdEventsPost**](docs/ProcessesApi.md#apiv1sandboxesidprocessesprocessideventspost) | **POST** /api/v1/sandboxes/{id}/processes/{process_id}/events | Send process input event
+*ProcessesApi* | [**apiV1SandboxesIdProcessesProcessIdGet**](docs/ProcessesApi.md#apiv1sandboxesidprocessesprocessidget) | **GET** /api/v1/sandboxes/{id}/processes/{process_id} | Get process session
+*ProcessesApi* | [**apiV1SandboxesIdProcessesProcessIdSignalPost**](docs/ProcessesApi.md#apiv1sandboxesidprocessesprocessidsignalpost) | **POST** /api/v1/sandboxes/{id}/processes/{process_id}/signal | Send signal to process session
 *QuotasApi* | [**apiV1QuotasDimensionGet**](docs/QuotasApi.md#apiv1quotasdimensionget) | **GET** /api/v1/quotas/{dimension} | Get team quota
 *RegionsApi* | [**regionsGet**](docs/RegionsApi.md#regionsget) | **GET** /regions | List regions in the global gateway
 *RegionsApi* | [**regionsIdDelete**](docs/RegionsApi.md#regionsiddelete) | **DELETE** /regions/{id} | Delete a region from the global gateway
@@ -239,6 +247,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ForkVolumeRequest](docs/ForkVolumeRequest.md)
 - [GRPCAction](docs/GRPCAction.md)
 - [GatewayMetadata](docs/GatewayMetadata.md)
+- [HTTPChannelSpec](docs/HTTPChannelSpec.md)
 - [HTTPGetAction](docs/HTTPGetAction.md)
 - [HTTPHeader](docs/HTTPHeader.md)
 - [HTTPHeadersProjection](docs/HTTPHeadersProjection.md)
@@ -276,6 +285,18 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [PortSpec](docs/PortSpec.md)
 - [PreferredSchedulingTerm](docs/PreferredSchedulingTerm.md)
 - [Probe](docs/Probe.md)
+- [ProcessChannelFraming](docs/ProcessChannelFraming.md)
+- [ProcessChannelKind](docs/ProcessChannelKind.md)
+- [ProcessChannelSpec](docs/ProcessChannelSpec.md)
+- [ProcessCleanupSpec](docs/ProcessCleanupSpec.md)
+- [ProcessEvent](docs/ProcessEvent.md)
+- [ProcessEventLogSnapshot](docs/ProcessEventLogSnapshot.md)
+- [ProcessEventType](docs/ProcessEventType.md)
+- [ProcessInputEvent](docs/ProcessInputEvent.md)
+- [ProcessRestartSpec](docs/ProcessRestartSpec.md)
+- [ProcessSession](docs/ProcessSession.md)
+- [ProcessSessionState](docs/ProcessSessionState.md)
+- [ProcessSpec](docs/ProcessSpec.md)
 - [ProcessType](docs/ProcessType.md)
 - [ProjectedHeader](docs/ProjectedHeader.md)
 - [ProjectionSpec](docs/ProjectionSpec.md)
@@ -390,6 +411,12 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessMovedResponse](docs/SuccessMovedResponse.md)
 - [SuccessMovedResponseAllOfData](docs/SuccessMovedResponseAllOfData.md)
 - [SuccessPauseSandboxResponse](docs/SuccessPauseSandboxResponse.md)
+- [SuccessProcessEventResponse](docs/SuccessProcessEventResponse.md)
+- [SuccessProcessEventResponseAllOfData](docs/SuccessProcessEventResponseAllOfData.md)
+- [SuccessProcessSessionListResponse](docs/SuccessProcessSessionListResponse.md)
+- [SuccessProcessSessionListResponseAllOfData](docs/SuccessProcessSessionListResponseAllOfData.md)
+- [SuccessProcessSessionResponse](docs/SuccessProcessSessionResponse.md)
+- [SuccessProcessSessionResponseAllOfData](docs/SuccessProcessSessionResponseAllOfData.md)
 - [SuccessRefreshResponse](docs/SuccessRefreshResponse.md)
 - [SuccessRegionListResponse](docs/SuccessRegionListResponse.md)
 - [SuccessRegionListResponseAllOfData](docs/SuccessRegionListResponseAllOfData.md)
@@ -462,6 +489,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [VolumeFileArchiveImportResponse](docs/VolumeFileArchiveImportResponse.md)
 - [VolumeMountSpec](docs/VolumeMountSpec.md)
 - [WebLoginExchangeRequest](docs/WebLoginExchangeRequest.md)
+- [WebSocketChannelSpec](docs/WebSocketChannelSpec.md)
 - [WebhookConfig](docs/WebhookConfig.md)
 - [WeightedPodAffinityTerm](docs/WeightedPodAffinityTerm.md)
 

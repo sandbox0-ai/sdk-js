@@ -12,3 +12,4 @@ import "./sandbox_files";
 import "./sandbox_network";
 import "./sandbox_services";
 import "./sandbox_observability";
+import "./sandbox_processes";

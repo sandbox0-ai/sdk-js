@@ -20,6 +20,8 @@ import type {
   SandboxObservabilityMetricWatchOptions,
   SandboxObservabilityMetrics,
   SandboxObservabilityWatchStream,
+  ProcessEventStream,
+  ProcessEventWatchOptions,
 } from "./models";
 
 export const DEFAULT_BASE_URL = "https://api.sandbox0.ai";
@@ -64,6 +66,7 @@ export class Client {
     teams: apisTypes.TeamsApi;
     observability: apisTypes.ObservabilityApi;
     audit: apisTypes.AuditApi;
+    processes: apisTypes.ProcessesApi;
   };
 
   readonly sandboxes: Sandboxes;
@@ -101,6 +104,7 @@ export class Client {
       teams: new apis.TeamsApi(this.configuration),
       observability: new apis.ObservabilityApi(this.configuration),
       audit: new apis.AuditApi(this.configuration),
+      processes: new apis.ProcessesApi(this.configuration),
     };
 
     this.sandboxes = new Sandboxes(this);
@@ -203,6 +207,34 @@ export class Client {
       `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/observability/metrics`,
       toSandboxObservabilityMetricQuery(options),
     );
+  }
+
+  async watchSandboxProcessEvents(
+    sandboxId: string,
+    processId: string,
+    options?: ProcessEventWatchOptions,
+  ): Promise<ProcessEventStream> {
+    const response = await this.fetchRaw(
+      `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/processes/${encodeURIComponent(processId)}/events`,
+      { cursor: numberQuery(options?.cursor) },
+      { Accept: "text/event-stream" },
+    );
+    const contentType = response.headers.get("content-type") ?? "";
+    if (!contentType.toLowerCase().startsWith("text/event-stream")) {
+      throw new APIError({
+        statusCode: response.status,
+        code: "unexpected_response",
+        message: `unexpected process event stream content type: ${contentType}`,
+      });
+    }
+    if (!response.body) {
+      throw new APIError({
+        statusCode: response.status,
+        code: "unexpected_response",
+        message: "process event stream response did not include a body",
+      });
+    }
+    return createProcessEventStream(response);
   }
 
   websocketUrl(path: string): string {
@@ -388,6 +420,67 @@ function createSandboxObservabilityWatchStream(
         if (line) {
           yield models.SandboxObservabilityWatchLineFromJSON(JSON.parse(line));
         }
+      } finally {
+        reader.releaseLock();
+      }
+    },
+  };
+}
+
+function createProcessEventStream(response: Response): ProcessEventStream {
+  const body = response.body;
+  if (!body) {
+    throw new APIError({
+      statusCode: response.status,
+      code: "unexpected_response",
+      message: "process event stream response did not include a body",
+    });
+  }
+  return {
+    body,
+    response,
+    async *[Symbol.asyncIterator]() {
+      const reader = body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let eventData: string[] = [];
+      const flush = function* flushEvents() {
+        if (eventData.length === 0) return;
+        const data = eventData.join("\n").trim();
+        eventData = [];
+        if (data) {
+          yield models.ProcessEventFromJSON(JSON.parse(data));
+        }
+      };
+      try {
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) {
+            break;
+          }
+          buffer += decoder.decode(value, { stream: true });
+          let newlineIndex = buffer.indexOf("\n");
+          while (newlineIndex >= 0) {
+            const line = buffer.slice(0, newlineIndex).replace(/\r$/, "");
+            buffer = buffer.slice(newlineIndex + 1);
+            if (line === "") {
+              yield* flush();
+            } else if (line.startsWith("data:")) {
+              eventData.push(line.slice(5).trimStart());
+            }
+            newlineIndex = buffer.indexOf("\n");
+          }
+        }
+        buffer += decoder.decode();
+        if (buffer) {
+          const line = buffer.replace(/\r$/, "");
+          if (line.startsWith("data:")) {
+            eventData.push(line.slice(5).trimStart());
+          } else if (line === "") {
+            yield* flush();
+          }
+        }
+        yield* flush();
       } finally {
         reader.releaseLock();
       }

@@ -9,6 +9,10 @@ import type {
   SandboxObservabilityOutcome,
   SandboxObservabilityWatchLine,
   SandboxSummary,
+  ProcessEvent as ProcessEventModel,
+  ProcessInputEvent as ProcessInputEventModel,
+  ProcessSession as ProcessSessionModel,
+  ProcessSpec as ProcessSpecModel,
 } from "./apispec/src/models/index";
 
 export interface RunResult {
@@ -121,9 +125,22 @@ export interface SandboxObservabilityWatchStream
   response: Response;
 }
 
+export interface ProcessEventWatchOptions {
+  cursor?: number;
+}
+
+export interface ProcessEventStream extends AsyncIterable<ProcessEvent> {
+  body: ReadableStream<Uint8Array>;
+  response: Response;
+}
+
 export type SandboxObservabilityEvents = SandboxObservabilityEventsResponse;
 export type SandboxObservabilityLogs = SandboxObservabilityLogsResponse;
 export type SandboxObservabilityMetrics = SandboxObservabilityMetricsResponse;
+export type ProcessEvent = ProcessEventModel;
+export type ProcessInputEvent = ProcessInputEventModel;
+export type ProcessSession = ProcessSessionModel;
+export type ProcessSpec = ProcessSpecModel;
 
 export type SandboxStatusFilter = SandboxSummary["status"];
 

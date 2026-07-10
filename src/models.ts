@@ -11,6 +11,8 @@ import type {
   SandboxRuntimeMetricStatistic,
   SandboxRuntimeMetricsCatalogResponse,
   SandboxRuntimeMetricsResponse,
+  ExecutionSessionEvent,
+  ExecutionSessionWebSocketRequest,
   Sandbox,
   SandboxSummary,
 } from "./apispec/src/models/index";
@@ -126,6 +128,44 @@ export interface SandboxObservabilityWatchStream
   body: ReadableStream<Uint8Array>;
   response: Response;
 }
+
+export interface SessionCreateOptions {
+  /** Allows a create request to be retried without creating a duplicate session. */
+  idempotencyKey?: string;
+}
+
+export interface SessionEventOptions {
+  /** Return events whose sequence is greater than this cursor. */
+  after?: number;
+  limit?: number;
+}
+
+export interface SessionEventStreamOptions {
+  /** Replay events whose sequence is greater than this cursor. */
+  after?: number;
+  /** Sent as Last-Event-ID and takes precedence over after on the server. */
+  lastEventId?: string;
+  signal?: AbortSignal;
+}
+
+export interface SessionWebSocketOptions {
+  /** Replay events whose sequence is greater than this cursor before live events. */
+  after?: number;
+}
+
+export interface SessionWebSocketMessage {
+  type: "ack" | "error" | "event";
+  requestId?: string;
+  event?: ExecutionSessionEvent;
+  error?: string;
+}
+
+export interface SessionEventStream extends AsyncIterable<ExecutionSessionEvent> {
+  readonly response: Response;
+  close(): Promise<void>;
+}
+
+export type SessionWebSocketInput = ExecutionSessionWebSocketRequest;
 
 export type SandboxObservabilityEvents = SandboxObservabilityEventsResponse;
 export type SandboxObservabilityLogs = SandboxObservabilityLogsResponse;

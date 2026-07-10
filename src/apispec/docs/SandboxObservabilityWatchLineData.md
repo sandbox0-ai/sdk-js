@@ -22,9 +22,6 @@ Name | Type
 `processId` | string
 `stream` | [SandboxObservabilityLogStream](SandboxObservabilityLogStream.md)
 `message` | string
-`name` | string
-`unit` | string
-`value` | number
 
 ## Example
 
@@ -49,9 +46,6 @@ const example = {
   "processId": null,
   "stream": null,
   "message": null,
-  "name": null,
-  "unit": null,
-  "value": null,
 } satisfies SandboxObservabilityWatchLineData
 
 console.log(example)

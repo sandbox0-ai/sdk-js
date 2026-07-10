@@ -101,7 +101,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 *HealthApi* | [**readyzGet**](docs/HealthApi.md#readyzget) | **GET** /readyz | Readiness check
 *ObservabilityApi* | [**apiV1SandboxesIdObservabilityEventsGet**](docs/ObservabilityApi.md#apiv1sandboxesidobservabilityeventsget) | **GET** /api/v1/sandboxes/{id}/observability/events | Query historical sandbox observability events
 *ObservabilityApi* | [**apiV1SandboxesIdObservabilityLogsGet**](docs/ObservabilityApi.md#apiv1sandboxesidobservabilitylogsget) | **GET** /api/v1/sandboxes/{id}/observability/logs | Query historical sandbox logs
-*ObservabilityApi* | [**apiV1SandboxesIdObservabilityMetricsGet**](docs/ObservabilityApi.md#apiv1sandboxesidobservabilitymetricsget) | **GET** /api/v1/sandboxes/{id}/observability/metrics | Query historical sandbox metric samples
+*ObservabilityApi* | [**getSandboxRuntimeMetrics**](docs/ObservabilityApi.md#getsandboxruntimemetrics) | **GET** /api/v1/sandboxes/{id}/metrics | Query chart-ready sandbox runtime metrics
+*ObservabilityApi* | [**getSandboxRuntimeMetricsCatalog**](docs/ObservabilityApi.md#getsandboxruntimemetricscatalog) | **GET** /api/v1/sandboxes/{id}/metrics/catalog | Get the sandbox runtime metric catalog
 *QuotasApi* | [**apiV1QuotasDimensionGet**](docs/QuotasApi.md#apiv1quotasdimensionget) | **GET** /api/v1/quotas/{dimension} | Get team quota
 *RegionsApi* | [**regionsGet**](docs/RegionsApi.md#regionsget) | **GET** /regions | List regions in the global gateway
 *RegionsApi* | [**regionsIdDelete**](docs/RegionsApi.md#regionsiddelete) | **DELETE** /regions/{id} | Delete a region from the global gateway
@@ -321,8 +322,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxObservabilityLogEntry](docs/SandboxObservabilityLogEntry.md)
 - [SandboxObservabilityLogStream](docs/SandboxObservabilityLogStream.md)
 - [SandboxObservabilityLogsResponse](docs/SandboxObservabilityLogsResponse.md)
-- [SandboxObservabilityMetricSample](docs/SandboxObservabilityMetricSample.md)
-- [SandboxObservabilityMetricsResponse](docs/SandboxObservabilityMetricsResponse.md)
 - [SandboxObservabilityOutcome](docs/SandboxObservabilityOutcome.md)
 - [SandboxObservabilityWatchLine](docs/SandboxObservabilityWatchLine.md)
 - [SandboxObservabilityWatchLineData](docs/SandboxObservabilityWatchLineData.md)
@@ -331,6 +330,20 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxResourceUsage](docs/SandboxResourceUsage.md)
 - [SandboxRootFSSnapshot](docs/SandboxRootFSSnapshot.md)
 - [SandboxRootFSSnapshotList](docs/SandboxRootFSSnapshotList.md)
+- [SandboxRuntimeMetricDescriptor](docs/SandboxRuntimeMetricDescriptor.md)
+- [SandboxRuntimeMetricFreshness](docs/SandboxRuntimeMetricFreshness.md)
+- [SandboxRuntimeMetricFreshnessStatus](docs/SandboxRuntimeMetricFreshnessStatus.md)
+- [SandboxRuntimeMetricGap](docs/SandboxRuntimeMetricGap.md)
+- [SandboxRuntimeMetricGapReason](docs/SandboxRuntimeMetricGapReason.md)
+- [SandboxRuntimeMetricKind](docs/SandboxRuntimeMetricKind.md)
+- [SandboxRuntimeMetricName](docs/SandboxRuntimeMetricName.md)
+- [SandboxRuntimeMetricPoint](docs/SandboxRuntimeMetricPoint.md)
+- [SandboxRuntimeMetricSegment](docs/SandboxRuntimeMetricSegment.md)
+- [SandboxRuntimeMetricSeries](docs/SandboxRuntimeMetricSeries.md)
+- [SandboxRuntimeMetricStatistic](docs/SandboxRuntimeMetricStatistic.md)
+- [SandboxRuntimeMetricUnit](docs/SandboxRuntimeMetricUnit.md)
+- [SandboxRuntimeMetricsCatalogResponse](docs/SandboxRuntimeMetricsCatalogResponse.md)
+- [SandboxRuntimeMetricsResponse](docs/SandboxRuntimeMetricsResponse.md)
 - [SandboxSSHConnection](docs/SandboxSSHConnection.md)
 - [SandboxServicesUpdateRequest](docs/SandboxServicesUpdateRequest.md)
 - [SandboxStatus](docs/SandboxStatus.md)
@@ -408,10 +421,11 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessSandboxNetworkPolicyResponse](docs/SuccessSandboxNetworkPolicyResponse.md)
 - [SuccessSandboxObservabilityEventsResponse](docs/SuccessSandboxObservabilityEventsResponse.md)
 - [SuccessSandboxObservabilityLogsResponse](docs/SuccessSandboxObservabilityLogsResponse.md)
-- [SuccessSandboxObservabilityMetricsResponse](docs/SuccessSandboxObservabilityMetricsResponse.md)
 - [SuccessSandboxResponse](docs/SuccessSandboxResponse.md)
 - [SuccessSandboxRootFSSnapshotListResponse](docs/SuccessSandboxRootFSSnapshotListResponse.md)
 - [SuccessSandboxRootFSSnapshotResponse](docs/SuccessSandboxRootFSSnapshotResponse.md)
+- [SuccessSandboxRuntimeMetricsCatalogResponse](docs/SuccessSandboxRuntimeMetricsCatalogResponse.md)
+- [SuccessSandboxRuntimeMetricsResponse](docs/SuccessSandboxRuntimeMetricsResponse.md)
 - [SuccessSandboxServicesResponse](docs/SuccessSandboxServicesResponse.md)
 - [SuccessSandboxServicesResponseAllOfData](docs/SuccessSandboxServicesResponseAllOfData.md)
 - [SuccessSandboxStatusResponse](docs/SuccessSandboxStatusResponse.md)

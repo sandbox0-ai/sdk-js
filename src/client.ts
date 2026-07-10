@@ -16,10 +16,10 @@ import type {
   SandboxObservabilityLogOptions,
   SandboxObservabilityLogWatchOptions,
   SandboxObservabilityLogs,
-  SandboxObservabilityMetricOptions,
-  SandboxObservabilityMetricWatchOptions,
-  SandboxObservabilityMetrics,
   SandboxObservabilityWatchStream,
+  SandboxMetrics,
+  SandboxMetricsCatalog,
+  SandboxMetricsOptions,
 } from "./models";
 
 export const DEFAULT_BASE_URL = "https://api.sandbox0.ai";
@@ -137,17 +137,26 @@ export class Client {
     return ensureData(response, "list sandbox observability logs returned empty response");
   }
 
-  async listSandboxObservabilityMetrics(
+  async getSandboxMetrics(
     sandboxId: string,
-    options?: SandboxObservabilityMetricOptions,
-  ): Promise<SandboxObservabilityMetrics> {
+    options?: SandboxMetricsOptions,
+  ): Promise<SandboxMetrics> {
+    const { metrics, ...query } = options ?? {};
     const response = await wrapApiCall(() =>
-      this.apispec.observability.apiV1SandboxesIdObservabilityMetricsGet({
+      this.apispec.observability.getSandboxRuntimeMetrics({
         id: sandboxId,
-        ...options,
+        ...query,
+        metrics: metrics && metrics.length > 0 ? metrics.join(",") : undefined,
       }),
     );
-    return ensureData(response, "list sandbox observability metrics returned empty response");
+    return ensureData(response, "get sandbox metrics returned empty response");
+  }
+
+  async getSandboxMetricsCatalog(sandboxId: string): Promise<SandboxMetricsCatalog> {
+    const response = await wrapApiCall(() =>
+      this.apispec.observability.getSandboxRuntimeMetricsCatalog({ id: sandboxId }),
+    );
+    return ensureData(response, "get sandbox metrics catalog returned empty response");
   }
 
   async watchSandboxObservabilityEvents(
@@ -167,16 +176,6 @@ export class Client {
     return this.watchSandboxObservability(
       `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/observability/logs`,
       toSandboxObservabilityLogQuery(options),
-    );
-  }
-
-  async watchSandboxObservabilityMetrics(
-    sandboxId: string,
-    options?: SandboxObservabilityMetricWatchOptions,
-  ): Promise<SandboxObservabilityWatchStream> {
-    return this.watchSandboxObservability(
-      `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/observability/metrics`,
-      toSandboxObservabilityMetricQuery(options),
     );
   }
 
@@ -301,17 +300,6 @@ function toSandboxObservabilityLogQuery(
     ...toSandboxObservabilityQuery(options),
     context_id: options?.contextId,
     stream: options?.stream,
-  };
-}
-
-function toSandboxObservabilityMetricQuery(
-  options?: SandboxObservabilityMetricWatchOptions,
-): Record<string, string | undefined> {
-  return {
-    ...toSandboxObservabilityQuery(options),
-    context_id: options?.contextId,
-    name: options?.name?.join(","),
-    names: options?.names,
   };
 }
 

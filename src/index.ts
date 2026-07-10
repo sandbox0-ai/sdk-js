@@ -7,8 +7,12 @@ export * from "./models";
 export * from "./sessions";
 export { apis, models, runtime } from "./apispec_compat";
 export * as apispec from "./apispec_compat";
+import { models as generatedModels } from "./apispec_compat";
 import "./sandbox_contexts";
 import "./sandbox_files";
 import "./sandbox_network";
 import "./sandbox_services";
 import "./sandbox_observability";
+
+export const SandboxRuntimeMetricName = generatedModels.SandboxRuntimeMetricName;
+export const SandboxRuntimeMetricStatistic = generatedModels.SandboxRuntimeMetricStatistic;

@@ -26,20 +26,13 @@ import {
     SandboxObservabilityLogEntryFromJSONTyped,
     SandboxObservabilityLogEntryToJSON,
 } from './SandboxObservabilityLogEntry';
-import type { SandboxObservabilityMetricSample } from './SandboxObservabilityMetricSample';
-import {
-    instanceOfSandboxObservabilityMetricSample,
-    SandboxObservabilityMetricSampleFromJSON,
-    SandboxObservabilityMetricSampleFromJSONTyped,
-    SandboxObservabilityMetricSampleToJSON,
-} from './SandboxObservabilityMetricSample';
 
 /**
  * @type SandboxObservabilityWatchLineData
  * 
  * @export
  */
-export type SandboxObservabilityWatchLineData = SandboxObservabilityEvent | SandboxObservabilityLogEntry | SandboxObservabilityMetricSample;
+export type SandboxObservabilityWatchLineData = SandboxObservabilityEvent | SandboxObservabilityLogEntry;
 
 export function SandboxObservabilityWatchLineDataFromJSON(json: any): SandboxObservabilityWatchLineData {
     return SandboxObservabilityWatchLineDataFromJSONTyped(json, false);
@@ -57,9 +50,6 @@ export function SandboxObservabilityWatchLineDataFromJSONTyped(json: any, ignore
     }
     if (instanceOfSandboxObservabilityLogEntry(json)) {
         return SandboxObservabilityLogEntryFromJSONTyped(json, true);
-    }
-    if (instanceOfSandboxObservabilityMetricSample(json)) {
-        return SandboxObservabilityMetricSampleFromJSONTyped(json, true);
     }
     return {} as any;
 }
@@ -80,9 +70,6 @@ export function SandboxObservabilityWatchLineDataToJSONTyped(value?: SandboxObse
     }
     if (instanceOfSandboxObservabilityLogEntry(value)) {
         return SandboxObservabilityLogEntryToJSON(value as SandboxObservabilityLogEntry);
-    }
-    if (instanceOfSandboxObservabilityMetricSample(value)) {
-        return SandboxObservabilityMetricSampleToJSON(value as SandboxObservabilityMetricSample);
     }
     return {};
 }

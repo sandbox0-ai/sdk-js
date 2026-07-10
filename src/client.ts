@@ -63,7 +63,6 @@ export class Client {
     credentialSources: apisTypes.CredentialSourcesApi;
     teams: apisTypes.TeamsApi;
     observability: apisTypes.ObservabilityApi;
-    audit: apisTypes.AuditApi;
   };
 
   readonly sandboxes: Sandboxes;
@@ -100,7 +99,6 @@ export class Client {
       credentialSources: new apis.CredentialSourcesApi(this.configuration),
       teams: new apis.TeamsApi(this.configuration),
       observability: new apis.ObservabilityApi(this.configuration),
-      audit: new apis.AuditApi(this.configuration),
     };
 
     this.sandboxes = new Sandboxes(this);
@@ -124,19 +122,6 @@ export class Client {
       }),
     );
     return ensureData(response, "list sandbox observability events returned empty response");
-  }
-
-  async listSandboxAuditEvents(
-    sandboxId: string,
-    options?: SandboxObservabilityEventOptions,
-  ): Promise<SandboxObservabilityEvents> {
-    const response = await wrapApiCall(() =>
-      this.apispec.audit.apiV1SandboxesIdAuditEventsGet({
-        id: sandboxId,
-        ...options,
-      }),
-    );
-    return ensureData(response, "list sandbox audit events returned empty response");
   }
 
   async listSandboxObservabilityLogs(
@@ -171,16 +156,6 @@ export class Client {
   ): Promise<SandboxObservabilityWatchStream> {
     return this.watchSandboxObservability(
       `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/observability/events`,
-      toSandboxObservabilityEventQuery(options),
-    );
-  }
-
-  async watchSandboxAuditEvents(
-    sandboxId: string,
-    options?: SandboxObservabilityEventWatchOptions,
-  ): Promise<SandboxObservabilityWatchStream> {
-    return this.watchSandboxObservability(
-      `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/audit/events`,
       toSandboxObservabilityEventQuery(options),
     );
   }

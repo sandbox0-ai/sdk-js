@@ -54,7 +54,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 *ApiKeysApi* | [**apiKeysIdDeactivatePost**](docs/ApiKeysApi.md#apikeysiddeactivatepost) | **POST** /api-keys/{id}/deactivate | Deactivate API key
 *ApiKeysApi* | [**apiKeysIdDelete**](docs/ApiKeysApi.md#apikeysiddelete) | **DELETE** /api-keys/{id} | Delete API key
 *ApiKeysApi* | [**apiKeysPost**](docs/ApiKeysApi.md#apikeyspost) | **POST** /api-keys | Create API key
-*AuditApi* | [**apiV1SandboxesIdAuditEventsGet**](docs/AuditApi.md#apiv1sandboxesidauditeventsget) | **GET** /api/v1/sandboxes/{id}/audit/events | Query historical sandbox audit events
 *AuthApi* | [**authChangePasswordPost**](docs/AuthApi.md#authchangepasswordpost) | **POST** /auth/change-password | Change password
 *AuthApi* | [**authLoginPost**](docs/AuthApi.md#authloginpost) | **POST** /auth/login | Login with email and password
 *AuthApi* | [**authLogoutPost**](docs/AuthApi.md#authlogoutpost) | **POST** /auth/logout | Logout

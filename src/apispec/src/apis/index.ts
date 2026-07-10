@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './ApiKeysApi';
-export * from './AuditApi';
 export * from './AuthApi';
 export * from './ContextsApi';
 export * from './CredentialSourcesApi';

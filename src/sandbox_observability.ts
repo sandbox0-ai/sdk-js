@@ -25,12 +25,6 @@ declare module "./sandbox" {
     watchObservabilityEvents(
       options?: SandboxObservabilityEventWatchOptions,
     ): Promise<SandboxObservabilityWatchStream>;
-    listAuditEvents(
-      options?: SandboxObservabilityEventOptions,
-    ): Promise<SandboxObservabilityEvents>;
-    watchAuditEvents(
-      options?: SandboxObservabilityEventWatchOptions,
-    ): Promise<SandboxObservabilityWatchStream>;
     listLogs(options?: SandboxObservabilityLogOptions): Promise<SandboxObservabilityLogs>;
     watchLogs(
       options?: SandboxObservabilityLogWatchOptions,
@@ -56,20 +50,6 @@ Sandbox.prototype.watchObservabilityEvents = async function (
   options?: SandboxObservabilityEventWatchOptions,
 ): Promise<SandboxObservabilityWatchStream> {
   return getClient(this).watchSandboxObservabilityEvents(this.id, options);
-};
-
-Sandbox.prototype.listAuditEvents = async function (
-  this: Sandbox,
-  options?: SandboxObservabilityEventOptions,
-): Promise<SandboxObservabilityEvents> {
-  return getClient(this).listSandboxAuditEvents(this.id, options);
-};
-
-Sandbox.prototype.watchAuditEvents = async function (
-  this: Sandbox,
-  options?: SandboxObservabilityEventWatchOptions,
-): Promise<SandboxObservabilityWatchStream> {
-  return getClient(this).watchSandboxAuditEvents(this.id, options);
 };
 
 Sandbox.prototype.listLogs = async function (

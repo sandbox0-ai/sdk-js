@@ -1,5 +1,6 @@
 .gitignore
 .npmignore
+.openapi-generator-ignore
 README.md
 docs/APIKey.md
 docs/AddTeamMemberRequest.md
@@ -7,7 +8,6 @@ docs/Affinity.md
 docs/ApiKeysApi.md
 docs/ApiV1SandboxesIdFilesGet200Response.md
 docs/AppArmorProfile.md
-docs/AuditApi.md
 docs/AuthApi.md
 docs/AuthProvider.md
 docs/CachePolicySpec.md
@@ -320,7 +320,6 @@ docs/WebhookConfig.md
 docs/WeightedPodAffinityTerm.md
 package.json
 src/apis/ApiKeysApi.ts
-src/apis/AuditApi.ts
 src/apis/AuthApi.ts
 src/apis/ContextsApi.ts
 src/apis/CredentialSourcesApi.ts

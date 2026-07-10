@@ -1,26 +1,20 @@
 
-# SandboxObservabilityMetricsResponse
+# SandboxRuntimeMetricName
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`samples` | [Array&lt;SandboxObservabilityMetricSample&gt;](SandboxObservabilityMetricSample.md)
-`nextCursor` | string
-`watermark` | string
 
 ## Example
 
 ```typescript
-import type { SandboxObservabilityMetricsResponse } from 'sandbox0'
+import type { SandboxRuntimeMetricName } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "samples": null,
-  "nextCursor": null,
-  "watermark": null,
-} satisfies SandboxObservabilityMetricsResponse
+} satisfies SandboxRuntimeMetricName
 
 console.log(example)
 
@@ -29,7 +23,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SandboxObservabilityMetricsResponse
+const exampleParsed = JSON.parse(exampleJSON) as SandboxRuntimeMetricName
 console.log(exampleParsed)
 ```
 

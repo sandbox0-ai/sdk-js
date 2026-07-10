@@ -6,7 +6,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 |------------- | ------------- | -------------|
 | [**apiV1SandboxesIdObservabilityEventsGet**](ObservabilityApi.md#apiv1sandboxesidobservabilityeventsget) | **GET** /api/v1/sandboxes/{id}/observability/events | Query historical sandbox observability events |
 | [**apiV1SandboxesIdObservabilityLogsGet**](ObservabilityApi.md#apiv1sandboxesidobservabilitylogsget) | **GET** /api/v1/sandboxes/{id}/observability/logs | Query historical sandbox logs |
-| [**apiV1SandboxesIdObservabilityMetricsGet**](ObservabilityApi.md#apiv1sandboxesidobservabilitymetricsget) | **GET** /api/v1/sandboxes/{id}/observability/metrics | Query historical sandbox metric samples |
+| [**getSandboxRuntimeMetrics**](ObservabilityApi.md#getsandboxruntimemetrics) | **GET** /api/v1/sandboxes/{id}/metrics | Query chart-ready sandbox runtime metrics |
+| [**getSandboxRuntimeMetricsCatalog**](ObservabilityApi.md#getsandboxruntimemetricscatalog) | **GET** /api/v1/sandboxes/{id}/metrics/catalog | Get the sandbox runtime metric catalog |
 
 
 
@@ -16,7 +17,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 Query historical sandbox observability events
 
-Queries the asynchronous per-sandbox observability projection for lifecycle, network audit, and runtime stats events. This endpoint does not expose backend SQL and reads tables that are separate from the metering usage ledger. 
+Queries the asynchronous per-sandbox observability projection for lifecycle, network audit, and runtime stats events. This endpoint does not expose backend SQL and reads tables that are separate from the metering usage ledger.
 
 ### Example
 
@@ -29,7 +30,7 @@ import type { ApiV1SandboxesIdObservabilityEventsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -114,7 +115,7 @@ example().catch(console.error);
 
 Query historical sandbox logs
 
-Queries the asynchronous per-sandbox log projection. This endpoint is for historical log lookup and is separate from live log streaming. 
+Queries the asynchronous per-sandbox log projection. This endpoint is for historical log lookup and is separate from live log streaming.
 
 ### Example
 
@@ -127,7 +128,7 @@ import type { ApiV1SandboxesIdObservabilityLogsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -203,13 +204,13 @@ example().catch(console.error);
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
-## apiV1SandboxesIdObservabilityMetricsGet
+## getSandboxRuntimeMetrics
 
-> SuccessSandboxObservabilityMetricsResponse apiV1SandboxesIdObservabilityMetricsGet(id, startTime, endTime, limit, cursor, watch, contextId, name, names)
+> SuccessSandboxRuntimeMetricsResponse getSandboxRuntimeMetrics(id, startTime, endTime, metrics, stepSeconds, statistic, maxPoints)
 
-Query historical sandbox metric samples
+Query chart-ready sandbox runtime metrics
 
-Queries the asynchronous per-sandbox metric sample projection. This endpoint is separate from platform service metrics and metering usage truth. 
+Returns bounded, downsampled sandbox-wide runtime series. When timestamps are omitted, the query covers the hour ending now. The maximum range is 30 days. Counter rates never cross a runtime reset boundary. Missing data is reported as gaps and is never synthesized as zero. This endpoint is separate from platform service metrics and metering usage truth.
 
 ### Example
 
@@ -218,11 +219,11 @@ import {
   Configuration,
   ObservabilityApi,
 } from 'sandbox0';
-import type { ApiV1SandboxesIdObservabilityMetricsGetRequest } from 'sandbox0';
+import type { GetSandboxRuntimeMetricsRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -231,26 +232,22 @@ async function example() {
   const body = {
     // string
     id: id_example,
-    // Date | Include samples that occurred at or after this RFC3339 timestamp. (optional)
+    // Date | Query observations at or after this RFC3339 timestamp. Defaults to one hour before end_time. (optional)
     startTime: 2013-10-20T19:20:30+01:00,
-    // Date | Include samples that occurred at or before this RFC3339 timestamp. (optional)
+    // Date | Query observations at or before this RFC3339 timestamp. Defaults to the current time. (optional)
     endTime: 2013-10-20T19:20:30+01:00,
-    // number | Maximum number of samples to return. Values above 1000 are capped. (optional)
-    limit: 56,
-    // string | Opaque pagination cursor returned by a previous response. When watch is true, this must be a watch resume cursor from an NDJSON watermark line. (optional)
-    cursor: cursor_example,
-    // boolean | Stream matching records as application/x-ndjson in ingestion order until the client disconnects. When watch is true, end_time is not supported. Without cursor or start_time, streaming starts at request time. (optional)
-    watch: true,
-    // string | Restrict results to a sandbox process context. (optional)
-    contextId: contextId_example,
-    // Array<string> | Metric name filter. This parameter may be repeated. (optional)
-    name: ...,
-    // string | Comma-separated metric name filter. (optional)
-    names: names_example,
-  } satisfies ApiV1SandboxesIdObservabilityMetricsGetRequest;
+    // string | Comma-separated canonical metric names. Defaults to CPU utilization, memory utilization, and network I/O. (optional)
+    metrics: metrics_example,
+    // number | Requested bucket width in seconds. The effective step is at least 15 seconds and may be increased to honor max_points. (optional)
+    stepSeconds: 56,
+    // SandboxRuntimeMetricStatistic | Aggregation applied within each output bucket. Auto uses average for gauges and rate for counters. (optional)
+    statistic: ...,
+    // number | Maximum points per returned series. The server may increase step_seconds to honor this bound. (optional)
+    maxPoints: 56,
+  } satisfies GetSandboxRuntimeMetricsRequest;
 
   try {
-    const data = await api.apiV1SandboxesIdObservabilityMetricsGet(body);
+    const data = await api.getSandboxRuntimeMetrics(body);
     console.log(data);
   } catch (error) {
     console.error(error);
@@ -267,18 +264,16 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | `string` |  | [Defaults to `undefined`] |
-| **startTime** | `Date` | Include samples that occurred at or after this RFC3339 timestamp. | [Optional] [Defaults to `undefined`] |
-| **endTime** | `Date` | Include samples that occurred at or before this RFC3339 timestamp. | [Optional] [Defaults to `undefined`] |
-| **limit** | `number` | Maximum number of samples to return. Values above 1000 are capped. | [Optional] [Defaults to `100`] |
-| **cursor** | `string` | Opaque pagination cursor returned by a previous response. When watch is true, this must be a watch resume cursor from an NDJSON watermark line. | [Optional] [Defaults to `undefined`] |
-| **watch** | `boolean` | Stream matching records as application/x-ndjson in ingestion order until the client disconnects. When watch is true, end_time is not supported. Without cursor or start_time, streaming starts at request time. | [Optional] [Defaults to `false`] |
-| **contextId** | `string` | Restrict results to a sandbox process context. | [Optional] [Defaults to `undefined`] |
-| **name** | `Array<string>` | Metric name filter. This parameter may be repeated. | [Optional] |
-| **names** | `string` | Comma-separated metric name filter. | [Optional] [Defaults to `undefined`] |
+| **startTime** | `Date` | Query observations at or after this RFC3339 timestamp. Defaults to one hour before end_time. | [Optional] [Defaults to `undefined`] |
+| **endTime** | `Date` | Query observations at or before this RFC3339 timestamp. Defaults to the current time. | [Optional] [Defaults to `undefined`] |
+| **metrics** | `string` | Comma-separated canonical metric names. Defaults to CPU utilization, memory utilization, and network I/O. | [Optional] [Defaults to `undefined`] |
+| **stepSeconds** | `number` | Requested bucket width in seconds. The effective step is at least 15 seconds and may be increased to honor max_points. | [Optional] [Defaults to `undefined`] |
+| **statistic** | `SandboxRuntimeMetricStatistic` | Aggregation applied within each output bucket. Auto uses average for gauges and rate for counters. | [Optional] [Defaults to `undefined`] [Enum: auto, average, minimum, maximum, last, rate] |
+| **maxPoints** | `number` | Maximum points per returned series. The server may increase step_seconds to honor this bound. | [Optional] [Defaults to `240`] |
 
 ### Return type
 
-[**SuccessSandboxObservabilityMetricsResponse**](SuccessSandboxObservabilityMetricsResponse.md)
+[**SuccessSandboxRuntimeMetricsResponse**](SuccessSandboxRuntimeMetricsResponse.md)
 
 ### Authorization
 
@@ -287,16 +282,88 @@ example().catch(console.error);
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: `application/json`, `application/x-ndjson`
+- **Accept**: `application/json`
 
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Historical sandbox metric samples |  -  |
+| **200** | Chart-ready sandbox runtime metric series |  -  |
 | **400** | Invalid query parameters |  -  |
 | **403** | Forbidden |  -  |
 | **503** | Historical observability backend disabled or unavailable |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## getSandboxRuntimeMetricsCatalog
+
+> SuccessSandboxRuntimeMetricsCatalogResponse getSandboxRuntimeMetricsCatalog(id)
+
+Get the sandbox runtime metric catalog
+
+Returns the bounded canonical metric names, kinds, units, and dimensions supported by the runtime metrics API.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  ObservabilityApi,
+} from 'sandbox0';
+import type { GetSandboxRuntimeMetricsCatalogRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new ObservabilityApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+  } satisfies GetSandboxRuntimeMetricsCatalogRequest;
+
+  try {
+    const data = await api.getSandboxRuntimeMetricsCatalog(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+[**SuccessSandboxRuntimeMetricsCatalogResponse**](SuccessSandboxRuntimeMetricsCatalogResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Sandbox runtime metric catalog |  -  |
+| **403** | Forbidden |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

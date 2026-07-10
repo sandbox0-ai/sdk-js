@@ -104,6 +104,34 @@ console.log(resumed.status, resumed.runtimeGeneration);
 a wait stops polling locally; it does not undo a pause or resume already accepted
 by Sandbox0.
 
+## Runtime Metrics
+
+`getMetrics()` returns bounded, chart-ready sandbox metrics. Each series is split
+into segments at runtime restarts and collector resets, so chart segments should
+not be connected across those boundaries.
+
+```typescript
+import { SandboxRuntimeMetricName } from "sandbox0";
+
+const metrics = await sandbox.getMetrics({
+  startTime: new Date(Date.now() - 60 * 60 * 1000),
+  metrics: [
+    SandboxRuntimeMetricName.SandboxCpuUtilization,
+    SandboxRuntimeMetricName.SandboxMemoryUtilization,
+  ],
+  maxPoints: 240,
+});
+
+for (const series of metrics.series) {
+  for (const segment of series.segments) {
+    console.log(series.metric, segment.points);
+  }
+}
+```
+
+Use `sandbox.getMetricsCatalog()` to discover metric kinds, units, and
+dimensions supported by the API.
+
 ## Links
 
 - [Documentation](https://sandbox0.ai/docs)

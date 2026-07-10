@@ -5,9 +5,12 @@ import type {
   SandboxObservabilityEventsResponse,
   SandboxObservabilityLogStream,
   SandboxObservabilityLogsResponse,
-  SandboxObservabilityMetricsResponse,
   SandboxObservabilityOutcome,
   SandboxObservabilityWatchLine,
+  SandboxRuntimeMetricName,
+  SandboxRuntimeMetricStatistic,
+  SandboxRuntimeMetricsCatalogResponse,
+  SandboxRuntimeMetricsResponse,
   Sandbox,
   SandboxSummary,
 } from "./apispec/src/models/index";
@@ -103,17 +106,19 @@ export interface SandboxObservabilityLogWatchOptions
   stream?: SandboxObservabilityLogStream;
 }
 
-export interface SandboxObservabilityMetricOptions extends SandboxObservabilityQueryOptions {
-  contextId?: string;
-  name?: string[];
-  names?: string;
-}
-
-export interface SandboxObservabilityMetricWatchOptions
-  extends SandboxObservabilityWatchOptions {
-  contextId?: string;
-  name?: string[];
-  names?: string;
+export interface SandboxMetricsOptions {
+  /** Defaults to one hour before endTime. */
+  startTime?: Date;
+  /** Defaults to the current time. */
+  endTime?: Date;
+  /** Canonical sandbox-wide metrics to return. */
+  metrics?: readonly SandboxRuntimeMetricName[];
+  /** Requested bucket width. The server may increase it to honor maxPoints. */
+  stepSeconds?: number;
+  /** Defaults to average for gauges and rate for counters. */
+  statistic?: SandboxRuntimeMetricStatistic;
+  /** Maximum points per series. Defaults to 240 and cannot exceed 1000. */
+  maxPoints?: number;
 }
 
 export interface SandboxObservabilityWatchStream
@@ -124,7 +129,8 @@ export interface SandboxObservabilityWatchStream
 
 export type SandboxObservabilityEvents = SandboxObservabilityEventsResponse;
 export type SandboxObservabilityLogs = SandboxObservabilityLogsResponse;
-export type SandboxObservabilityMetrics = SandboxObservabilityMetricsResponse;
+export type SandboxMetrics = SandboxRuntimeMetricsResponse;
+export type SandboxMetricsCatalog = SandboxRuntimeMetricsCatalogResponse;
 
 export type SandboxStatusFilter = SandboxSummary["status"];
 

@@ -72,7 +72,6 @@ export interface SandboxObservabilityWatchLine {
 export const SandboxObservabilityWatchLineTypeEnum = {
     Event: 'event',
     Log: 'log',
-    MetricSample: 'metric_sample',
     Watermark: 'watermark',
     Heartbeat: 'heartbeat',
     Error: 'error'

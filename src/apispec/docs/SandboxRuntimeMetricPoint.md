@@ -1,24 +1,24 @@
 
-# SuccessSandboxObservabilityMetricsResponse
+# SandboxRuntimeMetricPoint
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`success` | boolean
-`data` | [SandboxObservabilityMetricsResponse](SandboxObservabilityMetricsResponse.md)
+`time` | Date
+`value` | number
 
 ## Example
 
 ```typescript
-import type { SuccessSandboxObservabilityMetricsResponse } from 'sandbox0'
+import type { SandboxRuntimeMetricPoint } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "success": null,
-  "data": null,
-} satisfies SuccessSandboxObservabilityMetricsResponse
+  "time": null,
+  "value": null,
+} satisfies SandboxRuntimeMetricPoint
 
 console.log(example)
 
@@ -27,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SuccessSandboxObservabilityMetricsResponse
+const exampleParsed = JSON.parse(exampleJSON) as SandboxRuntimeMetricPoint
 console.log(exampleParsed)
 ```
 

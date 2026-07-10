@@ -6,10 +6,10 @@ import type {
   SandboxObservabilityLogOptions,
   SandboxObservabilityLogWatchOptions,
   SandboxObservabilityLogs,
-  SandboxObservabilityMetricOptions,
-  SandboxObservabilityMetricWatchOptions,
-  SandboxObservabilityMetrics,
   SandboxObservabilityWatchStream,
+  SandboxMetrics,
+  SandboxMetricsCatalog,
+  SandboxMetricsOptions,
 } from "./models";
 import { Sandbox } from "./sandbox";
 
@@ -29,12 +29,8 @@ declare module "./sandbox" {
     watchLogs(
       options?: SandboxObservabilityLogWatchOptions,
     ): Promise<SandboxObservabilityWatchStream>;
-    listMetrics(
-      options?: SandboxObservabilityMetricOptions,
-    ): Promise<SandboxObservabilityMetrics>;
-    watchMetrics(
-      options?: SandboxObservabilityMetricWatchOptions,
-    ): Promise<SandboxObservabilityWatchStream>;
+    getMetrics(options?: SandboxMetricsOptions): Promise<SandboxMetrics>;
+    getMetricsCatalog(): Promise<SandboxMetricsCatalog>;
   }
 }
 
@@ -66,16 +62,15 @@ Sandbox.prototype.watchLogs = async function (
   return getClient(this).watchSandboxObservabilityLogs(this.id, options);
 };
 
-Sandbox.prototype.listMetrics = async function (
+Sandbox.prototype.getMetrics = async function (
   this: Sandbox,
-  options?: SandboxObservabilityMetricOptions,
-): Promise<SandboxObservabilityMetrics> {
-  return getClient(this).listSandboxObservabilityMetrics(this.id, options);
+  options?: SandboxMetricsOptions,
+): Promise<SandboxMetrics> {
+  return getClient(this).getSandboxMetrics(this.id, options);
 };
 
-Sandbox.prototype.watchMetrics = async function (
+Sandbox.prototype.getMetricsCatalog = async function (
   this: Sandbox,
-  options?: SandboxObservabilityMetricWatchOptions,
-): Promise<SandboxObservabilityWatchStream> {
-  return getClient(this).watchSandboxObservabilityMetrics(this.id, options);
+): Promise<SandboxMetricsCatalog> {
+  return getClient(this).getSandboxMetricsCatalog(this.id);
 };

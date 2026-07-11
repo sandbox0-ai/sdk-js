@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -134,6 +134,19 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SandboxesApi* | [**apiV1SandboxesIdServicesPut**](docs/SandboxesApi.md#apiv1sandboxesidservicesput) | **PUT** /api/v1/sandboxes/{id}/services | Replace sandbox services
 *SandboxesApi* | [**apiV1SandboxesIdStatusGet**](docs/SandboxesApi.md#apiv1sandboxesidstatusget) | **GET** /api/v1/sandboxes/{id}/status | Get sandbox status
 *SandboxesApi* | [**apiV1SandboxesPost**](docs/SandboxesApi.md#apiv1sandboxespost) | **POST** /api/v1/sandboxes | Create (claim) a sandbox
+*SessionsApi* | [**apiV1SandboxesIdSessionsGet**](docs/SessionsApi.md#apiv1sandboxesidsessionsget) | **GET** /api/v1/sandboxes/{id}/sessions | List execution sessions
+*SessionsApi* | [**apiV1SandboxesIdSessionsPost**](docs/SessionsApi.md#apiv1sandboxesidsessionspost) | **POST** /api/v1/sandboxes/{id}/sessions | Create an execution session
+*SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdAttemptsPost**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionidattemptspost) | **POST** /api/v1/sandboxes/{id}/sessions/{session_id}/attempts | Create a new execution session attempt
+*SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdDelete**](docs/SessionsApi.md#apiv1sandboxesidsessionssessioniddelete) | **DELETE** /api/v1/sandboxes/{id}/sessions/{session_id} | Delete an execution session
+*SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdDesiredStatePut**](docs/SessionsApi.md#apiv1sandboxesidsessionssessioniddesiredstateput) | **PUT** /api/v1/sandboxes/{id}/sessions/{session_id}/desired-state | Set execution session desired state
+*SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdEventsGet**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionideventsget) | **GET** /api/v1/sandboxes/{id}/sessions/{session_id}/events | List execution session events
+*SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdEventsStreamGet**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionideventsstreamget) | **GET** /api/v1/sandboxes/{id}/sessions/{session_id}/events/stream | Stream execution session events
+*SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdGet**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionidget) | **GET** /api/v1/sandboxes/{id}/sessions/{session_id} | Get an execution session
+*SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdInputsPost**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionidinputspost) | **POST** /api/v1/sandboxes/{id}/sessions/{session_id}/inputs | Append execution session input
+*SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdPut**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionidput) | **PUT** /api/v1/sandboxes/{id}/sessions/{session_id} | Replace an execution session specification
+*SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdSignalsPost**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionidsignalspost) | **POST** /api/v1/sandboxes/{id}/sessions/{session_id}/signals | Send a signal to an execution session attempt
+*SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdTerminalPut**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionidterminalput) | **PUT** /api/v1/sandboxes/{id}/sessions/{session_id}/terminal | Resize an execution session terminal
+*SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdWsGet**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionidwsget) | **GET** /api/v1/sandboxes/{id}/sessions/{session_id}/ws | Attach to an execution session with WebSocket
 *SnapshotsApi* | [**apiV1SandboxvolumesIdSnapshotsGet**](docs/SnapshotsApi.md#apiv1sandboxvolumesidsnapshotsget) | **GET** /api/v1/sandboxvolumes/{id}/snapshots | List snapshots
 *SnapshotsApi* | [**apiV1SandboxvolumesIdSnapshotsPost**](docs/SnapshotsApi.md#apiv1sandboxvolumesidsnapshotspost) | **POST** /api/v1/sandboxvolumes/{id}/snapshots | Create snapshot
 *SnapshotsApi* | [**apiV1SandboxvolumesIdSnapshotsSnapshotIdDelete**](docs/SnapshotsApi.md#apiv1sandboxvolumesidsnapshotssnapshotiddelete) | **DELETE** /api/v1/sandboxvolumes/{id}/snapshots/{snapshot_id} | Delete snapshot
@@ -193,6 +206,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [CreateAPIKeyResponse](docs/CreateAPIKeyResponse.md)
 - [CreateCMDContextRequest](docs/CreateCMDContextRequest.md)
 - [CreateContextRequest](docs/CreateContextRequest.md)
+- [CreateExecutionSessionAttemptRequest](docs/CreateExecutionSessionAttemptRequest.md)
 - [CreateREPLContextRequest](docs/CreateREPLContextRequest.md)
 - [CreateRegionRequest](docs/CreateRegionRequest.md)
 - [CreateSSHPublicKeyRequest](docs/CreateSSHPublicKeyRequest.md)
@@ -223,6 +237,37 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ErrorEnvelope](docs/ErrorEnvelope.md)
 - [ExecAction](docs/ExecAction.md)
 - [ExecCandidate](docs/ExecCandidate.md)
+- [ExecutionSession](docs/ExecutionSession.md)
+- [ExecutionSessionAttempt](docs/ExecutionSessionAttempt.md)
+- [ExecutionSessionDesiredState](docs/ExecutionSessionDesiredState.md)
+- [ExecutionSessionDesiredStateRequest](docs/ExecutionSessionDesiredStateRequest.md)
+- [ExecutionSessionEvent](docs/ExecutionSessionEvent.md)
+- [ExecutionSessionEventCursor](docs/ExecutionSessionEventCursor.md)
+- [ExecutionSessionEventPage](docs/ExecutionSessionEventPage.md)
+- [ExecutionSessionEventRetentionSpec](docs/ExecutionSessionEventRetentionSpec.md)
+- [ExecutionSessionIOMode](docs/ExecutionSessionIOMode.md)
+- [ExecutionSessionIOSpec](docs/ExecutionSessionIOSpec.md)
+- [ExecutionSessionInputRequest](docs/ExecutionSessionInputRequest.md)
+- [ExecutionSessionInputResponse](docs/ExecutionSessionInputResponse.md)
+- [ExecutionSessionLifecycleSpec](docs/ExecutionSessionLifecycleSpec.md)
+- [ExecutionSessionPhase](docs/ExecutionSessionPhase.md)
+- [ExecutionSessionReadinessSpec](docs/ExecutionSessionReadinessSpec.md)
+- [ExecutionSessionReadinessType](docs/ExecutionSessionReadinessType.md)
+- [ExecutionSessionRestartPolicy](docs/ExecutionSessionRestartPolicy.md)
+- [ExecutionSessionRestartSpec](docs/ExecutionSessionRestartSpec.md)
+- [ExecutionSessionRuntimeRecoveryPolicy](docs/ExecutionSessionRuntimeRecoveryPolicy.md)
+- [ExecutionSessionSignalRequest](docs/ExecutionSessionSignalRequest.md)
+- [ExecutionSessionSpec](docs/ExecutionSessionSpec.md)
+- [ExecutionSessionTerminalResizeRequest](docs/ExecutionSessionTerminalResizeRequest.md)
+- [ExecutionSessionTerminalSpec](docs/ExecutionSessionTerminalSpec.md)
+- [ExecutionSessionWebSocketAck](docs/ExecutionSessionWebSocketAck.md)
+- [ExecutionSessionWebSocketError](docs/ExecutionSessionWebSocketError.md)
+- [ExecutionSessionWebSocketEvent](docs/ExecutionSessionWebSocketEvent.md)
+- [ExecutionSessionWebSocketInput](docs/ExecutionSessionWebSocketInput.md)
+- [ExecutionSessionWebSocketRequest](docs/ExecutionSessionWebSocketRequest.md)
+- [ExecutionSessionWebSocketResize](docs/ExecutionSessionWebSocketResize.md)
+- [ExecutionSessionWebSocketResponse](docs/ExecutionSessionWebSocketResponse.md)
+- [ExecutionSessionWebSocketSignal](docs/ExecutionSessionWebSocketSignal.md)
 - [FileContentResponse](docs/FileContentResponse.md)
 - [FileInfo](docs/FileInfo.md)
 - [FileWatchError](docs/FileWatchError.md)
@@ -366,6 +411,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [StaticUsernamePasswordSourceSpec](docs/StaticUsernamePasswordSourceSpec.md)
 - [SuccessAPIKeyListResponse](docs/SuccessAPIKeyListResponse.md)
 - [SuccessAPIKeyListResponseAllOfData](docs/SuccessAPIKeyListResponseAllOfData.md)
+- [SuccessAcceptedResponse](docs/SuccessAcceptedResponse.md)
+- [SuccessAcceptedResponseAllOfData](docs/SuccessAcceptedResponseAllOfData.md)
 - [SuccessAuthProvidersResponse](docs/SuccessAuthProvidersResponse.md)
 - [SuccessAuthProvidersResponseAllOfData](docs/SuccessAuthProvidersResponseAllOfData.md)
 - [SuccessClaimResponse](docs/SuccessClaimResponse.md)
@@ -385,6 +432,11 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessDeviceLoginPollResponse](docs/SuccessDeviceLoginPollResponse.md)
 - [SuccessDeviceLoginStartResponse](docs/SuccessDeviceLoginStartResponse.md)
 - [SuccessEnvelope](docs/SuccessEnvelope.md)
+- [SuccessExecutionSessionEventPageResponse](docs/SuccessExecutionSessionEventPageResponse.md)
+- [SuccessExecutionSessionInputResponse](docs/SuccessExecutionSessionInputResponse.md)
+- [SuccessExecutionSessionListResponse](docs/SuccessExecutionSessionListResponse.md)
+- [SuccessExecutionSessionListResponseAllOfData](docs/SuccessExecutionSessionListResponseAllOfData.md)
+- [SuccessExecutionSessionResponse](docs/SuccessExecutionSessionResponse.md)
 - [SuccessFileListResponse](docs/SuccessFileListResponse.md)
 - [SuccessFileReadResponse](docs/SuccessFileReadResponse.md)
 - [SuccessFileReadResponseAllOfData](docs/SuccessFileReadResponseAllOfData.md)

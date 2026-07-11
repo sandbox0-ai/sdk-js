@@ -20,6 +20,7 @@ import type {
   SandboxMetrics,
   SandboxMetricsCatalog,
   SandboxMetricsOptions,
+  SessionEventStreamOptions,
 } from "./models";
 
 export const DEFAULT_BASE_URL = "https://api.sandbox0.ai";
@@ -63,6 +64,7 @@ export class Client {
     credentialSources: apisTypes.CredentialSourcesApi;
     teams: apisTypes.TeamsApi;
     observability: apisTypes.ObservabilityApi;
+    sessions: apisTypes.SessionsApi;
   };
 
   readonly sandboxes: Sandboxes;
@@ -99,6 +101,7 @@ export class Client {
       credentialSources: new apis.CredentialSourcesApi(this.configuration),
       teams: new apis.TeamsApi(this.configuration),
       observability: new apis.ObservabilityApi(this.configuration),
+      sessions: new apis.SessionsApi(this.configuration),
     };
 
     this.sandboxes = new Sandboxes(this);
@@ -204,6 +207,22 @@ export class Client {
     return headers;
   }
 
+  async openSandboxSessionEventStream(
+    sandboxId: string,
+    sessionId: string,
+    options?: SessionEventStreamOptions,
+  ): Promise<Response> {
+    return this.fetchRaw(
+      `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/sessions/${encodeURIComponent(sessionId)}/events/stream`,
+      { after: numberQuery(options?.after) },
+      {
+        Accept: "text/event-stream",
+        ...(options?.lastEventId ? { "Last-Event-ID": options.lastEventId } : {}),
+      },
+      options?.signal,
+    );
+  }
+
   private async watchSandboxObservability(
     path: string,
     query: Record<string, string | undefined>,
@@ -235,6 +254,7 @@ export class Client {
     path: string,
     query: Record<string, string | undefined>,
     extraHeaders?: Record<string, string>,
+    signal?: AbortSignal,
   ): Promise<Response> {
     const url = new URL(this.baseUrl);
     url.pathname = url.pathname.replace(/\/$/, "") + path;
@@ -260,7 +280,7 @@ export class Client {
     if (!fetchApi) {
       throw new Error("fetch API is not available");
     }
-    const response = await fetchApi(url.toString(), { method: "GET", headers });
+    const response = await fetchApi(url.toString(), { method: "GET", headers, signal });
     if (!response.ok) {
       throw await apiErrorFromResponse(response);
     }

@@ -13,6 +13,7 @@ export * from './RegistryApi';
 export * from './SandboxRootfsApi';
 export * from './SandboxVolumesApi';
 export * from './SandboxesApi';
+export * from './SessionsApi';
 export * from './SnapshotsApi';
 export * from './TeamsApi';
 export * from './TemplatesApi';

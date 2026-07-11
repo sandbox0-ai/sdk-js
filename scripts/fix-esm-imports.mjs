@@ -13,6 +13,7 @@ const rewritePatterns = [
   /(\bexport\s+(?:type\s+)?[^'"\n]*?\sfrom\s*)(['"])(\.\.?\/[^'"]+)\2/g,
   /(\bimport\s*)(['"])(\.\.?\/[^'"]+)\2/g,
   /(\bimport\s*\(\s*)(['"])(\.\.?\/[^'"]+)\2/g,
+  /(\bdeclare\s+module\s*)(['"])(\.\.?\/[^'"]+)\2/g,
 ];
 
 async function walk(dirPath) {

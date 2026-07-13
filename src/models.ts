@@ -1,5 +1,6 @@
 import type {
   ObservabilityEventSource,
+  SandboxAuditActorKind,
   SandboxAppServiceView,
   SandboxObservabilityEventType,
   SandboxObservabilityEventsResponse,
@@ -88,6 +89,13 @@ export interface SandboxObservabilityEventOptions extends SandboxObservabilityQu
   source?: ObservabilityEventSource;
   eventType?: SandboxObservabilityEventType;
   outcome?: SandboxObservabilityOutcome;
+  actorKind?: SandboxAuditActorKind;
+  actorId?: string;
+  action?: string;
+  resourceType?: string;
+  operationId?: string;
+  /** Exact event lookup. It cannot be combined with other event filters. */
+  eventId?: string;
 }
 
 export interface SandboxObservabilityEventWatchOptions
@@ -95,6 +103,11 @@ export interface SandboxObservabilityEventWatchOptions
   source?: ObservabilityEventSource;
   eventType?: SandboxObservabilityEventType;
   outcome?: SandboxObservabilityOutcome;
+  actorKind?: SandboxAuditActorKind;
+  actorId?: string;
+  action?: string;
+  resourceType?: string;
+  operationId?: string;
 }
 
 export interface SandboxObservabilityLogOptions extends SandboxObservabilityQueryOptions {

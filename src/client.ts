@@ -310,6 +310,11 @@ function toSandboxObservabilityEventQuery(
     source: options?.source,
     event_type: options?.eventType,
     outcome: options?.outcome,
+    actor_kind: options?.actorKind,
+    actor_id: options?.actorId,
+    action: options?.action,
+    resource_type: options?.resourceType,
+    operation_id: options?.operationId,
   };
 }
 

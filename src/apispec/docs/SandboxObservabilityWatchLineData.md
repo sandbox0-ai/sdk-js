@@ -6,6 +6,8 @@
 
 Name | Type
 ------------ | -------------
+`eventId` | string
+`schemaVersion` | number
 `teamId` | string
 `sandboxId` | string
 `regionId` | string
@@ -14,14 +16,22 @@ Name | Type
 `ingestedAt` | Date
 `source` | [ObservabilityEventSource](ObservabilityEventSource.md)
 `eventType` | [SandboxObservabilityEventType](SandboxObservabilityEventType.md)
+`phase` | [SandboxAuditEventPhase](SandboxAuditEventPhase.md)
 `outcome` | [SandboxObservabilityOutcome](SandboxObservabilityOutcome.md)
-`cursor` | string
-`watermark` | string
+`actor` | [SandboxAuditActor](SandboxAuditActor.md)
+`action` | string
+`resource` | [SandboxAuditResource](SandboxAuditResource.md)
+`operationId` | string
+`parentEventId` | string
+`producer` | [SandboxAuditProducer](SandboxAuditProducer.md)
+`request` | [SandboxAuditRequest](SandboxAuditRequest.md)
+`integrity` | [SandboxAuditIntegrity](SandboxAuditIntegrity.md)
 `attributes` | { [key: string]: any; }
 `contextId` | string
 `processId` | string
 `stream` | [SandboxObservabilityLogStream](SandboxObservabilityLogStream.md)
 `message` | string
+`cursor` | string
 
 ## Example
 
@@ -30,6 +40,8 @@ import type { SandboxObservabilityWatchLineData } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
+  "eventId": null,
+  "schemaVersion": null,
   "teamId": null,
   "sandboxId": null,
   "regionId": null,
@@ -38,14 +50,22 @@ const example = {
   "ingestedAt": null,
   "source": null,
   "eventType": null,
+  "phase": null,
   "outcome": null,
-  "cursor": null,
-  "watermark": null,
+  "actor": null,
+  "action": null,
+  "resource": null,
+  "operationId": null,
+  "parentEventId": null,
+  "producer": null,
+  "request": null,
+  "integrity": null,
   "attributes": null,
   "contextId": null,
   "processId": null,
   "stream": null,
   "message": null,
+  "cursor": null,
 } satisfies SandboxObservabilityWatchLineData
 
 console.log(example)

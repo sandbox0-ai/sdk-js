@@ -8,6 +8,187 @@ import {
 } from "../../src/index.ts";
 
 describe("sandbox observability", () => {
+  it("lists canonical signed audit events with v2 filters", async () => {
+    let requestedUrl = "";
+    const client = new Client({
+      token: "test-token",
+      baseUrl: "http://example.test/base",
+      fetch: async (input) => {
+        requestedUrl = String(input);
+        return new Response(
+          JSON.stringify({
+            data: {
+              events: [
+                {
+                  event_id: "c48d73ec-a08f-41bb-82d2-3f48a827f9b2",
+                  schema_version: 2,
+                  team_id: "team_1",
+                  sandbox_id: "sb_123",
+                  region_id: "local",
+                  cluster_id: "cluster-a",
+                  occurred_at: "2026-07-13T13:00:00.123456789Z",
+                  ingested_at: "2026-07-13T13:00:00.223456789Z",
+                  source: "cluster_gateway",
+                  event_type: "api_access",
+                  phase: "result",
+                  outcome: "failed",
+                  actor: {
+                    kind: "api_key",
+                    id: "key_1",
+                    api_key_id: "key_1",
+                    auth_method: "api_key",
+                  },
+                  action: "sandbox.delete",
+                  resource: { type: "sandbox", id: "sb_123" },
+                  operation_id: "72ae77fe-d25e-41dc-bd25-f537aa9d1597",
+                  parent_event_id: "13cb9417-bb36-4c13-85da-6050f75728da",
+                  producer: {
+                    service: "cluster-gateway",
+                    instance: "cluster-gateway-0",
+                    sequence: 7,
+                  },
+                  request: {
+                    request_id: "req_1",
+                    http_method: "DELETE",
+                    route: "/api/v1/sandboxes/:id",
+                    status_code: 503,
+                  },
+                  integrity: {
+                    algorithm: "ed25519-sha256-v1",
+                    payload_hash: "a".repeat(64),
+                    signature: "signature",
+                    signing_key_id: "b".repeat(64),
+                    signature_status: "verified",
+                    event_id_conflict: false,
+                  },
+                  attributes: { operation_executed: false },
+                },
+              ],
+              next_cursor: "next",
+              watermark: "watermark",
+            },
+          }),
+          {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          },
+        );
+      },
+    });
+
+    const events = await client.sandbox("sb_123").listObservabilityEvents({
+      startTime: new Date("2026-07-13T12:00:00Z"),
+      endTime: new Date("2026-07-13T14:00:00Z"),
+      limit: 50,
+      cursor: "previous",
+      source: "cluster_gateway",
+      eventType: "api_access",
+      outcome: "failed",
+      actorKind: "api_key",
+      actorId: "key_1",
+      action: "sandbox.delete",
+      resourceType: "sandbox",
+      operationId: "72ae77fe-d25e-41dc-bd25-f537aa9d1597",
+    });
+
+    const url = new URL(requestedUrl);
+    assert.equal(url.pathname, "/base/api/v1/sandboxes/sb_123/observability/events");
+    assert.equal(url.searchParams.get("start_time"), "2026-07-13T12:00:00.000Z");
+    assert.equal(url.searchParams.get("end_time"), "2026-07-13T14:00:00.000Z");
+    assert.equal(url.searchParams.get("limit"), "50");
+    assert.equal(url.searchParams.get("cursor"), "previous");
+    assert.equal(url.searchParams.get("source"), "cluster_gateway");
+    assert.equal(url.searchParams.get("event_type"), "api_access");
+    assert.equal(url.searchParams.get("outcome"), "failed");
+    assert.equal(url.searchParams.get("actor_kind"), "api_key");
+    assert.equal(url.searchParams.get("actor_id"), "key_1");
+    assert.equal(url.searchParams.get("action"), "sandbox.delete");
+    assert.equal(url.searchParams.get("resource_type"), "sandbox");
+    assert.equal(
+      url.searchParams.get("operation_id"),
+      "72ae77fe-d25e-41dc-bd25-f537aa9d1597",
+    );
+
+    const event = events.events[0];
+    assert.equal(event?.eventId, "c48d73ec-a08f-41bb-82d2-3f48a827f9b2");
+    assert.equal(event?.schemaVersion, 2);
+    assert.ok(event?.occurredAt instanceof Date);
+    assert.equal(event?.actor.kind, "api_key");
+    assert.equal(event?.resource.id, "sb_123");
+    assert.equal(event?.producer.sequence, 7);
+    assert.equal(event?.request?.statusCode, 503);
+    assert.equal(event?.integrity.signatureStatus, "verified");
+    assert.equal(event?.integrity.eventIdConflict, false);
+    assert.equal(events.nextCursor, "next");
+  });
+
+  it("supports exact audit event lookup", async () => {
+    let requestedUrl = "";
+    const client = new Client({
+      token: "test-token",
+      baseUrl: "http://example.test/base",
+      fetch: async (input) => {
+        requestedUrl = String(input);
+        return new Response(JSON.stringify({ data: { events: [] } }), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        });
+      },
+    });
+
+    await client.listSandboxObservabilityEvents("sb_123", {
+      eventId: "c48d73ec-a08f-41bb-82d2-3f48a827f9b2",
+    });
+
+    const url = new URL(requestedUrl);
+    assert.equal(url.searchParams.get("event_id"), "c48d73ec-a08f-41bb-82d2-3f48a827f9b2");
+    assert.equal([...url.searchParams.keys()].length, 1);
+  });
+
+  it("streams canonical event filters as NDJSON query parameters", async () => {
+    let requestedUrl = "";
+    const client = new Client({
+      token: "test-token",
+      baseUrl: "http://example.test/base",
+      fetch: async (input) => {
+        requestedUrl = String(input);
+        return new Response(new ReadableStream<Uint8Array>({
+          start(controller) {
+            controller.close();
+          },
+        }), {
+          status: 200,
+          headers: { "content-type": "application/x-ndjson" },
+        });
+      },
+    });
+
+    await client.sandbox("sb_123").watchObservabilityEvents({
+      source: "netd",
+      eventType: "network_audit",
+      outcome: "denied",
+      actorKind: "sandbox_workload",
+      actorId: "sb_123",
+      action: "deny",
+      resourceType: "network_flow",
+      operationId: "72ae77fe-d25e-41dc-bd25-f537aa9d1597",
+    });
+
+    const url = new URL(requestedUrl);
+    assert.equal(url.searchParams.get("watch"), "true");
+    assert.equal(url.searchParams.get("source"), "netd");
+    assert.equal(url.searchParams.get("event_type"), "network_audit");
+    assert.equal(url.searchParams.get("outcome"), "denied");
+    assert.equal(url.searchParams.get("actor_kind"), "sandbox_workload");
+    assert.equal(url.searchParams.get("actor_id"), "sb_123");
+    assert.equal(url.searchParams.get("action"), "deny");
+    assert.equal(url.searchParams.get("resource_type"), "network_flow");
+    assert.equal(
+      url.searchParams.get("operation_id"),
+      "72ae77fe-d25e-41dc-bd25-f537aa9d1597",
+    );
+  });
+
   it("lists logs through the observability API", async () => {
     let requestedUrl = "";
     const client = new Client({

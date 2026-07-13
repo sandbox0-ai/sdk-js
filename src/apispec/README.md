@@ -99,7 +99,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *HealthApi* | [**metadataGet**](docs/HealthApi.md#metadataget) | **GET** /metadata | Gateway metadata
 *HealthApi* | [**metricsGet**](docs/HealthApi.md#metricsget) | **GET** /metrics | Prometheus metrics
 *HealthApi* | [**readyzGet**](docs/HealthApi.md#readyzget) | **GET** /readyz | Readiness check
-*ObservabilityApi* | [**apiV1SandboxesIdObservabilityEventsGet**](docs/ObservabilityApi.md#apiv1sandboxesidobservabilityeventsget) | **GET** /api/v1/sandboxes/{id}/observability/events | Query historical sandbox observability events
+*ObservabilityApi* | [**apiV1SandboxesIdObservabilityEventsGet**](docs/ObservabilityApi.md#apiv1sandboxesidobservabilityeventsget) | **GET** /api/v1/sandboxes/{id}/observability/events | Query canonical signed sandbox observability events
 *ObservabilityApi* | [**apiV1SandboxesIdObservabilityLogsGet**](docs/ObservabilityApi.md#apiv1sandboxesidobservabilitylogsget) | **GET** /api/v1/sandboxes/{id}/observability/logs | Query historical sandbox logs
 *ObservabilityApi* | [**getSandboxRuntimeMetrics**](docs/ObservabilityApi.md#getsandboxruntimemetrics) | **GET** /api/v1/sandboxes/{id}/metrics | Query chart-ready sandbox runtime metrics
 *ObservabilityApi* | [**getSandboxRuntimeMetricsCatalog**](docs/ObservabilityApi.md#getsandboxruntimemetricscatalog) | **GET** /api/v1/sandboxes/{id}/metrics/catalog | Get the sandbox runtime metric catalog
@@ -356,6 +356,13 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxAppServiceRouteRateLimit](docs/SandboxAppServiceRouteRateLimit.md)
 - [SandboxAppServiceRuntime](docs/SandboxAppServiceRuntime.md)
 - [SandboxAppServiceView](docs/SandboxAppServiceView.md)
+- [SandboxAuditActor](docs/SandboxAuditActor.md)
+- [SandboxAuditActorKind](docs/SandboxAuditActorKind.md)
+- [SandboxAuditEventPhase](docs/SandboxAuditEventPhase.md)
+- [SandboxAuditIntegrity](docs/SandboxAuditIntegrity.md)
+- [SandboxAuditProducer](docs/SandboxAuditProducer.md)
+- [SandboxAuditRequest](docs/SandboxAuditRequest.md)
+- [SandboxAuditResource](docs/SandboxAuditResource.md)
 - [SandboxConfig](docs/SandboxConfig.md)
 - [SandboxFunction](docs/SandboxFunction.md)
 - [SandboxFunctionSource](docs/SandboxFunctionSource.md)

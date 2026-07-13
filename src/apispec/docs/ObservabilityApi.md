@@ -4,7 +4,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**apiV1SandboxesIdObservabilityEventsGet**](ObservabilityApi.md#apiv1sandboxesidobservabilityeventsget) | **GET** /api/v1/sandboxes/{id}/observability/events | Query historical sandbox observability events |
+| [**apiV1SandboxesIdObservabilityEventsGet**](ObservabilityApi.md#apiv1sandboxesidobservabilityeventsget) | **GET** /api/v1/sandboxes/{id}/observability/events | Query canonical signed sandbox observability events |
 | [**apiV1SandboxesIdObservabilityLogsGet**](ObservabilityApi.md#apiv1sandboxesidobservabilitylogsget) | **GET** /api/v1/sandboxes/{id}/observability/logs | Query historical sandbox logs |
 | [**getSandboxRuntimeMetrics**](ObservabilityApi.md#getsandboxruntimemetrics) | **GET** /api/v1/sandboxes/{id}/metrics | Query chart-ready sandbox runtime metrics |
 | [**getSandboxRuntimeMetricsCatalog**](ObservabilityApi.md#getsandboxruntimemetricscatalog) | **GET** /api/v1/sandboxes/{id}/metrics/catalog | Get the sandbox runtime metric catalog |
@@ -13,11 +13,11 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 ## apiV1SandboxesIdObservabilityEventsGet
 
-> SuccessSandboxObservabilityEventsResponse apiV1SandboxesIdObservabilityEventsGet(id, startTime, endTime, limit, cursor, watch, source, eventType, outcome)
+> SuccessSandboxObservabilityEventsResponse apiV1SandboxesIdObservabilityEventsGet(id, startTime, endTime, limit, cursor, watch, source, eventType, outcome, actorKind, actorId, action, resourceType, operationId, eventId)
 
-Query historical sandbox observability events
+Query canonical signed sandbox observability events
 
-Queries the asynchronous per-sandbox observability projection for lifecycle, network audit, and runtime stats events. This endpoint does not expose backend SQL and reads tables that are separate from the metering usage ledger.
+Queries canonical signed per-sandbox audit facts from ClickHouse. Every returned event includes an inline signature verification status, while event-ID payload conflicts are reported independently. Access requires the enterprise sandbox_audit feature and the sandboxaudit:read permission.
 
 ### Example
 
@@ -43,7 +43,7 @@ async function example() {
     startTime: 2013-10-20T19:20:30+01:00,
     // Date | Include events that occurred at or before this RFC3339 timestamp. (optional)
     endTime: 2013-10-20T19:20:30+01:00,
-    // number | Maximum number of events to return. Values above 1000 are capped. (optional)
+    // number | Maximum number of events to return. Values above 1000 are capped. Exact event_id mode ignores this value and returns at most two payload variants. (optional)
     limit: 56,
     // string | Opaque pagination cursor returned by a previous response. When watch is true, this must be a watch resume cursor from an NDJSON watermark line. (optional)
     cursor: cursor_example,
@@ -55,6 +55,18 @@ async function example() {
     eventType: ...,
     // SandboxObservabilityOutcome (optional)
     outcome: ...,
+    // SandboxAuditActorKind (optional)
+    actorKind: ...,
+    // string (optional)
+    actorId: actorId_example,
+    // string (optional)
+    action: action_example,
+    // string (optional)
+    resourceType: resourceType_example,
+    // string (optional)
+    operationId: operationId_example,
+    // string | Exact lookup mode for one stable audit event ID. It cannot be combined with time, cursor, watch, or other event filters and returns one canonical row or two conflicting payload variants. (optional)
+    eventId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
   } satisfies ApiV1SandboxesIdObservabilityEventsGetRequest;
 
   try {
@@ -77,12 +89,18 @@ example().catch(console.error);
 | **id** | `string` |  | [Defaults to `undefined`] |
 | **startTime** | `Date` | Include events that occurred at or after this RFC3339 timestamp. | [Optional] [Defaults to `undefined`] |
 | **endTime** | `Date` | Include events that occurred at or before this RFC3339 timestamp. | [Optional] [Defaults to `undefined`] |
-| **limit** | `number` | Maximum number of events to return. Values above 1000 are capped. | [Optional] [Defaults to `100`] |
+| **limit** | `number` | Maximum number of events to return. Values above 1000 are capped. Exact event_id mode ignores this value and returns at most two payload variants. | [Optional] [Defaults to `100`] |
 | **cursor** | `string` | Opaque pagination cursor returned by a previous response. When watch is true, this must be a watch resume cursor from an NDJSON watermark line. | [Optional] [Defaults to `undefined`] |
 | **watch** | `boolean` | Stream matching records as application/x-ndjson in ingestion order until the client disconnects. When watch is true, end_time is not supported. Without cursor or start_time, streaming starts at request time. | [Optional] [Defaults to `false`] |
-| **source** | `ObservabilityEventSource` |  | [Optional] [Defaults to `undefined`] [Enum: manager, netd, procd] |
-| **eventType** | `SandboxObservabilityEventType` |  | [Optional] [Defaults to `undefined`] [Enum: lifecycle, network_audit, runtime_stats] |
-| **outcome** | `SandboxObservabilityOutcome` |  | [Optional] [Defaults to `undefined`] [Enum: completed, denied, error, succeeded, failed] |
+| **source** | `ObservabilityEventSource` |  | [Optional] [Defaults to `undefined`] [Enum: cluster_gateway, manager, netd, procd, ctld, storage_proxy] |
+| **eventType** | `SandboxObservabilityEventType` |  | [Optional] [Defaults to `undefined`] [Enum: lifecycle, network_audit, runtime_stats, api_access, process, file] |
+| **outcome** | `SandboxObservabilityOutcome` |  | [Optional] [Defaults to `undefined`] [Enum: completed, denied, error, succeeded, failed, accepted, unknown] |
+| **actorKind** | `SandboxAuditActorKind` |  | [Optional] [Defaults to `undefined`] [Enum: human, api_key, service, sandbox_workload, ssh_user, exposure_credential, anonymous] |
+| **actorId** | `string` |  | [Optional] [Defaults to `undefined`] |
+| **action** | `string` |  | [Optional] [Defaults to `undefined`] |
+| **resourceType** | `string` |  | [Optional] [Defaults to `undefined`] |
+| **operationId** | `string` |  | [Optional] [Defaults to `undefined`] |
+| **eventId** | `string` | Exact lookup mode for one stable audit event ID. It cannot be combined with time, cursor, watch, or other event filters and returns one canonical row or two conflicting payload variants. | [Optional] [Defaults to `undefined`] |
 
 ### Return type
 
@@ -101,10 +119,10 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Historical sandbox observability events |  -  |
+| **200** | Canonical signed sandbox observability events |  -  |
 | **400** | Invalid query parameters |  -  |
-| **403** | Forbidden |  -  |
-| **503** | Historical observability backend disabled or unavailable |  -  |
+| **403** | Forbidden or sandbox_audit is not licensed |  -  |
+| **503** | Sandbox observability backend disabled or unavailable |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

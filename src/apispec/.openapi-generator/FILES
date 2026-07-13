@@ -189,6 +189,13 @@ docs/SandboxAppServiceRouteCORS.md
 docs/SandboxAppServiceRouteRateLimit.md
 docs/SandboxAppServiceRuntime.md
 docs/SandboxAppServiceView.md
+docs/SandboxAuditActor.md
+docs/SandboxAuditActorKind.md
+docs/SandboxAuditEventPhase.md
+docs/SandboxAuditIntegrity.md
+docs/SandboxAuditProducer.md
+docs/SandboxAuditRequest.md
+docs/SandboxAuditResource.md
 docs/SandboxConfig.md
 docs/SandboxFunction.md
 docs/SandboxFunctionSource.md
@@ -569,6 +576,13 @@ src/models/SandboxAppServiceRouteCORS.ts
 src/models/SandboxAppServiceRouteRateLimit.ts
 src/models/SandboxAppServiceRuntime.ts
 src/models/SandboxAppServiceView.ts
+src/models/SandboxAuditActor.ts
+src/models/SandboxAuditActorKind.ts
+src/models/SandboxAuditEventPhase.ts
+src/models/SandboxAuditIntegrity.ts
+src/models/SandboxAuditProducer.ts
+src/models/SandboxAuditRequest.ts
+src/models/SandboxAuditResource.ts
 src/models/SandboxConfig.ts
 src/models/SandboxFunction.ts
 src/models/SandboxFunctionSource.ts

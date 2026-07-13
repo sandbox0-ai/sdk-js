@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ErrorEnvelope,
   ObservabilityEventSource,
+  SandboxAuditActorKind,
   SandboxObservabilityEventType,
   SandboxObservabilityLogStream,
   SandboxObservabilityOutcome,
@@ -32,6 +33,8 @@ import {
     ErrorEnvelopeToJSON,
     ObservabilityEventSourceFromJSON,
     ObservabilityEventSourceToJSON,
+    SandboxAuditActorKindFromJSON,
+    SandboxAuditActorKindToJSON,
     SandboxObservabilityEventTypeFromJSON,
     SandboxObservabilityEventTypeToJSON,
     SandboxObservabilityLogStreamFromJSON,
@@ -62,6 +65,12 @@ export interface ApiV1SandboxesIdObservabilityEventsGetRequest {
     source?: ObservabilityEventSource;
     eventType?: SandboxObservabilityEventType;
     outcome?: SandboxObservabilityOutcome;
+    actorKind?: SandboxAuditActorKind;
+    actorId?: string;
+    action?: string;
+    resourceType?: string;
+    operationId?: string;
+    eventId?: string;
 }
 
 export interface ApiV1SandboxesIdObservabilityLogsGetRequest {
@@ -95,8 +104,8 @@ export interface GetSandboxRuntimeMetricsCatalogRequest {
 export class ObservabilityApi extends runtime.BaseAPI {
 
     /**
-     * Queries the asynchronous per-sandbox observability projection for lifecycle, network audit, and runtime stats events. This endpoint does not expose backend SQL and reads tables that are separate from the metering usage ledger.
-     * Query historical sandbox observability events
+     * Queries canonical signed per-sandbox audit facts from ClickHouse. Every returned event includes an inline signature verification status, while event-ID payload conflicts are reported independently. Access requires the enterprise sandbox_audit feature and the sandboxaudit:read permission.
+     * Query canonical signed sandbox observability events
      */
     async apiV1SandboxesIdObservabilityEventsGetRaw(requestParameters: ApiV1SandboxesIdObservabilityEventsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxObservabilityEventsResponse>> {
         if (requestParameters['id'] == null) {
@@ -140,6 +149,30 @@ export class ObservabilityApi extends runtime.BaseAPI {
             queryParameters['outcome'] = requestParameters['outcome'];
         }
 
+        if (requestParameters['actorKind'] != null) {
+            queryParameters['actor_kind'] = requestParameters['actorKind'];
+        }
+
+        if (requestParameters['actorId'] != null) {
+            queryParameters['actor_id'] = requestParameters['actorId'];
+        }
+
+        if (requestParameters['action'] != null) {
+            queryParameters['action'] = requestParameters['action'];
+        }
+
+        if (requestParameters['resourceType'] != null) {
+            queryParameters['resource_type'] = requestParameters['resourceType'];
+        }
+
+        if (requestParameters['operationId'] != null) {
+            queryParameters['operation_id'] = requestParameters['operationId'];
+        }
+
+        if (requestParameters['eventId'] != null) {
+            queryParameters['event_id'] = requestParameters['eventId'];
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.accessToken) {
@@ -165,8 +198,8 @@ export class ObservabilityApi extends runtime.BaseAPI {
     }
 
     /**
-     * Queries the asynchronous per-sandbox observability projection for lifecycle, network audit, and runtime stats events. This endpoint does not expose backend SQL and reads tables that are separate from the metering usage ledger.
-     * Query historical sandbox observability events
+     * Queries canonical signed per-sandbox audit facts from ClickHouse. Every returned event includes an inline signature verification status, while event-ID payload conflicts are reported independently. Access requires the enterprise sandbox_audit feature and the sandboxaudit:read permission.
+     * Query canonical signed sandbox observability events
      */
     async apiV1SandboxesIdObservabilityEventsGet(requestParameters: ApiV1SandboxesIdObservabilityEventsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxObservabilityEventsResponse> {
         const response = await this.apiV1SandboxesIdObservabilityEventsGetRaw(requestParameters, initOverrides);

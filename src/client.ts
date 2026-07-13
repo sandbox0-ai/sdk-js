@@ -1,5 +1,6 @@
 import type * as runtimeTypes from "./apispec/src/runtime";
 import type * as apisTypes from "./apispec/src/apis/index";
+import type { SandboxObservabilityWatchLine } from "./apispec/src/models/index";
 import { apis, models, runtime } from "./apispec_compat";
 import { normalizeNullMapMiddleware } from "./response_normalize";
 import { CredentialSources } from "./resources/credential_sources";
@@ -366,7 +367,7 @@ function createSandboxObservabilityWatchStream(
             const line = buffer.slice(0, newlineIndex).trim();
             buffer = buffer.slice(newlineIndex + 1);
             if (line) {
-              yield models.SandboxObservabilityWatchLineFromJSON(JSON.parse(line));
+              yield parseSandboxObservabilityWatchLine(line);
             }
             newlineIndex = buffer.indexOf("\n");
           }
@@ -374,13 +375,41 @@ function createSandboxObservabilityWatchStream(
         buffer += decoder.decode();
         const line = buffer.trim();
         if (line) {
-          yield models.SandboxObservabilityWatchLineFromJSON(JSON.parse(line));
+          yield parseSandboxObservabilityWatchLine(line);
         }
       } finally {
         reader.releaseLock();
       }
     },
   };
+}
+
+/**
+ * The generated oneOf parser checks camelCase model properties before it has
+ * converted the server's snake_case JSON, so event and log watch payloads would
+ * otherwise become empty objects. The outer watch line type is the protocol
+ * discriminator and selects the corresponding generated deserializer here.
+ */
+function parseSandboxObservabilityWatchLine(
+  line: string,
+): SandboxObservabilityWatchLine {
+  const raw: unknown = JSON.parse(line);
+  const parsed = models.SandboxObservabilityWatchLineFromJSON(raw);
+  if (raw === null || typeof raw !== "object" || Array.isArray(raw)) {
+    return parsed;
+  }
+
+  const data = (raw as Record<string, unknown>).data;
+  if (data === null || data === undefined) {
+    return parsed;
+  }
+
+  if (parsed.type === "event") {
+    parsed.data = models.SandboxObservabilityEventFromJSON(data);
+  } else if (parsed.type === "log") {
+    parsed.data = models.SandboxObservabilityLogEntryFromJSON(data);
+  }
+  return parsed;
 }
 
 function hasHeader(headers: Record<string, string>, name: string): boolean {

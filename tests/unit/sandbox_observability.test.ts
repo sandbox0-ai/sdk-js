@@ -291,6 +291,93 @@ describe("sandbox observability", () => {
     assert.equal(lines[1]?.cursor, "c1");
   });
 
+  it("parses snake_case event and log data in watch lines", async () => {
+    const event = {
+      event_id: "c48d73ec-a08f-41bb-82d2-3f48a827f9b2",
+      schema_version: 2,
+      team_id: "team_1",
+      sandbox_id: "sb_123",
+      region_id: "local",
+      cluster_id: "cluster-a",
+      occurred_at: "2026-07-13T13:00:00.123Z",
+      ingested_at: "2026-07-13T13:00:00.223Z",
+      source: "netd",
+      event_type: "network_audit",
+      phase: "effect",
+      outcome: "denied",
+      actor: { kind: "sandbox_workload", id: "sb_123" },
+      action: "network.deny",
+      resource: { type: "sandbox_network", id: "sb_123" },
+      operation_id: "72ae77fe-d25e-41dc-bd25-f537aa9d1597",
+      producer: { service: "netd", sequence: 8 },
+      integrity: {
+        algorithm: "ed25519-sha256-v1",
+        payload_hash: "a".repeat(64),
+        signature: "signature",
+        signing_key_id: "b".repeat(64),
+        signature_status: "verified",
+      },
+      attributes: { host: "blocked.example", dest_port: 443 },
+    };
+    const log = {
+      team_id: "team_1",
+      sandbox_id: "sb_123",
+      region_id: "local",
+      cluster_id: "cluster-a",
+      context_id: "ctx_1",
+      occurred_at: "2026-07-13T13:00:01Z",
+      ingested_at: "2026-07-13T13:00:02Z",
+      stream: "stderr",
+      message: "connection denied",
+      cursor: "log-cursor",
+    };
+    const body = new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.enqueue(
+          new TextEncoder().encode(
+            `${JSON.stringify({ type: "event", data: event })}\n` +
+              `${JSON.stringify({ type: "log", data: log })}\n`,
+          ),
+        );
+        controller.close();
+      },
+    });
+    const client = new Client({
+      token: "test-token",
+      baseUrl: "http://example.test/base",
+      fetch: async () =>
+        new Response(body, {
+          status: 200,
+          headers: { "content-type": "application/x-ndjson" },
+        }),
+    });
+
+    const stream = await client.sandbox("sb_123").watchObservabilityEvents();
+    const lines = [];
+    for await (const line of stream) {
+      lines.push(line);
+    }
+
+    const eventData = lines[0]?.data;
+    assert.equal(lines[0]?.type, "event");
+    assert.ok(eventData && "eventId" in eventData);
+    if (eventData && "eventId" in eventData) {
+      assert.equal(eventData.eventId, event.event_id);
+      assert.equal(eventData.action, "network.deny");
+      assert.ok(eventData.occurredAt instanceof Date);
+      assert.equal(eventData.attributes?.host, "blocked.example");
+    }
+
+    const logData = lines[1]?.data;
+    assert.equal(lines[1]?.type, "log");
+    assert.ok(logData && "message" in logData);
+    if (logData && "message" in logData) {
+      assert.equal(logData.message, "connection denied");
+      assert.equal(logData.contextId, "ctx_1");
+      assert.ok(logData.occurredAt instanceof Date);
+    }
+  });
+
   it("queries chart-ready runtime metrics and parses time fields", async () => {
     let requestedUrl = "";
     const client = new Client({

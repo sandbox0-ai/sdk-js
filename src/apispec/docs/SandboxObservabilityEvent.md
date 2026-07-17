@@ -19,7 +19,6 @@ Name | Type
 `phase` | [SandboxAuditEventPhase](SandboxAuditEventPhase.md)
 `outcome` | [SandboxObservabilityOutcome](SandboxObservabilityOutcome.md)
 `actor` | [SandboxAuditActor](SandboxAuditActor.md)
-`executionScope` | [SandboxAuditExecutionScope](SandboxAuditExecutionScope.md)
 `action` | string
 `resource` | [SandboxAuditResource](SandboxAuditResource.md)
 `operationId` | string
@@ -49,7 +48,6 @@ const example = {
   "phase": null,
   "outcome": null,
   "actor": null,
-  "executionScope": null,
   "action": null,
   "resource": null,
   "operationId": null,

@@ -83,7 +83,6 @@ docs/ExecutionSessionReadinessType.md
 docs/ExecutionSessionRestartPolicy.md
 docs/ExecutionSessionRestartSpec.md
 docs/ExecutionSessionRuntimeRecoveryPolicy.md
-docs/ExecutionSessionScopeSpec.md
 docs/ExecutionSessionSignalRequest.md
 docs/ExecutionSessionSpec.md
 docs/ExecutionSessionTerminalResizeRequest.md
@@ -193,8 +192,6 @@ docs/SandboxAppServiceView.md
 docs/SandboxAuditActor.md
 docs/SandboxAuditActorKind.md
 docs/SandboxAuditEventPhase.md
-docs/SandboxAuditExecutionScope.md
-docs/SandboxAuditExecutionScopeAttribution.md
 docs/SandboxAuditIntegrity.md
 docs/SandboxAuditProducer.md
 docs/SandboxAuditRequest.md
@@ -204,7 +201,6 @@ docs/SandboxFunction.md
 docs/SandboxFunctionSource.md
 docs/SandboxLifecycleStatus.md
 docs/SandboxNetworkPolicy.md
-docs/SandboxObservabilityEffectiveEventQuery.md
 docs/SandboxObservabilityEvent.md
 docs/SandboxObservabilityEventType.md
 docs/SandboxObservabilityEventsResponse.md
@@ -480,7 +476,6 @@ src/models/ExecutionSessionReadinessType.ts
 src/models/ExecutionSessionRestartPolicy.ts
 src/models/ExecutionSessionRestartSpec.ts
 src/models/ExecutionSessionRuntimeRecoveryPolicy.ts
-src/models/ExecutionSessionScopeSpec.ts
 src/models/ExecutionSessionSignalRequest.ts
 src/models/ExecutionSessionSpec.ts
 src/models/ExecutionSessionTerminalResizeRequest.ts
@@ -584,8 +579,6 @@ src/models/SandboxAppServiceView.ts
 src/models/SandboxAuditActor.ts
 src/models/SandboxAuditActorKind.ts
 src/models/SandboxAuditEventPhase.ts
-src/models/SandboxAuditExecutionScope.ts
-src/models/SandboxAuditExecutionScopeAttribution.ts
 src/models/SandboxAuditIntegrity.ts
 src/models/SandboxAuditProducer.ts
 src/models/SandboxAuditRequest.ts
@@ -595,7 +588,6 @@ src/models/SandboxFunction.ts
 src/models/SandboxFunctionSource.ts
 src/models/SandboxLifecycleStatus.ts
 src/models/SandboxNetworkPolicy.ts
-src/models/SandboxObservabilityEffectiveEventQuery.ts
 src/models/SandboxObservabilityEvent.ts
 src/models/SandboxObservabilityEventType.ts
 src/models/SandboxObservabilityEventsResponse.ts

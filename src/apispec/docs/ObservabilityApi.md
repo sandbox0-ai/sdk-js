@@ -13,11 +13,11 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 ## apiV1SandboxesIdObservabilityEventsGet
 
-> SuccessSandboxObservabilityEventsResponse apiV1SandboxesIdObservabilityEventsGet(id, startTime, endTime, limit, cursor, watch, source, eventType, outcome, actorKind, actorId, action, resourceType, operationId, eventId)
+> SuccessSandboxObservabilityEventsResponse apiV1SandboxesIdObservabilityEventsGet(id, startTime, endTime, limit, cursor, watch, maxSchemaVersion, source, eventType, outcome, actorKind, actorId, executionScopeNamespace, executionScopeKind, executionScopeId, executionScopeAttribution, action, resourceType, operationId, eventId)
 
 Query canonical signed sandbox observability events
 
-Queries canonical signed per-sandbox audit facts from ClickHouse. Every returned event includes an inline signature verification status, while event-ID payload conflicts are reported independently. Access requires the enterprise sandbox_audit feature and the sandboxaudit:read permission.
+Queries canonical signed per-sandbox audit facts from ClickHouse. Every returned event includes an inline signature verification status, while event-ID payload conflicts are reported independently. Access requires the enterprise sandbox_audit feature and the sandboxaudit:read permission. 
 
 ### Example
 
@@ -30,7 +30,7 @@ import type { ApiV1SandboxesIdObservabilityEventsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -49,6 +49,8 @@ async function example() {
     cursor: cursor_example,
     // boolean | Stream matching records as application/x-ndjson in ingestion order until the client disconnects. When watch is true, end_time is not supported. Without cursor or start_time, streaming starts at request time. (optional)
     watch: true,
+    // number | Highest audit-event schema the client can decode. The default is 2 so clients generated before execution-scope support never receive schema v3. Values newer than this server supports are capped to its current schema. Omitting this parameter while using any execution_scope filter implicitly negotiates schema v3; explicitly requesting schema v2 with such a filter is invalid.  (optional)
+    maxSchemaVersion: 56,
     // ObservabilityEventSource (optional)
     source: ...,
     // SandboxObservabilityEventType (optional)
@@ -59,6 +61,14 @@ async function example() {
     actorKind: ...,
     // string (optional)
     actorId: actorId_example,
+    // string | Restrict results to an exact execution-scope namespace such as codex. (optional)
+    executionScopeNamespace: executionScopeNamespace_example,
+    // string | Restrict results to an exact execution-scope kind such as native_session. (optional)
+    executionScopeKind: executionScopeKind_example,
+    // string | Restrict results to an exact native execution-scope identifier. (optional)
+    executionScopeId: executionScopeId_example,
+    // SandboxAuditExecutionScopeAttribution | Restrict results to the runtime signal used to attribute the execution scope. (optional)
+    executionScopeAttribution: ...,
     // string (optional)
     action: action_example,
     // string (optional)
@@ -92,11 +102,16 @@ example().catch(console.error);
 | **limit** | `number` | Maximum number of events to return. Values above 1000 are capped. Exact event_id mode ignores this value and returns at most two payload variants. | [Optional] [Defaults to `100`] |
 | **cursor** | `string` | Opaque pagination cursor returned by a previous response. When watch is true, this must be a watch resume cursor from an NDJSON watermark line. | [Optional] [Defaults to `undefined`] |
 | **watch** | `boolean` | Stream matching records as application/x-ndjson in ingestion order until the client disconnects. When watch is true, end_time is not supported. Without cursor or start_time, streaming starts at request time. | [Optional] [Defaults to `false`] |
+| **maxSchemaVersion** | `number` | Highest audit-event schema the client can decode. The default is 2 so clients generated before execution-scope support never receive schema v3. Values newer than this server supports are capped to its current schema. Omitting this parameter while using any execution_scope filter implicitly negotiates schema v3; explicitly requesting schema v2 with such a filter is invalid.  | [Optional] [Defaults to `2`] |
 | **source** | `ObservabilityEventSource` |  | [Optional] [Defaults to `undefined`] [Enum: cluster_gateway, manager, netd, procd, ctld, storage_proxy] |
 | **eventType** | `SandboxObservabilityEventType` |  | [Optional] [Defaults to `undefined`] [Enum: lifecycle, network_audit, runtime_stats, api_access, process, file] |
 | **outcome** | `SandboxObservabilityOutcome` |  | [Optional] [Defaults to `undefined`] [Enum: completed, denied, error, succeeded, failed, accepted, unknown] |
 | **actorKind** | `SandboxAuditActorKind` |  | [Optional] [Defaults to `undefined`] [Enum: human, api_key, service, sandbox_workload, ssh_user, exposure_credential, anonymous] |
 | **actorId** | `string` |  | [Optional] [Defaults to `undefined`] |
+| **executionScopeNamespace** | `string` | Restrict results to an exact execution-scope namespace such as codex. | [Optional] [Defaults to `undefined`] |
+| **executionScopeKind** | `string` | Restrict results to an exact execution-scope kind such as native_session. | [Optional] [Defaults to `undefined`] |
+| **executionScopeId** | `string` | Restrict results to an exact native execution-scope identifier. | [Optional] [Defaults to `undefined`] |
+| **executionScopeAttribution** | `SandboxAuditExecutionScopeAttribution` | Restrict results to the runtime signal used to attribute the execution scope. | [Optional] [Defaults to `undefined`] [Enum: process_environment] |
 | **action** | `string` |  | [Optional] [Defaults to `undefined`] |
 | **resourceType** | `string` |  | [Optional] [Defaults to `undefined`] |
 | **operationId** | `string` |  | [Optional] [Defaults to `undefined`] |
@@ -133,7 +148,7 @@ example().catch(console.error);
 
 Query historical sandbox logs
 
-Queries the asynchronous per-sandbox log projection. This endpoint is for historical log lookup and is separate from live log streaming.
+Queries the asynchronous per-sandbox log projection. This endpoint is for historical log lookup and is separate from live log streaming. 
 
 ### Example
 
@@ -146,7 +161,7 @@ import type { ApiV1SandboxesIdObservabilityLogsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -228,7 +243,7 @@ example().catch(console.error);
 
 Query chart-ready sandbox runtime metrics
 
-Returns bounded, downsampled sandbox-wide runtime series. When timestamps are omitted, the query covers the hour ending now. The maximum range is 30 days. Counter rates never cross a runtime reset boundary. Missing data is reported as gaps and is never synthesized as zero. This endpoint is separate from platform service metrics and metering usage truth.
+Returns bounded, downsampled sandbox-wide runtime series. When timestamps are omitted, the query covers the hour ending now. The maximum range is 30 days. Counter rates never cross a runtime reset boundary. Missing data is reported as gaps and is never synthesized as zero. This endpoint is separate from platform service metrics and metering usage truth. 
 
 ### Example
 
@@ -241,7 +256,7 @@ import type { GetSandboxRuntimeMetricsRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -333,7 +348,7 @@ import type { GetSandboxRuntimeMetricsCatalogRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });

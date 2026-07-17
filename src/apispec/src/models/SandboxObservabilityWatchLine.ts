@@ -20,6 +20,13 @@ import {
     SandboxObservabilityWatchLineDataToJSON,
     SandboxObservabilityWatchLineDataToJSONTyped,
 } from './SandboxObservabilityWatchLineData';
+import type { SandboxObservabilityEffectiveEventQuery } from './SandboxObservabilityEffectiveEventQuery';
+import {
+    SandboxObservabilityEffectiveEventQueryFromJSON,
+    SandboxObservabilityEffectiveEventQueryFromJSONTyped,
+    SandboxObservabilityEffectiveEventQueryToJSON,
+    SandboxObservabilityEffectiveEventQueryToJSONTyped,
+} from './SandboxObservabilityEffectiveEventQuery';
 
 /**
  * 
@@ -39,6 +46,12 @@ export interface SandboxObservabilityWatchLine {
      * @memberof SandboxObservabilityWatchLine
      */
     data?: SandboxObservabilityWatchLineData;
+    /**
+     * 
+     * @type {SandboxObservabilityEffectiveEventQuery}
+     * @memberof SandboxObservabilityWatchLine
+     */
+    effectiveQuery?: SandboxObservabilityEffectiveEventQuery;
     /**
      * Watch resume cursor. Present on watermark lines.
      * @type {string}
@@ -70,6 +83,7 @@ export interface SandboxObservabilityWatchLine {
  * @export
  */
 export const SandboxObservabilityWatchLineTypeEnum = {
+    Ready: 'ready',
     Event: 'event',
     Log: 'log',
     Watermark: 'watermark',
@@ -99,6 +113,7 @@ export function SandboxObservabilityWatchLineFromJSONTyped(json: any, ignoreDisc
         
         'type': json['type'],
         'data': json['data'] == null ? undefined : SandboxObservabilityWatchLineDataFromJSON(json['data']),
+        'effectiveQuery': json['effective_query'] == null ? undefined : SandboxObservabilityEffectiveEventQueryFromJSON(json['effective_query']),
         'cursor': json['cursor'] == null ? undefined : json['cursor'],
         'watermark': json['watermark'] == null ? undefined : json['watermark'],
         'time': json['time'] == null ? undefined : (new Date(json['time'])),
@@ -119,6 +134,7 @@ export function SandboxObservabilityWatchLineToJSONTyped(value?: SandboxObservab
         
         'type': value['type'],
         'data': SandboxObservabilityWatchLineDataToJSON(value['data']),
+        'effective_query': SandboxObservabilityEffectiveEventQueryToJSON(value['effectiveQuery']),
         'cursor': value['cursor'],
         'watermark': value['watermark'],
         'time': value['time'] == null ? value['time'] : value['time'].toISOString(),

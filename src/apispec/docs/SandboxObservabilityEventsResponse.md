@@ -9,6 +9,7 @@ Name | Type
 `events` | [Array&lt;SandboxObservabilityEvent&gt;](SandboxObservabilityEvent.md)
 `nextCursor` | string
 `watermark` | string
+`effectiveQuery` | [SandboxObservabilityEffectiveEventQuery](SandboxObservabilityEffectiveEventQuery.md)
 
 ## Example
 
@@ -20,6 +21,7 @@ const example = {
   "events": null,
   "nextCursor": null,
   "watermark": null,
+  "effectiveQuery": null,
 } satisfies SandboxObservabilityEventsResponse
 
 console.log(example)

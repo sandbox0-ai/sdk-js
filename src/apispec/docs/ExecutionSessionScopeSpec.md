@@ -1,30 +1,27 @@
 
-# SandboxAuditActor
+# ExecutionSessionScopeSpec
 
+Declares how descendants of this trusted supervisor process expose a logical execution scope. The runtime reads only the named environment variable and never exports the descendant process environment. 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`kind` | [SandboxAuditActorKind](SandboxAuditActorKind.md)
-`id` | string
-`userId` | string
-`apiKeyId` | string
-`authMethod` | string
+`namespace` | string
+`kind` | string
+`idEnvironmentVariable` | string
 
 ## Example
 
 ```typescript
-import type { SandboxAuditActor } from 'sandbox0'
+import type { ExecutionSessionScopeSpec } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
+  "namespace": null,
   "kind": null,
-  "id": null,
-  "userId": null,
-  "apiKeyId": null,
-  "authMethod": null,
-} satisfies SandboxAuditActor
+  "idEnvironmentVariable": null,
+} satisfies ExecutionSessionScopeSpec
 
 console.log(example)
 
@@ -33,7 +30,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SandboxAuditActor
+const exampleParsed = JSON.parse(exampleJSON) as ExecutionSessionScopeSpec
 console.log(exampleParsed)
 ```
 

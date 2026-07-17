@@ -36,7 +36,7 @@ describe("Template models", () => {
       spec: {
         mainContainer: {
           image: "nginx:1.27-alpine",
-          resources: { cpu: "500m", memory: "2Gi" },
+          resources: { memory: "2Gi" },
         },
         envVars: { MODE: "template" },
       },
@@ -47,7 +47,7 @@ describe("Template models", () => {
       spec: {
         mainContainer: {
           image: "nginx:1.27-alpine",
-          resources: { cpu: "500m", memory: "2Gi" },
+          resources: { memory: "2Gi" },
         },
         envVars: { MODE: "template" },
       },
@@ -79,7 +79,7 @@ describe("Template models", () => {
   });
 
   it("builds template requests with helper functions", () => {
-    const spec = templateSpec(container("ubuntu:24.04", resources("1", "4Gi")), {
+    const spec = templateSpec(container("ubuntu:24.04", resources("4Gi")), {
       displayName: "Helper Template",
       envVars: { MODE: "template" },
     });
@@ -92,7 +92,7 @@ describe("Template models", () => {
       spec: {
         mainContainer: {
           image: "ubuntu:24.04",
-          resources: { cpu: "1", memory: "4Gi" },
+          resources: { memory: "4Gi" },
         },
         displayName: "Helper Template",
         envVars: { MODE: "template" },

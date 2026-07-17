@@ -6,7 +6,6 @@
 
 Name | Type
 ------------ | -------------
-`cpu` | string
 `memory` | string
 `ephemeralStorage` | string
 
@@ -17,7 +16,6 @@ import type { ResourceQuota } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "cpu": null,
   "memory": null,
   "ephemeralStorage": null,
 } satisfies ResourceQuota
@@ -34,5 +32,3 @@ console.log(exampleParsed)
 ```
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
-

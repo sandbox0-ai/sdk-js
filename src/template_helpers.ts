@@ -26,8 +26,8 @@ export interface ContainerInit {
   securityContext?: ContainerSpec["securityContext"];
 }
 
-export function resources(cpu: string, memory: string): ResourceQuota {
-  return { cpu, memory };
+export function resources(memory: string): ResourceQuota {
+  return { memory };
 }
 
 export function container(

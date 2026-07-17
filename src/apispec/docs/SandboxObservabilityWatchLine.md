@@ -8,7 +8,6 @@ Name | Type
 ------------ | -------------
 `type` | string
 `data` | [SandboxObservabilityWatchLineData](SandboxObservabilityWatchLineData.md)
-`effectiveQuery` | [SandboxObservabilityEffectiveEventQuery](SandboxObservabilityEffectiveEventQuery.md)
 `cursor` | string
 `watermark` | string
 `time` | Date
@@ -23,7 +22,6 @@ import type { SandboxObservabilityWatchLine } from 'sandbox0'
 const example = {
   "type": null,
   "data": null,
-  "effectiveQuery": null,
   "cursor": null,
   "watermark": null,
   "time": null,

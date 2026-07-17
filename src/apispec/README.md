@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -256,7 +256,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ExecutionSessionRestartPolicy](docs/ExecutionSessionRestartPolicy.md)
 - [ExecutionSessionRestartSpec](docs/ExecutionSessionRestartSpec.md)
 - [ExecutionSessionRuntimeRecoveryPolicy](docs/ExecutionSessionRuntimeRecoveryPolicy.md)
-- [ExecutionSessionScopeSpec](docs/ExecutionSessionScopeSpec.md)
 - [ExecutionSessionSignalRequest](docs/ExecutionSessionSignalRequest.md)
 - [ExecutionSessionSpec](docs/ExecutionSessionSpec.md)
 - [ExecutionSessionTerminalResizeRequest](docs/ExecutionSessionTerminalResizeRequest.md)
@@ -360,8 +359,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxAuditActor](docs/SandboxAuditActor.md)
 - [SandboxAuditActorKind](docs/SandboxAuditActorKind.md)
 - [SandboxAuditEventPhase](docs/SandboxAuditEventPhase.md)
-- [SandboxAuditExecutionScope](docs/SandboxAuditExecutionScope.md)
-- [SandboxAuditExecutionScopeAttribution](docs/SandboxAuditExecutionScopeAttribution.md)
 - [SandboxAuditIntegrity](docs/SandboxAuditIntegrity.md)
 - [SandboxAuditProducer](docs/SandboxAuditProducer.md)
 - [SandboxAuditRequest](docs/SandboxAuditRequest.md)
@@ -371,7 +368,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxFunctionSource](docs/SandboxFunctionSource.md)
 - [SandboxLifecycleStatus](docs/SandboxLifecycleStatus.md)
 - [SandboxNetworkPolicy](docs/SandboxNetworkPolicy.md)
-- [SandboxObservabilityEffectiveEventQuery](docs/SandboxObservabilityEffectiveEventQuery.md)
 - [SandboxObservabilityEvent](docs/SandboxObservabilityEvent.md)
 - [SandboxObservabilityEventType](docs/SandboxObservabilityEventType.md)
 - [SandboxObservabilityEventsResponse](docs/SandboxObservabilityEventsResponse.md)

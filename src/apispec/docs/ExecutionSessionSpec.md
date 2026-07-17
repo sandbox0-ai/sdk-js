@@ -15,7 +15,6 @@ Name | Type
 `lifecycle` | [ExecutionSessionLifecycleSpec](ExecutionSessionLifecycleSpec.md)
 `readiness` | [ExecutionSessionReadinessSpec](ExecutionSessionReadinessSpec.md)
 `eventRetention` | [ExecutionSessionEventRetentionSpec](ExecutionSessionEventRetentionSpec.md)
-`executionScope` | [ExecutionSessionScopeSpec](ExecutionSessionScopeSpec.md)
 
 ## Example
 
@@ -32,7 +31,6 @@ const example = {
   "lifecycle": null,
   "readiness": null,
   "eventRetention": null,
-  "executionScope": null,
 } satisfies ExecutionSessionSpec
 
 console.log(example)

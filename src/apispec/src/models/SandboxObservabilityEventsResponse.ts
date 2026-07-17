@@ -20,13 +20,6 @@ import {
     SandboxObservabilityEventToJSON,
     SandboxObservabilityEventToJSONTyped,
 } from './SandboxObservabilityEvent';
-import type { SandboxObservabilityEffectiveEventQuery } from './SandboxObservabilityEffectiveEventQuery';
-import {
-    SandboxObservabilityEffectiveEventQueryFromJSON,
-    SandboxObservabilityEffectiveEventQueryFromJSONTyped,
-    SandboxObservabilityEffectiveEventQueryToJSON,
-    SandboxObservabilityEffectiveEventQueryToJSONTyped,
-} from './SandboxObservabilityEffectiveEventQuery';
 
 /**
  * 
@@ -52,12 +45,6 @@ export interface SandboxObservabilityEventsResponse {
      * @memberof SandboxObservabilityEventsResponse
      */
     watermark?: string;
-    /**
-     * 
-     * @type {SandboxObservabilityEffectiveEventQuery}
-     * @memberof SandboxObservabilityEventsResponse
-     */
-    effectiveQuery: SandboxObservabilityEffectiveEventQuery;
 }
 
 /**
@@ -65,7 +52,6 @@ export interface SandboxObservabilityEventsResponse {
  */
 export function instanceOfSandboxObservabilityEventsResponse(value: object): value is SandboxObservabilityEventsResponse {
     if (!('events' in value) || value['events'] === undefined) return false;
-    if (!('effectiveQuery' in value) || value['effectiveQuery'] === undefined) return false;
     return true;
 }
 
@@ -82,7 +68,6 @@ export function SandboxObservabilityEventsResponseFromJSONTyped(json: any, ignor
         'events': ((json['events'] as Array<any>).map(SandboxObservabilityEventFromJSON)),
         'nextCursor': json['next_cursor'] == null ? undefined : json['next_cursor'],
         'watermark': json['watermark'] == null ? undefined : json['watermark'],
-        'effectiveQuery': SandboxObservabilityEffectiveEventQueryFromJSON(json['effective_query']),
     };
 }
 
@@ -100,7 +85,6 @@ export function SandboxObservabilityEventsResponseToJSONTyped(value?: SandboxObs
         'events': ((value['events'] as Array<any>).map(SandboxObservabilityEventToJSON)),
         'next_cursor': value['nextCursor'],
         'watermark': value['watermark'],
-        'effective_query': SandboxObservabilityEffectiveEventQueryToJSON(value['effectiveQuery']),
     };
 }
 

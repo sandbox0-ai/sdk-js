@@ -1,7 +1,6 @@
 import type {
   ObservabilityEventSource,
   SandboxAuditActorKind,
-  SandboxAuditExecutionScopeAttribution,
   SandboxAppServiceView,
   SandboxObservabilityEventType,
   SandboxObservabilityEventsResponse,
@@ -84,22 +83,9 @@ export interface SandboxObservabilityQueryOptions {
 export type SandboxObservabilityWatchOptions = Omit<
   SandboxObservabilityQueryOptions,
   "endTime"
-> & {
-  signal?: AbortSignal;
-};
+>;
 
-export interface SandboxObservabilityExecutionScopeFilter {
-  executionScopeNamespace?: string;
-  executionScopeKind?: string;
-  executionScopeId?: string;
-  executionScopeAttribution?: SandboxAuditExecutionScopeAttribution;
-}
-
-export interface SandboxObservabilityEventOptions
-  extends SandboxObservabilityQueryOptions,
-    SandboxObservabilityExecutionScopeFilter {
-  /** Highest audit event schema version this client can decode. Defaults to 3. */
-  maxSchemaVersion?: number;
+export interface SandboxObservabilityEventOptions extends SandboxObservabilityQueryOptions {
   source?: ObservabilityEventSource;
   eventType?: SandboxObservabilityEventType;
   outcome?: SandboxObservabilityOutcome;
@@ -113,10 +99,7 @@ export interface SandboxObservabilityEventOptions
 }
 
 export interface SandboxObservabilityEventWatchOptions
-  extends SandboxObservabilityWatchOptions,
-    SandboxObservabilityExecutionScopeFilter {
-  /** Highest audit event schema version this client can decode. Defaults to 3. */
-  maxSchemaVersion?: number;
+  extends SandboxObservabilityWatchOptions {
   source?: ObservabilityEventSource;
   eventType?: SandboxObservabilityEventType;
   outcome?: SandboxObservabilityOutcome;

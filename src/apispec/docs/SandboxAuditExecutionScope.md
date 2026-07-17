@@ -1,30 +1,29 @@
 
-# SandboxAuditActor
+# SandboxAuditExecutionScope
 
+Attributes sandbox workload activity to one native harness execution scope. The sandbox workload remains the audit actor. 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`kind` | [SandboxAuditActorKind](SandboxAuditActorKind.md)
+`namespace` | string
+`kind` | string
 `id` | string
-`userId` | string
-`apiKeyId` | string
-`authMethod` | string
+`attribution` | [SandboxAuditExecutionScopeAttribution](SandboxAuditExecutionScopeAttribution.md)
 
 ## Example
 
 ```typescript
-import type { SandboxAuditActor } from 'sandbox0'
+import type { SandboxAuditExecutionScope } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
+  "namespace": null,
   "kind": null,
   "id": null,
-  "userId": null,
-  "apiKeyId": null,
-  "authMethod": null,
-} satisfies SandboxAuditActor
+  "attribution": null,
+} satisfies SandboxAuditExecutionScope
 
 console.log(example)
 
@@ -33,7 +32,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SandboxAuditActor
+const exampleParsed = JSON.parse(exampleJSON) as SandboxAuditExecutionScope
 console.log(exampleParsed)
 ```
 

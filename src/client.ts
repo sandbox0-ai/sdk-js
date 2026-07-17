@@ -13,6 +13,7 @@ import { ensureData } from "./response";
 import type {
   SandboxObservabilityEventOptions,
   SandboxObservabilityEventWatchOptions,
+  SandboxObservabilityExecutionScopeFilter,
   SandboxObservabilityEvents,
   SandboxObservabilityLogOptions,
   SandboxObservabilityLogWatchOptions,
@@ -119,13 +120,26 @@ export class Client {
     sandboxId: string,
     options?: SandboxObservabilityEventOptions,
   ): Promise<SandboxObservabilityEvents> {
+    const normalizedOptions = normalizeSandboxObservabilityEventOptions(options);
     const response = await wrapApiCall(() =>
       this.apispec.observability.apiV1SandboxesIdObservabilityEventsGet({
         id: sandboxId,
-        ...options,
+        ...normalizedOptions,
       }),
     );
-    return ensureData(response, "list sandbox observability events returned empty response");
+    const data = ensureData(
+      response,
+      "list sandbox observability events returned empty response",
+    );
+    if (!data.effectiveQuery) {
+      throw new APIError({
+        statusCode: 200,
+        code: "observability_effective_query_missing",
+        message:
+          "sandbox observability response did not acknowledge its effective query",
+      });
+    }
+    return data;
   }
 
   async listSandboxObservabilityLogs(
@@ -167,9 +181,11 @@ export class Client {
     sandboxId: string,
     options?: SandboxObservabilityEventWatchOptions,
   ): Promise<SandboxObservabilityWatchStream> {
+    const normalizedOptions = normalizeSandboxObservabilityEventOptions(options);
     return this.watchSandboxObservability(
       `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/observability/events`,
-      toSandboxObservabilityEventQuery(options),
+      toSandboxObservabilityEventQuery(normalizedOptions),
+      options?.signal,
     );
   }
 
@@ -180,6 +196,7 @@ export class Client {
     return this.watchSandboxObservability(
       `/api/v1/sandboxes/${encodeURIComponent(sandboxId)}/observability/logs`,
       toSandboxObservabilityLogQuery(options),
+      options?.signal,
     );
   }
 
@@ -227,11 +244,13 @@ export class Client {
   private async watchSandboxObservability(
     path: string,
     query: Record<string, string | undefined>,
+    signal?: AbortSignal,
   ): Promise<SandboxObservabilityWatchStream> {
     const response = await this.fetchRaw(
       path,
       { ...query, watch: "true" },
       { Accept: "application/x-ndjson" },
+      signal,
     );
     const contentType = response.headers.get("content-type") ?? "";
     if (!contentType.toLowerCase().startsWith("application/x-ndjson")) {
@@ -308,15 +327,54 @@ function toSandboxObservabilityEventQuery(
 ): Record<string, string | undefined> {
   return {
     ...toSandboxObservabilityQuery(options),
+    max_schema_version: numberQuery(
+      options?.maxSchemaVersion ?? CURRENT_SANDBOX_OBSERVABILITY_EVENT_SCHEMA_VERSION,
+    ),
     source: options?.source,
     event_type: options?.eventType,
     outcome: options?.outcome,
     actor_kind: options?.actorKind,
     actor_id: options?.actorId,
+    execution_scope_namespace: options?.executionScopeNamespace,
+    execution_scope_kind: options?.executionScopeKind,
+    execution_scope_id: options?.executionScopeId,
+    execution_scope_attribution: options?.executionScopeAttribution,
     action: options?.action,
     resource_type: options?.resourceType,
     operation_id: options?.operationId,
   };
+}
+
+const CURRENT_SANDBOX_OBSERVABILITY_EVENT_SCHEMA_VERSION = 3;
+
+function normalizeSandboxObservabilityEventOptions<
+  T extends SandboxObservabilityEventOptions | SandboxObservabilityEventWatchOptions,
+>(options?: T): T & { maxSchemaVersion: number } {
+  const maxSchemaVersion =
+    options?.maxSchemaVersion ?? CURRENT_SANDBOX_OBSERVABILITY_EVENT_SCHEMA_VERSION;
+  if (
+    hasExecutionScopeFilter(options) &&
+    maxSchemaVersion < CURRENT_SANDBOX_OBSERVABILITY_EVENT_SCHEMA_VERSION
+  ) {
+    throw new RangeError(
+      `sandbox observability execution scope filters require maxSchemaVersion >= ${CURRENT_SANDBOX_OBSERVABILITY_EVENT_SCHEMA_VERSION}`,
+    );
+  }
+  return {
+    ...(options ?? ({} as T)),
+    maxSchemaVersion,
+  };
+}
+
+function hasExecutionScopeFilter(
+  options?: SandboxObservabilityExecutionScopeFilter,
+): boolean {
+  return Boolean(
+    options?.executionScopeNamespace ||
+      options?.executionScopeKind ||
+      options?.executionScopeId ||
+      options?.executionScopeAttribution,
+  );
 }
 
 function toSandboxObservabilityLogQuery(

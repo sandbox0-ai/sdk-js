@@ -357,6 +357,9 @@ docs/TeamQuota.md
 docs/TeamsApi.md
 docs/Template.md
 docs/TemplateCreateRequest.md
+docs/TemplateCreationStatus.md
+docs/TemplateFromSandboxCreateRequest.md
+docs/TemplateFromSandboxSpecOverrides.md
 docs/TemplateUpdateRequest.md
 docs/TemplatesApi.md
 docs/Toleration.md
@@ -738,6 +741,9 @@ src/models/TeamMember.ts
 src/models/TeamQuota.ts
 src/models/Template.ts
 src/models/TemplateCreateRequest.ts
+src/models/TemplateCreationStatus.ts
+src/models/TemplateFromSandboxCreateRequest.ts
+src/models/TemplateFromSandboxSpecOverrides.ts
 src/models/TemplateUpdateRequest.ts
 src/models/Toleration.ts
 src/models/TrafficRule.ts

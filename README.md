@@ -104,6 +104,37 @@ console.log(resumed.status, resumed.runtimeGeneration);
 a wait stops polling locally; it does not undo a pause or resume already accepted
 by Sandbox0.
 
+## Create A Template From A Sandbox
+
+Capture the current root filesystem of an existing sandbox into a new template:
+
+```typescript
+const template = await client.templates.createFromSandbox(
+  {
+    templateId: "python-ready",
+    sandboxId: sandbox.id,
+    specOverrides: {
+      displayName: "Python Ready",
+      tags: ["python"],
+    },
+  },
+  {
+    idempotencyKey: "python-ready-v1",
+    wait: true,
+    timeoutMs: 10 * 60_000,
+  },
+);
+
+console.log(template.templateId, template.status?.creation?.state);
+```
+
+Without `wait: true`, creation returns as soon as Sandbox0 accepts the request.
+The rootfs capture point is `status.creation.capturedAt`, not request
+acceptance, so keep the source sandbox available and avoid rootfs writes while
+the stage is `capturing`. `waitUntilReady()` can wait for the same template
+later. Aborting a wait only stops local polling; it does not cancel image
+creation on the server.
+
 ## Runtime Metrics
 
 `getMetrics()` returns bounded, chart-ready sandbox metrics. Each series is split

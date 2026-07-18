@@ -6,6 +6,8 @@ import type {
   SandboxNetworkPolicy,
   SandboxTemplateSpec,
   TemplateCreateRequest,
+  TemplateFromSandboxCreateRequest,
+  TemplateFromSandboxSpecOverrides,
   TemplateUpdateRequest,
 } from "./apispec/src/models/index";
 
@@ -66,6 +68,18 @@ export function templateCreateRequest(
   spec: SandboxTemplateSpec,
 ): TemplateCreateRequest {
   return { templateId, spec };
+}
+
+export function templateFromSandboxCreateRequest(
+  templateId: string,
+  sandboxId: string,
+  specOverrides?: TemplateFromSandboxSpecOverrides,
+): TemplateFromSandboxCreateRequest {
+  return {
+    templateId,
+    sandboxId,
+    ...(specOverrides ? { specOverrides } : {}),
+  };
 }
 
 export function templateUpdateRequest(spec: SandboxTemplateSpec): TemplateUpdateRequest {

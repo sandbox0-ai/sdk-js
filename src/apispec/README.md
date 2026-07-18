@@ -162,6 +162,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *TeamsApi* | [**teamsIdOwnerPut**](docs/TeamsApi.md#teamsidownerput) | **PUT** /teams/{id}/owner | Transfer team ownership
 *TeamsApi* | [**teamsIdPut**](docs/TeamsApi.md#teamsidput) | **PUT** /teams/{id} | Update a team
 *TeamsApi* | [**teamsPost**](docs/TeamsApi.md#teamspost) | **POST** /teams | Create a team
+*TemplatesApi* | [**apiV1TemplatesFromSandboxPost**](docs/TemplatesApi.md#apiv1templatesfromsandboxpost) | **POST** /api/v1/templates/from-sandbox | Create template from sandbox
 *TemplatesApi* | [**apiV1TemplatesGet**](docs/TemplatesApi.md#apiv1templatesget) | **GET** /api/v1/templates | List templates
 *TemplatesApi* | [**apiV1TemplatesIdDelete**](docs/TemplatesApi.md#apiv1templatesiddelete) | **DELETE** /api/v1/templates/{id} | Delete template
 *TemplatesApi* | [**apiV1TemplatesIdGet**](docs/TemplatesApi.md#apiv1templatesidget) | **GET** /api/v1/templates/{id} | Get template
@@ -518,6 +519,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [TeamQuota](docs/TeamQuota.md)
 - [Template](docs/Template.md)
 - [TemplateCreateRequest](docs/TemplateCreateRequest.md)
+- [TemplateCreationStatus](docs/TemplateCreationStatus.md)
+- [TemplateFromSandboxCreateRequest](docs/TemplateFromSandboxCreateRequest.md)
+- [TemplateFromSandboxSpecOverrides](docs/TemplateFromSandboxSpecOverrides.md)
 - [TemplateUpdateRequest](docs/TemplateUpdateRequest.md)
 - [Toleration](docs/Toleration.md)
 - [TrafficRule](docs/TrafficRule.md)

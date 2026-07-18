@@ -1,4 +1,4 @@
-import type { ErrorEnvelope, Sandbox } from "./apispec/src/models/index";
+import type { ErrorEnvelope, Sandbox, Template } from "./apispec/src/models/index";
 import { runtime } from "./apispec_compat";
 
 export const CLAIM_START_THROTTLED_CODE = "claim_start_throttled";
@@ -46,6 +46,42 @@ export class SandboxWaitTimeoutError extends Error {
     this.sandboxId = params.sandboxId;
     this.timeoutMs = params.timeoutMs;
     this.lastSandbox = params.lastSandbox;
+  }
+}
+
+export class TemplateWaitTimeoutError extends Error {
+  readonly templateId: string;
+  readonly timeoutMs: number;
+  readonly lastTemplate?: Template;
+
+  constructor(params: {
+    templateId: string;
+    timeoutMs: number;
+    lastTemplate?: Template;
+  }) {
+    super(`timed out waiting for template ${params.templateId} after ${params.timeoutMs}ms`);
+    this.name = "TemplateWaitTimeoutError";
+    this.templateId = params.templateId;
+    this.timeoutMs = params.timeoutMs;
+    this.lastTemplate = params.lastTemplate;
+  }
+}
+
+export class TemplateCreationFailedError extends Error {
+  readonly templateId: string;
+  readonly stage?: string;
+  readonly reason?: string;
+  readonly lastTemplate: Template;
+
+  constructor(template: Template) {
+    const creation = template.status?.creation;
+    const detail = creation?.message ?? creation?.reason ?? "template creation failed";
+    super(`template ${template.templateId} creation failed: ${detail}`);
+    this.name = "TemplateCreationFailedError";
+    this.templateId = template.templateId;
+    this.stage = creation?.stage;
+    this.reason = creation?.reason;
+    this.lastTemplate = template;
   }
 }
 

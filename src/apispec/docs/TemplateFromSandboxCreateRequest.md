@@ -1,30 +1,27 @@
 
-# SandboxTemplateStatus
+# TemplateFromSandboxCreateRequest
 
+Creates a template by capturing the current root filesystem of an existing sandbox.
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`idleCount` | number
-`activeCount` | number
-`conditions` | [Array&lt;SandboxTemplateCondition&gt;](SandboxTemplateCondition.md)
-`lastUpdateTime` | Date
-`creation` | [TemplateCreationStatus](TemplateCreationStatus.md)
+`templateId` | string
+`sandboxId` | string
+`specOverrides` | [TemplateFromSandboxSpecOverrides](TemplateFromSandboxSpecOverrides.md)
 
 ## Example
 
 ```typescript
-import type { SandboxTemplateStatus } from 'sandbox0'
+import type { TemplateFromSandboxCreateRequest } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "idleCount": null,
-  "activeCount": null,
-  "conditions": null,
-  "lastUpdateTime": null,
-  "creation": null,
-} satisfies SandboxTemplateStatus
+  "templateId": null,
+  "sandboxId": null,
+  "specOverrides": null,
+} satisfies TemplateFromSandboxCreateRequest
 
 console.log(example)
 
@@ -33,8 +30,10 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SandboxTemplateStatus
+const exampleParsed = JSON.parse(exampleJSON) as TemplateFromSandboxCreateRequest
 console.log(exampleParsed)
 ```
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+

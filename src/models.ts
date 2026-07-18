@@ -213,3 +213,19 @@ export interface SandboxLifecycleWaitOptions {
 export type SandboxLifecyclePredicate = (
   sandbox: Sandbox,
 ) => boolean | Promise<boolean>;
+
+export interface TemplateWaitOptions {
+  /** Maximum polling duration. Defaults to 10 minutes. */
+  timeoutMs?: number;
+  /** Delay between observations. Defaults to 500 milliseconds. */
+  pollIntervalMs?: number;
+  /** Stops waiting locally. It does not cancel template creation on the server. */
+  signal?: AbortSignal;
+}
+
+export interface CreateTemplateFromSandboxOptions extends TemplateWaitOptions {
+  /** Allows a create request to be retried without creating a duplicate template. */
+  idempotencyKey?: string;
+  /** Wait for the returned template to become ready. Defaults to false. */
+  wait?: boolean;
+}

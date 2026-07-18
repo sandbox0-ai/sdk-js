@@ -30,6 +30,11 @@ import { SandboxWaitTimeoutError, wrapApiCall } from "../errors";
 import type { Client } from "../client";
 import { Sandbox as SandboxHandle } from "../sandbox";
 import { SandboxSession } from "../sessions";
+import {
+  sleepWithSignal,
+  throwIfAborted,
+  validateWaitDuration,
+} from "../wait";
 
 export interface ClaimSandboxOptions {
   config?: SandboxConfig;
@@ -166,9 +171,9 @@ export class Sandboxes {
     const startedAt = Date.now();
     let lastSandbox: Sandbox | undefined;
     while (true) {
-      throwIfAborted(options.signal);
+      throwIfAborted(options.signal, "sandbox lifecycle wait was aborted");
       lastSandbox = await this.getWithSignal(sandboxId, options.signal);
-      throwIfAborted(options.signal);
+      throwIfAborted(options.signal, "sandbox lifecycle wait was aborted");
       if (await predicate(lastSandbox)) {
         return lastSandbox;
       }
@@ -177,7 +182,11 @@ export class Sandboxes {
       if (remainingMs <= 0) {
         throw new SandboxWaitTimeoutError({ sandboxId, timeoutMs, lastSandbox });
       }
-      await sleepWithSignal(Math.min(pollIntervalMs, remainingMs), options.signal);
+      await sleepWithSignal(
+        Math.min(pollIntervalMs, remainingMs),
+        options.signal,
+        "sandbox lifecycle wait was aborted",
+      );
     }
   }
 
@@ -225,7 +234,7 @@ export class Sandboxes {
     sandboxId: string,
     options?: SandboxLifecycleWaitOptions,
   ): Promise<Sandbox> {
-    throwIfAborted(options?.signal);
+    throwIfAborted(options?.signal, "sandbox lifecycle wait was aborted");
     await this.pause(sandboxId);
     return this.waitForLifecycle(
       sandboxId,
@@ -246,9 +255,9 @@ export class Sandboxes {
     sandboxId: string,
     options?: SandboxLifecycleWaitOptions,
   ): Promise<Sandbox> {
-    throwIfAborted(options?.signal);
+    throwIfAborted(options?.signal, "sandbox lifecycle wait was aborted");
     const before = await this.getWithSignal(sandboxId, options?.signal);
-    throwIfAborted(options?.signal);
+    throwIfAborted(options?.signal, "sandbox lifecycle wait was aborted");
     await this.resume(sandboxId);
 
     const minimumRuntimeGeneration = before.paused || before.status === "paused"
@@ -343,62 +352,4 @@ export class Sandboxes {
   sandbox(sandboxId: string): SandboxHandle {
     return new SandboxHandle({ id: sandboxId, client: this.client });
   }
-}
-
-function validateWaitDuration(name: string, value: number, allowZero: boolean): void {
-  if (!Number.isFinite(value) || (allowZero ? value < 0 : value <= 0)) {
-    const requirement = allowZero ? "a finite number >= 0" : "a finite number > 0";
-    throw new RangeError(`${name} must be ${requirement}`);
-  }
-}
-
-function throwIfAborted(signal?: AbortSignal): void {
-  if (!signal?.aborted) {
-    return;
-  }
-  throw abortReason(signal);
-}
-
-function abortReason(signal: AbortSignal): unknown {
-  if (signal.reason !== undefined) {
-    return signal.reason;
-  }
-  const error = new Error("sandbox lifecycle wait was aborted");
-  error.name = "AbortError";
-  return error;
-}
-
-function sleepWithSignal(durationMs: number, signal?: AbortSignal): Promise<void> {
-  return new Promise((resolve, reject) => {
-    if (signal?.aborted) {
-      reject(abortReason(signal));
-      return;
-    }
-
-    let settled = false;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const onAbort = () => {
-      if (settled) {
-        return;
-      }
-      settled = true;
-      if (timer !== undefined) {
-        clearTimeout(timer);
-      }
-      signal?.removeEventListener("abort", onAbort);
-      reject(signal ? abortReason(signal) : new Error("sandbox lifecycle wait was aborted"));
-    };
-    timer = setTimeout(() => {
-      if (settled) {
-        return;
-      }
-      settled = true;
-      signal?.removeEventListener("abort", onAbort);
-      resolve();
-    }, durationMs);
-    signal?.addEventListener("abort", onAbort, { once: true });
-    if (signal?.aborted) {
-      onAbort();
-    }
-  });
 }

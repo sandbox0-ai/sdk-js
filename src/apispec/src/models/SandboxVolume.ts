@@ -96,6 +96,18 @@ export interface SandboxVolume {
      */
     s3?: SandboxVolumeS3Config;
     /**
+     * Latest metered logical payload bytes stored by this S0FS volume. Null for external backends or when metering state is unavailable.
+     * @type {number}
+     * @memberof SandboxVolume
+     */
+    meteredStorageBytes?: number | null;
+    /**
+     * Time when metered_storage_bytes was last observed. Null for external backends or when metering state is unavailable.
+     * @type {Date}
+     * @memberof SandboxVolume
+     */
+    storageObservedAt?: Date | null;
+    /**
      * 
      * @type {Date}
      * @memberof SandboxVolume
@@ -143,6 +155,8 @@ export function SandboxVolumeFromJSONTyped(json: any, ignoreDiscriminator: boole
         'accessMode': json['access_mode'] == null ? undefined : VolumeAccessModeFromJSON(json['access_mode']),
         'backend': VolumeBackendFromJSON(json['backend']),
         's3': json['s3'] == null ? undefined : SandboxVolumeS3ConfigFromJSON(json['s3']),
+        'meteredStorageBytes': json['metered_storage_bytes'] == null ? undefined : json['metered_storage_bytes'],
+        'storageObservedAt': json['storage_observed_at'] == null ? undefined : (new Date(json['storage_observed_at'])),
         'createdAt': (new Date(json['created_at'])),
         'updatedAt': (new Date(json['updated_at'])),
     };
@@ -168,6 +182,8 @@ export function SandboxVolumeToJSONTyped(value?: SandboxVolume | null, ignoreDis
         'access_mode': VolumeAccessModeToJSON(value['accessMode']),
         'backend': VolumeBackendToJSON(value['backend']),
         's3': SandboxVolumeS3ConfigToJSON(value['s3']),
+        'metered_storage_bytes': value['meteredStorageBytes'],
+        'storage_observed_at': value['storageObservedAt'] == null ? value['storageObservedAt'] : value['storageObservedAt'].toISOString(),
         'created_at': value['createdAt'].toISOString(),
         'updated_at': value['updatedAt'].toISOString(),
     };

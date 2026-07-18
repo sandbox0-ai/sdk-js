@@ -15,6 +15,8 @@ Name | Type
 `accessMode` | [VolumeAccessMode](VolumeAccessMode.md)
 `backend` | [VolumeBackend](VolumeBackend.md)
 `s3` | [SandboxVolumeS3Config](SandboxVolumeS3Config.md)
+`meteredStorageBytes` | number
+`storageObservedAt` | Date
 `createdAt` | Date
 `updatedAt` | Date
 
@@ -34,6 +36,8 @@ const example = {
   "accessMode": null,
   "backend": null,
   "s3": null,
+  "meteredStorageBytes": null,
+  "storageObservedAt": null,
   "createdAt": null,
   "updatedAt": null,
 } satisfies SandboxVolume

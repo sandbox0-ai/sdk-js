@@ -46,4 +46,35 @@ describe("Client generated APIs", () => {
     assert.deepEqual(requestedBody, { user_id: "user-next" });
     assert.equal(response.data?.ownerId, "user-next");
   });
+
+  it("parses metered sandbox volume storage usage", async () => {
+    const client = new Client({
+      token: "test-token",
+      baseUrl: "http://example.test",
+      fetch: async () =>
+        new Response(
+          JSON.stringify({
+            data: {
+              id: "vol-1",
+              team_id: "team-1",
+              user_id: "user-1",
+              backend: "s0fs",
+              metered_storage_bytes: 12345,
+              storage_observed_at: "2026-07-18T08:30:00Z",
+              created_at: "2026-07-18T08:00:00Z",
+              updated_at: "2026-07-18T08:30:00Z",
+            },
+          }),
+          {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          },
+        ),
+    });
+
+    const volume = await client.volumes.get("vol-1");
+
+    assert.equal(volume.meteredStorageBytes, 12345);
+    assert.equal(volume.storageObservedAt?.toISOString(), "2026-07-18T08:30:00.000Z");
+  });
 });

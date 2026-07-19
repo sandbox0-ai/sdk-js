@@ -90,4 +90,3 @@ export function ExecutionSessionWebSocketErrorToJSONTyped(value?: ExecutionSessi
         'error': value['error'],
     };
 }
-

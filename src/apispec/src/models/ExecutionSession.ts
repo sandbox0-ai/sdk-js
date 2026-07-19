@@ -183,4 +183,3 @@ export function ExecutionSessionToJSONTyped(value?: ExecutionSession | null, ign
         'last_activity_at': value['lastActivityAt'].toISOString(),
     };
 }
-

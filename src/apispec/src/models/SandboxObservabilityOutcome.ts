@@ -55,4 +55,3 @@ export function SandboxObservabilityOutcomeToJSON(value?: SandboxObservabilityOu
 export function SandboxObservabilityOutcomeToJSONTyped(value: any, ignoreDiscriminator: boolean): SandboxObservabilityOutcome {
     return value as SandboxObservabilityOutcome;
 }
-

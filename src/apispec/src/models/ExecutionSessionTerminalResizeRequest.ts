@@ -80,4 +80,3 @@ export function ExecutionSessionTerminalResizeRequestToJSONTyped(value?: Executi
         'expected_attempt_id': value['expectedAttemptId'],
     };
 }
-

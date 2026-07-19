@@ -70,4 +70,3 @@ export function ExecutionSessionEventRetentionSpecToJSONTyped(value?: ExecutionS
         'max_age_seconds': value['maxAgeSeconds'],
     };
 }
-

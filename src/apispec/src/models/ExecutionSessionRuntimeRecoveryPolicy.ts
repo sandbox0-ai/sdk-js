@@ -50,4 +50,3 @@ export function ExecutionSessionRuntimeRecoveryPolicyToJSON(value?: ExecutionSes
 export function ExecutionSessionRuntimeRecoveryPolicyToJSONTyped(value: any, ignoreDiscriminator: boolean): ExecutionSessionRuntimeRecoveryPolicy {
     return value as ExecutionSessionRuntimeRecoveryPolicy;
 }
-

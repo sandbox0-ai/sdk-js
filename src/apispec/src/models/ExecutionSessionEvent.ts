@@ -151,4 +151,3 @@ export function ExecutionSessionEventToJSONTyped(value?: ExecutionSessionEvent |
         'occurred_at': value['occurredAt'].toISOString(),
     };
 }
-

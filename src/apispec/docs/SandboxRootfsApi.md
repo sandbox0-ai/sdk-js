@@ -30,7 +30,7 @@ import type { ApiV1SandboxRootfsSnapshotsSnapshotIdDeleteRequest } from 'sandbox
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -79,6 +79,8 @@ example().catch(console.error);
 |-------------|-------------|------------------|
 | **200** | Deleted |  -  |
 | **404** | Not found |  -  |
+| **429** | The mutation would exceed an effective Team Quota policy |  * Retry-After - Suggested retry delay in seconds when a rate policy was exceeded <br>  |
+| **503** | Team Quota admission is temporarily unavailable |  * Retry-After - Suggested retry delay in seconds <br>  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -100,7 +102,7 @@ import type { ApiV1SandboxRootfsSnapshotsSnapshotIdGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -149,6 +151,8 @@ example().catch(console.error);
 |-------------|-------------|------------------|
 | **200** | Sandbox rootfs snapshot |  -  |
 | **404** | Not found |  -  |
+| **429** | The admission control applicable to this route and deployment topology rejected the request. &#x60;error.code&#x60; is &#x60;quota_exceeded&#x60; for a team-attributed Team Quota such as &#x60;active_request_count&#x60;, &#x60;active_connection_count&#x60;, &#x60;api_requests&#x60;, or a traffic-byte rate, &#x60;identity_limit_exceeded&#x60; for an IdentityResourceGuard cardinality limit, or &#x60;rate_limited&#x60; for an aggregate overload guard. A given route does not necessarily use every control.  |  * Retry-After - Suggested delay in seconds when token-bucket or overload admission provides one; identity cardinality rejections may omit it <br>  |
+| **503** | The fail-closed admission backend applicable to this route is unavailable. Depending on deployment topology, this is the region Team Quota policy or Redis path, or the public identity entrypoint\&#39;s shared overload-guard backend; a given route does not necessarily use both.  |  * Retry-After - Suggested retry delay in seconds <br>  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -159,7 +163,7 @@ example().catch(console.error);
 
 Fork sandbox rootfs
 
-Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes. 
+Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes.
 
 ### Example
 
@@ -172,7 +176,7 @@ import type { ApiV1SandboxesIdForkPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -224,7 +228,8 @@ example().catch(console.error);
 |-------------|-------------|------------------|
 | **201** | Sandbox forked |  -  |
 | **409** | Source sandbox is not running or paused, another lifecycle operation is active, or rootfs state is unavailable |  -  |
-| **503** | Running-source fork requires ctld checkpoint support |  -  |
+| **429** | The mutation would exceed an effective Team Quota policy |  * Retry-After - Suggested retry delay in seconds when a rate policy was exceeded <br>  |
+| **503** | Running-source fork requires ctld checkpoint support or Team Quota admission is temporarily unavailable |  * Retry-After - Suggested retry delay in seconds for Team Quota admission <br>  |
 | **404** | Not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -247,7 +252,7 @@ import type { ApiV1SandboxesIdRootfsRestorePostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -300,6 +305,8 @@ example().catch(console.error);
 | **200** | Sandbox rootfs restored |  -  |
 | **409** | Sandbox is not paused |  -  |
 | **404** | Not found |  -  |
+| **429** | The mutation would exceed an effective Team Quota policy |  * Retry-After - Suggested retry delay in seconds when a rate policy was exceeded <br>  |
+| **503** | Team Quota admission is temporarily unavailable |  * Retry-After - Suggested retry delay in seconds <br>  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -321,7 +328,7 @@ import type { ApiV1SandboxesIdSnapshotsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -370,6 +377,8 @@ example().catch(console.error);
 |-------------|-------------|------------------|
 | **200** | Sandbox rootfs snapshot list |  -  |
 | **404** | Not found |  -  |
+| **429** | The admission control applicable to this route and deployment topology rejected the request. &#x60;error.code&#x60; is &#x60;quota_exceeded&#x60; for a team-attributed Team Quota such as &#x60;active_request_count&#x60;, &#x60;active_connection_count&#x60;, &#x60;api_requests&#x60;, or a traffic-byte rate, &#x60;identity_limit_exceeded&#x60; for an IdentityResourceGuard cardinality limit, or &#x60;rate_limited&#x60; for an aggregate overload guard. A given route does not necessarily use every control.  |  * Retry-After - Suggested delay in seconds when token-bucket or overload admission provides one; identity cardinality rejections may omit it <br>  |
+| **503** | The fail-closed admission backend applicable to this route is unavailable. Depending on deployment topology, this is the region Team Quota policy or Redis path, or the public identity entrypoint\&#39;s shared overload-guard backend; a given route does not necessarily use both.  |  * Retry-After - Suggested retry delay in seconds <br>  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -380,7 +389,7 @@ example().catch(console.error);
 
 Create sandbox rootfs snapshot
 
-Creates an immutable snapshot record from the source sandbox writable rootfs. A paused source is snapshotted from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the snapshot operation completes. 
+Creates an immutable snapshot record from the source sandbox writable rootfs. A paused source is snapshotted from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the snapshot operation completes.
 
 ### Example
 
@@ -393,7 +402,7 @@ import type { ApiV1SandboxesIdSnapshotsPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -445,8 +454,8 @@ example().catch(console.error);
 |-------------|-------------|------------------|
 | **201** | Sandbox rootfs snapshot created |  -  |
 | **409** | Source sandbox is not running or paused, another lifecycle operation is active, or rootfs state is unavailable |  -  |
-| **503** | Running-source snapshot requires ctld checkpoint support |  -  |
+| **429** | The mutation would exceed an effective Team Quota policy |  * Retry-After - Suggested retry delay in seconds when a rate policy was exceeded <br>  |
+| **503** | Running-source snapshot requires ctld checkpoint support or Team Quota admission is temporarily unavailable |  * Retry-After - Suggested retry delay in seconds for Team Quota admission <br>  |
 | **404** | Not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-

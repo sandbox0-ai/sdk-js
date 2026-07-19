@@ -1,24 +1,21 @@
 
-# ResourceQuota
+# TeamQuotaPolicySource
 
+Identifies whether the effective policy is inherited from the region default or defined by an explicit team override.
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`memory` | string
-`ephemeralStorage` | string
 
 ## Example
 
 ```typescript
-import type { ResourceQuota } from 'sandbox0'
+import type { TeamQuotaPolicySource } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "memory": null,
-  "ephemeralStorage": null,
-} satisfies ResourceQuota
+} satisfies TeamQuotaPolicySource
 
 console.log(example)
 
@@ -27,7 +24,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as ResourceQuota
+const exampleParsed = JSON.parse(exampleJSON) as TeamQuotaPolicySource
 console.log(exampleParsed)
 ```
 

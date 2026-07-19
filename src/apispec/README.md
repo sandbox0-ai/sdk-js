@@ -61,6 +61,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *AuthApi* | [**authOidcProviderDevicePollPost**](docs/AuthApi.md#authoidcproviderdevicepollpost) | **POST** /auth/oidc/{provider}/device/poll | Poll OIDC device login
 *AuthApi* | [**authOidcProviderDeviceStartPost**](docs/AuthApi.md#authoidcproviderdevicestartpost) | **POST** /auth/oidc/{provider}/device/start | Start OIDC device login
 *AuthApi* | [**authOidcProviderLoginGet**](docs/AuthApi.md#authoidcproviderloginget) | **GET** /auth/oidc/{provider}/login | Initiate OIDC login
+*AuthApi* | [**authOidcProviderLogoutGet**](docs/AuthApi.md#authoidcproviderlogoutget) | **GET** /auth/oidc/{provider}/logout | Initiate OIDC logout
 *AuthApi* | [**authProvidersGet**](docs/AuthApi.md#authprovidersget) | **GET** /auth/providers | Get available auth providers
 *AuthApi* | [**authRefreshPost**](docs/AuthApi.md#authrefreshpost) | **POST** /auth/refresh | Refresh access token
 *AuthApi* | [**authRegisterPost**](docs/AuthApi.md#authregisterpost) | **POST** /auth/register | Register a new user
@@ -103,7 +104,10 @@ All URIs are relative to *https://api.sandbox0.ai*
 *ObservabilityApi* | [**apiV1SandboxesIdObservabilityLogsGet**](docs/ObservabilityApi.md#apiv1sandboxesidobservabilitylogsget) | **GET** /api/v1/sandboxes/{id}/observability/logs | Query historical sandbox logs
 *ObservabilityApi* | [**getSandboxRuntimeMetrics**](docs/ObservabilityApi.md#getsandboxruntimemetrics) | **GET** /api/v1/sandboxes/{id}/metrics | Query chart-ready sandbox runtime metrics
 *ObservabilityApi* | [**getSandboxRuntimeMetricsCatalog**](docs/ObservabilityApi.md#getsandboxruntimemetricscatalog) | **GET** /api/v1/sandboxes/{id}/metrics/catalog | Get the sandbox runtime metric catalog
-*QuotasApi* | [**apiV1QuotasDimensionGet**](docs/QuotasApi.md#apiv1quotasdimensionget) | **GET** /api/v1/quotas/{dimension} | Get team quota
+*QuotasApi* | [**apiV1QuotasGet**](docs/QuotasApi.md#apiv1quotasget) | **GET** /api/v1/quotas | List effective quotas for the current team
+*QuotasApi* | [**apiV1TeamsTeamIdQuotasGet**](docs/QuotasApi.md#apiv1teamsteamidquotasget) | **GET** /api/v1/teams/{team_id}/quotas | List effective quotas for a team
+*QuotasApi* | [**apiV1TeamsTeamIdQuotasKeyDelete**](docs/QuotasApi.md#apiv1teamsteamidquotaskeydelete) | **DELETE** /api/v1/teams/{team_id}/quotas/{key} | Delete a team quota policy
+*QuotasApi* | [**apiV1TeamsTeamIdQuotasKeyPut**](docs/QuotasApi.md#apiv1teamsteamidquotaskeyput) | **PUT** /api/v1/teams/{team_id}/quotas/{key} | Set a team quota policy
 *RegionsApi* | [**regionsGet**](docs/RegionsApi.md#regionsget) | **GET** /regions | List regions in the global gateway
 *RegionsApi* | [**regionsIdDelete**](docs/RegionsApi.md#regionsiddelete) | **DELETE** /regions/{id} | Delete a region from the global gateway
 *RegionsApi* | [**regionsIdGet**](docs/RegionsApi.md#regionsidget) | **GET** /regions/{id} | Get a region from the global gateway
@@ -327,7 +331,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ProjectionSpec](docs/ProjectionSpec.md)
 - [ProtocolRule](docs/ProtocolRule.md)
 - [ProtocolRuleProtocol](docs/ProtocolRuleProtocol.md)
-- [QuotaDimension](docs/QuotaDimension.md)
 - [REPLConfig](docs/REPLConfig.md)
 - [REPLEnvVar](docs/REPLEnvVar.md)
 - [REPLPromptConfig](docs/REPLPromptConfig.md)
@@ -340,7 +343,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [RegistryCredentials](docs/RegistryCredentials.md)
 - [RegistryCredentialsRequest](docs/RegistryCredentialsRequest.md)
 - [ResizeContextRequest](docs/ResizeContextRequest.md)
-- [ResourceQuota](docs/ResourceQuota.md)
 - [ResourceUsage](docs/ResourceUsage.md)
 - [RestoreSandboxRootFSRequest](docs/RestoreSandboxRootFSRequest.md)
 - [RestoreSandboxRootFSResponse](docs/RestoreSandboxRootFSResponse.md)
@@ -380,6 +382,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxObservabilityWatchLineData](docs/SandboxObservabilityWatchLineData.md)
 - [SandboxRefreshRequest](docs/SandboxRefreshRequest.md)
 - [SandboxResourceConfig](docs/SandboxResourceConfig.md)
+- [SandboxResourceLimits](docs/SandboxResourceLimits.md)
 - [SandboxResourceUsage](docs/SandboxResourceUsage.md)
 - [SandboxRootFSSnapshot](docs/SandboxRootFSSnapshot.md)
 - [SandboxRootFSSnapshotList](docs/SandboxRootFSSnapshotList.md)
@@ -500,7 +503,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessTeamMemberListResponse](docs/SuccessTeamMemberListResponse.md)
 - [SuccessTeamMemberListResponseAllOfData](docs/SuccessTeamMemberListResponseAllOfData.md)
 - [SuccessTeamMemberResponse](docs/SuccessTeamMemberResponse.md)
-- [SuccessTeamQuotaResponse](docs/SuccessTeamQuotaResponse.md)
+- [SuccessTeamQuotaListResponse](docs/SuccessTeamQuotaListResponse.md)
+- [SuccessTeamQuotaPolicyResponse](docs/SuccessTeamQuotaPolicyResponse.md)
 - [SuccessTeamResponse](docs/SuccessTeamResponse.md)
 - [SuccessTemplateListResponse](docs/SuccessTemplateListResponse.md)
 - [SuccessTemplateListResponseAllOfData](docs/SuccessTemplateListResponseAllOfData.md)
@@ -516,7 +520,17 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [TeamDeleteConflictResponseError](docs/TeamDeleteConflictResponseError.md)
 - [TeamDeleteResourceCount](docs/TeamDeleteResourceCount.md)
 - [TeamMember](docs/TeamMember.md)
-- [TeamQuota](docs/TeamQuota.md)
+- [TeamQuotaCapacityPolicyWriteRequest](docs/TeamQuotaCapacityPolicyWriteRequest.md)
+- [TeamQuotaConcurrencyPolicyWriteRequest](docs/TeamQuotaConcurrencyPolicyWriteRequest.md)
+- [TeamQuotaKey](docs/TeamQuotaKey.md)
+- [TeamQuotaKind](docs/TeamQuotaKind.md)
+- [TeamQuotaList](docs/TeamQuotaList.md)
+- [TeamQuotaPolicy](docs/TeamQuotaPolicy.md)
+- [TeamQuotaPolicySource](docs/TeamQuotaPolicySource.md)
+- [TeamQuotaPolicyWriteRequest](docs/TeamQuotaPolicyWriteRequest.md)
+- [TeamQuotaRatePolicyWriteRequest](docs/TeamQuotaRatePolicyWriteRequest.md)
+- [TeamQuotaStatus](docs/TeamQuotaStatus.md)
+- [TeamQuotaUnit](docs/TeamQuotaUnit.md)
 - [Template](docs/Template.md)
 - [TemplateCreateRequest](docs/TemplateCreateRequest.md)
 - [TemplateCreationStatus](docs/TemplateCreationStatus.md)

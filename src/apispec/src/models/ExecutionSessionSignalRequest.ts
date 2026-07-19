@@ -71,4 +71,3 @@ export function ExecutionSessionSignalRequestToJSONTyped(value?: ExecutionSessio
         'expected_attempt_id': value['expectedAttemptId'],
     };
 }
-

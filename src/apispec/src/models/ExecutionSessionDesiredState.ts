@@ -50,4 +50,3 @@ export function ExecutionSessionDesiredStateToJSON(value?: ExecutionSessionDesir
 export function ExecutionSessionDesiredStateToJSONTyped(value: any, ignoreDiscriminator: boolean): ExecutionSessionDesiredState {
     return value as ExecutionSessionDesiredState;
 }
-

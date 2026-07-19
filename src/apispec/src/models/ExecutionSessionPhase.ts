@@ -58,4 +58,3 @@ export function ExecutionSessionPhaseToJSON(value?: ExecutionSessionPhase | null
 export function ExecutionSessionPhaseToJSONTyped(value: any, ignoreDiscriminator: boolean): ExecutionSessionPhase {
     return value as ExecutionSessionPhase;
 }
-

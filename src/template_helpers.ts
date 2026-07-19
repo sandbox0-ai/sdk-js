@@ -2,8 +2,8 @@ import type {
   ContainerSpec,
   EnvVar,
   PoolStrategy,
-  ResourceQuota,
   SandboxNetworkPolicy,
+  SandboxResourceLimits,
   SandboxTemplateSpec,
   TemplateCreateRequest,
   TemplateFromSandboxCreateRequest,
@@ -28,13 +28,13 @@ export interface ContainerInit {
   securityContext?: ContainerSpec["securityContext"];
 }
 
-export function resources(memory: string): ResourceQuota {
+export function resources(memory: string): SandboxResourceLimits {
   return { memory };
 }
 
 export function container(
   image: string,
-  containerResources: ResourceQuota,
+  containerResources: SandboxResourceLimits,
   init: ContainerInit = {},
 ): ContainerSpec {
   return {

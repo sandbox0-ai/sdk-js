@@ -51,4 +51,3 @@ export function ExecutionSessionRestartPolicyToJSON(value?: ExecutionSessionRest
 export function ExecutionSessionRestartPolicyToJSONTyped(value: any, ignoreDiscriminator: boolean): ExecutionSessionRestartPolicy {
     return value as ExecutionSessionRestartPolicy;
 }
-

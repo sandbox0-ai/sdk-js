@@ -78,4 +78,3 @@ export function ExecutionSessionTerminalSpecToJSONTyped(value?: ExecutionSession
         'term': value['term'],
     };
 }
-

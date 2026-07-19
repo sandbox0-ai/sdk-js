@@ -64,6 +64,7 @@ export class Client {
     templates: apisTypes.TemplatesApi;
     credentialSources: apisTypes.CredentialSourcesApi;
     teams: apisTypes.TeamsApi;
+    quotas: apisTypes.QuotasApi;
     observability: apisTypes.ObservabilityApi;
     sessions: apisTypes.SessionsApi;
   };
@@ -101,6 +102,7 @@ export class Client {
       templates: new apis.TemplatesApi(this.configuration),
       credentialSources: new apis.CredentialSourcesApi(this.configuration),
       teams: new apis.TeamsApi(this.configuration),
+      quotas: new apis.QuotasApi(this.configuration),
       observability: new apis.ObservabilityApi(this.configuration),
       sessions: new apis.SessionsApi(this.configuration),
     };

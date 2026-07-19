@@ -148,4 +148,3 @@ export function ExecutionSessionSpecToJSONTyped(value?: ExecutionSessionSpec | n
         'event_retention': ExecutionSessionEventRetentionSpecToJSON(value['eventRetention']),
     };
 }
-

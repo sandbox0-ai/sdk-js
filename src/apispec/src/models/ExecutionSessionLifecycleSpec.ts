@@ -126,4 +126,3 @@ export function ExecutionSessionLifecycleSpecToJSONTyped(value?: ExecutionSessio
         'stop_grace_period_seconds': value['stopGracePeriodSeconds'],
     };
 }
-

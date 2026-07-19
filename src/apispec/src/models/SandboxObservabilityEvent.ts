@@ -314,4 +314,3 @@ export function SandboxObservabilityEventToJSONTyped(value?: SandboxObservabilit
         'attributes': value['attributes'],
     };
 }
-

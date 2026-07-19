@@ -47,6 +47,104 @@ describe("Client generated APIs", () => {
     assert.equal(response.data?.ownerId, "user-next");
   });
 
+  it("exposes the current team quota API with client configuration", async () => {
+    let requestedUrl = "";
+    let requestedAuth = "";
+
+    const client = new Client({
+      token: "test-token",
+      baseUrl: "http://example.test/base",
+      fetch: async (input, init) => {
+        requestedUrl = String(input);
+        requestedAuth = String((init?.headers as Record<string, string>)["Authorization"] ?? "");
+        return new Response(
+          JSON.stringify({
+            success: true,
+            data: {
+              team_id: "team-1",
+              quotas: [
+                {
+                  team_id: "team-1",
+                  key: "sandbox_runtime_count",
+                  kind: "capacity",
+                  unit: "count",
+                  source: "default",
+                  policy: {
+                    team_id: "team-1",
+                    key: "sandbox_runtime_count",
+                    kind: "capacity",
+                    unit: "count",
+                    revision: 3,
+                    limit: 100,
+                  },
+                  committed: 12,
+                  reserved: 2,
+                  used: 14,
+                  remaining: 86,
+                },
+              ],
+            },
+          }),
+          {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          },
+        );
+      },
+    });
+
+    const response = await client.apispec.quotas.apiV1QuotasGet();
+
+    const url = new URL(requestedUrl);
+    assert.equal(url.pathname, "/base/api/v1/quotas");
+    assert.equal(requestedAuth, "Bearer test-token");
+    assert.equal(response.data?.teamId, "team-1");
+    assert.equal(response.data?.quotas[0]?.key, "sandbox_runtime_count");
+    assert.equal(response.data?.quotas[0]?.policy.limit, 100);
+  });
+
+  it("serializes team quota policy variants by kind", async () => {
+    const requestedBodies: unknown[] = [];
+    const client = new Client({
+      token: "test-token",
+      baseUrl: "http://example.test",
+      fetch: async (_input, init) => {
+        requestedBodies.push(JSON.parse(String(init?.body ?? "{}")));
+        return new Response("{}", {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        });
+      },
+    });
+
+    await client.apispec.quotas.apiV1TeamsTeamIdQuotasKeyPutRaw({
+      teamId: "team-1",
+      key: "sandbox_runtime_count",
+      teamQuotaPolicyWriteRequest: { kind: "capacity", limit: 100 },
+    });
+    await client.apispec.quotas.apiV1TeamsTeamIdQuotasKeyPutRaw({
+      teamId: "team-1",
+      key: "active_request_count",
+      teamQuotaPolicyWriteRequest: { kind: "concurrency", limit: 25 },
+    });
+    await client.apispec.quotas.apiV1TeamsTeamIdQuotasKeyPutRaw({
+      teamId: "team-1",
+      key: "api_requests",
+      teamQuotaPolicyWriteRequest: {
+        kind: "rate",
+        tokens: 20,
+        intervalMs: 1000,
+        burst: 40,
+      },
+    });
+
+    assert.deepEqual(requestedBodies, [
+      { kind: "capacity", limit: 100 },
+      { kind: "concurrency", limit: 25 },
+      { kind: "rate", tokens: 20, interval_ms: 1000, burst: 40 },
+    ]);
+  });
+
   it("parses metered sandbox volume storage usage", async () => {
     const client = new Client({
       token: "test-token",

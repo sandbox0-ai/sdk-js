@@ -54,4 +54,3 @@ export function ObservabilityEventSourceToJSON(value?: ObservabilityEventSource 
 export function ObservabilityEventSourceToJSONTyped(value: any, ignoreDiscriminator: boolean): ObservabilityEventSource {
     return value as ObservabilityEventSource;
 }
-

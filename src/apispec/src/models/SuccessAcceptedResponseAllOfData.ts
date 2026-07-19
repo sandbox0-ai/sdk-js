@@ -63,4 +63,3 @@ export function SuccessAcceptedResponseAllOfDataToJSONTyped(value?: SuccessAccep
         'accepted': value['accepted'],
     };
 }
-

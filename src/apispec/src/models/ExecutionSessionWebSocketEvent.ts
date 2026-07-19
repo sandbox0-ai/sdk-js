@@ -90,4 +90,3 @@ export function ExecutionSessionWebSocketEventToJSONTyped(value?: ExecutionSessi
         'event': ExecutionSessionEventToJSON(value['event']),
     };
 }
-

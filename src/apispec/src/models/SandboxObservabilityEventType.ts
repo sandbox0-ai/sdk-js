@@ -54,4 +54,3 @@ export function SandboxObservabilityEventTypeToJSON(value?: SandboxObservability
 export function SandboxObservabilityEventTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): SandboxObservabilityEventType {
     return value as SandboxObservabilityEventType;
 }
-

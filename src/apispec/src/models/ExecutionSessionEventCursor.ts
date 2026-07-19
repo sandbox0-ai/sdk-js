@@ -72,4 +72,3 @@ export function ExecutionSessionEventCursorToJSONTyped(value?: ExecutionSessionE
         'latest': value['latest'],
     };
 }
-

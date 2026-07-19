@@ -107,4 +107,3 @@ export function ExecutionSessionWebSocketResizeToJSONTyped(value?: ExecutionSess
         'request_id': value['requestId'],
     };
 }
-

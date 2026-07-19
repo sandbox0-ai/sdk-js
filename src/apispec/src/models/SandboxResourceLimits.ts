@@ -16,36 +16,36 @@ import { mapValues } from '../runtime';
 /**
  *
  * @export
- * @interface ResourceQuota
+ * @interface SandboxResourceLimits
  */
-export interface ResourceQuota {
+export interface SandboxResourceLimits {
     /**
      * Memory limit used by default when a sandbox claim does not provide a memory override. Sandbox0 derives the internal CPU limit from platform configuration.
      * @type {string}
-     * @memberof ResourceQuota
+     * @memberof SandboxResourceLimits
      */
     memory: string;
     /**
      * Ephemeral storage limit for the sandbox writable layer and container logs. Defaults to 8Gi when omitted.
      * @type {string}
-     * @memberof ResourceQuota
+     * @memberof SandboxResourceLimits
      */
     ephemeralStorage?: string;
 }
 
 /**
- * Check if a given object implements the ResourceQuota interface.
+ * Check if a given object implements the SandboxResourceLimits interface.
  */
-export function instanceOfResourceQuota(value: object): value is ResourceQuota {
+export function instanceOfSandboxResourceLimits(value: object): value is SandboxResourceLimits {
     if (!('memory' in value) || value['memory'] === undefined) return false;
     return true;
 }
 
-export function ResourceQuotaFromJSON(json: any): ResourceQuota {
-    return ResourceQuotaFromJSONTyped(json, false);
+export function SandboxResourceLimitsFromJSON(json: any): SandboxResourceLimits {
+    return SandboxResourceLimitsFromJSONTyped(json, false);
 }
 
-export function ResourceQuotaFromJSONTyped(json: any, ignoreDiscriminator: boolean): ResourceQuota {
+export function SandboxResourceLimitsFromJSONTyped(json: any, ignoreDiscriminator: boolean): SandboxResourceLimits {
     if (json == null) {
         return json;
     }
@@ -56,11 +56,11 @@ export function ResourceQuotaFromJSONTyped(json: any, ignoreDiscriminator: boole
     };
 }
 
-export function ResourceQuotaToJSON(json: any): ResourceQuota {
-    return ResourceQuotaToJSONTyped(json, false);
+export function SandboxResourceLimitsToJSON(json: any): SandboxResourceLimits {
+    return SandboxResourceLimitsToJSONTyped(json, false);
 }
 
-export function ResourceQuotaToJSONTyped(value?: ResourceQuota | null, ignoreDiscriminator: boolean = false): any {
+export function SandboxResourceLimitsToJSONTyped(value?: SandboxResourceLimits | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }

@@ -51,4 +51,3 @@ export function ExecutionSessionReadinessTypeToJSON(value?: ExecutionSessionRead
 export function ExecutionSessionReadinessTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): ExecutionSessionReadinessType {
     return value as ExecutionSessionReadinessType;
 }
-

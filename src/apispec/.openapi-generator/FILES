@@ -156,7 +156,6 @@ docs/ProjectedHeader.md
 docs/ProjectionSpec.md
 docs/ProtocolRule.md
 docs/ProtocolRuleProtocol.md
-docs/QuotaDimension.md
 docs/QuotasApi.md
 docs/REPLConfig.md
 docs/REPLEnvVar.md
@@ -172,7 +171,6 @@ docs/RegistryApi.md
 docs/RegistryCredentials.md
 docs/RegistryCredentialsRequest.md
 docs/ResizeContextRequest.md
-docs/ResourceQuota.md
 docs/ResourceUsage.md
 docs/RestoreSandboxRootFSRequest.md
 docs/RestoreSandboxRootFSResponse.md
@@ -212,6 +210,7 @@ docs/SandboxObservabilityWatchLine.md
 docs/SandboxObservabilityWatchLineData.md
 docs/SandboxRefreshRequest.md
 docs/SandboxResourceConfig.md
+docs/SandboxResourceLimits.md
 docs/SandboxResourceUsage.md
 docs/SandboxRootFSSnapshot.md
 docs/SandboxRootFSSnapshotList.md
@@ -337,7 +336,8 @@ docs/SuccessTeamListResponseAllOfData.md
 docs/SuccessTeamMemberListResponse.md
 docs/SuccessTeamMemberListResponseAllOfData.md
 docs/SuccessTeamMemberResponse.md
-docs/SuccessTeamQuotaResponse.md
+docs/SuccessTeamQuotaListResponse.md
+docs/SuccessTeamQuotaPolicyResponse.md
 docs/SuccessTeamResponse.md
 docs/SuccessTemplateListResponse.md
 docs/SuccessTemplateListResponseAllOfData.md
@@ -353,7 +353,17 @@ docs/TeamDeleteConflictResponse.md
 docs/TeamDeleteConflictResponseError.md
 docs/TeamDeleteResourceCount.md
 docs/TeamMember.md
-docs/TeamQuota.md
+docs/TeamQuotaCapacityPolicyWriteRequest.md
+docs/TeamQuotaConcurrencyPolicyWriteRequest.md
+docs/TeamQuotaKey.md
+docs/TeamQuotaKind.md
+docs/TeamQuotaList.md
+docs/TeamQuotaPolicy.md
+docs/TeamQuotaPolicySource.md
+docs/TeamQuotaPolicyWriteRequest.md
+docs/TeamQuotaRatePolicyWriteRequest.md
+docs/TeamQuotaStatus.md
+docs/TeamQuotaUnit.md
 docs/TeamsApi.md
 docs/Template.md
 docs/TemplateCreateRequest.md
@@ -549,7 +559,6 @@ src/models/ProjectedHeader.ts
 src/models/ProjectionSpec.ts
 src/models/ProtocolRule.ts
 src/models/ProtocolRuleProtocol.ts
-src/models/QuotaDimension.ts
 src/models/REPLConfig.ts
 src/models/REPLEnvVar.ts
 src/models/REPLPromptConfig.ts
@@ -562,7 +571,6 @@ src/models/RegisterRequest.ts
 src/models/RegistryCredentials.ts
 src/models/RegistryCredentialsRequest.ts
 src/models/ResizeContextRequest.ts
-src/models/ResourceQuota.ts
 src/models/ResourceUsage.ts
 src/models/RestoreSandboxRootFSRequest.ts
 src/models/RestoreSandboxRootFSResponse.ts
@@ -602,6 +610,7 @@ src/models/SandboxObservabilityWatchLine.ts
 src/models/SandboxObservabilityWatchLineData.ts
 src/models/SandboxRefreshRequest.ts
 src/models/SandboxResourceConfig.ts
+src/models/SandboxResourceLimits.ts
 src/models/SandboxResourceUsage.ts
 src/models/SandboxRootFSSnapshot.ts
 src/models/SandboxRootFSSnapshotList.ts
@@ -722,7 +731,8 @@ src/models/SuccessTeamListResponseAllOfData.ts
 src/models/SuccessTeamMemberListResponse.ts
 src/models/SuccessTeamMemberListResponseAllOfData.ts
 src/models/SuccessTeamMemberResponse.ts
-src/models/SuccessTeamQuotaResponse.ts
+src/models/SuccessTeamQuotaListResponse.ts
+src/models/SuccessTeamQuotaPolicyResponse.ts
 src/models/SuccessTeamResponse.ts
 src/models/SuccessTemplateListResponse.ts
 src/models/SuccessTemplateListResponseAllOfData.ts
@@ -738,7 +748,17 @@ src/models/TeamDeleteConflictResponse.ts
 src/models/TeamDeleteConflictResponseError.ts
 src/models/TeamDeleteResourceCount.ts
 src/models/TeamMember.ts
-src/models/TeamQuota.ts
+src/models/TeamQuotaCapacityPolicyWriteRequest.ts
+src/models/TeamQuotaConcurrencyPolicyWriteRequest.ts
+src/models/TeamQuotaKey.ts
+src/models/TeamQuotaKind.ts
+src/models/TeamQuotaList.ts
+src/models/TeamQuotaPolicy.ts
+src/models/TeamQuotaPolicySource.ts
+src/models/TeamQuotaPolicyWriteRequest.ts
+src/models/TeamQuotaRatePolicyWriteRequest.ts
+src/models/TeamQuotaStatus.ts
+src/models/TeamQuotaUnit.ts
 src/models/Template.ts
 src/models/TemplateCreateRequest.ts
 src/models/TemplateCreationStatus.ts

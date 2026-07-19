@@ -73,4 +73,3 @@ export function ExecutionSessionDesiredStateRequestToJSONTyped(value?: Execution
         'state': ExecutionSessionDesiredStateToJSON(value['state']),
     };
 }
-

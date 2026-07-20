@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -104,6 +104,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *ObservabilityApi* | [**getSandboxRuntimeMetrics**](docs/ObservabilityApi.md#getsandboxruntimemetrics) | **GET** /api/v1/sandboxes/{id}/metrics | Query chart-ready sandbox runtime metrics
 *ObservabilityApi* | [**getSandboxRuntimeMetricsCatalog**](docs/ObservabilityApi.md#getsandboxruntimemetricscatalog) | **GET** /api/v1/sandboxes/{id}/metrics/catalog | Get the sandbox runtime metric catalog
 *QuotasApi* | [**apiV1QuotasDimensionGet**](docs/QuotasApi.md#apiv1quotasdimensionget) | **GET** /api/v1/quotas/{dimension} | Get team quota
+*QuotasApi* | [**apiV1QuotasGet**](docs/QuotasApi.md#apiv1quotasget) | **GET** /api/v1/quotas | List team quotas
 *RegionsApi* | [**regionsGet**](docs/RegionsApi.md#regionsget) | **GET** /regions | List regions in the global gateway
 *RegionsApi* | [**regionsIdDelete**](docs/RegionsApi.md#regionsiddelete) | **DELETE** /regions/{id} | Delete a region from the global gateway
 *RegionsApi* | [**regionsIdGet**](docs/RegionsApi.md#regionsidget) | **GET** /regions/{id} | Get a region from the global gateway
@@ -182,6 +183,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [APIKey](docs/APIKey.md)
 - [AddTeamMemberRequest](docs/AddTeamMemberRequest.md)
 - [Affinity](docs/Affinity.md)
+- [ApiV1QuotasGet200Response](docs/ApiV1QuotasGet200Response.md)
 - [ApiV1SandboxesIdFilesGet200Response](docs/ApiV1SandboxesIdFilesGet200Response.md)
 - [AppArmorProfile](docs/AppArmorProfile.md)
 - [AuthProvider](docs/AuthProvider.md)

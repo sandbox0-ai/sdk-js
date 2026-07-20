@@ -1,24 +1,24 @@
 
-# ResourceQuota
+# ApiV1QuotasGet200Response
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`memory` | string
-`ephemeralStorage` | string
+`success` | boolean
+`data` | [Array&lt;TeamQuota&gt;](TeamQuota.md)
 
 ## Example
 
 ```typescript
-import type { ResourceQuota } from 'sandbox0'
+import type { ApiV1QuotasGet200Response } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "memory": null,
-  "ephemeralStorage": null,
-} satisfies ResourceQuota
+  "success": null,
+  "data": null,
+} satisfies ApiV1QuotasGet200Response
 
 console.log(example)
 
@@ -27,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as ResourceQuota
+const exampleParsed = JSON.parse(exampleJSON) as ApiV1QuotasGet200Response
 console.log(exampleParsed)
 ```
 

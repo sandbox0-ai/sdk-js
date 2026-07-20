@@ -19,7 +19,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 Create template from sandbox
 
-Asynchronously captures the sandbox\&#39;s writable root filesystem, publishes it to the Sandbox0-configured team registry, and creates a digest-pinned template. The capture point is reported by &#x60;status.creation.capturedAt&#x60;, not by acceptance of this request. Keep the source sandbox available and avoid rootfs writes until capture completes. Poll the returned template with &#x60;GET /api/v1/templates/{id}&#x60; until &#x60;status.creation.state&#x60; is &#x60;ready&#x60; or &#x60;failed&#x60;. The caller needs both &#x60;template:create&#x60; and &#x60;sandbox:read&#x60; permissions.
+Asynchronously captures the sandbox\&#39;s writable root filesystem, publishes it to the Sandbox0-configured team registry, and creates a digest-pinned template. The capture point is reported by &#x60;status.creation.capturedAt&#x60;, not by acceptance of this request. Keep the source sandbox available and avoid rootfs writes until capture completes. Poll the returned template with &#x60;GET /api/v1/templates/{id}&#x60; until &#x60;status.creation.state&#x60; is &#x60;ready&#x60; or &#x60;failed&#x60;. The caller needs both &#x60;template:create&#x60; and &#x60;sandbox:read&#x60; permissions. 
 
 ### Example
 
@@ -32,7 +32,7 @@ import type { ApiV1TemplatesFromSandboxPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -111,7 +111,7 @@ import type { ApiV1TemplatesGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -172,7 +172,7 @@ import type { ApiV1TemplatesIdDeleteRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -241,7 +241,7 @@ import type { ApiV1TemplatesIdGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -311,7 +311,7 @@ import type { ApiV1TemplatesIdPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -384,7 +384,7 @@ import type { ApiV1TemplatesPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -434,3 +434,4 @@ example().catch(console.error);
 | **201** | Template created |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+

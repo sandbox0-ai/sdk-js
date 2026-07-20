@@ -15,11 +15,14 @@
 
 import * as runtime from '../runtime';
 import type {
+  ApiV1QuotasGet200Response,
   ErrorEnvelope,
   QuotaDimension,
   SuccessTeamQuotaResponse,
 } from '../models/index';
 import {
+    ApiV1QuotasGet200ResponseFromJSON,
+    ApiV1QuotasGet200ResponseToJSON,
     ErrorEnvelopeFromJSON,
     ErrorEnvelopeToJSON,
     QuotaDimensionFromJSON,
@@ -79,6 +82,43 @@ export class QuotasApi extends runtime.BaseAPI {
      */
     async apiV1QuotasDimensionGet(requestParameters: ApiV1QuotasDimensionGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessTeamQuotaResponse> {
         const response = await this.apiV1QuotasDimensionGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * List team quotas
+     */
+    async apiV1QuotasGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApiV1QuotasGet200Response>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/quotas`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ApiV1QuotasGet200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * List team quotas
+     */
+    async apiV1QuotasGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApiV1QuotasGet200Response> {
+        const response = await this.apiV1QuotasGetRaw(initOverrides);
         return await response.value();
     }
 

@@ -41,6 +41,12 @@ export interface TeamQuota {
     dimension: QuotaDimension;
     /**
      * 
+     * @type {string}
+     * @memberof TeamQuota
+     */
+    kind: TeamQuotaKindEnum;
+    /**
+     * 
      * @type {number}
      * @memberof TeamQuota
      */
@@ -50,7 +56,19 @@ export interface TeamQuota {
      * @type {number}
      * @memberof TeamQuota
      */
-    current: number;
+    intervalMs: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof TeamQuota
+     */
+    burstValue: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof TeamQuota
+     */
+    current: number | null;
     /**
      * 
      * @type {number}
@@ -69,20 +87,46 @@ export interface TeamQuota {
      * @memberof TeamQuota
      */
     unit: TeamQuotaUnitEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof TeamQuota
+     */
+    source: TeamQuotaSourceEnum;
 }
 
 
 /**
  * @export
  */
+export const TeamQuotaKindEnum = {
+    TeamQuotaKindCapacity: 'capacity',
+    TeamQuotaKindRate: 'rate'
+} as const;
+export type TeamQuotaKindEnum = typeof TeamQuotaKindEnum[keyof typeof TeamQuotaKindEnum];
+
+/**
+ * @export
+ */
 export const TeamQuotaUnitEnum = {
-    Count: 'count',
-    Millicpu: 'millicpu',
-    MiB: 'MiB',
-    Gb: 'GB',
-    Bytes: 'bytes'
+    TeamQuotaUnitCount: 'count',
+    TeamQuotaUnitMillicpu: 'millicpu',
+    TeamQuotaUnitMiB: 'MiB',
+    TeamQuotaUnitGB: 'GB',
+    TeamQuotaUnitRequests: 'requests',
+    TeamQuotaUnitBytes: 'bytes'
 } as const;
 export type TeamQuotaUnitEnum = typeof TeamQuotaUnitEnum[keyof typeof TeamQuotaUnitEnum];
+
+/**
+ * @export
+ */
+export const TeamQuotaSourceEnum = {
+    TeamQuotaSourceTeamOverride: 'team_override',
+    TeamQuotaSourceRegionDefault: 'region_default',
+    TeamQuotaSourceUnlimited: 'unlimited'
+} as const;
+export type TeamQuotaSourceEnum = typeof TeamQuotaSourceEnum[keyof typeof TeamQuotaSourceEnum];
 
 
 /**
@@ -91,11 +135,15 @@ export type TeamQuotaUnitEnum = typeof TeamQuotaUnitEnum[keyof typeof TeamQuotaU
 export function instanceOfTeamQuota(value: object): value is TeamQuota {
     if (!('teamId' in value) || value['teamId'] === undefined) return false;
     if (!('dimension' in value) || value['dimension'] === undefined) return false;
+    if (!('kind' in value) || value['kind'] === undefined) return false;
     if (!('limitValue' in value) || value['limitValue'] === undefined) return false;
+    if (!('intervalMs' in value) || value['intervalMs'] === undefined) return false;
+    if (!('burstValue' in value) || value['burstValue'] === undefined) return false;
     if (!('current' in value) || value['current'] === undefined) return false;
     if (!('remaining' in value) || value['remaining'] === undefined) return false;
     if (!('unlimited' in value) || value['unlimited'] === undefined) return false;
     if (!('unit' in value) || value['unit'] === undefined) return false;
+    if (!('source' in value) || value['source'] === undefined) return false;
     return true;
 }
 
@@ -111,11 +159,15 @@ export function TeamQuotaFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         
         'teamId': json['team_id'],
         'dimension': QuotaDimensionFromJSON(json['dimension']),
+        'kind': json['kind'],
         'limitValue': json['limit_value'],
+        'intervalMs': json['interval_ms'],
+        'burstValue': json['burst_value'],
         'current': json['current'],
         'remaining': json['remaining'],
         'unlimited': json['unlimited'],
         'unit': json['unit'],
+        'source': json['source'],
     };
 }
 
@@ -132,11 +184,15 @@ export function TeamQuotaToJSONTyped(value?: TeamQuota | null, ignoreDiscriminat
         
         'team_id': value['teamId'],
         'dimension': QuotaDimensionToJSON(value['dimension']),
+        'kind': value['kind'],
         'limit_value': value['limitValue'],
+        'interval_ms': value['intervalMs'],
+        'burst_value': value['burstValue'],
         'current': value['current'],
         'remaining': value['remaining'],
         'unlimited': value['unlimited'],
         'unit': value['unit'],
+        'source': value['source'],
     };
 }
 

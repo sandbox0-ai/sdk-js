@@ -18,13 +18,13 @@
  * @export
  */
 export const SandboxRuntimeMetricUnit = {
-    Ratio: 'ratio',
-    Cores: 'cores',
-    Seconds: 'seconds',
-    Bytes: 'bytes',
-    Count: 'count',
-    BytesPerSecond: 'bytes_per_second',
-    CountPerSecond: 'count_per_second'
+    SandboxRuntimeMetricUnitRatio: 'ratio',
+    SandboxRuntimeMetricUnitCores: 'cores',
+    SandboxRuntimeMetricUnitSeconds: 'seconds',
+    SandboxRuntimeMetricUnitBytes: 'bytes',
+    SandboxRuntimeMetricUnitCount: 'count',
+    SandboxRuntimeMetricUnitBytesPerSecond: 'bytes_per_second',
+    SandboxRuntimeMetricUnitCountPerSecond: 'count_per_second'
 } as const;
 export type SandboxRuntimeMetricUnit = typeof SandboxRuntimeMetricUnit[keyof typeof SandboxRuntimeMetricUnit];
 

@@ -4,6 +4,7 @@ import type { SandboxObservabilityWatchLine } from "./apispec/src/models/index";
 import { apis, models, runtime } from "./apispec_compat";
 import { normalizeNullMapMiddleware } from "./response_normalize";
 import { CredentialSources } from "./resources/credential_sources";
+import { Quotas } from "./resources/quotas";
 import { Sandboxes } from "./resources/sandboxes";
 import { Templates } from "./resources/templates";
 import { Volumes } from "./resources/volumes";
@@ -63,6 +64,7 @@ export class Client {
     snapshots: apisTypes.SnapshotsApi;
     templates: apisTypes.TemplatesApi;
     credentialSources: apisTypes.CredentialSourcesApi;
+    quotas: apisTypes.QuotasApi;
     teams: apisTypes.TeamsApi;
     observability: apisTypes.ObservabilityApi;
     sessions: apisTypes.SessionsApi;
@@ -72,6 +74,7 @@ export class Client {
   readonly templates: Templates;
   readonly volumes: Volumes;
   readonly credentialSources: CredentialSources;
+  readonly quotas: Quotas;
 
   constructor(options: ClientOptions) {
     const headers: Record<string, string> = {
@@ -100,6 +103,7 @@ export class Client {
       snapshots: new apis.SnapshotsApi(this.configuration),
       templates: new apis.TemplatesApi(this.configuration),
       credentialSources: new apis.CredentialSourcesApi(this.configuration),
+      quotas: new apis.QuotasApi(this.configuration),
       teams: new apis.TeamsApi(this.configuration),
       observability: new apis.ObservabilityApi(this.configuration),
       sessions: new apis.SessionsApi(this.configuration),
@@ -109,6 +113,7 @@ export class Client {
     this.templates = new Templates(this);
     this.volumes = new Volumes(this);
     this.credentialSources = new CredentialSources(this);
+    this.quotas = new Quotas(this);
   }
 
   sandbox(id: string): Sandbox {

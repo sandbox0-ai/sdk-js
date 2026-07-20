@@ -3,6 +3,7 @@
 export * from './APIKey';
 export * from './AddTeamMemberRequest';
 export * from './Affinity';
+export * from './ApiV1QuotasGet200Response';
 export * from './ApiV1SandboxesIdFilesGet200Response';
 export * from './AppArmorProfile';
 export * from './AuthProvider';

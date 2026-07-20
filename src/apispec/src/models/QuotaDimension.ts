@@ -23,8 +23,9 @@ export const QuotaDimension = {
     MemoryMib: 'memory_mib',
     VolumeStorageGb: 'volume_storage_gb',
     SnapshotStorageGb: 'snapshot_storage_gb',
-    Egress: 'egress',
-    Ingress: 'ingress'
+    ApiRequests: 'api_requests',
+    NetworkEgressBytes: 'network_egress_bytes',
+    NetworkIngressBytes: 'network_ingress_bytes'
 } as const;
 export type QuotaDimension = typeof QuotaDimension[keyof typeof QuotaDimension];
 

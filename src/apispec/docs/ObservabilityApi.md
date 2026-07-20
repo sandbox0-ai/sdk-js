@@ -17,7 +17,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 Query canonical signed sandbox observability events
 
-Queries canonical signed per-sandbox audit facts from ClickHouse. Every returned event includes an inline signature verification status, while event-ID payload conflicts are reported independently. Access requires the enterprise sandbox_audit feature and the sandboxaudit:read permission.
+Queries canonical signed per-sandbox audit facts from ClickHouse. Every returned event includes an inline signature verification status, while event-ID payload conflicts are reported independently. Access requires the enterprise sandbox_audit feature and the sandboxaudit:read permission. 
 
 ### Example
 
@@ -30,7 +30,7 @@ import type { ApiV1SandboxesIdObservabilityEventsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -133,7 +133,7 @@ example().catch(console.error);
 
 Query historical sandbox logs
 
-Queries the asynchronous per-sandbox log projection. This endpoint is for historical log lookup and is separate from live log streaming.
+Queries the asynchronous per-sandbox log projection. This endpoint is for historical log lookup and is separate from live log streaming. 
 
 ### Example
 
@@ -146,7 +146,7 @@ import type { ApiV1SandboxesIdObservabilityLogsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -228,7 +228,7 @@ example().catch(console.error);
 
 Query chart-ready sandbox runtime metrics
 
-Returns bounded, downsampled sandbox-wide runtime series. When timestamps are omitted, the query covers the hour ending now. The maximum range is 30 days. Counter rates never cross a runtime reset boundary. Missing data is reported as gaps and is never synthesized as zero. This endpoint is separate from platform service metrics and metering usage truth.
+Returns bounded, downsampled sandbox-wide runtime series. When timestamps are omitted, the query covers the hour ending now. The maximum range is 30 days. Counter rates never cross a runtime reset boundary. Missing data is reported as gaps and is never synthesized as zero. This endpoint is separate from platform service metrics and metering usage truth. 
 
 ### Example
 
@@ -241,7 +241,7 @@ import type { GetSandboxRuntimeMetricsRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -333,7 +333,7 @@ import type { GetSandboxRuntimeMetricsCatalogRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });

@@ -5,6 +5,7 @@ docs/APIKey.md
 docs/AddTeamMemberRequest.md
 docs/Affinity.md
 docs/ApiKeysApi.md
+docs/ApiV1QuotasGet200Response.md
 docs/ApiV1SandboxesIdFilesGet200Response.md
 docs/AppArmorProfile.md
 docs/AuthApi.md
@@ -404,6 +405,7 @@ src/index.ts
 src/models/APIKey.ts
 src/models/AddTeamMemberRequest.ts
 src/models/Affinity.ts
+src/models/ApiV1QuotasGet200Response.ts
 src/models/ApiV1SandboxesIdFilesGet200Response.ts
 src/models/AppArmorProfile.ts
 src/models/AuthProvider.ts

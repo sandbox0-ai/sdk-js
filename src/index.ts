@@ -1,3 +1,13 @@
+import type {
+  QuotaDimension as GeneratedQuotaDimension,
+} from "./apispec/src/models/QuotaDimension";
+import type {
+  TeamQuota as GeneratedTeamQuota,
+  TeamQuotaKindEnum as GeneratedTeamQuotaKindEnum,
+  TeamQuotaSourceEnum as GeneratedTeamQuotaSourceEnum,
+  TeamQuotaUnitEnum as GeneratedTeamQuotaUnitEnum,
+} from "./apispec/src/models/TeamQuota";
+
 export { Client, type ClientOptions, DEFAULT_BASE_URL } from "./client";
 export { Sandbox } from "./sandbox";
 export {
@@ -21,5 +31,14 @@ import "./sandbox_services";
 import "./sandbox_observability";
 import "./sandbox_sessions";
 
+export const QuotaDimension = generatedModels.QuotaDimension;
+export const TeamQuotaKindEnum = generatedModels.TeamQuotaKindEnum;
+export const TeamQuotaSourceEnum = generatedModels.TeamQuotaSourceEnum;
+export const TeamQuotaUnitEnum = generatedModels.TeamQuotaUnitEnum;
+export type QuotaDimension = GeneratedQuotaDimension;
+export type TeamQuota = GeneratedTeamQuota;
+export type TeamQuotaKindEnum = GeneratedTeamQuotaKindEnum;
+export type TeamQuotaSourceEnum = GeneratedTeamQuotaSourceEnum;
+export type TeamQuotaUnitEnum = GeneratedTeamQuotaUnitEnum;
 export const SandboxRuntimeMetricName = generatedModels.SandboxRuntimeMetricName;
 export const SandboxRuntimeMetricStatistic = generatedModels.SandboxRuntimeMetricStatistic;

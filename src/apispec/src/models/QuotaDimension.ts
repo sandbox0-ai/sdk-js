@@ -19,8 +19,7 @@
  */
 export const QuotaDimension = {
     ActiveSandboxes: 'active_sandboxes',
-    CpuMillicpu: 'cpu_millicpu',
-    MemoryMib: 'memory_mib',
+    SandboxClaims: 'sandbox_claims',
     VolumeStorageGb: 'volume_storage_gb',
     SnapshotStorageGb: 'snapshot_storage_gb',
     ApiRequests: 'api_requests',

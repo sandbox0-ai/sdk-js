@@ -110,8 +110,7 @@ export type TeamQuotaKindEnum = typeof TeamQuotaKindEnum[keyof typeof TeamQuotaK
  */
 export const TeamQuotaUnitEnum = {
     TeamQuotaUnitCount: 'count',
-    TeamQuotaUnitMillicpu: 'millicpu',
-    TeamQuotaUnitMiB: 'MiB',
+    TeamQuotaUnitClaims: 'claims',
     TeamQuotaUnitGB: 'GB',
     TeamQuotaUnitRequests: 'requests',
     TeamQuotaUnitBytes: 'bytes'

@@ -54,7 +54,7 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **dimension** | `QuotaDimension` |  | [Defaults to `undefined`] [Enum: active_sandboxes, cpu_millicpu, memory_mib, volume_storage_gb, snapshot_storage_gb, api_requests, network_egress_bytes, network_ingress_bytes] |
+| **dimension** | `QuotaDimension` |  | [Defaults to `undefined`] [Enum: active_sandboxes, sandbox_claims, volume_storage_gb, snapshot_storage_gb, api_requests, network_egress_bytes, network_ingress_bytes] |
 
 ### Return type
 

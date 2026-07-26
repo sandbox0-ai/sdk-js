@@ -7,6 +7,7 @@ import { CredentialSources } from "./resources/credential_sources";
 import { Quotas } from "./resources/quotas";
 import { Sandboxes } from "./resources/sandboxes";
 import { Templates } from "./resources/templates";
+import { Usage } from "./resources/usage";
 import { Volumes } from "./resources/volumes";
 import { Sandbox } from "./sandbox";
 import { APIError, apiErrorFromResponse, wrapApiCall } from "./errors";
@@ -65,6 +66,7 @@ export class Client {
     templates: apisTypes.TemplatesApi;
     credentialSources: apisTypes.CredentialSourcesApi;
     quotas: apisTypes.QuotasApi;
+    usage: apisTypes.UsageApi;
     teams: apisTypes.TeamsApi;
     observability: apisTypes.ObservabilityApi;
     sessions: apisTypes.SessionsApi;
@@ -75,6 +77,7 @@ export class Client {
   readonly volumes: Volumes;
   readonly credentialSources: CredentialSources;
   readonly quotas: Quotas;
+  readonly usage: Usage;
 
   constructor(options: ClientOptions) {
     const headers: Record<string, string> = {
@@ -104,6 +107,7 @@ export class Client {
       templates: new apis.TemplatesApi(this.configuration),
       credentialSources: new apis.CredentialSourcesApi(this.configuration),
       quotas: new apis.QuotasApi(this.configuration),
+      usage: new apis.UsageApi(this.configuration),
       teams: new apis.TeamsApi(this.configuration),
       observability: new apis.ObservabilityApi(this.configuration),
       sessions: new apis.SessionsApi(this.configuration),
@@ -114,6 +118,7 @@ export class Client {
     this.volumes = new Volumes(this);
     this.credentialSources = new CredentialSources(this);
     this.quotas = new Quotas(this);
+    this.usage = new Usage(this);
   }
 
   sandbox(id: string): Sandbox {

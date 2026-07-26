@@ -17,4 +17,5 @@ export * from './SessionsApi';
 export * from './SnapshotsApi';
 export * from './TeamsApi';
 export * from './TemplatesApi';
+export * from './UsageApi';
 export * from './UsersApi';

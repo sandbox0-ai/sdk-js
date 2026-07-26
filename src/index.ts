@@ -7,6 +7,12 @@ import type {
   TeamQuotaSourceEnum as GeneratedTeamQuotaSourceEnum,
   TeamQuotaUnitEnum as GeneratedTeamQuotaUnitEnum,
 } from "./apispec/src/models/TeamQuota";
+import type {
+  UsageWindow as GeneratedUsageWindow,
+} from "./apispec/src/models/UsageWindow";
+import type {
+  UsageWindowPage as GeneratedUsageWindowPage,
+} from "./apispec/src/models/UsageWindowPage";
 
 export { Client, type ClientOptions, DEFAULT_BASE_URL } from "./client";
 export { Sandbox } from "./sandbox";
@@ -21,6 +27,7 @@ export * from "./template_helpers";
 export * from "./models";
 export * from "./sessions";
 export * from "./sandbox_sessions";
+export { Usage, type UsageWindowListOptions } from "./resources/usage";
 export { apis, models, runtime } from "./apispec_compat";
 export * as apispec from "./apispec_compat";
 import { models as generatedModels } from "./apispec_compat";
@@ -40,5 +47,7 @@ export type TeamQuota = GeneratedTeamQuota;
 export type TeamQuotaKindEnum = GeneratedTeamQuotaKindEnum;
 export type TeamQuotaSourceEnum = GeneratedTeamQuotaSourceEnum;
 export type TeamQuotaUnitEnum = GeneratedTeamQuotaUnitEnum;
+export type UsageWindow = GeneratedUsageWindow;
+export type UsageWindowPage = GeneratedUsageWindowPage;
 export const SandboxRuntimeMetricName = generatedModels.SandboxRuntimeMetricName;
 export const SandboxRuntimeMetricStatistic = generatedModels.SandboxRuntimeMetricStatistic;

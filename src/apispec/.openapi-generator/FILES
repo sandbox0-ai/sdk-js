@@ -343,6 +343,7 @@ docs/SuccessTeamResponse.md
 docs/SuccessTemplateListResponse.md
 docs/SuccessTemplateListResponseAllOfData.md
 docs/SuccessTemplateResponse.md
+docs/SuccessUsageWindowsResponse.md
 docs/SuccessUserResponse.md
 docs/SuccessVolumeFileArchiveImportResponse.md
 docs/SuccessWrittenResponse.md
@@ -372,6 +373,9 @@ docs/UpdateRegionRequest.md
 docs/UpdateTeamMemberRequest.md
 docs/UpdateTeamRequest.md
 docs/UpdateUserRequest.md
+docs/UsageApi.md
+docs/UsageWindow.md
+docs/UsageWindowPage.md
 docs/User.md
 docs/UsersApi.md
 docs/VolumeAccessMode.md
@@ -399,6 +403,7 @@ src/apis/SessionsApi.ts
 src/apis/SnapshotsApi.ts
 src/apis/TeamsApi.ts
 src/apis/TemplatesApi.ts
+src/apis/UsageApi.ts
 src/apis/UsersApi.ts
 src/apis/index.ts
 src/index.ts
@@ -729,6 +734,7 @@ src/models/SuccessTeamResponse.ts
 src/models/SuccessTemplateListResponse.ts
 src/models/SuccessTemplateListResponseAllOfData.ts
 src/models/SuccessTemplateResponse.ts
+src/models/SuccessUsageWindowsResponse.ts
 src/models/SuccessUserResponse.ts
 src/models/SuccessVolumeFileArchiveImportResponse.ts
 src/models/SuccessWrittenResponse.ts
@@ -756,6 +762,8 @@ src/models/UpdateRegionRequest.ts
 src/models/UpdateTeamMemberRequest.ts
 src/models/UpdateTeamRequest.ts
 src/models/UpdateUserRequest.ts
+src/models/UsageWindow.ts
+src/models/UsageWindowPage.ts
 src/models/User.ts
 src/models/VolumeAccessMode.ts
 src/models/VolumeBackend.ts

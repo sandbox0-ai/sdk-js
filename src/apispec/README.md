@@ -169,6 +169,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *TemplatesApi* | [**apiV1TemplatesIdGet**](docs/TemplatesApi.md#apiv1templatesidget) | **GET** /api/v1/templates/{id} | Get template
 *TemplatesApi* | [**apiV1TemplatesIdPut**](docs/TemplatesApi.md#apiv1templatesidput) | **PUT** /api/v1/templates/{id} | Update template
 *TemplatesApi* | [**apiV1TemplatesPost**](docs/TemplatesApi.md#apiv1templatespost) | **POST** /api/v1/templates | Create template
+*UsageApi* | [**apiV1UsageWindowsGet**](docs/UsageApi.md#apiv1usagewindowsget) | **GET** /api/v1/usage/windows | List usage windows for the current team
 *UsersApi* | [**usersMeGet**](docs/UsersApi.md#usersmeget) | **GET** /users/me | Get current user
 *UsersApi* | [**usersMeIdentitiesGet**](docs/UsersApi.md#usersmeidentitiesget) | **GET** /users/me/identities | List current user identities
 *UsersApi* | [**usersMeIdentitiesIdDelete**](docs/UsersApi.md#usersmeidentitiesiddelete) | **DELETE** /users/me/identities/{id} | Delete a user identity
@@ -507,6 +508,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessTemplateListResponse](docs/SuccessTemplateListResponse.md)
 - [SuccessTemplateListResponseAllOfData](docs/SuccessTemplateListResponseAllOfData.md)
 - [SuccessTemplateResponse](docs/SuccessTemplateResponse.md)
+- [SuccessUsageWindowsResponse](docs/SuccessUsageWindowsResponse.md)
 - [SuccessUserResponse](docs/SuccessUserResponse.md)
 - [SuccessVolumeFileArchiveImportResponse](docs/SuccessVolumeFileArchiveImportResponse.md)
 - [SuccessWrittenResponse](docs/SuccessWrittenResponse.md)
@@ -534,6 +536,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [UpdateTeamMemberRequest](docs/UpdateTeamMemberRequest.md)
 - [UpdateTeamRequest](docs/UpdateTeamRequest.md)
 - [UpdateUserRequest](docs/UpdateUserRequest.md)
+- [UsageWindow](docs/UsageWindow.md)
+- [UsageWindowPage](docs/UsageWindowPage.md)
 - [User](docs/User.md)
 - [VolumeAccessMode](docs/VolumeAccessMode.md)
 - [VolumeBackend](docs/VolumeBackend.md)

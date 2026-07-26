@@ -77,8 +77,8 @@ export interface SandboxUpdateConfig {
      */
     network?: SandboxNetworkPolicy;
     /**
-     * Sandbox-level resume gate for paused sandboxes. When false, any inbound request
-     * (API or public exposure) must not auto resume the sandbox.
+     * Sandbox-level runtime recovery gate. When false, inbound API or public exposure
+     * requests must not automatically resume a paused sandbox or replace a failed runtime.
      * 
      * @type {boolean}
      * @memberof SandboxUpdateConfig

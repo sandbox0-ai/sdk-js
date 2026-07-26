@@ -163,6 +163,41 @@ for (const series of metrics.series) {
 Use `sandbox.getMetricsCatalog()` to discover metric kinds, units, and
 dimensions supported by the API.
 
+## Tenant Usage Windows
+
+`client.usage.listWindows()` incrementally reads immutable, closed usage
+windows for the team derived from the SDK token. The API never accepts a team
+id from the caller. Retain `nextCursor` only after durably processing the
+returned page.
+
+```typescript
+let cursor: string | undefined;
+
+do {
+  const page = await client.usage.listWindows({
+    cursor,
+    limit: 1000,
+    windowType: "sandbox.runtime_mib_milliseconds",
+  });
+
+  for (const window of page.windows) {
+    console.log(
+      window.sandboxId,
+      window.windowStart,
+      window.windowEnd,
+      window.value,
+      window.unit,
+    );
+  }
+
+  cursor = page.nextCursor || undefined;
+} while (cursor);
+```
+
+The token needs `usage:read`, and the Sandbox0 region must have metering and
+its ClickHouse query projection enabled. `GET /api/v1/quotas` reports current
+operational quota status; it is not a cumulative usage API.
+
 ## Links
 
 - [Documentation](https://sandbox0.ai/docs)

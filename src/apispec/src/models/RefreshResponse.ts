@@ -26,17 +26,17 @@ export interface RefreshResponse {
      */
     sandboxId: string;
     /**
-     * 
+     * Soft expiration timestamp. Omitted or null means disabled or not set.
      * @type {Date}
      * @memberof RefreshResponse
      */
-    expiresAt: Date;
+    expiresAt?: Date | null;
     /**
-     * Hard expiration timestamp. Zero value means not set.
+     * Hard expiration timestamp. Omitted or null means disabled or not set.
      * @type {Date}
      * @memberof RefreshResponse
      */
-    hardExpiresAt: Date;
+    hardExpiresAt?: Date | null;
 }
 
 /**
@@ -44,8 +44,6 @@ export interface RefreshResponse {
  */
 export function instanceOfRefreshResponse(value: object): value is RefreshResponse {
     if (!('sandboxId' in value) || value['sandboxId'] === undefined) return false;
-    if (!('expiresAt' in value) || value['expiresAt'] === undefined) return false;
-    if (!('hardExpiresAt' in value) || value['hardExpiresAt'] === undefined) return false;
     return true;
 }
 
@@ -60,8 +58,8 @@ export function RefreshResponseFromJSONTyped(json: any, ignoreDiscriminator: boo
     return {
         
         'sandboxId': json['sandbox_id'],
-        'expiresAt': (new Date(json['expires_at'])),
-        'hardExpiresAt': (new Date(json['hard_expires_at'])),
+        'expiresAt': json['expires_at'] == null ? undefined : (new Date(json['expires_at'])),
+        'hardExpiresAt': json['hard_expires_at'] == null ? undefined : (new Date(json['hard_expires_at'])),
     };
 }
 
@@ -77,8 +75,8 @@ export function RefreshResponseToJSONTyped(value?: RefreshResponse | null, ignor
     return {
         
         'sandbox_id': value['sandboxId'],
-        'expires_at': value['expiresAt'].toISOString(),
-        'hard_expires_at': value['hardExpiresAt'].toISOString(),
+        'expires_at': value['expiresAt'] == null ? value['expiresAt'] : value['expiresAt'].toISOString(),
+        'hard_expires_at': value['hardExpiresAt'] == null ? value['hardExpiresAt'] : value['hardExpiresAt'].toISOString(),
     };
 }
 

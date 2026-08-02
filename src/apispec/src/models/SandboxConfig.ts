@@ -85,8 +85,11 @@ export interface SandboxConfig {
      */
     webhook?: WebhookConfig;
     /**
-     * Sandbox-level runtime recovery gate. When false, inbound API or public exposure
-     * requests must not automatically resume a paused sandbox or replace a failed runtime.
+     * Controls whether supported inbound API or public exposure requests may automatically
+     * make an inactive sandbox available. This setting does not control platform-initiated
+     * runtime fault recovery. A supported access request returns `503 unavailable` with
+     * `sandbox is waking up` when an accepted resume has not committed yet. It returns
+     * `503 sandbox_resume_failed` when that resume attempt has ended unsuccessfully.
      * 
      * @type {boolean}
      * @memberof SandboxConfig

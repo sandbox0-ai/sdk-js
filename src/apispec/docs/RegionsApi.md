@@ -142,7 +142,6 @@ example().catch(console.error);
 | **401** | Unauthorized |  -  |
 | **403** | System admin access required |  -  |
 | **404** | Region not found |  -  |
-| **409** | Team already exists |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

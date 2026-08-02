@@ -803,12 +803,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
-        "409":
-          description: Team already exists
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorEnvelope"
   /teams/{id}:
     get:
       tags: [teams]
@@ -876,7 +870,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
         "409":
-          description: Team update conflicts with an immutable field or existing slug
+          description: Team update conflicts with an immutable field
           content:
             application/json:
               schema:
@@ -4484,8 +4478,10 @@ components:
           type: string
         name:
           type: string
+          description: Display name. Team names are not unique; use the team ID as the canonical identifier.
         slug:
           type: string
+          description: Human-readable alias. Team slugs are not unique; use the team ID as the canonical identifier.
         owner_id:
           type: string
           nullable: true
@@ -4636,8 +4632,10 @@ components:
       properties:
         name:
           type: string
+          description: Display name. Team names are not unique.
         slug:
           type: string
+          description: Human-readable alias. Team slugs are not unique.
         home_region_id:
           type: string
           nullable: true
@@ -4647,8 +4645,10 @@ components:
       properties:
         name:
           type: string
+          description: Display name. Team names are not unique.
         slug:
           type: string
+          description: Human-readable alias. Team slugs are not unique.
     TransferTeamOwnerRequest:
       type: object
       properties:
@@ -4905,8 +4905,11 @@ components:
           type: boolean
           default: true
           description: |
-            Sandbox-level runtime recovery gate. When false, inbound API or public exposure
-            requests must not automatically resume a paused sandbox or replace a failed runtime.
+            Controls whether supported inbound API or public exposure requests may automatically
+            make an inactive sandbox available. This setting does not control platform-initiated
+            runtime fault recovery. A supported access request returns `503 unavailable` with
+            `sandbox is waking up` when an accepted resume has not committed yet. It returns
+            `503 sandbox_resume_failed` when that resume attempt has ended unsuccessfully.
         services:
           type: array
           items:
@@ -5215,11 +5218,13 @@ components:
         expires_at:
           type: string
           format: date-time
-          description: Soft expiration timestamp. Zero value means not set.
+          nullable: true
+          description: Soft expiration timestamp. Omitted or null means disabled or not set.
         hard_expires_at:
           type: string
           format: date-time
-          description: Hard expiration timestamp. Zero value means not set.
+          nullable: true
+          description: Hard expiration timestamp. Omitted or null means disabled or not set.
         claimed_at:
           type: string
           format: date-time
@@ -5238,8 +5243,6 @@ components:
         - auto_resume
         - pod_name
         - runtime_generation
-        - expires_at
-        - hard_expires_at
         - claimed_at
         - created_at
         - updated_at
@@ -5286,8 +5289,11 @@ components:
           type: boolean
           default: true
           description: |
-            Sandbox-level runtime recovery gate. When false, inbound API or public exposure
-            requests must not automatically resume a paused sandbox or replace a failed runtime.
+            Controls whether supported inbound API or public exposure requests may automatically
+            make an inactive sandbox available. This setting does not control platform-initiated
+            runtime fault recovery. A supported access request returns `503 unavailable` with
+            `sandbox is waking up` when an accepted resume has not committed yet. It returns
+            `503 sandbox_resume_failed` when that resume attempt has ended unsuccessfully.
         services:
           type: array
           items:
@@ -5316,8 +5322,12 @@ components:
           type: string
         expires_at:
           type: string
+          format: date-time
+          nullable: true
         hard_expires_at:
           type: string
+          format: date-time
+          nullable: true
         created_at:
           type: string
     SuccessSandboxResponse:
@@ -5477,10 +5487,13 @@ components:
         expires_at:
           type: string
           format: date-time
+          nullable: true
+          description: Soft expiration timestamp. Omitted or null means disabled or not set.
         hard_expires_at:
           type: string
           format: date-time
-          description: Hard expiration timestamp. Zero value means not set.
+          nullable: true
+          description: Hard expiration timestamp. Omitted or null means disabled or not set.
         updated_at:
           type: string
           format: date-time
@@ -5491,8 +5504,6 @@ components:
         - paused
         - runtime_generation
         - created_at
-        - expires_at
-        - hard_expires_at
         - updated_at
     SuccessSandboxListResponse:
       allOf:
@@ -6102,11 +6113,14 @@ components:
         expires_at:
           type: string
           format: date-time
+          nullable: true
+          description: Soft expiration timestamp. Omitted or null means disabled or not set.
         hard_expires_at:
           type: string
           format: date-time
-          description: Hard expiration timestamp. Zero value means not set.
-      required: [sandbox_id, expires_at, hard_expires_at]
+          nullable: true
+          description: Hard expiration timestamp. Omitted or null means disabled or not set.
+      required: [sandbox_id]
     SuccessRefreshResponse:
       allOf:
         - $ref: "#/components/schemas/SuccessEnvelope"
@@ -6662,6 +6676,12 @@ components:
           $ref: "#/components/schemas/CreateCMDContextRequest"
         wait_until_done:
           type: boolean
+          description: >-
+            Wait for the context process to finish before returning. For
+            long-running commands, prefer an asynchronous context with a
+            bounded ttl_sec and follow it through the context WebSocket and GET
+            APIs. Use a supervised session when reconnectable, replayable, or
+            restartable execution is required.
         cwd:
           type: string
         env_vars:

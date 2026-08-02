@@ -20,13 +20,13 @@ import { mapValues } from '../runtime';
  */
 export interface CreateTeamRequest {
     /**
-     * 
+     * Display name. Team names are not unique.
      * @type {string}
      * @memberof CreateTeamRequest
      */
     name: string;
     /**
-     * 
+     * Human-readable alias. Team slugs are not unique.
      * @type {string}
      * @memberof CreateTeamRequest
      */

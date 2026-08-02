@@ -67,7 +67,7 @@ export interface CreateContextRequest {
      */
     cmd?: CreateCMDContextRequest;
     /**
-     * 
+     * Wait for the context process to finish before returning. For long-running commands, prefer an asynchronous context with a bounded ttl_sec and follow it through the context WebSocket and GET APIs. Use a supervised session when reconnectable, replayable, or restartable execution is required.
      * @type {boolean}
      * @memberof CreateContextRequest
      */

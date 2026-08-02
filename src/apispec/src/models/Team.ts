@@ -26,13 +26,13 @@ export interface Team {
      */
     id: string;
     /**
-     * 
+     * Display name. Team names are not unique; use the team ID as the canonical identifier.
      * @type {string}
      * @memberof Team
      */
     name: string;
     /**
-     * 
+     * Human-readable alias. Team slugs are not unique; use the team ID as the canonical identifier.
      * @type {string}
      * @memberof Team
      */

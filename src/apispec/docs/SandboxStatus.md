@@ -13,8 +13,8 @@ Name | Type
 `podName` | string
 `status` | [SandboxLifecycleStatus](SandboxLifecycleStatus.md)
 `claimedAt` | string
-`expiresAt` | string
-`hardExpiresAt` | string
+`expiresAt` | Date
+`hardExpiresAt` | Date
 `createdAt` | string
 
 ## Example

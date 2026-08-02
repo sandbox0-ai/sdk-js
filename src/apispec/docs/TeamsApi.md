@@ -673,7 +673,7 @@ example().catch(console.error);
 | **400** | Invalid request |  -  |
 | **403** | Forbidden |  -  |
 | **404** | Team not found |  -  |
-| **409** | Team update conflicts with an immutable field or existing slug |  -  |
+| **409** | Team update conflicts with an immutable field |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

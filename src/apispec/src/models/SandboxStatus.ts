@@ -71,16 +71,16 @@ export interface SandboxStatus {
     claimedAt?: string;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof SandboxStatus
      */
-    expiresAt?: string;
+    expiresAt?: Date | null;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof SandboxStatus
      */
-    hardExpiresAt?: string;
+    hardExpiresAt?: Date | null;
     /**
      * 
      * @type {string}
@@ -115,8 +115,8 @@ export function SandboxStatusFromJSONTyped(json: any, ignoreDiscriminator: boole
         'podName': json['pod_name'] == null ? undefined : json['pod_name'],
         'status': json['status'] == null ? undefined : SandboxLifecycleStatusFromJSON(json['status']),
         'claimedAt': json['claimed_at'] == null ? undefined : json['claimed_at'],
-        'expiresAt': json['expires_at'] == null ? undefined : json['expires_at'],
-        'hardExpiresAt': json['hard_expires_at'] == null ? undefined : json['hard_expires_at'],
+        'expiresAt': json['expires_at'] == null ? undefined : (new Date(json['expires_at'])),
+        'hardExpiresAt': json['hard_expires_at'] == null ? undefined : (new Date(json['hard_expires_at'])),
         'createdAt': json['created_at'] == null ? undefined : json['created_at'],
     };
 }
@@ -139,8 +139,8 @@ export function SandboxStatusToJSONTyped(value?: SandboxStatus | null, ignoreDis
         'pod_name': value['podName'],
         'status': SandboxLifecycleStatusToJSON(value['status']),
         'claimed_at': value['claimedAt'],
-        'expires_at': value['expiresAt'],
-        'hard_expires_at': value['hardExpiresAt'],
+        'expires_at': value['expiresAt'] == null ? value['expiresAt'] : value['expiresAt'].toISOString(),
+        'hard_expires_at': value['hardExpiresAt'] == null ? value['hardExpiresAt'] : value['hardExpiresAt'].toISOString(),
         'created_at': value['createdAt'],
     };
 }

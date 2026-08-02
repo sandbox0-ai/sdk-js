@@ -134,17 +134,17 @@ export interface Sandbox {
      */
     ssh?: SandboxSSHConnection;
     /**
-     * Soft expiration timestamp. Zero value means not set.
+     * Soft expiration timestamp. Omitted or null means disabled or not set.
      * @type {Date}
      * @memberof Sandbox
      */
-    expiresAt: Date;
+    expiresAt?: Date | null;
     /**
-     * Hard expiration timestamp. Zero value means not set.
+     * Hard expiration timestamp. Omitted or null means disabled or not set.
      * @type {Date}
      * @memberof Sandbox
      */
-    hardExpiresAt: Date;
+    hardExpiresAt?: Date | null;
     /**
      * 
      * @type {Date}
@@ -179,8 +179,6 @@ export function instanceOfSandbox(value: object): value is Sandbox {
     if (!('autoResume' in value) || value['autoResume'] === undefined) return false;
     if (!('podName' in value) || value['podName'] === undefined) return false;
     if (!('runtimeGeneration' in value) || value['runtimeGeneration'] === undefined) return false;
-    if (!('expiresAt' in value) || value['expiresAt'] === undefined) return false;
-    if (!('hardExpiresAt' in value) || value['hardExpiresAt'] === undefined) return false;
     if (!('claimedAt' in value) || value['claimedAt'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
@@ -210,8 +208,8 @@ export function SandboxFromJSONTyped(json: any, ignoreDiscriminator: boolean): S
         'podName': json['pod_name'],
         'runtimeGeneration': json['runtime_generation'],
         'ssh': json['ssh'] == null ? undefined : SandboxSSHConnectionFromJSON(json['ssh']),
-        'expiresAt': (new Date(json['expires_at'])),
-        'hardExpiresAt': (new Date(json['hard_expires_at'])),
+        'expiresAt': json['expires_at'] == null ? undefined : (new Date(json['expires_at'])),
+        'hardExpiresAt': json['hard_expires_at'] == null ? undefined : (new Date(json['hard_expires_at'])),
         'claimedAt': (new Date(json['claimed_at'])),
         'createdAt': (new Date(json['created_at'])),
         'updatedAt': (new Date(json['updated_at'])),
@@ -242,8 +240,8 @@ export function SandboxToJSONTyped(value?: Sandbox | null, ignoreDiscriminator: 
         'pod_name': value['podName'],
         'runtime_generation': value['runtimeGeneration'],
         'ssh': SandboxSSHConnectionToJSON(value['ssh']),
-        'expires_at': value['expiresAt'].toISOString(),
-        'hard_expires_at': value['hardExpiresAt'].toISOString(),
+        'expires_at': value['expiresAt'] == null ? value['expiresAt'] : value['expiresAt'].toISOString(),
+        'hard_expires_at': value['hardExpiresAt'] == null ? value['hardExpiresAt'] : value['hardExpiresAt'].toISOString(),
         'claimed_at': value['claimedAt'].toISOString(),
         'created_at': value['createdAt'].toISOString(),
         'updated_at': value['updatedAt'].toISOString(),

@@ -70,17 +70,17 @@ export interface SandboxSummary {
      */
     createdAt: Date;
     /**
-     * 
+     * Soft expiration timestamp. Omitted or null means disabled or not set.
      * @type {Date}
      * @memberof SandboxSummary
      */
-    expiresAt: Date;
+    expiresAt?: Date | null;
     /**
-     * Hard expiration timestamp. Zero value means not set.
+     * Hard expiration timestamp. Omitted or null means disabled or not set.
      * @type {Date}
      * @memberof SandboxSummary
      */
-    hardExpiresAt: Date;
+    hardExpiresAt?: Date | null;
     /**
      * 
      * @type {Date}
@@ -101,8 +101,6 @@ export function instanceOfSandboxSummary(value: object): value is SandboxSummary
     if (!('paused' in value) || value['paused'] === undefined) return false;
     if (!('runtimeGeneration' in value) || value['runtimeGeneration'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
-    if (!('expiresAt' in value) || value['expiresAt'] === undefined) return false;
-    if (!('hardExpiresAt' in value) || value['hardExpiresAt'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
 }
@@ -124,8 +122,8 @@ export function SandboxSummaryFromJSONTyped(json: any, ignoreDiscriminator: bool
         'runtimeGeneration': json['runtime_generation'],
         'clusterId': json['cluster_id'] == null ? undefined : json['cluster_id'],
         'createdAt': (new Date(json['created_at'])),
-        'expiresAt': (new Date(json['expires_at'])),
-        'hardExpiresAt': (new Date(json['hard_expires_at'])),
+        'expiresAt': json['expires_at'] == null ? undefined : (new Date(json['expires_at'])),
+        'hardExpiresAt': json['hard_expires_at'] == null ? undefined : (new Date(json['hard_expires_at'])),
         'updatedAt': (new Date(json['updated_at'])),
     };
 }
@@ -148,8 +146,8 @@ export function SandboxSummaryToJSONTyped(value?: SandboxSummary | null, ignoreD
         'runtime_generation': value['runtimeGeneration'],
         'cluster_id': value['clusterId'],
         'created_at': value['createdAt'].toISOString(),
-        'expires_at': value['expiresAt'].toISOString(),
-        'hard_expires_at': value['hardExpiresAt'].toISOString(),
+        'expires_at': value['expiresAt'] == null ? value['expiresAt'] : value['expiresAt'].toISOString(),
+        'hard_expires_at': value['hardExpiresAt'] == null ? value['hardExpiresAt'] : value['hardExpiresAt'].toISOString(),
         'updated_at': value['updatedAt'].toISOString(),
     };
 }

@@ -10,6 +10,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 | [**apiV1SandboxesIdNetworkGet**](SandboxesApi.md#apiv1sandboxesidnetworkget) | **GET** /api/v1/sandboxes/{id}/network | Get sandbox network policy |
 | [**apiV1SandboxesIdNetworkPut**](SandboxesApi.md#apiv1sandboxesidnetworkput) | **PUT** /api/v1/sandboxes/{id}/network | Update sandbox network policy |
 | [**apiV1SandboxesIdPausePost**](SandboxesApi.md#apiv1sandboxesidpausepost) | **POST** /api/v1/sandboxes/{id}/pause | Pause a sandbox |
+| [**apiV1SandboxesIdPreviewsPost**](SandboxesApi.md#apiv1sandboxesidpreviewspost) | **POST** /api/v1/sandboxes/{id}/previews | Create a private sandbox preview grant |
+| [**apiV1SandboxesIdPreviewsPreviewIdDelete**](SandboxesApi.md#apiv1sandboxesidpreviewspreviewiddelete) | **DELETE** /api/v1/sandboxes/{id}/previews/{preview_id} | Revoke a private sandbox preview grant |
+| [**apiV1SandboxesIdPreviewsPreviewIdPut**](SandboxesApi.md#apiv1sandboxesidpreviewspreviewidput) | **PUT** /api/v1/sandboxes/{id}/previews/{preview_id} | Renew a private sandbox preview grant |
 | [**apiV1SandboxesIdPut**](SandboxesApi.md#apiv1sandboxesidput) | **PUT** /api/v1/sandboxes/{id} | Update sandbox configuration |
 | [**apiV1SandboxesIdRefreshPost**](SandboxesApi.md#apiv1sandboxesidrefreshpost) | **POST** /api/v1/sandboxes/{id}/refresh | Refresh sandbox TTL |
 | [**apiV1SandboxesIdResumePost**](SandboxesApi.md#apiv1sandboxesidresumepost) | **POST** /api/v1/sandboxes/{id}/resume | Resume a sandbox |
@@ -39,7 +42,7 @@ import type { ApiV1SandboxesGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -121,7 +124,7 @@ import type { ApiV1SandboxesIdDeleteRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -192,7 +195,7 @@ import type { ApiV1SandboxesIdGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -263,7 +266,7 @@ import type { ApiV1SandboxesIdNetworkGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -333,7 +336,7 @@ import type { ApiV1SandboxesIdNetworkPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -405,7 +408,7 @@ import type { ApiV1SandboxesIdPausePostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -461,6 +464,237 @@ example().catch(console.error);
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
+## apiV1SandboxesIdPreviewsPost
+
+> SuccessSandboxPreviewResponse apiV1SandboxesIdPreviewsPost(id, sandboxPreviewCreateRequest)
+
+Create a private sandbox preview grant
+
+Creates a short-lived, sandbox-runtime-bound authorization for previewing a loopback HTTP server through the region public exposure domain. The returned URL performs a one-time browser bootstrap and then redirects to a clean same-origin URL. This does not publish or modify sandbox services.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  SandboxesApi,
+} from 'sandbox0';
+import type { ApiV1SandboxesIdPreviewsPostRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SandboxesApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // SandboxPreviewCreateRequest
+    sandboxPreviewCreateRequest: ...,
+  } satisfies ApiV1SandboxesIdPreviewsPostRequest;
+
+  try {
+    const data = await api.apiV1SandboxesIdPreviewsPost(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **sandboxPreviewCreateRequest** | [SandboxPreviewCreateRequest](SandboxPreviewCreateRequest.md) |  | |
+
+### Return type
+
+[**SuccessSandboxPreviewResponse**](SuccessSandboxPreviewResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | Preview grant created |  -  |
+| **400** | Invalid preview request |  -  |
+| **403** | Forbidden or reserved port |  -  |
+| **404** | Sandbox not found |  -  |
+| **503** | Sandbox runtime, public exposure, or authorization store unavailable |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## apiV1SandboxesIdPreviewsPreviewIdDelete
+
+> SuccessMessageResponse apiV1SandboxesIdPreviewsPreviewIdDelete(id, previewId)
+
+Revoke a private sandbox preview grant
+
+### Example
+
+```ts
+import {
+  Configuration,
+  SandboxesApi,
+} from 'sandbox0';
+import type { ApiV1SandboxesIdPreviewsPreviewIdDeleteRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SandboxesApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // string
+    previewId: previewId_example,
+  } satisfies ApiV1SandboxesIdPreviewsPreviewIdDeleteRequest;
+
+  try {
+    const data = await api.apiV1SandboxesIdPreviewsPreviewIdDelete(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **previewId** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+[**SuccessMessageResponse**](SuccessMessageResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Preview grant revoked |  -  |
+| **404** | Preview grant not found |  -  |
+| **503** | Preview authorization store unavailable |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## apiV1SandboxesIdPreviewsPreviewIdPut
+
+> SuccessSandboxPreviewResponse apiV1SandboxesIdPreviewsPreviewIdPut(id, previewId, sandboxPreviewRenewRequest)
+
+Renew a private sandbox preview grant
+
+### Example
+
+```ts
+import {
+  Configuration,
+  SandboxesApi,
+} from 'sandbox0';
+import type { ApiV1SandboxesIdPreviewsPreviewIdPutRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SandboxesApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // string
+    previewId: previewId_example,
+    // SandboxPreviewRenewRequest
+    sandboxPreviewRenewRequest: ...,
+  } satisfies ApiV1SandboxesIdPreviewsPreviewIdPutRequest;
+
+  try {
+    const data = await api.apiV1SandboxesIdPreviewsPreviewIdPut(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **previewId** | `string` |  | [Defaults to `undefined`] |
+| **sandboxPreviewRenewRequest** | [SandboxPreviewRenewRequest](SandboxPreviewRenewRequest.md) |  | |
+
+### Return type
+
+[**SuccessSandboxPreviewResponse**](SuccessSandboxPreviewResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Preview grant renewed |  -  |
+| **400** | Invalid preview renewal request |  -  |
+| **404** | Preview grant or sandbox not found |  -  |
+| **409** | Preview grant belongs to a previous sandbox runtime |  -  |
+| **503** | Sandbox runtime or authorization store unavailable |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
 ## apiV1SandboxesIdPut
 
 > SuccessSandboxResponse apiV1SandboxesIdPut(id, sandboxUpdateRequest)
@@ -478,7 +712,7 @@ import type { ApiV1SandboxesIdPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -552,7 +786,7 @@ import type { ApiV1SandboxesIdRefreshPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -625,7 +859,7 @@ import type { ApiV1SandboxesIdResumePostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -701,7 +935,7 @@ import type { ApiV1SandboxesIdServicesGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -773,7 +1007,7 @@ import type { ApiV1SandboxesIdServicesPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -846,7 +1080,7 @@ import type { ApiV1SandboxesIdStatusGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -916,7 +1150,7 @@ import type { ApiV1SandboxesPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });

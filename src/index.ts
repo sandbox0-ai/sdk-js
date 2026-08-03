@@ -30,10 +30,16 @@ export * from "./sandbox_sessions";
 export { Usage, type UsageWindowListOptions } from "./resources/usage";
 export { apis, models, runtime } from "./apispec_compat";
 export * as apispec from "./apispec_compat";
+export type {
+  SandboxPreviewCreateRequest,
+  SandboxPreviewGrant,
+  SandboxPreviewRenewRequest,
+} from "./apispec/src/models/index";
 import { models as generatedModels } from "./apispec_compat";
 import "./sandbox_contexts";
 import "./sandbox_files";
 import "./sandbox_network";
+import "./sandbox_previews";
 import "./sandbox_services";
 import "./sandbox_observability";
 import "./sandbox_sessions";

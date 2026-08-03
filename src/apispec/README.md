@@ -128,6 +128,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SandboxesApi* | [**apiV1SandboxesIdNetworkGet**](docs/SandboxesApi.md#apiv1sandboxesidnetworkget) | **GET** /api/v1/sandboxes/{id}/network | Get sandbox network policy
 *SandboxesApi* | [**apiV1SandboxesIdNetworkPut**](docs/SandboxesApi.md#apiv1sandboxesidnetworkput) | **PUT** /api/v1/sandboxes/{id}/network | Update sandbox network policy
 *SandboxesApi* | [**apiV1SandboxesIdPausePost**](docs/SandboxesApi.md#apiv1sandboxesidpausepost) | **POST** /api/v1/sandboxes/{id}/pause | Pause a sandbox
+*SandboxesApi* | [**apiV1SandboxesIdPreviewsPost**](docs/SandboxesApi.md#apiv1sandboxesidpreviewspost) | **POST** /api/v1/sandboxes/{id}/previews | Create a private sandbox preview grant
+*SandboxesApi* | [**apiV1SandboxesIdPreviewsPreviewIdDelete**](docs/SandboxesApi.md#apiv1sandboxesidpreviewspreviewiddelete) | **DELETE** /api/v1/sandboxes/{id}/previews/{preview_id} | Revoke a private sandbox preview grant
+*SandboxesApi* | [**apiV1SandboxesIdPreviewsPreviewIdPut**](docs/SandboxesApi.md#apiv1sandboxesidpreviewspreviewidput) | **PUT** /api/v1/sandboxes/{id}/previews/{preview_id} | Renew a private sandbox preview grant
 *SandboxesApi* | [**apiV1SandboxesIdPut**](docs/SandboxesApi.md#apiv1sandboxesidput) | **PUT** /api/v1/sandboxes/{id} | Update sandbox configuration
 *SandboxesApi* | [**apiV1SandboxesIdRefreshPost**](docs/SandboxesApi.md#apiv1sandboxesidrefreshpost) | **POST** /api/v1/sandboxes/{id}/refresh | Refresh sandbox TTL
 *SandboxesApi* | [**apiV1SandboxesIdResumePost**](docs/SandboxesApi.md#apiv1sandboxesidresumepost) | **POST** /api/v1/sandboxes/{id}/resume | Resume a sandbox
@@ -381,6 +384,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxObservabilityOutcome](docs/SandboxObservabilityOutcome.md)
 - [SandboxObservabilityWatchLine](docs/SandboxObservabilityWatchLine.md)
 - [SandboxObservabilityWatchLineData](docs/SandboxObservabilityWatchLineData.md)
+- [SandboxPreviewCreateRequest](docs/SandboxPreviewCreateRequest.md)
+- [SandboxPreviewGrant](docs/SandboxPreviewGrant.md)
+- [SandboxPreviewRenewRequest](docs/SandboxPreviewRenewRequest.md)
 - [SandboxRefreshRequest](docs/SandboxRefreshRequest.md)
 - [SandboxResourceConfig](docs/SandboxResourceConfig.md)
 - [SandboxResourceUsage](docs/SandboxResourceUsage.md)
@@ -484,6 +490,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessSandboxNetworkPolicyResponse](docs/SuccessSandboxNetworkPolicyResponse.md)
 - [SuccessSandboxObservabilityEventsResponse](docs/SuccessSandboxObservabilityEventsResponse.md)
 - [SuccessSandboxObservabilityLogsResponse](docs/SuccessSandboxObservabilityLogsResponse.md)
+- [SuccessSandboxPreviewResponse](docs/SuccessSandboxPreviewResponse.md)
 - [SuccessSandboxResponse](docs/SuccessSandboxResponse.md)
 - [SuccessSandboxRootFSSnapshotListResponse](docs/SuccessSandboxRootFSSnapshotListResponse.md)
 - [SuccessSandboxRootFSSnapshotResponse](docs/SuccessSandboxRootFSSnapshotResponse.md)

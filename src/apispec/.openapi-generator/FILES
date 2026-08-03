@@ -211,6 +211,9 @@ docs/SandboxObservabilityLogsResponse.md
 docs/SandboxObservabilityOutcome.md
 docs/SandboxObservabilityWatchLine.md
 docs/SandboxObservabilityWatchLineData.md
+docs/SandboxPreviewCreateRequest.md
+docs/SandboxPreviewGrant.md
+docs/SandboxPreviewRenewRequest.md
 docs/SandboxRefreshRequest.md
 docs/SandboxResourceConfig.md
 docs/SandboxResourceUsage.md
@@ -319,6 +322,7 @@ docs/SuccessSandboxListResponseAllOfData.md
 docs/SuccessSandboxNetworkPolicyResponse.md
 docs/SuccessSandboxObservabilityEventsResponse.md
 docs/SuccessSandboxObservabilityLogsResponse.md
+docs/SuccessSandboxPreviewResponse.md
 docs/SuccessSandboxResponse.md
 docs/SuccessSandboxRootFSSnapshotListResponse.md
 docs/SuccessSandboxRootFSSnapshotResponse.md
@@ -607,6 +611,9 @@ src/models/SandboxObservabilityLogsResponse.ts
 src/models/SandboxObservabilityOutcome.ts
 src/models/SandboxObservabilityWatchLine.ts
 src/models/SandboxObservabilityWatchLineData.ts
+src/models/SandboxPreviewCreateRequest.ts
+src/models/SandboxPreviewGrant.ts
+src/models/SandboxPreviewRenewRequest.ts
 src/models/SandboxRefreshRequest.ts
 src/models/SandboxResourceConfig.ts
 src/models/SandboxResourceUsage.ts
@@ -710,6 +717,7 @@ src/models/SuccessSandboxListResponseAllOfData.ts
 src/models/SuccessSandboxNetworkPolicyResponse.ts
 src/models/SuccessSandboxObservabilityEventsResponse.ts
 src/models/SuccessSandboxObservabilityLogsResponse.ts
+src/models/SuccessSandboxPreviewResponse.ts
 src/models/SuccessSandboxResponse.ts
 src/models/SuccessSandboxRootFSSnapshotListResponse.ts
 src/models/SuccessSandboxRootFSSnapshotResponse.ts

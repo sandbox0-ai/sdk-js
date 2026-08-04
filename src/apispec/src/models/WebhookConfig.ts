@@ -14,7 +14,7 @@
 
 import { mapValues } from '../runtime';
 /**
- * Per-sandbox webhook configuration. Sandbox0 delivers webhook events at least once and consumers should deduplicate by event_id. For sandbox lifecycle events, procd persists signed delivery records to a manager-owned SandboxVolume outside the workspace before dispatch; manager also emits sandbox.deleted during pod deletion cleanup.
+ * Per-sandbox webhook configuration. Retries can deliver the same event more than once, so consumers should deduplicate by event_id and must not assume every unavailable endpoint eventually receives every event. Procd persists signed delivery records to a manager-owned SandboxVolume outside the workspace. Manager transactionally queues sandbox.deleted in PostgreSQL, retries transient failures for up to 24 hours, and never waits for the external endpoint before completing sandbox cleanup.
  * 
  * @export
  * @interface WebhookConfig

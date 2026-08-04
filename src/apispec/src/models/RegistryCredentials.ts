@@ -38,6 +38,18 @@ export interface RegistryCredentials {
      */
     pullRegistry: string;
     /**
+     * Complete provider-specific image reference to push. Clients should prefer this over composing pushRegistry and targetImage.
+     * @type {string}
+     * @memberof RegistryCredentials
+     */
+    pushImage?: string;
+    /**
+     * Complete image reference for templates and sandbox pulls. It may use a private regional endpoint.
+     * @type {string}
+     * @memberof RegistryCredentials
+     */
+    pullImage?: string;
+    /**
      * 
      * @type {string}
      * @memberof RegistryCredentials
@@ -82,6 +94,8 @@ export function RegistryCredentialsFromJSONTyped(json: any, ignoreDiscriminator:
         'provider': json['provider'],
         'pushRegistry': json['pushRegistry'],
         'pullRegistry': json['pullRegistry'],
+        'pushImage': json['pushImage'] == null ? undefined : json['pushImage'],
+        'pullImage': json['pullImage'] == null ? undefined : json['pullImage'],
         'username': json['username'],
         'password': json['password'],
         'expiresAt': json['expiresAt'] == null ? undefined : (new Date(json['expiresAt'])),
@@ -102,6 +116,8 @@ export function RegistryCredentialsToJSONTyped(value?: RegistryCredentials | nul
         'provider': value['provider'],
         'pushRegistry': value['pushRegistry'],
         'pullRegistry': value['pullRegistry'],
+        'pushImage': value['pushImage'],
+        'pullImage': value['pullImage'],
         'username': value['username'],
         'password': value['password'],
         'expiresAt': value['expiresAt'] == null ? value['expiresAt'] : value['expiresAt'].toISOString(),

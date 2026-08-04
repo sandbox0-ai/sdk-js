@@ -9,6 +9,8 @@ Name | Type
 `provider` | string
 `pushRegistry` | string
 `pullRegistry` | string
+`pushImage` | string
+`pullImage` | string
 `username` | string
 `password` | string
 `expiresAt` | Date
@@ -23,6 +25,8 @@ const example = {
   "provider": null,
   "pushRegistry": null,
   "pullRegistry": null,
+  "pushImage": null,
+  "pullImage": null,
   "username": null,
   "password": null,
   "expiresAt": null,

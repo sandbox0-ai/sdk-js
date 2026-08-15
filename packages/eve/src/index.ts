@@ -8,7 +8,6 @@ import { createSandbox0EveSession, isNotFoundError, type Sandbox0SessionSandbox 
 import {
   type EveSandboxNetworkPolicy,
   type Sandbox0BackendDispose,
-  type Sandbox0ClaimMount,
   type Sandbox0EveSession,
   type Sandbox0EveUseOptions,
   type Sandbox0SandboxConfig,
@@ -68,7 +67,6 @@ export interface Sandbox0EveBackendOptions {
    */
   template?: string;
   config?: Sandbox0SandboxConfig;
-  mounts?: ReadonlyArray<Sandbox0ClaimMount>;
   networkPolicy?: EveSandboxNetworkPolicy;
   /**
    * Sandbox0 currently has no provider resource tags in the public claim API.
@@ -310,7 +308,6 @@ function buildClaimOptions(
   configOverrides?: Partial<Sandbox0SandboxConfig>,
 ): {
   config?: Sandbox0SandboxConfig;
-  mounts?: ReadonlyArray<Sandbox0ClaimMount>;
   snapshotId?: string;
 } {
   const config = { ...(options.config ?? {}), ...(configOverrides ?? {}) };
@@ -320,14 +317,10 @@ function buildClaimOptions(
 
   const claimOptions: {
     config?: Sandbox0SandboxConfig;
-    mounts?: ReadonlyArray<Sandbox0ClaimMount>;
     snapshotId?: string;
   } = {};
   if (Object.keys(config).length > 0) {
     claimOptions.config = config;
-  }
-  if (options.mounts && options.mounts.length > 0) {
-    claimOptions.mounts = options.mounts;
   }
   if (snapshotId) {
     claimOptions.snapshotId = snapshotId;

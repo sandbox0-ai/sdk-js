@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -87,14 +87,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 *FilesApi* | [**apiV1SandboxesIdFilesPost**](docs/FilesApi.md#apiv1sandboxesidfilespost) | **POST** /api/v1/sandboxes/{id}/files | Write file or create directory
 *FilesApi* | [**apiV1SandboxesIdFilesStatGet**](docs/FilesApi.md#apiv1sandboxesidfilesstatget) | **GET** /api/v1/sandboxes/{id}/files/stat | Stat a file
 *FilesApi* | [**apiV1SandboxesIdFilesWatchGet**](docs/FilesApi.md#apiv1sandboxesidfileswatchget) | **GET** /api/v1/sandboxes/{id}/files/watch | File watch WebSocket
-*FilesApi* | [**apiV1SandboxvolumesIdFilesArchivePut**](docs/FilesApi.md#apiv1sandboxvolumesidfilesarchiveput) | **PUT** /api/v1/sandboxvolumes/{id}/files/archive | Import a tar archive into a volume
-*FilesApi* | [**apiV1SandboxvolumesIdFilesDelete**](docs/FilesApi.md#apiv1sandboxvolumesidfilesdelete) | **DELETE** /api/v1/sandboxvolumes/{id}/files | Delete volume file or directory
-*FilesApi* | [**apiV1SandboxvolumesIdFilesGet**](docs/FilesApi.md#apiv1sandboxvolumesidfilesget) | **GET** /api/v1/sandboxvolumes/{id}/files | Read volume file content
-*FilesApi* | [**apiV1SandboxvolumesIdFilesListGet**](docs/FilesApi.md#apiv1sandboxvolumesidfileslistget) | **GET** /api/v1/sandboxvolumes/{id}/files/list | List volume directory entries
-*FilesApi* | [**apiV1SandboxvolumesIdFilesMovePost**](docs/FilesApi.md#apiv1sandboxvolumesidfilesmovepost) | **POST** /api/v1/sandboxvolumes/{id}/files/move | Move a volume file or directory
-*FilesApi* | [**apiV1SandboxvolumesIdFilesPost**](docs/FilesApi.md#apiv1sandboxvolumesidfilespost) | **POST** /api/v1/sandboxvolumes/{id}/files | Write volume file or create directory
-*FilesApi* | [**apiV1SandboxvolumesIdFilesStatGet**](docs/FilesApi.md#apiv1sandboxvolumesidfilesstatget) | **GET** /api/v1/sandboxvolumes/{id}/files/stat | Stat a volume file
-*FilesApi* | [**apiV1SandboxvolumesIdFilesWatchGet**](docs/FilesApi.md#apiv1sandboxvolumesidfileswatchget) | **GET** /api/v1/sandboxvolumes/{id}/files/watch | Volume file watch WebSocket
 *HealthApi* | [**healthzGet**](docs/HealthApi.md#healthzget) | **GET** /healthz | Health check
 *HealthApi* | [**metadataGet**](docs/HealthApi.md#metadataget) | **GET** /metadata | Gateway metadata
 *HealthApi* | [**metricsGet**](docs/HealthApi.md#metricsget) | **GET** /metrics | Prometheus metrics
@@ -117,11 +109,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SandboxRootfsApi* | [**apiV1SandboxesIdRootfsRestorePost**](docs/SandboxRootfsApi.md#apiv1sandboxesidrootfsrestorepost) | **POST** /api/v1/sandboxes/{id}/rootfs/restore | Restore sandbox rootfs from snapshot
 *SandboxRootfsApi* | [**apiV1SandboxesIdSnapshotsGet**](docs/SandboxRootfsApi.md#apiv1sandboxesidsnapshotsget) | **GET** /api/v1/sandboxes/{id}/snapshots | List sandbox rootfs snapshots
 *SandboxRootfsApi* | [**apiV1SandboxesIdSnapshotsPost**](docs/SandboxRootfsApi.md#apiv1sandboxesidsnapshotspost) | **POST** /api/v1/sandboxes/{id}/snapshots | Create sandbox rootfs snapshot
-*SandboxVolumesApi* | [**apiV1SandboxvolumesGet**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesget) | **GET** /api/v1/sandboxvolumes | List sandbox volumes
-*SandboxVolumesApi* | [**apiV1SandboxvolumesIdDelete**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesiddelete) | **DELETE** /api/v1/sandboxvolumes/{id} | Delete sandbox volume
-*SandboxVolumesApi* | [**apiV1SandboxvolumesIdForkPost**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesidforkpost) | **POST** /api/v1/sandboxvolumes/{id}/fork | Fork sandbox volume
-*SandboxVolumesApi* | [**apiV1SandboxvolumesIdGet**](docs/SandboxVolumesApi.md#apiv1sandboxvolumesidget) | **GET** /api/v1/sandboxvolumes/{id} | Get sandbox volume
-*SandboxVolumesApi* | [**apiV1SandboxvolumesPost**](docs/SandboxVolumesApi.md#apiv1sandboxvolumespost) | **POST** /api/v1/sandboxvolumes | Create sandbox volume
 *SandboxesApi* | [**apiV1SandboxesGet**](docs/SandboxesApi.md#apiv1sandboxesget) | **GET** /api/v1/sandboxes | List sandboxes
 *SandboxesApi* | [**apiV1SandboxesIdDelete**](docs/SandboxesApi.md#apiv1sandboxesiddelete) | **DELETE** /api/v1/sandboxes/{id} | Delete (terminate) a sandbox
 *SandboxesApi* | [**apiV1SandboxesIdGet**](docs/SandboxesApi.md#apiv1sandboxesidget) | **GET** /api/v1/sandboxes/{id} | Get sandbox by ID
@@ -151,11 +138,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdSignalsPost**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionidsignalspost) | **POST** /api/v1/sandboxes/{id}/sessions/{session_id}/signals | Send a signal to an execution session attempt
 *SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdTerminalPut**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionidterminalput) | **PUT** /api/v1/sandboxes/{id}/sessions/{session_id}/terminal | Resize an execution session terminal
 *SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdWsGet**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionidwsget) | **GET** /api/v1/sandboxes/{id}/sessions/{session_id}/ws | Attach to an execution session with WebSocket
-*SnapshotsApi* | [**apiV1SandboxvolumesIdSnapshotsGet**](docs/SnapshotsApi.md#apiv1sandboxvolumesidsnapshotsget) | **GET** /api/v1/sandboxvolumes/{id}/snapshots | List snapshots
-*SnapshotsApi* | [**apiV1SandboxvolumesIdSnapshotsPost**](docs/SnapshotsApi.md#apiv1sandboxvolumesidsnapshotspost) | **POST** /api/v1/sandboxvolumes/{id}/snapshots | Create snapshot
-*SnapshotsApi* | [**apiV1SandboxvolumesIdSnapshotsSnapshotIdDelete**](docs/SnapshotsApi.md#apiv1sandboxvolumesidsnapshotssnapshotiddelete) | **DELETE** /api/v1/sandboxvolumes/{id}/snapshots/{snapshot_id} | Delete snapshot
-*SnapshotsApi* | [**apiV1SandboxvolumesIdSnapshotsSnapshotIdGet**](docs/SnapshotsApi.md#apiv1sandboxvolumesidsnapshotssnapshotidget) | **GET** /api/v1/sandboxvolumes/{id}/snapshots/{snapshot_id} | Get snapshot
-*SnapshotsApi* | [**apiV1SandboxvolumesIdSnapshotsSnapshotIdRestorePost**](docs/SnapshotsApi.md#apiv1sandboxvolumesidsnapshotssnapshotidrestorepost) | **POST** /api/v1/sandboxvolumes/{id}/snapshots/{snapshot_id}/restore | Restore snapshot
 *TeamsApi* | [**teamsGet**](docs/TeamsApi.md#teamsget) | **GET** /teams | List teams
 *TeamsApi* | [**teamsIdDelete**](docs/TeamsApi.md#teamsiddelete) | **DELETE** /teams/{id} | Delete a team
 *TeamsApi* | [**teamsIdGet**](docs/TeamsApi.md#teamsidget) | **GET** /teams/{id} | Get a team
@@ -194,7 +176,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [CachePolicySpec](docs/CachePolicySpec.md)
 - [Capabilities](docs/Capabilities.md)
 - [ChangePasswordRequest](docs/ChangePasswordRequest.md)
-- [ClaimMountRequest](docs/ClaimMountRequest.md)
 - [ClaimRequest](docs/ClaimRequest.md)
 - [ClaimResponse](docs/ClaimResponse.md)
 - [ContainerSpec](docs/ContainerSpec.md)
@@ -218,9 +199,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [CreateRegionRequest](docs/CreateRegionRequest.md)
 - [CreateSSHPublicKeyRequest](docs/CreateSSHPublicKeyRequest.md)
 - [CreateSandboxRootFSSnapshotRequest](docs/CreateSandboxRootFSSnapshotRequest.md)
-- [CreateSandboxVolumeRequest](docs/CreateSandboxVolumeRequest.md)
-- [CreateSandboxVolumeS3Config](docs/CreateSandboxVolumeS3Config.md)
-- [CreateSnapshotRequest](docs/CreateSnapshotRequest.md)
 - [CreateTeamRequest](docs/CreateTeamRequest.md)
 - [CredentialBinding](docs/CredentialBinding.md)
 - [CredentialProjectionType](docs/CredentialProjectionType.md)
@@ -288,7 +266,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ForkSandboxConfig](docs/ForkSandboxConfig.md)
 - [ForkSandboxRequest](docs/ForkSandboxRequest.md)
 - [ForkSandboxResponse](docs/ForkSandboxResponse.md)
-- [ForkVolumeRequest](docs/ForkVolumeRequest.md)
 - [GRPCAction](docs/GRPCAction.md)
 - [GatewayMetadata](docs/GatewayMetadata.md)
 - [HTTPGetAction](docs/HTTPGetAction.md)
@@ -307,7 +284,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [MCPProtocolRule](docs/MCPProtocolRule.md)
 - [MCPToolPolicy](docs/MCPToolPolicy.md)
 - [ModelError](docs/ModelError.md)
-- [MountStatus](docs/MountStatus.md)
 - [MoveFileRequest](docs/MoveFileRequest.md)
 - [NetworkEgressPolicy](docs/NetworkEgressPolicy.md)
 - [NodeAffinity](docs/NodeAffinity.md)
@@ -416,12 +392,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxTemplateStatus](docs/SandboxTemplateStatus.md)
 - [SandboxUpdateConfig](docs/SandboxUpdateConfig.md)
 - [SandboxUpdateRequest](docs/SandboxUpdateRequest.md)
-- [SandboxVolume](docs/SandboxVolume.md)
-- [SandboxVolumeS3Config](docs/SandboxVolumeS3Config.md)
 - [SeccompProfile](docs/SeccompProfile.md)
 - [SecurityContext](docs/SecurityContext.md)
 - [SignalContextRequest](docs/SignalContextRequest.md)
-- [Snapshot](docs/Snapshot.md)
 - [StaticHeadersSourceSpec](docs/StaticHeadersSourceSpec.md)
 - [StaticSSHPrivateKeySourceSpec](docs/StaticSSHPrivateKeySourceSpec.md)
 - [StaticTLSClientCertificateSourceSpec](docs/StaticTLSClientCertificateSourceSpec.md)
@@ -478,8 +451,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessRegistryCredentialsResponse](docs/SuccessRegistryCredentialsResponse.md)
 - [SuccessResizedResponse](docs/SuccessResizedResponse.md)
 - [SuccessResizedResponseAllOfData](docs/SuccessResizedResponseAllOfData.md)
-- [SuccessRestoreResponse](docs/SuccessRestoreResponse.md)
-- [SuccessRestoreResponseAllOfData](docs/SuccessRestoreResponseAllOfData.md)
 - [SuccessRestoreSandboxRootFSResponse](docs/SuccessRestoreSandboxRootFSResponse.md)
 - [SuccessResumeSandboxResponse](docs/SuccessResumeSandboxResponse.md)
 - [SuccessSSHPublicKeyListResponse](docs/SuccessSSHPublicKeyListResponse.md)
@@ -499,12 +470,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessSandboxServicesResponse](docs/SuccessSandboxServicesResponse.md)
 - [SuccessSandboxServicesResponseAllOfData](docs/SuccessSandboxServicesResponseAllOfData.md)
 - [SuccessSandboxStatusResponse](docs/SuccessSandboxStatusResponse.md)
-- [SuccessSandboxVolumeListResponse](docs/SuccessSandboxVolumeListResponse.md)
-- [SuccessSandboxVolumeResponse](docs/SuccessSandboxVolumeResponse.md)
 - [SuccessSignaledResponse](docs/SuccessSignaledResponse.md)
 - [SuccessSignaledResponseAllOfData](docs/SuccessSignaledResponseAllOfData.md)
-- [SuccessSnapshotListResponse](docs/SuccessSnapshotListResponse.md)
-- [SuccessSnapshotResponse](docs/SuccessSnapshotResponse.md)
 - [SuccessTeamListResponse](docs/SuccessTeamListResponse.md)
 - [SuccessTeamListResponseAllOfData](docs/SuccessTeamListResponseAllOfData.md)
 - [SuccessTeamMemberListResponse](docs/SuccessTeamMemberListResponse.md)
@@ -517,7 +484,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessTemplateResponse](docs/SuccessTemplateResponse.md)
 - [SuccessUsageWindowsResponse](docs/SuccessUsageWindowsResponse.md)
 - [SuccessUserResponse](docs/SuccessUserResponse.md)
-- [SuccessVolumeFileArchiveImportResponse](docs/SuccessVolumeFileArchiveImportResponse.md)
 - [SuccessWrittenResponse](docs/SuccessWrittenResponse.md)
 - [SuccessWrittenResponseAllOfData](docs/SuccessWrittenResponseAllOfData.md)
 - [TCPSocketAction](docs/TCPSocketAction.md)
@@ -546,10 +512,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [UsageWindow](docs/UsageWindow.md)
 - [UsageWindowPage](docs/UsageWindowPage.md)
 - [User](docs/User.md)
-- [VolumeAccessMode](docs/VolumeAccessMode.md)
-- [VolumeBackend](docs/VolumeBackend.md)
-- [VolumeFileArchiveImportResponse](docs/VolumeFileArchiveImportResponse.md)
-- [VolumeMountSpec](docs/VolumeMountSpec.md)
 - [WebLoginExchangeRequest](docs/WebLoginExchangeRequest.md)
 - [WebhookConfig](docs/WebhookConfig.md)
 - [WeightedPodAffinityTerm](docs/WeightedPodAffinityTerm.md)

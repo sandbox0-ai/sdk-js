@@ -85,12 +85,6 @@ export interface Sandbox0SandboxConfig {
   [key: string]: unknown;
 }
 
-export interface Sandbox0ClaimMount {
-  sandboxvolumeId?: string;
-  mountPoint?: string;
-  [key: string]: unknown;
-}
-
 export interface Sandbox0EveUseOptions {
   networkPolicy?: EveSandboxNetworkPolicy;
 }

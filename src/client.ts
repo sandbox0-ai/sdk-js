@@ -8,7 +8,6 @@ import { Quotas } from "./resources/quotas";
 import { Sandboxes } from "./resources/sandboxes";
 import { Templates } from "./resources/templates";
 import { Usage } from "./resources/usage";
-import { Volumes } from "./resources/volumes";
 import { Sandbox } from "./sandbox";
 import { APIError, apiErrorFromResponse, wrapApiCall } from "./errors";
 import { ensureData } from "./response";
@@ -61,8 +60,6 @@ export class Client {
     contexts: apisTypes.ContextsApi;
     files: apisTypes.FilesApi;
     sandboxRootfs: apisTypes.SandboxRootfsApi;
-    sandboxVolumes: apisTypes.SandboxVolumesApi;
-    snapshots: apisTypes.SnapshotsApi;
     templates: apisTypes.TemplatesApi;
     credentialSources: apisTypes.CredentialSourcesApi;
     quotas: apisTypes.QuotasApi;
@@ -74,7 +71,6 @@ export class Client {
 
   readonly sandboxes: Sandboxes;
   readonly templates: Templates;
-  readonly volumes: Volumes;
   readonly credentialSources: CredentialSources;
   readonly quotas: Quotas;
   readonly usage: Usage;
@@ -102,8 +98,6 @@ export class Client {
       contexts: new apis.ContextsApi(this.configuration),
       files: new apis.FilesApi(this.configuration),
       sandboxRootfs: new apis.SandboxRootfsApi(this.configuration),
-      sandboxVolumes: new apis.SandboxVolumesApi(this.configuration),
-      snapshots: new apis.SnapshotsApi(this.configuration),
       templates: new apis.TemplatesApi(this.configuration),
       credentialSources: new apis.CredentialSourcesApi(this.configuration),
       quotas: new apis.QuotasApi(this.configuration),
@@ -115,7 +109,6 @@ export class Client {
 
     this.sandboxes = new Sandboxes(this);
     this.templates = new Templates(this);
-    this.volumes = new Volumes(this);
     this.credentialSources = new CredentialSources(this);
     this.quotas = new Quotas(this);
     this.usage = new Usage(this);

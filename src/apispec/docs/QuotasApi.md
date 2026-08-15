@@ -26,7 +26,7 @@ import type { ApiV1QuotasDimensionGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -54,7 +54,7 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **dimension** | `QuotaDimension` |  | [Defaults to `undefined`] [Enum: active_sandboxes, sandbox_claims, volume_storage_gb, snapshot_storage_gb, api_requests, network_egress_bytes, network_ingress_bytes] |
+| **dimension** | `QuotaDimension` |  | [Defaults to `undefined`] [Enum: active_sandboxes, sandbox_claims, api_requests, network_egress_bytes, network_ingress_bytes] |
 
 ### Return type
 
@@ -96,7 +96,7 @@ import type { ApiV1QuotasGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -138,4 +138,3 @@ This endpoint does not need any parameter.
 | **200** | All team quota statuses |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-

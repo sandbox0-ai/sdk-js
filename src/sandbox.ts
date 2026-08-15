@@ -3,7 +3,6 @@ import type {
   CreateCMDContextRequest,
   CreateContextRequest,
   CreateREPLContextRequest,
-  MountStatus,
   PTYSize,
   ProcessType,
 } from "./apispec/src/models/index";
@@ -47,7 +46,6 @@ type SandboxParams = {
   clusterId?: string;
   podName?: string;
   status?: string;
-  bootstrapMounts?: MountStatus[];
 };
 
 /**
@@ -329,7 +327,6 @@ export class Sandbox {
   readonly clusterId?: string;
   readonly podName: string;
   readonly status: string;
-  readonly bootstrapMounts: MountStatus[];
 
   private readonly client: Client;
   private readonly replContextByLang = new Map<string, string>();
@@ -341,7 +338,6 @@ export class Sandbox {
     this.clusterId = params.clusterId;
     this.podName = params.podName ?? "";
     this.status = params.status ?? "";
-    this.bootstrapMounts = [...(params.bootstrapMounts ?? [])];
   }
 
   async run(alias: string, input: string, options?: RunOptions): Promise<RunResult> {

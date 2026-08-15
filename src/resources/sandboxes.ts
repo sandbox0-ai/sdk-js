@@ -1,10 +1,8 @@
 import type {
-  ClaimMountRequest,
   ClaimRequest,
   CreateSandboxRootFSSnapshotRequest,
   ForkSandboxRequest,
   ForkSandboxResponse,
-  MountStatus,
   PauseSandboxResponse,
   RestoreSandboxRootFSRequest,
   RestoreSandboxRootFSResponse,
@@ -38,7 +36,6 @@ import {
 
 export interface ClaimSandboxOptions {
   config?: SandboxConfig;
-  mounts?: ClaimMountRequest[];
   snapshotId?: string;
   memory?: string;
 }
@@ -51,7 +48,6 @@ function isClaimSandboxOptions(
 ): value is ClaimSandboxOptions {
   return !!value && typeof value === "object" && (
     "config" in value ||
-    "mounts" in value ||
     "snapshotId" in value ||
     "memory" in value
   );
@@ -80,7 +76,6 @@ function toClaimRequest(
   return {
     template,
     config: withMemory(options.config, options.memory),
-    mounts: options.mounts,
     snapshotId: options.snapshotId,
   };
 }
@@ -106,7 +101,6 @@ export class Sandboxes {
       clusterId: data.clusterId ?? undefined,
       podName: data.podName,
       status: data.status,
-      bootstrapMounts: data.bootstrapMounts as MountStatus[] | undefined,
     });
   }
 

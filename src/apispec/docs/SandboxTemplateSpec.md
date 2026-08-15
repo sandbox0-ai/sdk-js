@@ -10,7 +10,6 @@ Name | Type
 `displayName` | string
 `tags` | Array&lt;string&gt;
 `mainContainer` | [ContainerSpec](ContainerSpec.md)
-`volumeMounts` | [Array&lt;VolumeMountSpec&gt;](VolumeMountSpec.md)
 `pod` | [PodSpecOverride](PodSpecOverride.md)
 `network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
 `pool` | [PoolStrategy](PoolStrategy.md)
@@ -28,7 +27,6 @@ const example = {
   "displayName": null,
   "tags": null,
   "mainContainer": null,
-  "volumeMounts": null,
   "pod": null,
   "network": null,
   "pool": null,
@@ -48,5 +46,3 @@ console.log(exampleParsed)
 ```
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
-

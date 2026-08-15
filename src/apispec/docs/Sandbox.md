@@ -15,7 +15,6 @@ Name | Type
 `autoResume` | boolean
 `services` | [Array&lt;SandboxAppService&gt;](SandboxAppService.md)
 `resources` | [SandboxResourceConfig](SandboxResourceConfig.md)
-`mounts` | [Array&lt;ClaimMountRequest&gt;](ClaimMountRequest.md)
 `podName` | string
 `runtimeGeneration` | number
 `ssh` | [SandboxSSHConnection](SandboxSSHConnection.md)
@@ -41,7 +40,6 @@ const example = {
   "autoResume": null,
   "services": null,
   "resources": null,
-  "mounts": null,
   "podName": null,
   "runtimeGeneration": null,
   "ssh": null,
@@ -64,5 +62,3 @@ console.log(exampleParsed)
 ```
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
-
-

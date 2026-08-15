@@ -5,7 +5,7 @@ import { SandboxWaitTimeoutError } from "../../src/errors.ts";
 import { Sandboxes } from "../../src/resources/sandboxes.ts";
 
 describe("Sandboxes resource", () => {
-  it("builds claim requests from bootstrap mount options", async () => {
+  it("builds claim requests from claim options", async () => {
     let gotRequest: unknown;
     const client = {
       apispec: {
@@ -19,13 +19,6 @@ describe("Sandboxes resource", () => {
                 clusterId: "cluster-a",
                 podName: "pod-a",
                 status: "running",
-                bootstrapMounts: [
-                  {
-                    sandboxvolumeId: "vol_1",
-                    mountPoint: "/workspace/data",
-                    state: "mounted",
-                  },
-                ],
               },
             };
           },
@@ -37,20 +30,16 @@ describe("Sandboxes resource", () => {
     const sandbox = await sandboxes.claim("default", {
       config: { ttl: 300 },
       memory: "512Mi",
-      mounts: [{ sandboxvolumeId: "vol_1", mountPoint: "/workspace/data" }],
       snapshotId: "snap_123",
     });
 
     assert.deepStrictEqual(gotRequest, {
       template: "default",
       config: { ttl: 300, resources: { memory: "512Mi" } },
-      mounts: [{ sandboxvolumeId: "vol_1", mountPoint: "/workspace/data" }],
       snapshotId: "snap_123",
     });
     assert.strictEqual(sandbox.id, "sb_123");
     assert.strictEqual(sandbox.clusterId, "cluster-a");
-    assert.strictEqual(sandbox.bootstrapMounts[0]?.sandboxvolumeId, "vol_1");
-    assert.strictEqual(sandbox.bootstrapMounts[0]?.state, "mounted");
   });
 
   it("treats a plain sandbox config as config instead of claim options", async () => {
@@ -80,7 +69,6 @@ describe("Sandboxes resource", () => {
       template: "default",
       config: { ttl: 120 },
     });
-    assert.deepStrictEqual(sandbox.bootstrapMounts, []);
   });
 
   it("updates sandbox memory through a convenience request", async () => {

@@ -13,7 +13,6 @@ docs/AuthProvider.md
 docs/CachePolicySpec.md
 docs/Capabilities.md
 docs/ChangePasswordRequest.md
-docs/ClaimMountRequest.md
 docs/ClaimRequest.md
 docs/ClaimResponse.md
 docs/ContainerSpec.md
@@ -38,9 +37,6 @@ docs/CreateREPLContextRequest.md
 docs/CreateRegionRequest.md
 docs/CreateSSHPublicKeyRequest.md
 docs/CreateSandboxRootFSSnapshotRequest.md
-docs/CreateSandboxVolumeRequest.md
-docs/CreateSandboxVolumeS3Config.md
-docs/CreateSnapshotRequest.md
 docs/CreateTeamRequest.md
 docs/CredentialBinding.md
 docs/CredentialProjectionType.md
@@ -110,7 +106,6 @@ docs/FilesApi.md
 docs/ForkSandboxConfig.md
 docs/ForkSandboxRequest.md
 docs/ForkSandboxResponse.md
-docs/ForkVolumeRequest.md
 docs/GRPCAction.md
 docs/GatewayMetadata.md
 docs/HTTPGetAction.md
@@ -130,7 +125,6 @@ docs/LoginResponse.md
 docs/MCPProtocolRule.md
 docs/MCPToolPolicy.md
 docs/ModelError.md
-docs/MountStatus.md
 docs/MoveFileRequest.md
 docs/NetworkEgressPolicy.md
 docs/NodeAffinity.md
@@ -244,16 +238,11 @@ docs/SandboxTemplateSpec.md
 docs/SandboxTemplateStatus.md
 docs/SandboxUpdateConfig.md
 docs/SandboxUpdateRequest.md
-docs/SandboxVolume.md
-docs/SandboxVolumeS3Config.md
-docs/SandboxVolumesApi.md
 docs/SandboxesApi.md
 docs/SeccompProfile.md
 docs/SecurityContext.md
 docs/SessionsApi.md
 docs/SignalContextRequest.md
-docs/Snapshot.md
-docs/SnapshotsApi.md
 docs/StaticHeadersSourceSpec.md
 docs/StaticSSHPrivateKeySourceSpec.md
 docs/StaticTLSClientCertificateSourceSpec.md
@@ -310,8 +299,6 @@ docs/SuccessRegionResponse.md
 docs/SuccessRegistryCredentialsResponse.md
 docs/SuccessResizedResponse.md
 docs/SuccessResizedResponseAllOfData.md
-docs/SuccessRestoreResponse.md
-docs/SuccessRestoreResponseAllOfData.md
 docs/SuccessRestoreSandboxRootFSResponse.md
 docs/SuccessResumeSandboxResponse.md
 docs/SuccessSSHPublicKeyListResponse.md
@@ -331,12 +318,8 @@ docs/SuccessSandboxRuntimeMetricsResponse.md
 docs/SuccessSandboxServicesResponse.md
 docs/SuccessSandboxServicesResponseAllOfData.md
 docs/SuccessSandboxStatusResponse.md
-docs/SuccessSandboxVolumeListResponse.md
-docs/SuccessSandboxVolumeResponse.md
 docs/SuccessSignaledResponse.md
 docs/SuccessSignaledResponseAllOfData.md
-docs/SuccessSnapshotListResponse.md
-docs/SuccessSnapshotResponse.md
 docs/SuccessTeamListResponse.md
 docs/SuccessTeamListResponseAllOfData.md
 docs/SuccessTeamMemberListResponse.md
@@ -349,7 +332,6 @@ docs/SuccessTemplateListResponseAllOfData.md
 docs/SuccessTemplateResponse.md
 docs/SuccessUsageWindowsResponse.md
 docs/SuccessUserResponse.md
-docs/SuccessVolumeFileArchiveImportResponse.md
 docs/SuccessWrittenResponse.md
 docs/SuccessWrittenResponseAllOfData.md
 docs/TCPSocketAction.md
@@ -382,10 +364,6 @@ docs/UsageWindow.md
 docs/UsageWindowPage.md
 docs/User.md
 docs/UsersApi.md
-docs/VolumeAccessMode.md
-docs/VolumeBackend.md
-docs/VolumeFileArchiveImportResponse.md
-docs/VolumeMountSpec.md
 docs/WebLoginExchangeRequest.md
 docs/WebhookConfig.md
 docs/WeightedPodAffinityTerm.md
@@ -401,10 +379,8 @@ src/apis/QuotasApi.ts
 src/apis/RegionsApi.ts
 src/apis/RegistryApi.ts
 src/apis/SandboxRootfsApi.ts
-src/apis/SandboxVolumesApi.ts
 src/apis/SandboxesApi.ts
 src/apis/SessionsApi.ts
-src/apis/SnapshotsApi.ts
 src/apis/TeamsApi.ts
 src/apis/TemplatesApi.ts
 src/apis/UsageApi.ts
@@ -421,7 +397,6 @@ src/models/AuthProvider.ts
 src/models/CachePolicySpec.ts
 src/models/Capabilities.ts
 src/models/ChangePasswordRequest.ts
-src/models/ClaimMountRequest.ts
 src/models/ClaimRequest.ts
 src/models/ClaimResponse.ts
 src/models/ContainerSpec.ts
@@ -445,9 +420,6 @@ src/models/CreateREPLContextRequest.ts
 src/models/CreateRegionRequest.ts
 src/models/CreateSSHPublicKeyRequest.ts
 src/models/CreateSandboxRootFSSnapshotRequest.ts
-src/models/CreateSandboxVolumeRequest.ts
-src/models/CreateSandboxVolumeS3Config.ts
-src/models/CreateSnapshotRequest.ts
 src/models/CreateTeamRequest.ts
 src/models/CredentialBinding.ts
 src/models/CredentialProjectionType.ts
@@ -515,7 +487,6 @@ src/models/FileWatchUnsubscribed.ts
 src/models/ForkSandboxConfig.ts
 src/models/ForkSandboxRequest.ts
 src/models/ForkSandboxResponse.ts
-src/models/ForkVolumeRequest.ts
 src/models/GRPCAction.ts
 src/models/GatewayMetadata.ts
 src/models/HTTPGetAction.ts
@@ -534,7 +505,6 @@ src/models/LoginResponse.ts
 src/models/MCPProtocolRule.ts
 src/models/MCPToolPolicy.ts
 src/models/ModelError.ts
-src/models/MountStatus.ts
 src/models/MoveFileRequest.ts
 src/models/NetworkEgressPolicy.ts
 src/models/NodeAffinity.ts
@@ -643,12 +613,9 @@ src/models/SandboxTemplateSpec.ts
 src/models/SandboxTemplateStatus.ts
 src/models/SandboxUpdateConfig.ts
 src/models/SandboxUpdateRequest.ts
-src/models/SandboxVolume.ts
-src/models/SandboxVolumeS3Config.ts
 src/models/SeccompProfile.ts
 src/models/SecurityContext.ts
 src/models/SignalContextRequest.ts
-src/models/Snapshot.ts
 src/models/StaticHeadersSourceSpec.ts
 src/models/StaticSSHPrivateKeySourceSpec.ts
 src/models/StaticTLSClientCertificateSourceSpec.ts
@@ -705,8 +672,6 @@ src/models/SuccessRegionResponse.ts
 src/models/SuccessRegistryCredentialsResponse.ts
 src/models/SuccessResizedResponse.ts
 src/models/SuccessResizedResponseAllOfData.ts
-src/models/SuccessRestoreResponse.ts
-src/models/SuccessRestoreResponseAllOfData.ts
 src/models/SuccessRestoreSandboxRootFSResponse.ts
 src/models/SuccessResumeSandboxResponse.ts
 src/models/SuccessSSHPublicKeyListResponse.ts
@@ -726,12 +691,8 @@ src/models/SuccessSandboxRuntimeMetricsResponse.ts
 src/models/SuccessSandboxServicesResponse.ts
 src/models/SuccessSandboxServicesResponseAllOfData.ts
 src/models/SuccessSandboxStatusResponse.ts
-src/models/SuccessSandboxVolumeListResponse.ts
-src/models/SuccessSandboxVolumeResponse.ts
 src/models/SuccessSignaledResponse.ts
 src/models/SuccessSignaledResponseAllOfData.ts
-src/models/SuccessSnapshotListResponse.ts
-src/models/SuccessSnapshotResponse.ts
 src/models/SuccessTeamListResponse.ts
 src/models/SuccessTeamListResponseAllOfData.ts
 src/models/SuccessTeamMemberListResponse.ts
@@ -744,7 +705,6 @@ src/models/SuccessTemplateListResponseAllOfData.ts
 src/models/SuccessTemplateResponse.ts
 src/models/SuccessUsageWindowsResponse.ts
 src/models/SuccessUserResponse.ts
-src/models/SuccessVolumeFileArchiveImportResponse.ts
 src/models/SuccessWrittenResponse.ts
 src/models/SuccessWrittenResponseAllOfData.ts
 src/models/TCPSocketAction.ts
@@ -773,10 +733,6 @@ src/models/UpdateUserRequest.ts
 src/models/UsageWindow.ts
 src/models/UsageWindowPage.ts
 src/models/User.ts
-src/models/VolumeAccessMode.ts
-src/models/VolumeBackend.ts
-src/models/VolumeFileArchiveImportResponse.ts
-src/models/VolumeMountSpec.ts
 src/models/WebLoginExchangeRequest.ts
 src/models/WebhookConfig.ts
 src/models/WeightedPodAffinityTerm.ts

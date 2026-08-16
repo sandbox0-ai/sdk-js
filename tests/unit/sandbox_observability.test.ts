@@ -164,7 +164,7 @@ describe("sandbox observability", () => {
     });
 
     await client.sandbox("sb_123").watchObservabilityEvents({
-      source: "netd",
+      source: "ctld",
       eventType: "network_audit",
       outcome: "denied",
       actorKind: "sandbox_workload",
@@ -176,7 +176,7 @@ describe("sandbox observability", () => {
 
     const url = new URL(requestedUrl);
     assert.equal(url.searchParams.get("watch"), "true");
-    assert.equal(url.searchParams.get("source"), "netd");
+    assert.equal(url.searchParams.get("source"), "ctld");
     assert.equal(url.searchParams.get("event_type"), "network_audit");
     assert.equal(url.searchParams.get("outcome"), "denied");
     assert.equal(url.searchParams.get("actor_kind"), "sandbox_workload");
@@ -301,7 +301,7 @@ describe("sandbox observability", () => {
       cluster_id: "cluster-a",
       occurred_at: "2026-07-13T13:00:00.123Z",
       ingested_at: "2026-07-13T13:00:00.223Z",
-      source: "netd",
+      source: "ctld",
       event_type: "network_audit",
       phase: "effect",
       outcome: "denied",
@@ -309,7 +309,7 @@ describe("sandbox observability", () => {
       action: "network.deny",
       resource: { type: "sandbox_network", id: "sb_123" },
       operation_id: "72ae77fe-d25e-41dc-bd25-f537aa9d1597",
-      producer: { service: "netd", sequence: 8 },
+      producer: { service: "ctld", sequence: 8 },
       integrity: {
         algorithm: "ed25519-sha256-v1",
         payload_hash: "a".repeat(64),

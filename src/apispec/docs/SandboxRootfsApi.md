@@ -7,6 +7,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 | [**apiV1SandboxRootfsSnapshotsSnapshotIdDelete**](SandboxRootfsApi.md#apiv1sandboxrootfssnapshotssnapshotiddelete) | **DELETE** /api/v1/sandbox-rootfs-snapshots/{snapshot_id} | Delete sandbox rootfs snapshot |
 | [**apiV1SandboxRootfsSnapshotsSnapshotIdGet**](SandboxRootfsApi.md#apiv1sandboxrootfssnapshotssnapshotidget) | **GET** /api/v1/sandbox-rootfs-snapshots/{snapshot_id} | Get sandbox rootfs snapshot |
 | [**apiV1SandboxesIdForkPost**](SandboxRootfsApi.md#apiv1sandboxesidforkpost) | **POST** /api/v1/sandboxes/{id}/fork | Fork sandbox rootfs |
+| [**apiV1SandboxesIdRootfsRebasePut**](SandboxRootfsApi.md#apiv1sandboxesidrootfsrebaseput) | **PUT** /api/v1/sandboxes/{id}/rootfs/rebase | Rebase a paused sandbox rootfs |
 | [**apiV1SandboxesIdRootfsRestorePost**](SandboxRootfsApi.md#apiv1sandboxesidrootfsrestorepost) | **POST** /api/v1/sandboxes/{id}/rootfs/restore | Restore sandbox rootfs from snapshot |
 | [**apiV1SandboxesIdSnapshotsGet**](SandboxRootfsApi.md#apiv1sandboxesidsnapshotsget) | **GET** /api/v1/sandboxes/{id}/snapshots | List sandbox rootfs snapshots |
 | [**apiV1SandboxesIdSnapshotsPost**](SandboxRootfsApi.md#apiv1sandboxesidsnapshotspost) | **POST** /api/v1/sandboxes/{id}/snapshots | Create sandbox rootfs snapshot |
@@ -224,8 +225,86 @@ example().catch(console.error);
 |-------------|-------------|------------------|
 | **201** | Sandbox forked |  -  |
 | **409** | Source sandbox is not running or paused, another lifecycle operation is active, or rootfs state is unavailable |  -  |
-| **503** | Running-source fork requires ctld checkpoint support |  -  |
+| **503** | Running-source checkpoint authority or its authenticated node channel is temporarily unavailable |  -  |
 | **404** | Not found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## apiV1SandboxesIdRootfsRebasePut
+
+> SuccessRebaseSandboxRootFSResponse apiV1SandboxesIdRootfsRebasePut(id, rebaseSandboxRootFSRequest)
+
+Rebase a paused sandbox rootfs
+
+Applies the paused sandbox\&#39;s file-level changes to an already-attested immutable Base artifact. The operation keeps the sandbox paused, publishes one durable block-COW generation, and retains the previous generation for the requested bounded rollback window. 
+
+### Example
+
+```ts
+import {
+  Configuration,
+  SandboxRootfsApi,
+} from 'sandbox0';
+import type { ApiV1SandboxesIdRootfsRebasePutRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SandboxRootfsApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // RebaseSandboxRootFSRequest
+    rebaseSandboxRootFSRequest: ...,
+  } satisfies ApiV1SandboxesIdRootfsRebasePutRequest;
+
+  try {
+    const data = await api.apiV1SandboxesIdRootfsRebasePut(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **rebaseSandboxRootFSRequest** | [RebaseSandboxRootFSRequest](RebaseSandboxRootFSRequest.md) |  | |
+
+### Return type
+
+[**SuccessRebaseSandboxRootFSResponse**](SuccessRebaseSandboxRootFSResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Paused sandbox rootfs rebased |  -  |
+| **400** | Invalid Base artifact digest or rollback window |  -  |
+| **404** | Sandbox or target Base artifact not found |  -  |
+| **409** | Sandbox is not paused, durable identity changed, or another lifecycle operation owns it |  -  |
+| **503** | Exact authenticated worker or durable publication authority is temporarily unavailable |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

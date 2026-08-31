@@ -4,6 +4,8 @@ import type {
   ForkSandboxRequest,
   ForkSandboxResponse,
   PauseSandboxResponse,
+  RebaseSandboxRootFSRequest,
+  RebaseSandboxRootFSResponse,
   RestoreSandboxRootFSRequest,
   RestoreSandboxRootFSResponse,
   SandboxRefreshRequest,
@@ -99,7 +101,7 @@ export class Sandboxes {
       client: this.client,
       template: data.template,
       clusterId: data.clusterId ?? undefined,
-      podName: data.podName,
+      runtimeId: data.runtimeId,
       status: data.status,
     });
   }
@@ -192,14 +194,6 @@ export class Sandboxes {
       }),
     );
     return ensureData(response, "update sandbox returned empty response");
-  }
-
-  async updateMemory(sandboxId: string, memory: string): Promise<Sandbox> {
-    return this.update(sandboxId, {
-      config: {
-        resources: { memory },
-      },
-    });
   }
 
   async delete(sandboxId: string): Promise<SuccessMessageResponse> {
@@ -331,6 +325,19 @@ export class Sandboxes {
       }),
     );
     return ensureData(response, "restore sandbox rootfs returned empty response");
+  }
+
+  async rebaseRootFS(
+    sandboxId: string,
+    request: RebaseSandboxRootFSRequest,
+  ): Promise<RebaseSandboxRootFSResponse> {
+    const response = await wrapApiCall(() =>
+      this.client.apispec.sandboxRootfs.apiV1SandboxesIdRootfsRebasePut({
+        id: sandboxId,
+        rebaseSandboxRootFSRequest: request,
+      }),
+    );
+    return ensureData(response, "rebase sandbox rootfs returned empty response");
   }
 
   async fork(sandboxId: string, request?: ForkSandboxRequest): Promise<ForkSandboxResponse> {

@@ -1,7 +1,7 @@
 
 # TemplateFromSandboxSpecOverrides
 
-Safe template fields that may override values inherited from the source sandbox\'s originating template. Pool defaults to zero idle sandboxes when omitted. 
+Safe template fields that may override values inherited from the source sandbox\'s originating template.
 
 ## Properties
 
@@ -10,7 +10,6 @@ Name | Type
 `description` | string
 `displayName` | string
 `tags` | Array&lt;string&gt;
-`pool` | [PoolStrategy](PoolStrategy.md)
 
 ## Example
 
@@ -22,7 +21,6 @@ const example = {
   "description": null,
   "displayName": null,
   "tags": null,
-  "pool": null,
 } satisfies TemplateFromSandboxSpecOverrides
 
 console.log(example)

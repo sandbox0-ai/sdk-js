@@ -18,9 +18,11 @@ import type {
   CreateSandboxRootFSSnapshotRequest,
   ErrorEnvelope,
   ForkSandboxRequest,
+  RebaseSandboxRootFSRequest,
   RestoreSandboxRootFSRequest,
   SuccessDeletedResponse,
   SuccessForkSandboxResponse,
+  SuccessRebaseSandboxRootFSResponse,
   SuccessRestoreSandboxRootFSResponse,
   SuccessSandboxRootFSSnapshotListResponse,
   SuccessSandboxRootFSSnapshotResponse,
@@ -32,12 +34,16 @@ import {
     ErrorEnvelopeToJSON,
     ForkSandboxRequestFromJSON,
     ForkSandboxRequestToJSON,
+    RebaseSandboxRootFSRequestFromJSON,
+    RebaseSandboxRootFSRequestToJSON,
     RestoreSandboxRootFSRequestFromJSON,
     RestoreSandboxRootFSRequestToJSON,
     SuccessDeletedResponseFromJSON,
     SuccessDeletedResponseToJSON,
     SuccessForkSandboxResponseFromJSON,
     SuccessForkSandboxResponseToJSON,
+    SuccessRebaseSandboxRootFSResponseFromJSON,
+    SuccessRebaseSandboxRootFSResponseToJSON,
     SuccessRestoreSandboxRootFSResponseFromJSON,
     SuccessRestoreSandboxRootFSResponseToJSON,
     SuccessSandboxRootFSSnapshotListResponseFromJSON,
@@ -57,6 +63,11 @@ export interface ApiV1SandboxRootfsSnapshotsSnapshotIdGetRequest {
 export interface ApiV1SandboxesIdForkPostRequest {
     id: string;
     forkSandboxRequest?: ForkSandboxRequest;
+}
+
+export interface ApiV1SandboxesIdRootfsRebasePutRequest {
+    id: string;
+    rebaseSandboxRootFSRequest: RebaseSandboxRootFSRequest;
 }
 
 export interface ApiV1SandboxesIdRootfsRestorePostRequest {
@@ -215,6 +226,63 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
      */
     async apiV1SandboxesIdForkPost(requestParameters: ApiV1SandboxesIdForkPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessForkSandboxResponse> {
         const response = await this.apiV1SandboxesIdForkPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Applies the paused sandbox\'s file-level changes to an already-attested immutable Base artifact. The operation keeps the sandbox paused, publishes one durable block-COW generation, and retains the previous generation for the requested bounded rollback window. 
+     * Rebase a paused sandbox rootfs
+     */
+    async apiV1SandboxesIdRootfsRebasePutRaw(requestParameters: ApiV1SandboxesIdRootfsRebasePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessRebaseSandboxRootFSResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1SandboxesIdRootfsRebasePut().'
+            );
+        }
+
+        if (requestParameters['rebaseSandboxRootFSRequest'] == null) {
+            throw new runtime.RequiredError(
+                'rebaseSandboxRootFSRequest',
+                'Required parameter "rebaseSandboxRootFSRequest" was null or undefined when calling apiV1SandboxesIdRootfsRebasePut().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/rootfs/rebase`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RebaseSandboxRootFSRequestToJSON(requestParameters['rebaseSandboxRootFSRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessRebaseSandboxRootFSResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Applies the paused sandbox\'s file-level changes to an already-attested immutable Base artifact. The operation keeps the sandbox paused, publishes one durable block-COW generation, and retains the previous generation for the requested bounded rollback window. 
+     * Rebase a paused sandbox rootfs
+     */
+    async apiV1SandboxesIdRootfsRebasePut(requestParameters: ApiV1SandboxesIdRootfsRebasePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessRebaseSandboxRootFSResponse> {
+        const response = await this.apiV1SandboxesIdRootfsRebasePutRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

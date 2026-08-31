@@ -1,30 +1,24 @@
 
-# HTTPGetAction
+# EphemeralMountSpec
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`path` | string
-`port` | number
-`host` | string
-`scheme` | string
-`httpHeaders` | [Array&lt;HTTPHeader&gt;](HTTPHeader.md)
+`mountPath` | string
+`sizeLimit` | string
 
 ## Example
 
 ```typescript
-import type { HTTPGetAction } from 'sandbox0'
+import type { EphemeralMountSpec } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "path": null,
-  "port": null,
-  "host": null,
-  "scheme": null,
-  "httpHeaders": null,
-} satisfies HTTPGetAction
+  "mountPath": null,
+  "sizeLimit": null,
+} satisfies EphemeralMountSpec
 
 console.log(example)
 
@@ -33,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as HTTPGetAction
+const exampleParsed = JSON.parse(exampleJSON) as EphemeralMountSpec
 console.log(exampleParsed)
 ```
 

@@ -19,7 +19,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 Create template from sandbox
 
-Asynchronously captures the sandbox\&#39;s writable root filesystem, publishes it to the Sandbox0-configured team registry, and creates a digest-pinned template. The capture point is reported by &#x60;status.creation.capturedAt&#x60;, not by acceptance of this request. Keep the source sandbox available and avoid rootfs writes until capture completes. Poll the returned template with &#x60;GET /api/v1/templates/{id}&#x60; until &#x60;status.creation.state&#x60; is &#x60;ready&#x60; or &#x60;failed&#x60;. The caller needs both &#x60;template:create&#x60; and &#x60;sandbox:read&#x60; permissions. 
+Asynchronously captures the sandbox\&#39;s writable root filesystem, retains the resulting immutable regional block-COW generation, and creates a claimable template. The capture point is reported by &#x60;status.creation.capturedAt&#x60;, not by acceptance of this request. Keep the source sandbox available until capture completes. A running source is briefly write-barriered while its exact writer publishes the capture; it does not need to be paused. Poll the returned template with &#x60;GET /api/v1/templates/{id}&#x60; until &#x60;status.creation.state&#x60; is &#x60;ready&#x60; or &#x60;failed&#x60;. The caller needs both &#x60;template:create&#x60; and &#x60;sandbox:read&#x60; permissions. 
 
 ### Example
 
@@ -41,7 +41,7 @@ async function example() {
   const body = {
     // TemplateFromSandboxCreateRequest
     templateFromSandboxCreateRequest: ...,
-    // string | Optional key for retrying creation without starting a duplicate image build. (optional)
+    // string | Optional key for retrying creation without starting a duplicate RootFS capture. (optional)
     idempotencyKey: idempotencyKey_example,
   } satisfies ApiV1TemplatesFromSandboxPostRequest;
 
@@ -63,7 +63,7 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **templateFromSandboxCreateRequest** | [TemplateFromSandboxCreateRequest](TemplateFromSandboxCreateRequest.md) |  | |
-| **idempotencyKey** | `string` | Optional key for retrying creation without starting a duplicate image build. | [Optional] [Defaults to `undefined`] |
+| **idempotencyKey** | `string` | Optional key for retrying creation without starting a duplicate RootFS capture. | [Optional] [Defaults to `undefined`] |
 
 ### Return type
 
@@ -89,7 +89,7 @@ example().catch(console.error);
 | **404** | Source sandbox not found |  -  |
 | **409** | Template ID or idempotency key conflict, or source sandbox is not captureable |  -  |
 | **500** | Server error |  -  |
-| **503** | Source data plane or template image build capability is unavailable |  -  |
+| **503** | Source data plane or template RootFS capture capability is unavailable |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

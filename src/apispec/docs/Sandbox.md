@@ -15,7 +15,7 @@ Name | Type
 `autoResume` | boolean
 `services` | [Array&lt;SandboxAppService&gt;](SandboxAppService.md)
 `resources` | [SandboxResourceConfig](SandboxResourceConfig.md)
-`podName` | string
+`runtimeId` | string
 `runtimeGeneration` | number
 `ssh` | [SandboxSSHConnection](SandboxSSHConnection.md)
 `expiresAt` | Date
@@ -40,7 +40,7 @@ const example = {
   "autoResume": null,
   "services": null,
   "resources": null,
-  "podName": null,
+  "runtimeId": null,
   "runtimeGeneration": null,
   "ssh": null,
   "expiresAt": null,
@@ -62,3 +62,5 @@ console.log(exampleParsed)
 ```
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+

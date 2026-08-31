@@ -1,24 +1,30 @@
 
-# LabelSelector
+# RebaseSandboxRootFSResponse
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`matchLabels` | { [key: string]: string; }
-`matchExpressions` | [Array&lt;LabelSelectorRequirement&gt;](LabelSelectorRequirement.md)
+`sandboxId` | string
+`generationId` | string
+`baseArtifactDigest` | string
+`rollbackExpiresAt` | Date
+`status` | [SandboxLifecycleStatus](SandboxLifecycleStatus.md)
 
 ## Example
 
 ```typescript
-import type { LabelSelector } from 'sandbox0'
+import type { RebaseSandboxRootFSResponse } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "matchLabels": null,
-  "matchExpressions": null,
-} satisfies LabelSelector
+  "sandboxId": null,
+  "generationId": null,
+  "baseArtifactDigest": null,
+  "rollbackExpiresAt": null,
+  "status": null,
+} satisfies RebaseSandboxRootFSResponse
 
 console.log(example)
 
@@ -27,7 +33,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as LabelSelector
+const exampleParsed = JSON.parse(exampleJSON) as RebaseSandboxRootFSResponse
 console.log(exampleParsed)
 ```
 

@@ -22,7 +22,7 @@ import type { ApiKeysCurrentGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({
+  const config = new Configuration({ 
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -106,6 +106,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SandboxRootfsApi* | [**apiV1SandboxRootfsSnapshotsSnapshotIdDelete**](docs/SandboxRootfsApi.md#apiv1sandboxrootfssnapshotssnapshotiddelete) | **DELETE** /api/v1/sandbox-rootfs-snapshots/{snapshot_id} | Delete sandbox rootfs snapshot
 *SandboxRootfsApi* | [**apiV1SandboxRootfsSnapshotsSnapshotIdGet**](docs/SandboxRootfsApi.md#apiv1sandboxrootfssnapshotssnapshotidget) | **GET** /api/v1/sandbox-rootfs-snapshots/{snapshot_id} | Get sandbox rootfs snapshot
 *SandboxRootfsApi* | [**apiV1SandboxesIdForkPost**](docs/SandboxRootfsApi.md#apiv1sandboxesidforkpost) | **POST** /api/v1/sandboxes/{id}/fork | Fork sandbox rootfs
+*SandboxRootfsApi* | [**apiV1SandboxesIdRootfsRebasePut**](docs/SandboxRootfsApi.md#apiv1sandboxesidrootfsrebaseput) | **PUT** /api/v1/sandboxes/{id}/rootfs/rebase | Rebase a paused sandbox rootfs
 *SandboxRootfsApi* | [**apiV1SandboxesIdRootfsRestorePost**](docs/SandboxRootfsApi.md#apiv1sandboxesidrootfsrestorepost) | **POST** /api/v1/sandboxes/{id}/rootfs/restore | Restore sandbox rootfs from snapshot
 *SandboxRootfsApi* | [**apiV1SandboxesIdSnapshotsGet**](docs/SandboxRootfsApi.md#apiv1sandboxesidsnapshotsget) | **GET** /api/v1/sandboxes/{id}/snapshots | List sandbox rootfs snapshots
 *SandboxRootfsApi* | [**apiV1SandboxesIdSnapshotsPost**](docs/SandboxRootfsApi.md#apiv1sandboxesidsnapshotspost) | **POST** /api/v1/sandboxes/{id}/snapshots | Create sandbox rootfs snapshot
@@ -168,13 +169,10 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 - [APIKey](docs/APIKey.md)
 - [AddTeamMemberRequest](docs/AddTeamMemberRequest.md)
-- [Affinity](docs/Affinity.md)
 - [ApiV1QuotasGet200Response](docs/ApiV1QuotasGet200Response.md)
 - [ApiV1SandboxesIdFilesGet200Response](docs/ApiV1SandboxesIdFilesGet200Response.md)
-- [AppArmorProfile](docs/AppArmorProfile.md)
 - [AuthProvider](docs/AuthProvider.md)
 - [CachePolicySpec](docs/CachePolicySpec.md)
-- [Capabilities](docs/Capabilities.md)
 - [ChangePasswordRequest](docs/ChangePasswordRequest.md)
 - [ClaimRequest](docs/ClaimRequest.md)
 - [ClaimResponse](docs/ClaimResponse.md)
@@ -217,10 +215,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [EgressProxyPolicy](docs/EgressProxyPolicy.md)
 - [EgressProxyType](docs/EgressProxyType.md)
 - [EgressTLSMode](docs/EgressTLSMode.md)
-- [EmptyDirMountSpec](docs/EmptyDirMountSpec.md)
 - [EnvVar](docs/EnvVar.md)
+- [EphemeralMountSpec](docs/EphemeralMountSpec.md)
 - [ErrorEnvelope](docs/ErrorEnvelope.md)
-- [ExecAction](docs/ExecAction.md)
 - [ExecCandidate](docs/ExecCandidate.md)
 - [ExecutionSession](docs/ExecutionSession.md)
 - [ExecutionSessionAttempt](docs/ExecutionSessionAttempt.md)
@@ -266,10 +263,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ForkSandboxConfig](docs/ForkSandboxConfig.md)
 - [ForkSandboxRequest](docs/ForkSandboxRequest.md)
 - [ForkSandboxResponse](docs/ForkSandboxResponse.md)
-- [GRPCAction](docs/GRPCAction.md)
 - [GatewayMetadata](docs/GatewayMetadata.md)
-- [HTTPGetAction](docs/HTTPGetAction.md)
-- [HTTPHeader](docs/HTTPHeader.md)
 - [HTTPHeadersProjection](docs/HTTPHeadersProjection.md)
 - [HTTPMatch](docs/HTTPMatch.md)
 - [HTTPMethodPolicy](docs/HTTPMethodPolicy.md)
@@ -277,8 +271,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [HTTPProtocolRule](docs/HTTPProtocolRule.md)
 - [HTTPValueMatch](docs/HTTPValueMatch.md)
 - [Identity](docs/Identity.md)
-- [LabelSelector](docs/LabelSelector.md)
-- [LabelSelectorRequirement](docs/LabelSelectorRequirement.md)
 - [LoginRequest](docs/LoginRequest.md)
 - [LoginResponse](docs/LoginResponse.md)
 - [MCPProtocolRule](docs/MCPProtocolRule.md)
@@ -286,24 +278,13 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ModelError](docs/ModelError.md)
 - [MoveFileRequest](docs/MoveFileRequest.md)
 - [NetworkEgressPolicy](docs/NetworkEgressPolicy.md)
-- [NodeAffinity](docs/NodeAffinity.md)
-- [NodeSelector](docs/NodeSelector.md)
-- [NodeSelectorRequirement](docs/NodeSelectorRequirement.md)
-- [NodeSelectorTerm](docs/NodeSelectorTerm.md)
-- [ObjectMeta](docs/ObjectMeta.md)
 - [ObservabilityEventSource](docs/ObservabilityEventSource.md)
 - [PTYSize](docs/PTYSize.md)
 - [PauseSandboxResponse](docs/PauseSandboxResponse.md)
 - [PlaceholderReplacement](docs/PlaceholderReplacement.md)
 - [PlaceholderSubstitutionLocation](docs/PlaceholderSubstitutionLocation.md)
 - [PlaceholderSubstitutionProjection](docs/PlaceholderSubstitutionProjection.md)
-- [PodAffinity](docs/PodAffinity.md)
-- [PodAffinityTerm](docs/PodAffinityTerm.md)
-- [PodSpecOverride](docs/PodSpecOverride.md)
-- [PoolStrategy](docs/PoolStrategy.md)
 - [PortSpec](docs/PortSpec.md)
-- [PreferredSchedulingTerm](docs/PreferredSchedulingTerm.md)
-- [Probe](docs/Probe.md)
 - [ProcessType](docs/ProcessType.md)
 - [ProjectedHeader](docs/ProjectedHeader.md)
 - [ProjectionSpec](docs/ProjectionSpec.md)
@@ -315,6 +296,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [REPLPromptConfig](docs/REPLPromptConfig.md)
 - [REPLReadyConfig](docs/REPLReadyConfig.md)
 - [REPLReadyMode](docs/REPLReadyMode.md)
+- [RebaseSandboxRootFSRequest](docs/RebaseSandboxRootFSRequest.md)
+- [RebaseSandboxRootFSResponse](docs/RebaseSandboxRootFSResponse.md)
 - [RefreshRequest](docs/RefreshRequest.md)
 - [RefreshResponse](docs/RefreshResponse.md)
 - [Region](docs/Region.md)
@@ -386,14 +369,10 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxServicesUpdateRequest](docs/SandboxServicesUpdateRequest.md)
 - [SandboxStatus](docs/SandboxStatus.md)
 - [SandboxSummary](docs/SandboxSummary.md)
-- [SandboxTemplate](docs/SandboxTemplate.md)
-- [SandboxTemplateCondition](docs/SandboxTemplateCondition.md)
 - [SandboxTemplateSpec](docs/SandboxTemplateSpec.md)
 - [SandboxTemplateStatus](docs/SandboxTemplateStatus.md)
 - [SandboxUpdateConfig](docs/SandboxUpdateConfig.md)
 - [SandboxUpdateRequest](docs/SandboxUpdateRequest.md)
-- [SeccompProfile](docs/SeccompProfile.md)
-- [SecurityContext](docs/SecurityContext.md)
 - [SignalContextRequest](docs/SignalContextRequest.md)
 - [StaticHeadersSourceSpec](docs/StaticHeadersSourceSpec.md)
 - [StaticSSHPrivateKeySourceSpec](docs/StaticSSHPrivateKeySourceSpec.md)
@@ -444,6 +423,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessMovedResponse](docs/SuccessMovedResponse.md)
 - [SuccessMovedResponseAllOfData](docs/SuccessMovedResponseAllOfData.md)
 - [SuccessPauseSandboxResponse](docs/SuccessPauseSandboxResponse.md)
+- [SuccessRebaseSandboxRootFSResponse](docs/SuccessRebaseSandboxRootFSResponse.md)
 - [SuccessRefreshResponse](docs/SuccessRefreshResponse.md)
 - [SuccessRegionListResponse](docs/SuccessRegionListResponse.md)
 - [SuccessRegionListResponseAllOfData](docs/SuccessRegionListResponseAllOfData.md)
@@ -486,7 +466,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessUserResponse](docs/SuccessUserResponse.md)
 - [SuccessWrittenResponse](docs/SuccessWrittenResponse.md)
 - [SuccessWrittenResponseAllOfData](docs/SuccessWrittenResponseAllOfData.md)
-- [TCPSocketAction](docs/TCPSocketAction.md)
 - [Team](docs/Team.md)
 - [TeamDeleteConflictDetails](docs/TeamDeleteConflictDetails.md)
 - [TeamDeleteConflictResponse](docs/TeamDeleteConflictResponse.md)
@@ -500,7 +479,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [TemplateFromSandboxCreateRequest](docs/TemplateFromSandboxCreateRequest.md)
 - [TemplateFromSandboxSpecOverrides](docs/TemplateFromSandboxSpecOverrides.md)
 - [TemplateUpdateRequest](docs/TemplateUpdateRequest.md)
-- [Toleration](docs/Toleration.md)
 - [TrafficRule](docs/TrafficRule.md)
 - [TrafficRuleAction](docs/TrafficRuleAction.md)
 - [TrafficRuleAppProtocol](docs/TrafficRuleAppProtocol.md)
@@ -514,7 +492,6 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [User](docs/User.md)
 - [WebLoginExchangeRequest](docs/WebLoginExchangeRequest.md)
 - [WebhookConfig](docs/WebhookConfig.md)
-- [WeightedPodAffinityTerm](docs/WeightedPodAffinityTerm.md)
 
 ### Authorization
 

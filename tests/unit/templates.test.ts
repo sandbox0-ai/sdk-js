@@ -9,6 +9,7 @@ import {
 import { Templates } from "../../src/resources/templates.ts";
 import {
   container,
+  ephemeralMount,
   resources,
   templateCreateRequest,
   templateFromSandboxCreateRequest,
@@ -40,7 +41,7 @@ describe("Template models", () => {
       templateId: "tpl-env-vars",
       spec: {
         mainContainer: {
-          image: "nginx:1.27-alpine",
+          image: "docker.io/library/nginx@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
           resources: { memory: "2Gi" },
         },
         envVars: { MODE: "template" },
@@ -51,7 +52,7 @@ describe("Template models", () => {
       templateId: "tpl-env-vars",
       spec: {
         mainContainer: {
-          image: "nginx:1.27-alpine",
+          image: "docker.io/library/nginx@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
           resources: { memory: "2Gi" },
         },
         envVars: { MODE: "template" },
@@ -84,10 +85,18 @@ describe("Template models", () => {
   });
 
   it("builds template requests with helper functions", () => {
-    const spec = templateSpec(container("ubuntu:24.04", resources("4Gi")), {
-      displayName: "Helper Template",
-      envVars: { MODE: "template" },
-    });
+    const spec = templateSpec(
+      container(
+        "docker.io/library/ubuntu@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        resources("4Gi"),
+        { securityClass: "privileged" },
+      ),
+      {
+        displayName: "Helper Template",
+        ephemeralMounts: [ephemeralMount("/workspace/tmp", "2Gi")],
+        envVars: { MODE: "template" },
+      },
+    );
 
     const createRequest = templateCreateRequest("tpl-helper", spec);
     const fromSandboxRequest = templateFromSandboxCreateRequest(
@@ -101,10 +110,12 @@ describe("Template models", () => {
       templateId: "tpl-helper",
       spec: {
         mainContainer: {
-          image: "ubuntu:24.04",
+          image: "docker.io/library/ubuntu@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
           resources: { memory: "4Gi" },
+          securityClass: "privileged",
         },
         displayName: "Helper Template",
+        ephemeralMounts: [{ mountPath: "/workspace/tmp", sizeLimit: "2Gi" }],
         envVars: { MODE: "template" },
       },
     });
@@ -274,7 +285,12 @@ function templateDetails(
   return {
     templateId: "tpl-derived",
     scope: "team",
-    spec: {},
+    spec: {
+      mainContainer: {
+        image: "docker.io/library/ubuntu@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        resources: { memory: "1Gi" },
+      },
+    },
     status: state ? { creation: { state, stage: "capturing" } } : {},
     createdAt: new Date("2026-07-18T00:00:00Z"),
     updatedAt: new Date("2026-07-18T00:00:00Z"),

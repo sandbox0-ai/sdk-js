@@ -1,7 +1,7 @@
 import type {
   ContainerSpec,
+  EphemeralMountSpec,
   EnvVar,
-  PoolStrategy,
   ResourceQuota,
   SandboxNetworkPolicy,
   SandboxTemplateSpec,
@@ -15,17 +15,14 @@ export interface TemplateSpecInit {
   description?: string;
   displayName?: string;
   tags?: string[];
-  pod?: SandboxTemplateSpec["pod"];
+  ephemeralMounts?: EphemeralMountSpec[];
   network?: SandboxNetworkPolicy;
-  pool?: PoolStrategy;
   envVars?: Record<string, string>;
-  clusterId?: string;
 }
 
 export interface ContainerInit {
-  imagePullPolicy?: string;
   env?: EnvVar[];
-  securityContext?: ContainerSpec["securityContext"];
+  securityClass?: ContainerSpec["securityClass"];
 }
 
 export function resources(memory: string): ResourceQuota {
@@ -40,10 +37,13 @@ export function container(
   return {
     image,
     resources: containerResources,
-    ...(init.imagePullPolicy ? { imagePullPolicy: init.imagePullPolicy } : {}),
     ...(init.env ? { env: [...init.env] } : {}),
-    ...(init.securityContext ? { securityContext: init.securityContext } : {}),
+    ...(init.securityClass !== undefined ? { securityClass: init.securityClass } : {}),
   };
+}
+
+export function ephemeralMount(mountPath: string, sizeLimit: string): EphemeralMountSpec {
+  return { mountPath, sizeLimit };
 }
 
 export function templateSpec(
@@ -55,11 +55,9 @@ export function templateSpec(
     ...(init.description ? { description: init.description } : {}),
     ...(init.displayName ? { displayName: init.displayName } : {}),
     ...(init.tags ? { tags: [...init.tags] } : {}),
-    ...(init.pod ? { pod: init.pod } : {}),
+    ...(init.ephemeralMounts ? { ephemeralMounts: [...init.ephemeralMounts] } : {}),
     ...(init.network ? { network: init.network } : {}),
-    ...(init.pool ? { pool: init.pool } : {}),
     ...(init.envVars ? { envVars: { ...init.envVars } } : {}),
-    ...(init.clusterId ? { clusterId: init.clusterId } : {}),
   };
 }
 

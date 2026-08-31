@@ -7,10 +7,9 @@
 Name | Type
 ------------ | -------------
 `image` | string
-`imagePullPolicy` | string
 `env` | [Array&lt;EnvVar&gt;](EnvVar.md)
 `resources` | [ResourceQuota](ResourceQuota.md)
-`securityContext` | [SecurityContext](SecurityContext.md)
+`securityClass` | string
 
 ## Example
 
@@ -20,10 +19,9 @@ import type { ContainerSpec } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "image": null,
-  "imagePullPolicy": null,
   "env": null,
   "resources": null,
-  "securityContext": null,
+  "securityClass": null,
 } satisfies ContainerSpec
 
 console.log(example)

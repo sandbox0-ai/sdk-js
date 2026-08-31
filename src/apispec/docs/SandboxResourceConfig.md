@@ -1,7 +1,7 @@
 
 # SandboxResourceConfig
 
-Instance-level sandbox resource override. Sandbox0 exposes memory only and derives CPU from the platform memory-per-CPU ratio, with a minimum CPU limit of 150m.
+Instance-level sandbox resource override. Sandbox0 exposes memory only and derives CPU from the platform memory-per-CPU ratio.
 
 ## Properties
 

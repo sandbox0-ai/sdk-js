@@ -10,7 +10,7 @@ Name | Type
 `templateId` | string
 `teamId` | string
 `userId` | string
-`podName` | string
+`runtimeId` | string
 `status` | [SandboxLifecycleStatus](SandboxLifecycleStatus.md)
 `claimedAt` | string
 `expiresAt` | Date
@@ -28,7 +28,7 @@ const example = {
   "templateId": null,
   "teamId": null,
   "userId": null,
-  "podName": null,
+  "runtimeId": null,
   "status": null,
   "claimedAt": null,
   "expiresAt": null,

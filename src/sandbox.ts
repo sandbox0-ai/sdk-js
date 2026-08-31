@@ -44,7 +44,7 @@ type SandboxParams = {
   client: Client;
   template?: string;
   clusterId?: string;
-  podName?: string;
+  runtimeId?: string;
   status?: string;
 };
 
@@ -325,7 +325,7 @@ export class Sandbox {
   readonly id: string;
   readonly template: string;
   readonly clusterId?: string;
-  readonly podName: string;
+  readonly runtimeId: string;
   readonly status: string;
 
   private readonly client: Client;
@@ -336,7 +336,7 @@ export class Sandbox {
     this.client = params.client;
     this.template = params.template ?? "";
     this.clusterId = params.clusterId;
-    this.podName = params.podName ?? "";
+    this.runtimeId = params.runtimeId ?? "";
     this.status = params.status ?? "";
   }
 

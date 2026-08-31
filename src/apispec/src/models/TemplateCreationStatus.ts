@@ -16,10 +16,8 @@ import { mapValues } from '../runtime';
 /**
  * Asynchronous creation status for templates built from a sandbox.
  * Traditional image-based templates omit this object and are ready
- * immediately after creation. Ready means the template is visible in at
- * least one data-plane cluster and the claim API accepts it; when the
- * pool is zero, it does not imply that a sandbox image has already been
- * pulled.
+ * immediately after creation. Ready means the regional template source
+ * has been committed and the claim API may consume it.
  * 
  * @export
  * @interface TemplateCreationStatus
@@ -56,12 +54,6 @@ export interface TemplateCreationStatus {
      */
     completedAt?: Date;
     /**
-     * Digest-pinned image reference published to the configured team registry.
-     * @type {string}
-     * @memberof TemplateCreationStatus
-     */
-    outputImage?: string;
-    /**
      * 
      * @type {string}
      * @memberof TemplateCreationStatus
@@ -91,8 +83,7 @@ export type TemplateCreationStatusStateEnum = typeof TemplateCreationStatusState
  */
 export const TemplateCreationStatusStageEnum = {
     TemplateCreationStatusStageCapturing: 'capturing',
-    TemplateCreationStatusStagePublishing: 'publishing',
-    TemplateCreationStatusStageReconciling: 'reconciling'
+    TemplateCreationStatusStagePublishing: 'publishing'
 } as const;
 export type TemplateCreationStatusStageEnum = typeof TemplateCreationStatusStageEnum[keyof typeof TemplateCreationStatusStageEnum];
 
@@ -121,7 +112,6 @@ export function TemplateCreationStatusFromJSONTyped(json: any, ignoreDiscriminat
         'startedAt': json['startedAt'] == null ? undefined : (new Date(json['startedAt'])),
         'capturedAt': json['capturedAt'] == null ? undefined : (new Date(json['capturedAt'])),
         'completedAt': json['completedAt'] == null ? undefined : (new Date(json['completedAt'])),
-        'outputImage': json['outputImage'] == null ? undefined : json['outputImage'],
         'reason': json['reason'] == null ? undefined : json['reason'],
         'message': json['message'] == null ? undefined : json['message'],
     };
@@ -143,7 +133,6 @@ export function TemplateCreationStatusToJSONTyped(value?: TemplateCreationStatus
         'startedAt': value['startedAt'] == null ? value['startedAt'] : value['startedAt'].toISOString(),
         'capturedAt': value['capturedAt'] == null ? value['capturedAt'] : value['capturedAt'].toISOString(),
         'completedAt': value['completedAt'] == null ? value['completedAt'] : value['completedAt'].toISOString(),
-        'outputImage': value['outputImage'],
         'reason': value['reason'],
         'message': value['message'],
     };

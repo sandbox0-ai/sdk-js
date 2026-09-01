@@ -17,7 +17,7 @@ describe("Sandboxes resource", () => {
                 sandboxId: "sb_123",
                 template: "default",
                 clusterId: "cluster-a",
-                podName: "pod-a",
+                runtimeId: "alloc-a",
                 status: "running",
               },
             };
@@ -40,6 +40,7 @@ describe("Sandboxes resource", () => {
     });
     assert.strictEqual(sandbox.id, "sb_123");
     assert.strictEqual(sandbox.clusterId, "cluster-a");
+    assert.strictEqual(sandbox.runtimeId, "alloc-a");
   });
 
   it("treats a plain sandbox config as config instead of claim options", async () => {
@@ -53,7 +54,7 @@ describe("Sandboxes resource", () => {
               data: {
                 sandboxId: "sb_456",
                 template: "default",
-                podName: "pod-b",
+                runtimeId: "alloc-b",
                 status: "starting",
               },
             };
@@ -71,7 +72,7 @@ describe("Sandboxes resource", () => {
     });
   });
 
-  it("updates sandbox memory through a convenience request", async () => {
+  it("updates durable sandbox lifecycle configuration", async () => {
     let gotRequest: unknown;
     const client = {
       apispec: {
@@ -85,7 +86,8 @@ describe("Sandboxes resource", () => {
                 status: "running",
                 paused: false,
                 autoResume: true,
-                resources: { memory: "2Gi" },
+                runtimeId: "alloc-a",
+                runtimeGeneration: 1,
                 createdAt: new Date(),
                 updatedAt: new Date(),
               },
@@ -96,17 +98,23 @@ describe("Sandboxes resource", () => {
     } as any;
 
     const sandboxes = new Sandboxes(client);
-    const sandbox = await sandboxes.updateMemory("sb_123", "2Gi");
+    const sandbox = await sandboxes.update("sb_123", {
+      config: {
+        ttl: 600,
+        autoResume: true,
+      },
+    });
 
     assert.deepStrictEqual(gotRequest, {
       id: "sb_123",
       sandboxUpdateRequest: {
         config: {
-          resources: { memory: "2Gi" },
+          ttl: 600,
+          autoResume: true,
         },
       },
     });
-    assert.deepStrictEqual(sandbox.resources, { memory: "2Gi" });
+    assert.strictEqual(sandbox.id, "sb_123");
   });
 
   it("routes sandbox rootfs operations through generated API", async () => {
@@ -139,6 +147,18 @@ describe("Sandboxes resource", () => {
             calls.restore = request;
             return { data: { sandboxId: "sb_1", snapshotId: "snap_1", status: "paused" } };
           },
+          apiV1SandboxesIdRootfsRebasePut: async (request: unknown) => {
+            calls.rebase = request;
+            return {
+              data: {
+                sandboxId: "sb_1",
+                generationId: "gen_2",
+                baseArtifactDigest: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                rollbackExpiresAt: new Date(),
+                status: "paused",
+              },
+            };
+          },
           apiV1SandboxesIdForkPost: async (request: unknown) => {
             calls.fork = request;
             return {
@@ -166,6 +186,10 @@ describe("Sandboxes resource", () => {
     const fetched = await sandboxes.getRootFSSnapshot("snap_1");
     const deleted = await sandboxes.deleteRootFSSnapshot("snap_1");
     const restored = await sandboxes.restoreRootFS("sb_1", { snapshotId: "snap_1" });
+    const rebased = await sandboxes.rebaseRootFS("sb_1", {
+      targetBaseArtifactDigest: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      rollbackTtl: 3600,
+    });
     const forked = await sandboxes.fork("sb_1", { config: { ttl: 60, hardTtl: 120 } });
 
     assert.strictEqual(snapshot.id, "snap_1");
@@ -173,6 +197,7 @@ describe("Sandboxes resource", () => {
     assert.strictEqual(fetched.id, "snap_1");
     assert.strictEqual((deleted as any).data.deleted, true);
     assert.strictEqual(restored.snapshotId, "snap_1");
+    assert.strictEqual(rebased.generationId, "gen_2");
     assert.strictEqual(forked.sandbox.id, "sb_fork");
     assert.deepStrictEqual(calls.createSnapshot, {
       id: "sb_1",
@@ -184,6 +209,13 @@ describe("Sandboxes resource", () => {
     assert.deepStrictEqual(calls.restore, {
       id: "sb_1",
       restoreSandboxRootFSRequest: { snapshotId: "snap_1" },
+    });
+    assert.deepStrictEqual(calls.rebase, {
+      id: "sb_1",
+      rebaseSandboxRootFSRequest: {
+        targetBaseArtifactDigest: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        rollbackTtl: 3600,
+      },
     });
     assert.deepStrictEqual(calls.fork, {
       id: "sb_1",
@@ -356,7 +388,7 @@ function sandboxDetails(overrides: {
     templateId: "default",
     teamId: "team_1",
     autoResume: true,
-    podName: overrides.paused ? "" : "sandbox-pod",
+    runtimeId: overrides.paused ? "" : "alloc-123",
     expiresAt: new Date("2026-07-10T00:00:00Z"),
     hardExpiresAt: new Date("2026-07-11T00:00:00Z"),
     claimedAt: new Date("2026-07-09T00:00:00Z"),

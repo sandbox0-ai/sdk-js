@@ -1,17 +1,14 @@
 
 # SandboxUpdateConfig
 
-Subset of SandboxConfig fields that can be updated at runtime without restarting the sandbox. Note: env_vars only affect new processes. webhook is not included as it requires restart. 
+Durable lifecycle and service fields that can be updated without replacing the current runtime allocation. Network policy uses the dedicated network endpoint. Environment, resource, and webhook changes require a new runtime. 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`envVars` | { [key: string]: string; }
-`resources` | [SandboxResourceConfig](SandboxResourceConfig.md)
 `ttl` | number
 `hardTtl` | number
-`network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
 `autoResume` | boolean
 `services` | [Array&lt;SandboxAppService&gt;](SandboxAppService.md)
 
@@ -22,11 +19,8 @@ import type { SandboxUpdateConfig } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "envVars": null,
-  "resources": null,
   "ttl": null,
   "hardTtl": null,
-  "network": null,
   "autoResume": null,
   "services": null,
 } satisfies SandboxUpdateConfig

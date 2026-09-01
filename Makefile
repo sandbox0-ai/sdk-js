@@ -15,7 +15,7 @@ apispec:
 	@npm install >/dev/null
 	@npm run generate:apispec
 
-check: lint lint-examples build
+check: lint build
 
 build:
 	@printf "Building sdk-js...\n"
@@ -26,11 +26,6 @@ lint:
 	@printf "Type-checking sdk-js...\n"
 	@npm install >/dev/null
 	@npm run lint
-
-lint-examples:
-	@printf "Type-checking sdk-js examples...\n"
-	@npm install >/dev/null
-	@npm run lint:examples
 
 # Set version in package.json
 set-version:

@@ -20,44 +20,16 @@ import {
     SandboxAppServiceToJSON,
     SandboxAppServiceToJSONTyped,
 } from './SandboxAppService';
-import type { SandboxResourceConfig } from './SandboxResourceConfig';
-import {
-    SandboxResourceConfigFromJSON,
-    SandboxResourceConfigFromJSONTyped,
-    SandboxResourceConfigToJSON,
-    SandboxResourceConfigToJSONTyped,
-} from './SandboxResourceConfig';
-import type { SandboxNetworkPolicy } from './SandboxNetworkPolicy';
-import {
-    SandboxNetworkPolicyFromJSON,
-    SandboxNetworkPolicyFromJSONTyped,
-    SandboxNetworkPolicyToJSON,
-    SandboxNetworkPolicyToJSONTyped,
-} from './SandboxNetworkPolicy';
 
 /**
- * Subset of SandboxConfig fields that can be updated at runtime without restarting the sandbox.
- * Note: env_vars only affect new processes. webhook is not included as it requires restart.
+ * Durable lifecycle and service fields that can be updated without replacing
+ * the current runtime allocation. Network policy uses the dedicated network
+ * endpoint. Environment, resource, and webhook changes require a new runtime.
  * 
  * @export
  * @interface SandboxUpdateConfig
  */
 export interface SandboxUpdateConfig {
-    /**
-     * Sandbox-level environment variables used as defaults for new procd-managed
-     * processes. Omitting this field preserves the existing environment map; passing
-     * an empty object clears it.
-     * 
-     * @type {{ [key: string]: string; }}
-     * @memberof SandboxUpdateConfig
-     */
-    envVars?: { [key: string]: string; };
-    /**
-     * 
-     * @type {SandboxResourceConfig}
-     * @memberof SandboxUpdateConfig
-     */
-    resources?: SandboxResourceConfig;
     /**
      * Runtime soft time-to-live in seconds. When it expires, Sandbox0 checkpoints the writable rootfs, pauses the sandbox, and releases runtime compute while preserving durable sandbox state.
      * @type {number}
@@ -70,12 +42,6 @@ export interface SandboxUpdateConfig {
      * @memberof SandboxUpdateConfig
      */
     hardTtl?: number;
-    /**
-     * 
-     * @type {SandboxNetworkPolicy}
-     * @memberof SandboxUpdateConfig
-     */
-    network?: SandboxNetworkPolicy;
     /**
      * Controls whether supported inbound API or public exposure requests may automatically
      * make an inactive sandbox available. This setting does not control platform-initiated
@@ -112,11 +78,8 @@ export function SandboxUpdateConfigFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
-        'envVars': json['env_vars'] == null ? undefined : json['env_vars'],
-        'resources': json['resources'] == null ? undefined : SandboxResourceConfigFromJSON(json['resources']),
         'ttl': json['ttl'] == null ? undefined : json['ttl'],
         'hardTtl': json['hard_ttl'] == null ? undefined : json['hard_ttl'],
-        'network': json['network'] == null ? undefined : SandboxNetworkPolicyFromJSON(json['network']),
         'autoResume': json['auto_resume'] == null ? undefined : json['auto_resume'],
         'services': json['services'] == null ? undefined : ((json['services'] as Array<any>).map(SandboxAppServiceFromJSON)),
     };
@@ -133,11 +96,8 @@ export function SandboxUpdateConfigToJSONTyped(value?: SandboxUpdateConfig | nul
 
     return {
         
-        'env_vars': value['envVars'],
-        'resources': SandboxResourceConfigToJSON(value['resources']),
         'ttl': value['ttl'],
         'hard_ttl': value['hardTtl'],
-        'network': SandboxNetworkPolicyToJSON(value['network']),
         'auto_resume': value['autoResume'],
         'services': value['services'] == null ? undefined : ((value['services'] as Array<any>).map(SandboxAppServiceToJSON)),
     };

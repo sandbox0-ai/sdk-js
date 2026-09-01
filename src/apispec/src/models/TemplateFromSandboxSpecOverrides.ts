@@ -13,19 +13,8 @@
  */
 
 import { mapValues } from '../runtime';
-import type { PoolStrategy } from './PoolStrategy';
-import {
-    PoolStrategyFromJSON,
-    PoolStrategyFromJSONTyped,
-    PoolStrategyToJSON,
-    PoolStrategyToJSONTyped,
-} from './PoolStrategy';
-
 /**
- * Safe template fields that may override values inherited from the source
- * sandbox's originating template. Pool defaults to zero idle sandboxes
- * when omitted.
- * 
+ * Safe template fields that may override values inherited from the source sandbox's originating template.
  * @export
  * @interface TemplateFromSandboxSpecOverrides
  */
@@ -48,12 +37,6 @@ export interface TemplateFromSandboxSpecOverrides {
      * @memberof TemplateFromSandboxSpecOverrides
      */
     tags?: Array<string>;
-    /**
-     * 
-     * @type {PoolStrategy}
-     * @memberof TemplateFromSandboxSpecOverrides
-     */
-    pool?: PoolStrategy;
 }
 
 /**
@@ -76,7 +59,6 @@ export function TemplateFromSandboxSpecOverridesFromJSONTyped(json: any, ignoreD
         'description': json['description'] == null ? undefined : json['description'],
         'displayName': json['displayName'] == null ? undefined : json['displayName'],
         'tags': json['tags'] == null ? undefined : json['tags'],
-        'pool': json['pool'] == null ? undefined : PoolStrategyFromJSON(json['pool']),
     };
 }
 
@@ -94,7 +76,6 @@ export function TemplateFromSandboxSpecOverridesToJSONTyped(value?: TemplateFrom
         'description': value['description'],
         'displayName': value['displayName'],
         'tags': value['tags'],
-        'pool': PoolStrategyToJSON(value['pool']),
     };
 }
 

@@ -20,13 +20,6 @@ import {
     TemplateCreationStatusToJSON,
     TemplateCreationStatusToJSONTyped,
 } from './TemplateCreationStatus';
-import type { SandboxTemplateCondition } from './SandboxTemplateCondition';
-import {
-    SandboxTemplateConditionFromJSON,
-    SandboxTemplateConditionFromJSONTyped,
-    SandboxTemplateConditionToJSON,
-    SandboxTemplateConditionToJSONTyped,
-} from './SandboxTemplateCondition';
 
 /**
  * 
@@ -34,30 +27,6 @@ import {
  * @interface SandboxTemplateStatus
  */
 export interface SandboxTemplateStatus {
-    /**
-     * 
-     * @type {number}
-     * @memberof SandboxTemplateStatus
-     */
-    idleCount?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof SandboxTemplateStatus
-     */
-    activeCount?: number;
-    /**
-     * 
-     * @type {Array<SandboxTemplateCondition>}
-     * @memberof SandboxTemplateStatus
-     */
-    conditions?: Array<SandboxTemplateCondition>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof SandboxTemplateStatus
-     */
-    lastUpdateTime?: Date | null;
     /**
      * 
      * @type {TemplateCreationStatus}
@@ -83,10 +52,6 @@ export function SandboxTemplateStatusFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'idleCount': json['idleCount'] == null ? undefined : json['idleCount'],
-        'activeCount': json['activeCount'] == null ? undefined : json['activeCount'],
-        'conditions': json['conditions'] == null ? undefined : ((json['conditions'] as Array<any>).map(SandboxTemplateConditionFromJSON)),
-        'lastUpdateTime': json['lastUpdateTime'] == null ? undefined : (new Date(json['lastUpdateTime'])),
         'creation': json['creation'] == null ? undefined : TemplateCreationStatusFromJSON(json['creation']),
     };
 }
@@ -102,10 +67,6 @@ export function SandboxTemplateStatusToJSONTyped(value?: SandboxTemplateStatus |
 
     return {
         
-        'idleCount': value['idleCount'],
-        'activeCount': value['activeCount'],
-        'conditions': value['conditions'] == null ? undefined : ((value['conditions'] as Array<any>).map(SandboxTemplateConditionToJSON)),
-        'lastUpdateTime': value['lastUpdateTime'] == null ? value['lastUpdateTime'] : value['lastUpdateTime'].toISOString(),
         'creation': TemplateCreationStatusToJSON(value['creation']),
     };
 }

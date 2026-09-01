@@ -1,7 +1,7 @@
 
 # TemplateCreationStatus
 
-Asynchronous creation status for templates built from a sandbox. Traditional image-based templates omit this object and are ready immediately after creation. Ready means the template is visible in at least one data-plane cluster and the claim API accepts it; when the pool is zero, it does not imply that a sandbox image has already been pulled. 
+Asynchronous creation status for templates built from a sandbox. Traditional image-based templates omit this object and are ready immediately after creation. Ready means the regional template source has been committed and the claim API may consume it. 
 
 ## Properties
 
@@ -12,7 +12,6 @@ Name | Type
 `startedAt` | Date
 `capturedAt` | Date
 `completedAt` | Date
-`outputImage` | string
 `reason` | string
 `message` | string
 
@@ -28,7 +27,6 @@ const example = {
   "startedAt": null,
   "capturedAt": null,
   "completedAt": null,
-  "outputImage": null,
   "reason": null,
   "message": null,
 } satisfies TemplateCreationStatus

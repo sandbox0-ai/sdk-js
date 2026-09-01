@@ -1,22 +1,24 @@
 
-# SuccessRestoreResponseAllOfData
+# RebaseSandboxRootFSRequest
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`status` | string
+`targetBaseArtifactDigest` | string
+`rollbackTtl` | number
 
 ## Example
 
 ```typescript
-import type { SuccessRestoreResponseAllOfData } from 'sandbox0'
+import type { RebaseSandboxRootFSRequest } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "status": null,
-} satisfies SuccessRestoreResponseAllOfData
+  "targetBaseArtifactDigest": null,
+  "rollbackTtl": null,
+} satisfies RebaseSandboxRootFSRequest
 
 console.log(example)
 
@@ -25,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as SuccessRestoreResponseAllOfData
+const exampleParsed = JSON.parse(exampleJSON) as RebaseSandboxRootFSRequest
 console.log(exampleParsed)
 ```
 

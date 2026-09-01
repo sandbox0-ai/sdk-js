@@ -20,13 +20,6 @@ import {
     ResourceQuotaToJSON,
     ResourceQuotaToJSONTyped,
 } from './ResourceQuota';
-import type { SecurityContext } from './SecurityContext';
-import {
-    SecurityContextFromJSON,
-    SecurityContextFromJSONTyped,
-    SecurityContextToJSON,
-    SecurityContextToJSONTyped,
-} from './SecurityContext';
 import type { EnvVar } from './EnvVar';
 import {
     EnvVarFromJSON,
@@ -42,17 +35,11 @@ import {
  */
 export interface ContainerSpec {
     /**
-     * 
+     * Canonical normalized OCI reference pinned by a lowercase SHA-256 digest. Mutable tags are rejected.
      * @type {string}
      * @memberof ContainerSpec
      */
     image: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ContainerSpec
-     */
-    imagePullPolicy?: string;
     /**
      * 
      * @type {Array<EnvVar>}
@@ -66,12 +53,23 @@ export interface ContainerSpec {
      */
     resources: ResourceQuota;
     /**
-     * 
-     * @type {SecurityContext}
+     * Immutable gVisor guest privilege class. Privileged capabilities remain confined by runsc and do not expose host devices.
+     * @type {string}
      * @memberof ContainerSpec
      */
-    securityContext?: SecurityContext;
+    securityClass?: ContainerSpecSecurityClassEnum;
 }
+
+
+/**
+ * @export
+ */
+export const ContainerSpecSecurityClassEnum = {
+    Standard: 'standard',
+    Privileged: 'privileged'
+} as const;
+export type ContainerSpecSecurityClassEnum = typeof ContainerSpecSecurityClassEnum[keyof typeof ContainerSpecSecurityClassEnum];
+
 
 /**
  * Check if a given object implements the ContainerSpec interface.
@@ -93,10 +91,9 @@ export function ContainerSpecFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'image': json['image'],
-        'imagePullPolicy': json['imagePullPolicy'] == null ? undefined : json['imagePullPolicy'],
         'env': json['env'] == null ? undefined : ((json['env'] as Array<any>).map(EnvVarFromJSON)),
         'resources': ResourceQuotaFromJSON(json['resources']),
-        'securityContext': json['securityContext'] == null ? undefined : SecurityContextFromJSON(json['securityContext']),
+        'securityClass': json['securityClass'] == null ? undefined : json['securityClass'],
     };
 }
 
@@ -112,10 +109,9 @@ export function ContainerSpecToJSONTyped(value?: ContainerSpec | null, ignoreDis
     return {
         
         'image': value['image'],
-        'imagePullPolicy': value['imagePullPolicy'],
         'env': value['env'] == null ? undefined : ((value['env'] as Array<any>).map(EnvVarToJSON)),
         'resources': ResourceQuotaToJSON(value['resources']),
-        'securityContext': SecurityContextToJSON(value['securityContext']),
+        'securityClass': value['securityClass'],
     };
 }
 

@@ -1,24 +1,24 @@
 
-# NodeSelectorTerm
+# SuccessRebaseSandboxRootFSResponse
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`matchExpressions` | [Array&lt;NodeSelectorRequirement&gt;](NodeSelectorRequirement.md)
-`matchFields` | [Array&lt;NodeSelectorRequirement&gt;](NodeSelectorRequirement.md)
+`success` | boolean
+`data` | [RebaseSandboxRootFSResponse](RebaseSandboxRootFSResponse.md)
 
 ## Example
 
 ```typescript
-import type { NodeSelectorTerm } from 'sandbox0'
+import type { SuccessRebaseSandboxRootFSResponse } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "matchExpressions": null,
-  "matchFields": null,
-} satisfies NodeSelectorTerm
+  "success": null,
+  "data": null,
+} satisfies SuccessRebaseSandboxRootFSResponse
 
 console.log(example)
 
@@ -27,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as NodeSelectorTerm
+const exampleParsed = JSON.parse(exampleJSON) as SuccessRebaseSandboxRootFSResponse
 console.log(exampleParsed)
 ```
 

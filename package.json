@@ -29,7 +29,7 @@
     "lint:eve": "npm run build && npm --prefix packages/eve run lint",
     "lint:e2e": "tsc -p tsconfig.e2e.json --noEmit",
     "lint:unit": "tsc -p tsconfig.unit.json --noEmit",
-    "generate:apispec": "openapi-generator-cli generate -i openapi.yaml -g typescript-fetch -o src/apispec -c openapi-generator-config.yaml",
+    "generate:apispec": "rm -rf src/apispec && openapi-generator-cli generate -i openapi.yaml -g typescript-fetch -o src/apispec -c openapi-generator-config.yaml",
     "test": "npm run test:unit",
     "test:e2e": "npm run test:e2e:sdk && npm run test:e2e:frameworks",
     "test:e2e:frameworks": "npm run test:e2e:eve",

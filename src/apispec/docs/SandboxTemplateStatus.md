@@ -6,10 +6,6 @@
 
 Name | Type
 ------------ | -------------
-`idleCount` | number
-`activeCount` | number
-`conditions` | [Array&lt;SandboxTemplateCondition&gt;](SandboxTemplateCondition.md)
-`lastUpdateTime` | Date
 `creation` | [TemplateCreationStatus](TemplateCreationStatus.md)
 
 ## Example
@@ -19,10 +15,6 @@ import type { SandboxTemplateStatus } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
-  "idleCount": null,
-  "activeCount": null,
-  "conditions": null,
-  "lastUpdateTime": null,
   "creation": null,
 } satisfies SandboxTemplateStatus
 

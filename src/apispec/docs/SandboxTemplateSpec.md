@@ -10,11 +10,9 @@ Name | Type
 `displayName` | string
 `tags` | Array&lt;string&gt;
 `mainContainer` | [ContainerSpec](ContainerSpec.md)
-`pod` | [PodSpecOverride](PodSpecOverride.md)
+`ephemeralMounts` | [Array&lt;EphemeralMountSpec&gt;](EphemeralMountSpec.md)
 `network` | [SandboxNetworkPolicy](SandboxNetworkPolicy.md)
-`pool` | [PoolStrategy](PoolStrategy.md)
 `envVars` | { [key: string]: string; }
-`clusterId` | string
 
 ## Example
 
@@ -27,11 +25,9 @@ const example = {
   "displayName": null,
   "tags": null,
   "mainContainer": null,
-  "pod": null,
+  "ephemeralMounts": null,
   "network": null,
-  "pool": null,
   "envVars": null,
-  "clusterId": null,
 } satisfies SandboxTemplateSpec
 
 console.log(example)
@@ -46,3 +42,5 @@ console.log(exampleParsed)
 ```
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+

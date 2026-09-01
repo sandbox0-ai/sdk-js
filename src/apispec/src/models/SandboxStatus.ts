@@ -52,11 +52,11 @@ export interface SandboxStatus {
      */
     userId?: string;
     /**
-     * 
+     * Opaque identifier of the current physical runtime allocation. Empty while paused.
      * @type {string}
      * @memberof SandboxStatus
      */
-    podName?: string;
+    runtimeId?: string;
     /**
      * 
      * @type {SandboxLifecycleStatus}
@@ -112,7 +112,7 @@ export function SandboxStatusFromJSONTyped(json: any, ignoreDiscriminator: boole
         'templateId': json['template_id'] == null ? undefined : json['template_id'],
         'teamId': json['team_id'] == null ? undefined : json['team_id'],
         'userId': json['user_id'] == null ? undefined : json['user_id'],
-        'podName': json['pod_name'] == null ? undefined : json['pod_name'],
+        'runtimeId': json['runtime_id'] == null ? undefined : json['runtime_id'],
         'status': json['status'] == null ? undefined : SandboxLifecycleStatusFromJSON(json['status']),
         'claimedAt': json['claimed_at'] == null ? undefined : json['claimed_at'],
         'expiresAt': json['expires_at'] == null ? undefined : (new Date(json['expires_at'])),
@@ -136,7 +136,7 @@ export function SandboxStatusToJSONTyped(value?: SandboxStatus | null, ignoreDis
         'template_id': value['templateId'],
         'team_id': value['teamId'],
         'user_id': value['userId'],
-        'pod_name': value['podName'],
+        'runtime_id': value['runtimeId'],
         'status': SandboxLifecycleStatusToJSON(value['status']),
         'claimed_at': value['claimedAt'],
         'expires_at': value['expiresAt'] == null ? value['expiresAt'] : value['expiresAt'].toISOString(),

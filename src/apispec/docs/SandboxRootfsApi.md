@@ -156,7 +156,7 @@ example().catch(console.error);
 
 ## apiV1SandboxesIdForkPost
 
-> SuccessForkSandboxResponse apiV1SandboxesIdForkPost(id, forkSandboxRequest)
+> SuccessForkSandboxResponse apiV1SandboxesIdForkPost(id, idempotencyKey, forkSandboxRequest)
 
 Fork sandbox rootfs
 
@@ -182,6 +182,8 @@ async function example() {
   const body = {
     // string
     id: id_example,
+    // string | Optional key for retrying the fork without creating a duplicate child sandbox. (optional)
+    idempotencyKey: idempotencyKey_example,
     // ForkSandboxRequest (optional)
     forkSandboxRequest: ...,
   } satisfies ApiV1SandboxesIdForkPostRequest;
@@ -204,6 +206,7 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | `string` |  | [Defaults to `undefined`] |
+| **idempotencyKey** | `string` | Optional key for retrying the fork without creating a duplicate child sandbox. | [Optional] [Defaults to `undefined`] |
 | **forkSandboxRequest** | [ForkSandboxRequest](ForkSandboxRequest.md) |  | [Optional] |
 
 ### Return type

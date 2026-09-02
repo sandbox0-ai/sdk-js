@@ -38,7 +38,7 @@ export interface SuccessRegionResponse {
      * @type {Region}
      * @memberof SuccessRegionResponse
      */
-    data?: Region;
+    data: Region;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessRegionResponse {
  */
 export function instanceOfSuccessRegionResponse(value: object): value is SuccessRegionResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessRegionResponseFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : RegionFromJSON(json['data']),
+        'data': RegionFromJSON(json['data']),
     };
 }
 

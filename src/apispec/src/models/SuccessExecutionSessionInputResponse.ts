@@ -38,7 +38,7 @@ export interface SuccessExecutionSessionInputResponse {
      * @type {ExecutionSessionInputResponse}
      * @memberof SuccessExecutionSessionInputResponse
      */
-    data?: ExecutionSessionInputResponse;
+    data: ExecutionSessionInputResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessExecutionSessionInputResponse {
  */
 export function instanceOfSuccessExecutionSessionInputResponse(value: object): value is SuccessExecutionSessionInputResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessExecutionSessionInputResponseFromJSONTyped(json: any, ign
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : ExecutionSessionInputResponseFromJSON(json['data']),
+        'data': ExecutionSessionInputResponseFromJSON(json['data']),
     };
 }
 

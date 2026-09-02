@@ -101,6 +101,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | List of sandboxes |  -  |
 | **400** | Invalid request |  -  |
 
@@ -171,7 +172,8 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Sandbox terminated |  -  |
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
+| **202** | Sandbox termination accepted for asynchronous cleanup |  -  |
 | **403** | Forbidden |  -  |
 | **404** | Not found |  -  |
 
@@ -242,6 +244,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Sandbox |  -  |
 | **403** | Forbidden |  -  |
 | **404** | Not found |  -  |
@@ -313,6 +316,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Network policy |  -  |
 | **404** | Not found |  -  |
 
@@ -386,6 +390,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Network policy updated |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -455,7 +460,9 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Sandbox paused |  -  |
+| **202** | Sandbox pause accepted and checkpoint cleanup is still in progress |  -  |
 | **409** | Sandbox lifecycle state conflicts with this operation |  -  |
 | **504** | Timed out waiting for the sandbox to pause |  -  |
 | **503** | Sandbox pause requires ctld |  -  |
@@ -533,6 +540,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **201** | Preview grant created |  -  |
 | **400** | Invalid preview request |  -  |
 | **403** | Forbidden or reserved port |  -  |
@@ -609,6 +617,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Preview grant revoked |  -  |
 | **404** | Preview grant not found |  -  |
 | **503** | Preview authorization store unavailable |  -  |
@@ -686,6 +695,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Preview grant renewed |  -  |
 | **400** | Invalid preview renewal request |  -  |
 | **404** | Preview grant or sandbox not found |  -  |
@@ -762,6 +772,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Sandbox updated |  -  |
 | **400** | Invalid request |  -  |
 | **404** | Not found |  -  |
@@ -836,6 +847,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | TTL refreshed |  -  |
 | **404** | Not found |  -  |
 
@@ -906,6 +918,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Sandbox resumed |  -  |
 | **409** | Sandbox lifecycle state conflicts with this operation |  -  |
 | **429** | Resume would exceed active runtime quota |  -  |
@@ -982,6 +995,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Sandbox services |  -  |
 | **404** | Not found |  -  |
 
@@ -1057,6 +1071,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Sandbox services updated |  -  |
 | **400** | Invalid sandbox services |  -  |
 
@@ -1127,6 +1142,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Sandbox status |  -  |
 | **404** | Not found |  -  |
 
@@ -1197,6 +1213,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **201** | Sandbox claimed |  -  |
 | **400** | Invalid request |  -  |
 | **409** | The selected template is still creating or its creation failed |  * Retry-After - Suggested retry delay in seconds when template creation is still in progress <br>  |

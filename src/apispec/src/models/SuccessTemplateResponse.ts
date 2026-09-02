@@ -38,7 +38,7 @@ export interface SuccessTemplateResponse {
      * @type {Template}
      * @memberof SuccessTemplateResponse
      */
-    data?: Template;
+    data: Template;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessTemplateResponse {
  */
 export function instanceOfSuccessTemplateResponse(value: object): value is SuccessTemplateResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessTemplateResponseFromJSONTyped(json: any, ignoreDiscrimina
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : TemplateFromJSON(json['data']),
+        'data': TemplateFromJSON(json['data']),
     };
 }
 

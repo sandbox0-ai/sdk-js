@@ -38,7 +38,7 @@ export interface SuccessTeamMemberListResponse {
      * @type {SuccessTeamMemberListResponseAllOfData}
      * @memberof SuccessTeamMemberListResponse
      */
-    data?: SuccessTeamMemberListResponseAllOfData;
+    data: SuccessTeamMemberListResponseAllOfData;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessTeamMemberListResponse {
  */
 export function instanceOfSuccessTeamMemberListResponse(value: object): value is SuccessTeamMemberListResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessTeamMemberListResponseFromJSONTyped(json: any, ignoreDisc
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SuccessTeamMemberListResponseAllOfDataFromJSON(json['data']),
+        'data': SuccessTeamMemberListResponseAllOfDataFromJSON(json['data']),
     };
 }
 

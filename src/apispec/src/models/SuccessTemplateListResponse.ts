@@ -38,7 +38,7 @@ export interface SuccessTemplateListResponse {
      * @type {SuccessTemplateListResponseAllOfData}
      * @memberof SuccessTemplateListResponse
      */
-    data?: SuccessTemplateListResponseAllOfData;
+    data: SuccessTemplateListResponseAllOfData;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessTemplateListResponse {
  */
 export function instanceOfSuccessTemplateListResponse(value: object): value is SuccessTemplateListResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessTemplateListResponseFromJSONTyped(json: any, ignoreDiscri
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SuccessTemplateListResponseAllOfDataFromJSON(json['data']),
+        'data': SuccessTemplateListResponseAllOfDataFromJSON(json['data']),
     };
 }
 

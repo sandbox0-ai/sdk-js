@@ -190,7 +190,11 @@ describe("Sandboxes resource", () => {
       targetBaseArtifactDigest: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       rollbackTtl: 3600,
     });
-    const forked = await sandboxes.fork("sb_1", { config: { ttl: 60, hardTtl: 120 } });
+    const forked = await sandboxes.fork(
+      "sb_1",
+      { config: { ttl: 60, hardTtl: 120 } },
+      { idempotencyKey: "fork-request-one" },
+    );
 
     assert.strictEqual(snapshot.id, "snap_1");
     assert.strictEqual(snapshots.length, 1);
@@ -219,6 +223,7 @@ describe("Sandboxes resource", () => {
     });
     assert.deepStrictEqual(calls.fork, {
       id: "sb_1",
+      idempotencyKey: "fork-request-one",
       forkSandboxRequest: { config: { ttl: 60, hardTtl: 120 } },
     });
   });

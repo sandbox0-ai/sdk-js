@@ -38,7 +38,7 @@ export interface SuccessSandboxObservabilityEventsResponse {
      * @type {SandboxObservabilityEventsResponse}
      * @memberof SuccessSandboxObservabilityEventsResponse
      */
-    data?: SandboxObservabilityEventsResponse;
+    data: SandboxObservabilityEventsResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessSandboxObservabilityEventsResponse {
  */
 export function instanceOfSuccessSandboxObservabilityEventsResponse(value: object): value is SuccessSandboxObservabilityEventsResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessSandboxObservabilityEventsResponseFromJSONTyped(json: any
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SandboxObservabilityEventsResponseFromJSON(json['data']),
+        'data': SandboxObservabilityEventsResponseFromJSON(json['data']),
     };
 }
 

@@ -62,6 +62,7 @@ export interface ApiV1SandboxRootfsSnapshotsSnapshotIdGetRequest {
 
 export interface ApiV1SandboxesIdForkPostRequest {
     id: string;
+    idempotencyKey?: string;
     forkSandboxRequest?: ForkSandboxRequest;
 }
 
@@ -196,6 +197,10 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
+
+        if (requestParameters['idempotencyKey'] != null) {
+            headerParameters['Idempotency-Key'] = String(requestParameters['idempotencyKey']);
+        }
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;

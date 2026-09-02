@@ -38,7 +38,7 @@ export interface SuccessGatewayMetadataResponse {
      * @type {GatewayMetadata}
      * @memberof SuccessGatewayMetadataResponse
      */
-    data?: GatewayMetadata;
+    data: GatewayMetadata;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessGatewayMetadataResponse {
  */
 export function instanceOfSuccessGatewayMetadataResponse(value: object): value is SuccessGatewayMetadataResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessGatewayMetadataResponseFromJSONTyped(json: any, ignoreDis
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : GatewayMetadataFromJSON(json['data']),
+        'data': GatewayMetadataFromJSON(json['data']),
     };
 }
 

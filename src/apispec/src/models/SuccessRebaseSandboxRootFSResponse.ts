@@ -38,7 +38,7 @@ export interface SuccessRebaseSandboxRootFSResponse {
      * @type {RebaseSandboxRootFSResponse}
      * @memberof SuccessRebaseSandboxRootFSResponse
      */
-    data?: RebaseSandboxRootFSResponse;
+    data: RebaseSandboxRootFSResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessRebaseSandboxRootFSResponse {
  */
 export function instanceOfSuccessRebaseSandboxRootFSResponse(value: object): value is SuccessRebaseSandboxRootFSResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessRebaseSandboxRootFSResponseFromJSONTyped(json: any, ignor
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : RebaseSandboxRootFSResponseFromJSON(json['data']),
+        'data': RebaseSandboxRootFSResponseFromJSON(json['data']),
     };
 }
 

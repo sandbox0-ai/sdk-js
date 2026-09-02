@@ -68,6 +68,7 @@ This endpoint does not need any parameter.
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Credential sources |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -137,6 +138,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Credential source deleted |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -206,6 +208,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Credential source |  -  |
 | **404** | Not found |  -  |
 
@@ -281,6 +284,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Credential source updated |  -  |
 | **400** | Invalid credential source update |  -  |
 | **404** | Credential source not found |  -  |
@@ -352,6 +356,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **201** | Credential source created |  -  |
 | **409** | Credential source already exists |  -  |
 

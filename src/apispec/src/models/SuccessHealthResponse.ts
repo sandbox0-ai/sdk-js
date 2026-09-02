@@ -38,7 +38,7 @@ export interface SuccessHealthResponse {
      * @type {SuccessHealthResponseAllOfData}
      * @memberof SuccessHealthResponse
      */
-    data?: SuccessHealthResponseAllOfData;
+    data: SuccessHealthResponseAllOfData;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessHealthResponse {
  */
 export function instanceOfSuccessHealthResponse(value: object): value is SuccessHealthResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessHealthResponseFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SuccessHealthResponseAllOfDataFromJSON(json['data']),
+        'data': SuccessHealthResponseAllOfDataFromJSON(json['data']),
     };
 }
 

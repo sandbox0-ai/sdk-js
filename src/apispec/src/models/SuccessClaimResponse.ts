@@ -38,7 +38,7 @@ export interface SuccessClaimResponse {
      * @type {ClaimResponse}
      * @memberof SuccessClaimResponse
      */
-    data?: ClaimResponse;
+    data: ClaimResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessClaimResponse {
  */
 export function instanceOfSuccessClaimResponse(value: object): value is SuccessClaimResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessClaimResponseFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : ClaimResponseFromJSON(json['data']),
+        'data': ClaimResponseFromJSON(json['data']),
     };
 }
 

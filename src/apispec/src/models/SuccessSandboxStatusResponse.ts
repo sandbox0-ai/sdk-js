@@ -38,7 +38,7 @@ export interface SuccessSandboxStatusResponse {
      * @type {SandboxStatus}
      * @memberof SuccessSandboxStatusResponse
      */
-    data?: SandboxStatus;
+    data: SandboxStatus;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessSandboxStatusResponse {
  */
 export function instanceOfSuccessSandboxStatusResponse(value: object): value is SuccessSandboxStatusResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessSandboxStatusResponseFromJSONTyped(json: any, ignoreDiscr
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SandboxStatusFromJSON(json['data']),
+        'data': SandboxStatusFromJSON(json['data']),
     };
 }
 

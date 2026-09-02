@@ -38,7 +38,7 @@ export interface SuccessRegistryCredentialsResponse {
      * @type {RegistryCredentials}
      * @memberof SuccessRegistryCredentialsResponse
      */
-    data?: RegistryCredentials;
+    data: RegistryCredentials;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessRegistryCredentialsResponse {
  */
 export function instanceOfSuccessRegistryCredentialsResponse(value: object): value is SuccessRegistryCredentialsResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessRegistryCredentialsResponseFromJSONTyped(json: any, ignor
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : RegistryCredentialsFromJSON(json['data']),
+        'data': RegistryCredentialsFromJSON(json['data']),
     };
 }
 

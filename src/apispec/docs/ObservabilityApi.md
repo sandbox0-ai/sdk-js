@@ -119,6 +119,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Canonical signed sandbox observability events |  -  |
 | **400** | Invalid query parameters |  -  |
 | **403** | Forbidden or sandbox_audit is not licensed |  -  |
@@ -214,6 +215,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Historical sandbox logs |  -  |
 | **400** | Invalid query parameters |  -  |
 | **403** | Forbidden |  -  |
@@ -306,6 +308,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Chart-ready sandbox runtime metric series |  -  |
 | **400** | Invalid query parameters |  -  |
 | **403** | Forbidden |  -  |
@@ -380,6 +383,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Sandbox runtime metric catalog |  -  |
 | **403** | Forbidden |  -  |
 

@@ -38,7 +38,7 @@ export interface SuccessSandboxListResponse {
      * @type {SuccessSandboxListResponseAllOfData}
      * @memberof SuccessSandboxListResponse
      */
-    data?: SuccessSandboxListResponseAllOfData;
+    data: SuccessSandboxListResponseAllOfData;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessSandboxListResponse {
  */
 export function instanceOfSuccessSandboxListResponse(value: object): value is SuccessSandboxListResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessSandboxListResponseFromJSONTyped(json: any, ignoreDiscrim
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SuccessSandboxListResponseAllOfDataFromJSON(json['data']),
+        'data': SuccessSandboxListResponseAllOfDataFromJSON(json['data']),
     };
 }
 

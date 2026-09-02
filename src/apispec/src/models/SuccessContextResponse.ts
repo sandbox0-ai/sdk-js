@@ -38,7 +38,7 @@ export interface SuccessContextResponse {
      * @type {ContextResponse}
      * @memberof SuccessContextResponse
      */
-    data?: ContextResponse;
+    data: ContextResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessContextResponse {
  */
 export function instanceOfSuccessContextResponse(value: object): value is SuccessContextResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessContextResponseFromJSONTyped(json: any, ignoreDiscriminat
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : ContextResponseFromJSON(json['data']),
+        'data': ContextResponseFromJSON(json['data']),
     };
 }
 

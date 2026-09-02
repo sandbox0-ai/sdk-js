@@ -32,11 +32,11 @@ export interface CreateTeamRequest {
      */
     slug?: string;
     /**
-     * 
+     * Required when creating a team through the global gateway.
      * @type {string}
      * @memberof CreateTeamRequest
      */
-    homeRegionId?: string | null;
+    homeRegionId: string;
 }
 
 /**
@@ -44,6 +44,7 @@ export interface CreateTeamRequest {
  */
 export function instanceOfCreateTeamRequest(value: object): value is CreateTeamRequest {
     if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('homeRegionId' in value) || value['homeRegionId'] === undefined) return false;
     return true;
 }
 
@@ -59,7 +60,7 @@ export function CreateTeamRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'name': json['name'],
         'slug': json['slug'] == null ? undefined : json['slug'],
-        'homeRegionId': json['home_region_id'] == null ? undefined : json['home_region_id'],
+        'homeRegionId': json['home_region_id'],
     };
 }
 

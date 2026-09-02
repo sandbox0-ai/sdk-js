@@ -38,7 +38,7 @@ export interface SuccessAPIKeyListResponse {
      * @type {SuccessAPIKeyListResponseAllOfData}
      * @memberof SuccessAPIKeyListResponse
      */
-    data?: SuccessAPIKeyListResponseAllOfData;
+    data: SuccessAPIKeyListResponseAllOfData;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessAPIKeyListResponse {
  */
 export function instanceOfSuccessAPIKeyListResponse(value: object): value is SuccessAPIKeyListResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessAPIKeyListResponseFromJSONTyped(json: any, ignoreDiscrimi
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SuccessAPIKeyListResponseAllOfDataFromJSON(json['data']),
+        'data': SuccessAPIKeyListResponseAllOfDataFromJSON(json['data']),
     };
 }
 

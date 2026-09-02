@@ -38,7 +38,7 @@ export interface SuccessIdentityListResponse {
      * @type {SuccessIdentityListResponseAllOfData}
      * @memberof SuccessIdentityListResponse
      */
-    data?: SuccessIdentityListResponseAllOfData;
+    data: SuccessIdentityListResponseAllOfData;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessIdentityListResponse {
  */
 export function instanceOfSuccessIdentityListResponse(value: object): value is SuccessIdentityListResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessIdentityListResponseFromJSONTyped(json: any, ignoreDiscri
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SuccessIdentityListResponseAllOfDataFromJSON(json['data']),
+        'data': SuccessIdentityListResponseAllOfDataFromJSON(json['data']),
     };
 }
 

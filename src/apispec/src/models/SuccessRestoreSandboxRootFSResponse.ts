@@ -38,7 +38,7 @@ export interface SuccessRestoreSandboxRootFSResponse {
      * @type {RestoreSandboxRootFSResponse}
      * @memberof SuccessRestoreSandboxRootFSResponse
      */
-    data?: RestoreSandboxRootFSResponse;
+    data: RestoreSandboxRootFSResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessRestoreSandboxRootFSResponse {
  */
 export function instanceOfSuccessRestoreSandboxRootFSResponse(value: object): value is SuccessRestoreSandboxRootFSResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessRestoreSandboxRootFSResponseFromJSONTyped(json: any, igno
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : RestoreSandboxRootFSResponseFromJSON(json['data']),
+        'data': RestoreSandboxRootFSResponseFromJSON(json['data']),
     };
 }
 

@@ -38,7 +38,7 @@ export interface SuccessSSHPublicKeyListResponse {
      * @type {SuccessSSHPublicKeyListResponseAllOfData}
      * @memberof SuccessSSHPublicKeyListResponse
      */
-    data?: SuccessSSHPublicKeyListResponseAllOfData;
+    data: SuccessSSHPublicKeyListResponseAllOfData;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessSSHPublicKeyListResponse {
  */
 export function instanceOfSuccessSSHPublicKeyListResponse(value: object): value is SuccessSSHPublicKeyListResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessSSHPublicKeyListResponseFromJSONTyped(json: any, ignoreDi
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SuccessSSHPublicKeyListResponseAllOfDataFromJSON(json['data']),
+        'data': SuccessSSHPublicKeyListResponseAllOfDataFromJSON(json['data']),
     };
 }
 

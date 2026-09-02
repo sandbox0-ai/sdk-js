@@ -38,7 +38,7 @@ export interface SuccessCreateAPIKeyResponse {
      * @type {CreateAPIKeyResponse}
      * @memberof SuccessCreateAPIKeyResponse
      */
-    data?: CreateAPIKeyResponse;
+    data: CreateAPIKeyResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessCreateAPIKeyResponse {
  */
 export function instanceOfSuccessCreateAPIKeyResponse(value: object): value is SuccessCreateAPIKeyResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessCreateAPIKeyResponseFromJSONTyped(json: any, ignoreDiscri
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : CreateAPIKeyResponseFromJSON(json['data']),
+        'data': CreateAPIKeyResponseFromJSON(json['data']),
     };
 }
 

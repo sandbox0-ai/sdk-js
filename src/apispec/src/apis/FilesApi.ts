@@ -16,6 +16,7 @@
 import * as runtime from '../runtime';
 import type {
   ApiV1SandboxesIdFilesGet200Response,
+  ErrorEnvelope,
   MoveFileRequest,
   SuccessCreatedResponse,
   SuccessDeletedResponse,
@@ -27,6 +28,8 @@ import type {
 import {
     ApiV1SandboxesIdFilesGet200ResponseFromJSON,
     ApiV1SandboxesIdFilesGet200ResponseToJSON,
+    ErrorEnvelopeFromJSON,
+    ErrorEnvelopeToJSON,
     MoveFileRequestFromJSON,
     MoveFileRequestToJSON,
     SuccessCreatedResponseFromJSON,

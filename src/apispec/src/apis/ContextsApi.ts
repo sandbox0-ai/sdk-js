@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ContextInputRequest,
   CreateContextRequest,
+  ErrorEnvelope,
   ResizeContextRequest,
   SignalContextRequest,
   SuccessContextExecResponse,
@@ -32,6 +33,8 @@ import {
     ContextInputRequestToJSON,
     CreateContextRequestFromJSON,
     CreateContextRequestToJSON,
+    ErrorEnvelopeFromJSON,
+    ErrorEnvelopeToJSON,
     ResizeContextRequestFromJSON,
     ResizeContextRequestToJSON,
     SignalContextRequestFromJSON,

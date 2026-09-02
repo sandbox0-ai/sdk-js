@@ -38,7 +38,7 @@ export interface SuccessTeamQuotaResponse {
      * @type {TeamQuota}
      * @memberof SuccessTeamQuotaResponse
      */
-    data?: TeamQuota;
+    data: TeamQuota;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessTeamQuotaResponse {
  */
 export function instanceOfSuccessTeamQuotaResponse(value: object): value is SuccessTeamQuotaResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessTeamQuotaResponseFromJSONTyped(json: any, ignoreDiscrimin
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : TeamQuotaFromJSON(json['data']),
+        'data': TeamQuotaFromJSON(json['data']),
     };
 }
 

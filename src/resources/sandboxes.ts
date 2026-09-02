@@ -42,6 +42,11 @@ export interface ClaimSandboxOptions {
   memory?: string;
 }
 
+export interface ForkSandboxOptions {
+  /** Stable retry key. Reusing it for another source is safely namespaced. */
+  idempotencyKey?: string;
+}
+
 const DEFAULT_LIFECYCLE_TIMEOUT_MS = 60_000;
 const DEFAULT_LIFECYCLE_POLL_INTERVAL_MS = 500;
 
@@ -340,10 +345,15 @@ export class Sandboxes {
     return ensureData(response, "rebase sandbox rootfs returned empty response");
   }
 
-  async fork(sandboxId: string, request?: ForkSandboxRequest): Promise<ForkSandboxResponse> {
+  async fork(
+    sandboxId: string,
+    request?: ForkSandboxRequest,
+    options: ForkSandboxOptions = {},
+  ): Promise<ForkSandboxResponse> {
     const response = await wrapApiCall(() =>
       this.client.apispec.sandboxRootfs.apiV1SandboxesIdForkPost({
         id: sandboxId,
+        idempotencyKey: options.idempotencyKey,
         forkSandboxRequest: request ?? {},
       }),
     );

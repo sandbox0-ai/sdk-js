@@ -38,7 +38,7 @@ export interface SuccessExecutionSessionListResponse {
      * @type {SuccessExecutionSessionListResponseAllOfData}
      * @memberof SuccessExecutionSessionListResponse
      */
-    data?: SuccessExecutionSessionListResponseAllOfData;
+    data: SuccessExecutionSessionListResponseAllOfData;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessExecutionSessionListResponse {
  */
 export function instanceOfSuccessExecutionSessionListResponse(value: object): value is SuccessExecutionSessionListResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessExecutionSessionListResponseFromJSONTyped(json: any, igno
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SuccessExecutionSessionListResponseAllOfDataFromJSON(json['data']),
+        'data': SuccessExecutionSessionListResponseAllOfDataFromJSON(json['data']),
     };
 }
 

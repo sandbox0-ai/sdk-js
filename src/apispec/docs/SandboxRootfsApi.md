@@ -78,6 +78,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Deleted |  -  |
 | **404** | Not found |  -  |
 
@@ -148,6 +149,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Sandbox rootfs snapshot |  -  |
 | **404** | Not found |  -  |
 
@@ -156,7 +158,7 @@ example().catch(console.error);
 
 ## apiV1SandboxesIdForkPost
 
-> SuccessForkSandboxResponse apiV1SandboxesIdForkPost(id, forkSandboxRequest)
+> SuccessForkSandboxResponse apiV1SandboxesIdForkPost(id, idempotencyKey, forkSandboxRequest)
 
 Fork sandbox rootfs
 
@@ -182,6 +184,8 @@ async function example() {
   const body = {
     // string
     id: id_example,
+    // string | Optional key for retrying the fork without creating a duplicate child sandbox. (optional)
+    idempotencyKey: idempotencyKey_example,
     // ForkSandboxRequest (optional)
     forkSandboxRequest: ...,
   } satisfies ApiV1SandboxesIdForkPostRequest;
@@ -204,6 +208,7 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | `string` |  | [Defaults to `undefined`] |
+| **idempotencyKey** | `string` | Optional key for retrying the fork without creating a duplicate child sandbox. | [Optional] [Defaults to `undefined`] |
 | **forkSandboxRequest** | [ForkSandboxRequest](ForkSandboxRequest.md) |  | [Optional] |
 
 ### Return type
@@ -223,6 +228,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **201** | Sandbox forked |  -  |
 | **409** | Source sandbox is not running or paused, another lifecycle operation is active, or rootfs state is unavailable |  -  |
 | **503** | Running-source checkpoint authority or its authenticated node channel is temporarily unavailable |  -  |
@@ -300,6 +306,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Paused sandbox rootfs rebased |  -  |
 | **400** | Invalid Base artifact digest or rollback window |  -  |
 | **404** | Sandbox or target Base artifact not found |  -  |
@@ -376,6 +383,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Sandbox rootfs restored |  -  |
 | **409** | Sandbox is not paused |  -  |
 | **404** | Not found |  -  |
@@ -447,6 +455,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Sandbox rootfs snapshot list |  -  |
 | **404** | Not found |  -  |
 
@@ -522,6 +531,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **201** | Sandbox rootfs snapshot created |  -  |
 | **409** | Source sandbox is not running or paused, another lifecycle operation is active, or rootfs state is unavailable |  -  |
 | **503** | Running-source snapshot requires ctld checkpoint support |  -  |

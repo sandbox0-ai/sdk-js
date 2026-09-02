@@ -38,7 +38,7 @@ export interface SuccessLoginResponse {
      * @type {LoginResponse}
      * @memberof SuccessLoginResponse
      */
-    data?: LoginResponse;
+    data: LoginResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessLoginResponse {
  */
 export function instanceOfSuccessLoginResponse(value: object): value is SuccessLoginResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessLoginResponseFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : LoginResponseFromJSON(json['data']),
+        'data': LoginResponseFromJSON(json['data']),
     };
 }
 

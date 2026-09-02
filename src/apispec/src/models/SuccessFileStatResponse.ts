@@ -38,7 +38,7 @@ export interface SuccessFileStatResponse {
      * @type {FileInfo}
      * @memberof SuccessFileStatResponse
      */
-    data?: FileInfo;
+    data: FileInfo;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessFileStatResponse {
  */
 export function instanceOfSuccessFileStatResponse(value: object): value is SuccessFileStatResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessFileStatResponseFromJSONTyped(json: any, ignoreDiscrimina
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : FileInfoFromJSON(json['data']),
+        'data': FileInfoFromJSON(json['data']),
     };
 }
 

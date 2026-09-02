@@ -38,7 +38,7 @@ export interface SuccessSandboxRootFSSnapshotListResponse {
      * @type {SandboxRootFSSnapshotList}
      * @memberof SuccessSandboxRootFSSnapshotListResponse
      */
-    data?: SandboxRootFSSnapshotList;
+    data: SandboxRootFSSnapshotList;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessSandboxRootFSSnapshotListResponse {
  */
 export function instanceOfSuccessSandboxRootFSSnapshotListResponse(value: object): value is SuccessSandboxRootFSSnapshotListResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessSandboxRootFSSnapshotListResponseFromJSONTyped(json: any,
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SandboxRootFSSnapshotListFromJSON(json['data']),
+        'data': SandboxRootFSSnapshotListFromJSON(json['data']),
     };
 }
 

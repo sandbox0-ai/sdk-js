@@ -32,7 +32,7 @@ export interface ClaimRequest {
      * @type {string}
      * @memberof ClaimRequest
      */
-    template?: string;
+    template: string;
     /**
      * Optional sandbox rootfs snapshot ID used to initialize the claimed sandbox writable root filesystem.
      * @type {string}
@@ -51,6 +51,7 @@ export interface ClaimRequest {
  * Check if a given object implements the ClaimRequest interface.
  */
 export function instanceOfClaimRequest(value: object): value is ClaimRequest {
+    if (!('template' in value) || value['template'] === undefined) return false;
     return true;
 }
 
@@ -64,7 +65,7 @@ export function ClaimRequestFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'template': json['template'] == null ? undefined : json['template'],
+        'template': json['template'],
         'snapshotId': json['snapshot_id'] == null ? undefined : json['snapshot_id'],
         'config': json['config'] == null ? undefined : SandboxConfigFromJSON(json['config']),
     };

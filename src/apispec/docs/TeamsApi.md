@@ -104,7 +104,7 @@ async function example() {
 
   const body = {
     // string
-    id: id_example,
+    id: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
   } satisfies TeamsIdDeleteRequest;
 
   try {
@@ -143,7 +143,9 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Team deleted |  -  |
+| **400** | Invalid request |  -  |
 | **403** | Forbidden |  -  |
 | **404** | Team not found |  -  |
 | **409** | Team has resources that must be removed before deletion |  -  |
@@ -176,7 +178,7 @@ async function example() {
 
   const body = {
     // string
-    id: id_example,
+    id: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
   } satisfies TeamsIdGetRequest;
 
   try {
@@ -215,7 +217,9 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Team |  -  |
+| **400** | Invalid request |  -  |
 | **403** | Not a member |  -  |
 | **404** | Team not found |  -  |
 
@@ -247,7 +251,7 @@ async function example() {
 
   const body = {
     // string
-    id: id_example,
+    id: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // string | Search by member email, display name, or user ID. (optional)
     query: query_example,
   } satisfies TeamsIdMembersGetRequest;
@@ -289,7 +293,9 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Team members |  -  |
+| **400** | Invalid request |  -  |
 | **403** | Not a member |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -320,7 +326,7 @@ async function example() {
 
   const body = {
     // string
-    id: id_example,
+    id: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // AddTeamMemberRequest
     addTeamMemberRequest: ...,
   } satisfies TeamsIdMembersPostRequest;
@@ -362,7 +368,9 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **201** | Member added |  -  |
+| **400** | Invalid request |  -  |
 | **403** | Forbidden |  -  |
 | **404** | User not found |  -  |
 | **409** | Already a member |  -  |
@@ -395,9 +403,9 @@ async function example() {
 
   const body = {
     // string
-    id: id_example,
+    id: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // string
-    userId: userId_example,
+    userId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
   } satisfies TeamsIdMembersUserIdDeleteRequest;
 
   try {
@@ -437,6 +445,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Member removed |  -  |
 | **400** | Invalid member removal |  -  |
 | **403** | Forbidden |  -  |
@@ -470,9 +479,9 @@ async function example() {
 
   const body = {
     // string
-    id: id_example,
+    id: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // string
-    userId: userId_example,
+    userId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // UpdateTeamMemberRequest
     updateTeamMemberRequest: ...,
   } satisfies TeamsIdMembersUserIdPutRequest;
@@ -515,6 +524,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Member updated |  -  |
 | **400** | Invalid member role change |  -  |
 | **403** | Forbidden |  -  |
@@ -550,7 +560,7 @@ async function example() {
 
   const body = {
     // string
-    id: id_example,
+    id: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // TransferTeamOwnerRequest
     transferTeamOwnerRequest: ...,
   } satisfies TeamsIdOwnerPutRequest;
@@ -592,6 +602,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Team owner transferred |  -  |
 | **400** | Invalid request |  -  |
 | **403** | Only the current owner can transfer ownership |  -  |
@@ -627,7 +638,7 @@ async function example() {
 
   const body = {
     // string
-    id: id_example,
+    id: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
     // UpdateTeamRequest
     updateTeamRequest: ...,
   } satisfies TeamsIdPutRequest;
@@ -669,6 +680,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Team updated |  -  |
 | **400** | Invalid request |  -  |
 | **403** | Forbidden |  -  |
@@ -742,6 +754,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **201** | Team created |  -  |
 | **400** | Invalid request |  -  |
 

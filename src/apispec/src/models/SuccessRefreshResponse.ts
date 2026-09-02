@@ -38,7 +38,7 @@ export interface SuccessRefreshResponse {
      * @type {RefreshResponse}
      * @memberof SuccessRefreshResponse
      */
-    data?: RefreshResponse;
+    data: RefreshResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessRefreshResponse {
  */
 export function instanceOfSuccessRefreshResponse(value: object): value is SuccessRefreshResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessRefreshResponseFromJSONTyped(json: any, ignoreDiscriminat
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : RefreshResponseFromJSON(json['data']),
+        'data': RefreshResponseFromJSON(json['data']),
     };
 }
 

@@ -38,7 +38,7 @@ export interface SuccessExecutionSessionEventPageResponse {
      * @type {ExecutionSessionEventPage}
      * @memberof SuccessExecutionSessionEventPageResponse
      */
-    data?: ExecutionSessionEventPage;
+    data: ExecutionSessionEventPage;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessExecutionSessionEventPageResponse {
  */
 export function instanceOfSuccessExecutionSessionEventPageResponse(value: object): value is SuccessExecutionSessionEventPageResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessExecutionSessionEventPageResponseFromJSONTyped(json: any,
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : ExecutionSessionEventPageFromJSON(json['data']),
+        'data': ExecutionSessionEventPageFromJSON(json['data']),
     };
 }
 

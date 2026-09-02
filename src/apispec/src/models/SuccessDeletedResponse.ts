@@ -38,7 +38,7 @@ export interface SuccessDeletedResponse {
      * @type {SuccessDeletedResponseAllOfData}
      * @memberof SuccessDeletedResponse
      */
-    data?: SuccessDeletedResponseAllOfData;
+    data: SuccessDeletedResponseAllOfData;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessDeletedResponse {
  */
 export function instanceOfSuccessDeletedResponse(value: object): value is SuccessDeletedResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessDeletedResponseFromJSONTyped(json: any, ignoreDiscriminat
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SuccessDeletedResponseAllOfDataFromJSON(json['data']),
+        'data': SuccessDeletedResponseAllOfDataFromJSON(json['data']),
     };
 }
 

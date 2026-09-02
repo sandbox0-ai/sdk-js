@@ -42,7 +42,7 @@ export interface RegisterRequest {
      * @type {string}
      * @memberof RegisterRequest
      */
-    homeRegionId?: string | null;
+    homeRegionId: string;
 }
 
 /**
@@ -52,6 +52,7 @@ export function instanceOfRegisterRequest(value: object): value is RegisterReque
     if (!('email' in value) || value['email'] === undefined) return false;
     if (!('password' in value) || value['password'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('homeRegionId' in value) || value['homeRegionId'] === undefined) return false;
     return true;
 }
 
@@ -68,7 +69,7 @@ export function RegisterRequestFromJSONTyped(json: any, ignoreDiscriminator: boo
         'email': json['email'],
         'password': json['password'],
         'name': json['name'],
-        'homeRegionId': json['home_region_id'] == null ? undefined : json['home_region_id'],
+        'homeRegionId': json['home_region_id'],
     };
 }
 

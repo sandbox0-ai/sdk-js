@@ -38,7 +38,7 @@ export interface SuccessUsageWindowsResponse {
      * @type {UsageWindowPage}
      * @memberof SuccessUsageWindowsResponse
      */
-    data?: UsageWindowPage;
+    data: UsageWindowPage;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessUsageWindowsResponse {
  */
 export function instanceOfSuccessUsageWindowsResponse(value: object): value is SuccessUsageWindowsResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessUsageWindowsResponseFromJSONTyped(json: any, ignoreDiscri
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : UsageWindowPageFromJSON(json['data']),
+        'data': UsageWindowPageFromJSON(json['data']),
     };
 }
 

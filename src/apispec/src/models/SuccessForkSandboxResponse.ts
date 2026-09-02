@@ -38,7 +38,7 @@ export interface SuccessForkSandboxResponse {
      * @type {ForkSandboxResponse}
      * @memberof SuccessForkSandboxResponse
      */
-    data?: ForkSandboxResponse;
+    data: ForkSandboxResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessForkSandboxResponse {
  */
 export function instanceOfSuccessForkSandboxResponse(value: object): value is SuccessForkSandboxResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessForkSandboxResponseFromJSONTyped(json: any, ignoreDiscrim
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : ForkSandboxResponseFromJSON(json['data']),
+        'data': ForkSandboxResponseFromJSON(json['data']),
     };
 }
 

@@ -38,7 +38,7 @@ export interface SuccessWrittenResponse {
      * @type {SuccessWrittenResponseAllOfData}
      * @memberof SuccessWrittenResponse
      */
-    data?: SuccessWrittenResponseAllOfData;
+    data: SuccessWrittenResponseAllOfData;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessWrittenResponse {
  */
 export function instanceOfSuccessWrittenResponse(value: object): value is SuccessWrittenResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessWrittenResponseFromJSONTyped(json: any, ignoreDiscriminat
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SuccessWrittenResponseAllOfDataFromJSON(json['data']),
+        'data': SuccessWrittenResponseAllOfDataFromJSON(json['data']),
     };
 }
 

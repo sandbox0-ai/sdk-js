@@ -38,7 +38,7 @@ export interface SuccessSandboxNetworkPolicyResponse {
      * @type {SandboxNetworkPolicy}
      * @memberof SuccessSandboxNetworkPolicyResponse
      */
-    data?: SandboxNetworkPolicy;
+    data: SandboxNetworkPolicy;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessSandboxNetworkPolicyResponse {
  */
 export function instanceOfSuccessSandboxNetworkPolicyResponse(value: object): value is SuccessSandboxNetworkPolicyResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessSandboxNetworkPolicyResponseFromJSONTyped(json: any, igno
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SandboxNetworkPolicyFromJSON(json['data']),
+        'data': SandboxNetworkPolicyFromJSON(json['data']),
     };
 }
 

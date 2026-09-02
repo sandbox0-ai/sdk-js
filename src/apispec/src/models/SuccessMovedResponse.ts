@@ -38,7 +38,7 @@ export interface SuccessMovedResponse {
      * @type {SuccessMovedResponseAllOfData}
      * @memberof SuccessMovedResponse
      */
-    data?: SuccessMovedResponseAllOfData;
+    data: SuccessMovedResponseAllOfData;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessMovedResponse {
  */
 export function instanceOfSuccessMovedResponse(value: object): value is SuccessMovedResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessMovedResponseFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SuccessMovedResponseAllOfDataFromJSON(json['data']),
+        'data': SuccessMovedResponseAllOfDataFromJSON(json['data']),
     };
 }
 

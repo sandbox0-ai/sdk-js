@@ -38,7 +38,7 @@ export interface SuccessSandboxRuntimeMetricsCatalogResponse {
      * @type {SandboxRuntimeMetricsCatalogResponse}
      * @memberof SuccessSandboxRuntimeMetricsCatalogResponse
      */
-    data?: SandboxRuntimeMetricsCatalogResponse;
+    data: SandboxRuntimeMetricsCatalogResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessSandboxRuntimeMetricsCatalogResponse {
  */
 export function instanceOfSuccessSandboxRuntimeMetricsCatalogResponse(value: object): value is SuccessSandboxRuntimeMetricsCatalogResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessSandboxRuntimeMetricsCatalogResponseFromJSONTyped(json: a
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SandboxRuntimeMetricsCatalogResponseFromJSON(json['data']),
+        'data': SandboxRuntimeMetricsCatalogResponseFromJSON(json['data']),
     };
 }
 

@@ -38,7 +38,7 @@ export interface SuccessAuthProvidersResponse {
      * @type {SuccessAuthProvidersResponseAllOfData}
      * @memberof SuccessAuthProvidersResponse
      */
-    data?: SuccessAuthProvidersResponseAllOfData;
+    data: SuccessAuthProvidersResponseAllOfData;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessAuthProvidersResponse {
  */
 export function instanceOfSuccessAuthProvidersResponse(value: object): value is SuccessAuthProvidersResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessAuthProvidersResponseFromJSONTyped(json: any, ignoreDiscr
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SuccessAuthProvidersResponseAllOfDataFromJSON(json['data']),
+        'data': SuccessAuthProvidersResponseAllOfDataFromJSON(json['data']),
     };
 }
 

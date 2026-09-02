@@ -38,7 +38,7 @@ export interface SuccessDeviceLoginStartResponse {
      * @type {DeviceLoginStartResponse}
      * @memberof SuccessDeviceLoginStartResponse
      */
-    data?: DeviceLoginStartResponse;
+    data: DeviceLoginStartResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessDeviceLoginStartResponse {
  */
 export function instanceOfSuccessDeviceLoginStartResponse(value: object): value is SuccessDeviceLoginStartResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessDeviceLoginStartResponseFromJSONTyped(json: any, ignoreDi
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : DeviceLoginStartResponseFromJSON(json['data']),
+        'data': DeviceLoginStartResponseFromJSON(json['data']),
     };
 }
 

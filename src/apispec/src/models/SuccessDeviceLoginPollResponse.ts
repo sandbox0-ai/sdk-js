@@ -38,7 +38,7 @@ export interface SuccessDeviceLoginPollResponse {
      * @type {DeviceLoginPollResponse}
      * @memberof SuccessDeviceLoginPollResponse
      */
-    data?: DeviceLoginPollResponse;
+    data: DeviceLoginPollResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessDeviceLoginPollResponse {
  */
 export function instanceOfSuccessDeviceLoginPollResponse(value: object): value is SuccessDeviceLoginPollResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessDeviceLoginPollResponseFromJSONTyped(json: any, ignoreDis
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : DeviceLoginPollResponseFromJSON(json['data']),
+        'data': DeviceLoginPollResponseFromJSON(json['data']),
     };
 }
 

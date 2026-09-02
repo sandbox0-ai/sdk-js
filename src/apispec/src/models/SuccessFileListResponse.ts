@@ -38,7 +38,7 @@ export interface SuccessFileListResponse {
      * @type {SuccessFileReadResponseAllOfDataOneOf}
      * @memberof SuccessFileListResponse
      */
-    data?: SuccessFileReadResponseAllOfDataOneOf;
+    data: SuccessFileReadResponseAllOfDataOneOf;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessFileListResponse {
  */
 export function instanceOfSuccessFileListResponse(value: object): value is SuccessFileListResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessFileListResponseFromJSONTyped(json: any, ignoreDiscrimina
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SuccessFileReadResponseAllOfDataOneOfFromJSON(json['data']),
+        'data': SuccessFileReadResponseAllOfDataOneOfFromJSON(json['data']),
     };
 }
 

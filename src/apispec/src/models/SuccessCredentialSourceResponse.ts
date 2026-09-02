@@ -38,7 +38,7 @@ export interface SuccessCredentialSourceResponse {
      * @type {CredentialSourceMetadata}
      * @memberof SuccessCredentialSourceResponse
      */
-    data?: CredentialSourceMetadata;
+    data: CredentialSourceMetadata;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessCredentialSourceResponse {
  */
 export function instanceOfSuccessCredentialSourceResponse(value: object): value is SuccessCredentialSourceResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessCredentialSourceResponseFromJSONTyped(json: any, ignoreDi
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : CredentialSourceMetadataFromJSON(json['data']),
+        'data': CredentialSourceMetadataFromJSON(json['data']),
     };
 }
 

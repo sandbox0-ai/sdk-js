@@ -38,7 +38,7 @@ export interface SuccessCredentialSourceListResponse {
      * @type {Array<CredentialSourceMetadata>}
      * @memberof SuccessCredentialSourceListResponse
      */
-    data?: Array<CredentialSourceMetadata>;
+    data: Array<CredentialSourceMetadata>;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessCredentialSourceListResponse {
  */
 export function instanceOfSuccessCredentialSourceListResponse(value: object): value is SuccessCredentialSourceListResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessCredentialSourceListResponseFromJSONTyped(json: any, igno
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : ((json['data'] as Array<any>).map(CredentialSourceMetadataFromJSON)),
+        'data': ((json['data'] as Array<any>).map(CredentialSourceMetadataFromJSON)),
     };
 }
 
@@ -76,7 +77,7 @@ export function SuccessCredentialSourceListResponseToJSONTyped(value?: SuccessCr
     return {
         
         'success': value['success'],
-        'data': value['data'] == null ? undefined : ((value['data'] as Array<any>).map(CredentialSourceMetadataToJSON)),
+        'data': ((value['data'] as Array<any>).map(CredentialSourceMetadataToJSON)),
     };
 }
 

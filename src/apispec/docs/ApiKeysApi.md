@@ -202,6 +202,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | API key deactivated |  -  |
 | **403** | Forbidden |  -  |
 | **404** | Not found |  -  |
@@ -273,6 +274,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | API key deleted |  -  |
 | **403** | Forbidden |  -  |
 | **404** | Not found |  -  |
@@ -344,6 +346,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **201** | API key created |  -  |
 | **400** | Invalid request |  -  |
 | **403** | Requested roles exceed caller permissions, or platform scope requires a system admin user session |  -  |

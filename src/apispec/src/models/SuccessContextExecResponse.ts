@@ -38,7 +38,7 @@ export interface SuccessContextExecResponse {
      * @type {ContextExecResponse}
      * @memberof SuccessContextExecResponse
      */
-    data?: ContextExecResponse;
+    data: ContextExecResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessContextExecResponse {
  */
 export function instanceOfSuccessContextExecResponse(value: object): value is SuccessContextExecResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessContextExecResponseFromJSONTyped(json: any, ignoreDiscrim
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : ContextExecResponseFromJSON(json['data']),
+        'data': ContextExecResponseFromJSON(json['data']),
     };
 }
 

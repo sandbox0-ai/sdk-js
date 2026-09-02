@@ -38,7 +38,7 @@ export interface SuccessPauseSandboxResponse {
      * @type {PauseSandboxResponse}
      * @memberof SuccessPauseSandboxResponse
      */
-    data?: PauseSandboxResponse;
+    data: PauseSandboxResponse;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessPauseSandboxResponse {
  */
 export function instanceOfSuccessPauseSandboxResponse(value: object): value is SuccessPauseSandboxResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessPauseSandboxResponseFromJSONTyped(json: any, ignoreDiscri
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : PauseSandboxResponseFromJSON(json['data']),
+        'data': PauseSandboxResponseFromJSON(json['data']),
     };
 }
 

@@ -38,7 +38,7 @@ export interface SuccessAcceptedResponse {
      * @type {SuccessAcceptedResponseAllOfData}
      * @memberof SuccessAcceptedResponse
      */
-    data?: SuccessAcceptedResponseAllOfData;
+    data: SuccessAcceptedResponseAllOfData;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessAcceptedResponse {
  */
 export function instanceOfSuccessAcceptedResponse(value: object): value is SuccessAcceptedResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessAcceptedResponseFromJSONTyped(json: any, ignoreDiscrimina
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SuccessAcceptedResponseAllOfDataFromJSON(json['data']),
+        'data': SuccessAcceptedResponseAllOfDataFromJSON(json['data']),
     };
 }
 

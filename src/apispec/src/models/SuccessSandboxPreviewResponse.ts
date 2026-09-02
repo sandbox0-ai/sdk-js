@@ -38,7 +38,7 @@ export interface SuccessSandboxPreviewResponse {
      * @type {SandboxPreviewGrant}
      * @memberof SuccessSandboxPreviewResponse
      */
-    data?: SandboxPreviewGrant;
+    data: SandboxPreviewGrant;
 }
 
 /**
@@ -46,6 +46,7 @@ export interface SuccessSandboxPreviewResponse {
  */
 export function instanceOfSuccessSandboxPreviewResponse(value: object): value is SuccessSandboxPreviewResponse {
     if (!('success' in value) || value['success'] === undefined) return false;
+    if (!('data' in value) || value['data'] === undefined) return false;
     return true;
 }
 
@@ -60,7 +61,7 @@ export function SuccessSandboxPreviewResponseFromJSONTyped(json: any, ignoreDisc
     return {
         
         'success': json['success'],
-        'data': json['data'] == null ? undefined : SandboxPreviewGrantFromJSON(json['data']),
+        'data': SandboxPreviewGrantFromJSON(json['data']),
     };
 }
 

@@ -289,6 +289,7 @@ No authorization required
 | **200** | Tokens issued |  -  |
 | **400** | Invalid request |  -  |
 | **401** | OIDC authorization failed |  -  |
+| **403** | SSO is not licensed for this deployment |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -359,6 +360,7 @@ No authorization required
 | **200** | Device login is pending or completed |  -  |
 | **400** | Invalid request |  -  |
 | **401** | Device login expired, declined, or invalid |  -  |
+| **403** | SSO is not licensed for this deployment |  -  |
 | **404** | Provider or device login session not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -425,6 +427,7 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Device login started |  -  |
+| **403** | SSO is not licensed for this deployment |  -  |
 | **404** | Provider not found or device login unsupported |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -498,6 +501,7 @@ No authorization required
 |-------------|-------------|------------------|
 | **302** | Redirect to OIDC provider |  -  |
 | **400** | Invalid request |  -  |
+| **403** | SSO is not licensed for this deployment |  -  |
 | **404** | Provider not found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)

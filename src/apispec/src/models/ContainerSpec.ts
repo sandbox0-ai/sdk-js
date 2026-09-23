@@ -53,7 +53,7 @@ export interface ContainerSpec {
      */
     resources: ResourceQuota;
     /**
-     * New templates and sandboxes use privileged. Standard remains valid for existing sandbox records and resume. Privileged capabilities remain confined by runsc and do not expose host devices.
+     * Sandboxes use privileged capabilities inside the gVisor guest. This does not bypass runsc or expose host devices.
      * @type {string}
      * @memberof ContainerSpec
      */
@@ -65,7 +65,6 @@ export interface ContainerSpec {
  * @export
  */
 export const ContainerSpecSecurityClassEnum = {
-    Standard: 'standard',
     Privileged: 'privileged'
 } as const;
 export type ContainerSpecSecurityClassEnum = typeof ContainerSpecSecurityClassEnum[keyof typeof ContainerSpecSecurityClassEnum];

@@ -163,6 +163,7 @@ export * from './SandboxAuditProducer';
 export * from './SandboxAuditRequest';
 export * from './SandboxAuditResource';
 export * from './SandboxConfig';
+export * from './SandboxExecutionStateRequest';
 export * from './SandboxFunction';
 export * from './SandboxFunctionSource';
 export * from './SandboxLifecycleStatus';

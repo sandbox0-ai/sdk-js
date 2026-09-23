@@ -181,8 +181,8 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes. 
-     * Fork sandbox rootfs
+     * Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes. Set memory=true to retain execution state as well. Memory forks require a stable Idempotency-Key. While capture or parent restoration is pending, retry 503 responses with that same key and request. A successful response always contains a committed paused child.
+     * Fork a sandbox
      */
     async apiV1SandboxesIdForkPostRaw(requestParameters: ApiV1SandboxesIdForkPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessForkSandboxResponse>> {
         if (requestParameters['id'] == null) {
@@ -226,8 +226,8 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes. 
-     * Fork sandbox rootfs
+     * Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes. Set memory=true to retain execution state as well. Memory forks require a stable Idempotency-Key. While capture or parent restoration is pending, retry 503 responses with that same key and request. A successful response always contains a committed paused child.
+     * Fork a sandbox
      */
     async apiV1SandboxesIdForkPost(requestParameters: ApiV1SandboxesIdForkPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessForkSandboxResponse> {
         const response = await this.apiV1SandboxesIdForkPostRaw(requestParameters, initOverrides);

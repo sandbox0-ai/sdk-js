@@ -20,13 +20,14 @@ import type {
   SuccessDeletedResponse,
 } from "../apispec/src/models/index";
 import type {
+  SandboxExecutionStateOptions,
   SandboxLifecyclePredicate,
   SandboxLifecycleWaitOptions,
   SandboxListOptions,
   SandboxListResult,
 } from "../models";
 import { ensureData, ensureModel } from "../response";
-import { SandboxWaitTimeoutError, wrapApiCall } from "../errors";
+import { SandboxWaitTimeoutError, SandboxLifecycleFailedError, wrapApiCall } from "../errors";
 import type { Client } from "../client";
 import { Sandbox as SandboxHandle } from "../sandbox";
 import { SandboxSession } from "../sessions";
@@ -215,9 +216,12 @@ export class Sandboxes {
     return ensureData(response, "get sandbox status returned empty response");
   }
 
-  async pause(sandboxId: string): Promise<PauseSandboxResponse> {
+  async pause(sandboxId: string, options?: SandboxExecutionStateOptions): Promise<PauseSandboxResponse> {
     const response = await wrapApiCall(() =>
-      this.client.apispec.sandboxes.apiV1SandboxesIdPausePost({ id: sandboxId }),
+      this.client.apispec.sandboxes.apiV1SandboxesIdPausePost({
+        id: sandboxId,
+        sandboxExecutionStateRequest: options === undefined ? undefined : { memory: options.memory ?? false },
+      }),
     );
     return ensureData(response, "pause sandbox returned empty response");
   }
@@ -228,17 +232,25 @@ export class Sandboxes {
     options?: SandboxLifecycleWaitOptions,
   ): Promise<Sandbox> {
     throwIfAborted(options?.signal, "sandbox lifecycle wait was aborted");
-    await this.pause(sandboxId);
-    return this.waitForLifecycle(
+    await this.pause(sandboxId, options);
+    const sandbox = await this.waitForLifecycle(
       sandboxId,
-      (sandbox) => sandbox.status === "paused" && sandbox.paused,
+      (sandbox) => (sandbox.status === "paused" && sandbox.paused) ||
+        (options?.memory === true && sandbox.status === "failed"),
       options,
     );
+    if (options?.memory && sandbox.status === "failed") {
+      throw new SandboxLifecycleFailedError(sandboxId, "memory pause", sandbox);
+    }
+    return sandbox;
   }
 
-  async resume(sandboxId: string): Promise<ResumeSandboxResponse> {
+  async resume(sandboxId: string, options?: SandboxExecutionStateOptions): Promise<ResumeSandboxResponse> {
     const response = await wrapApiCall(() =>
-      this.client.apispec.sandboxes.apiV1SandboxesIdResumePost({ id: sandboxId }),
+      this.client.apispec.sandboxes.apiV1SandboxesIdResumePost({
+        id: sandboxId,
+        sandboxExecutionStateRequest: options === undefined ? undefined : { memory: options.memory ?? false },
+      }),
     );
     return ensureData(response, "resume sandbox returned empty response");
   }
@@ -251,20 +263,24 @@ export class Sandboxes {
     throwIfAborted(options?.signal, "sandbox lifecycle wait was aborted");
     const before = await this.getWithSignal(sandboxId, options?.signal);
     throwIfAborted(options?.signal, "sandbox lifecycle wait was aborted");
-    await this.resume(sandboxId);
+    await this.resume(sandboxId, options);
 
     const minimumRuntimeGeneration = before.paused || before.status === "paused"
       ? before.runtimeGeneration + 1
       : before.runtimeGeneration;
-    return this.waitForLifecycle(
+    const sandbox = await this.waitForLifecycle(
       sandboxId,
       (sandbox) => (
-        sandbox.status === "running"
-        && !sandbox.paused
-        && sandbox.runtimeGeneration >= minimumRuntimeGeneration
+        sandbox.runtimeGeneration >= minimumRuntimeGeneration
+        && ((sandbox.status === "running" && !sandbox.paused)
+          || (options?.memory === true && sandbox.status === "failed"))
       ),
       options,
     );
+    if (options?.memory && sandbox.status === "failed") {
+      throw new SandboxLifecycleFailedError(sandboxId, "memory resume", sandbox);
+    }
+    return sandbox;
   }
 
   async refresh(
@@ -350,6 +366,9 @@ export class Sandboxes {
     request?: ForkSandboxRequest,
     options: ForkSandboxOptions = {},
   ): Promise<ForkSandboxResponse> {
+    if (request?.memory && (!options.idempotencyKey?.trim() || new TextEncoder().encode(options.idempotencyKey).length > 255)) {
+      throw new Error("memory fork requires a stable idempotencyKey of at most 255 bytes");
+    }
     const response = await wrapApiCall(() =>
       this.client.apispec.sandboxRootfs.apiV1SandboxesIdForkPost({
         id: sandboxId,

@@ -1,25 +1,22 @@
 
-# ForkSandboxRequest
+# SandboxExecutionStateRequest
 
-Optional fork overrides. Omit config to inherit the source sandbox configuration. The source sandbox may be running or paused; running sources are checkpointed before the paused child sandbox is created. 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
 `memory` | boolean
-`config` | [ForkSandboxConfig](ForkSandboxConfig.md)
 
 ## Example
 
 ```typescript
-import type { ForkSandboxRequest } from 'sandbox0'
+import type { SandboxExecutionStateRequest } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
   "memory": null,
-  "config": null,
-} satisfies ForkSandboxRequest
+} satisfies SandboxExecutionStateRequest
 
 console.log(example)
 
@@ -28,7 +25,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as ForkSandboxRequest
+const exampleParsed = JSON.parse(exampleJSON) as SandboxExecutionStateRequest
 console.log(exampleParsed)
 ```
 

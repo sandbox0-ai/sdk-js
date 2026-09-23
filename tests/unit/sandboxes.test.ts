@@ -339,13 +339,15 @@ describe("Sandboxes resource", () => {
       get: async () => ({
         data: pauseObservations[Math.min(pauseGetCalls++, pauseObservations.length - 1)],
       }),
-      pause: async () => {
+      pause: async (request: unknown) => {
+        assert.deepStrictEqual(request, {id: "sb_1", sandboxExecutionStateRequest: {memory: true}});
         pauseCalls += 1;
         return { data: { sandboxId: "sb_1", paused: false, status: "running" } };
       },
     }));
 
     const paused = await pauseSandboxes.pauseAndWait("sb_1", {
+      memory: true,
       timeoutMs: 100,
       pollIntervalMs: 1,
     });
@@ -366,13 +368,15 @@ describe("Sandboxes resource", () => {
           resumeObservations.length - 1,
         )],
       }),
-      resume: async () => {
+      resume: async (request: unknown) => {
+        assert.deepStrictEqual(request, {id: "sb_1", sandboxExecutionStateRequest: {memory: true}});
         resumeCalls += 1;
         return { data: { sandboxId: "sb_1", resumed: true } };
       },
     }));
 
     const resumed = await resumeSandboxes.resumeAndWait("sb_1", {
+      memory: true,
       timeoutMs: 100,
       pollIntervalMs: 1,
     });
@@ -405,8 +409,8 @@ function sandboxDetails(overrides: {
 
 function sandboxClient(handlers: {
   get: () => Promise<unknown>;
-  pause?: () => Promise<unknown>;
-  resume?: () => Promise<unknown>;
+  pause?: (request: unknown) => Promise<unknown>;
+  resume?: (request: unknown) => Promise<unknown>;
 }) {
   return {
     apispec: {

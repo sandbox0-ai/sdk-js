@@ -49,6 +49,13 @@ export class SandboxWaitTimeoutError extends Error {
   }
 }
 
+export class SandboxLifecycleFailedError extends Error {
+  constructor(readonly sandboxId: string, readonly action: string, readonly lastSandbox: Sandbox) {
+    super(`sandbox ${sandboxId} ${action} reached failed status`);
+    this.name = "SandboxLifecycleFailedError";
+  }
+}
+
 export class TemplateWaitTimeoutError extends Error {
   readonly templateId: string;
   readonly timeoutMs: number;

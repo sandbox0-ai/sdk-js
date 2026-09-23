@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ClaimRequest,
   ErrorEnvelope,
+  SandboxExecutionStateRequest,
   SandboxLifecycleStatus,
   SandboxNetworkPolicy,
   SandboxPreviewCreateRequest,
@@ -41,6 +42,8 @@ import {
     ClaimRequestToJSON,
     ErrorEnvelopeFromJSON,
     ErrorEnvelopeToJSON,
+    SandboxExecutionStateRequestFromJSON,
+    SandboxExecutionStateRequestToJSON,
     SandboxLifecycleStatusFromJSON,
     SandboxLifecycleStatusToJSON,
     SandboxNetworkPolicyFromJSON,
@@ -106,6 +109,7 @@ export interface ApiV1SandboxesIdNetworkPutRequest {
 
 export interface ApiV1SandboxesIdPausePostRequest {
     id: string;
+    sandboxExecutionStateRequest?: SandboxExecutionStateRequest;
 }
 
 export interface ApiV1SandboxesIdPreviewsPostRequest {
@@ -136,6 +140,7 @@ export interface ApiV1SandboxesIdRefreshPostRequest {
 
 export interface ApiV1SandboxesIdResumePostRequest {
     id: string;
+    sandboxExecutionStateRequest?: SandboxExecutionStateRequest;
 }
 
 export interface ApiV1SandboxesIdServicesGetRequest {
@@ -410,6 +415,7 @@ export class SandboxesApi extends runtime.BaseAPI {
     }
 
     /**
+     * The default checkpoints only the writable RootFS. Set memory=true to also retain process execution state before releasing the runtime. A 202 response means checkpoint publication and cleanup are still pending.
      * Pause a sandbox
      */
     async apiV1SandboxesIdPausePostRaw(requestParameters: ApiV1SandboxesIdPausePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessPauseSandboxResponse>> {
@@ -423,6 +429,8 @@ export class SandboxesApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -441,12 +449,14 @@ export class SandboxesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: SandboxExecutionStateRequestToJSON(requestParameters['sandboxExecutionStateRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SuccessPauseSandboxResponseFromJSON(jsonValue));
     }
 
     /**
+     * The default checkpoints only the writable RootFS. Set memory=true to also retain process execution state before releasing the runtime. A 202 response means checkpoint publication and cleanup are still pending.
      * Pause a sandbox
      */
     async apiV1SandboxesIdPausePost(requestParameters: ApiV1SandboxesIdPausePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessPauseSandboxResponse> {
@@ -731,6 +741,7 @@ export class SandboxesApi extends runtime.BaseAPI {
     }
 
     /**
+     * The default starts a new process runtime from the committed RootFS. Set memory=true to restore a retained execution image. Missing or incompatible memory is an error; it never falls back to a filesystem-only resume. A disconnected request may continue through background recovery.
      * Resume a sandbox
      */
     async apiV1SandboxesIdResumePostRaw(requestParameters: ApiV1SandboxesIdResumePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessResumeSandboxResponse>> {
@@ -744,6 +755,8 @@ export class SandboxesApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -762,12 +775,14 @@ export class SandboxesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: SandboxExecutionStateRequestToJSON(requestParameters['sandboxExecutionStateRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SuccessResumeSandboxResponseFromJSON(jsonValue));
     }
 
     /**
+     * The default starts a new process runtime from the committed RootFS. Set memory=true to restore a retained execution image. Missing or incompatible memory is an error; it never falls back to a filesystem-only resume. A disconnected request may continue through background recovery.
      * Resume a sandbox
      */
     async apiV1SandboxesIdResumePost(requestParameters: ApiV1SandboxesIdResumePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessResumeSandboxResponse> {

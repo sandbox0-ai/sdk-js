@@ -105,7 +105,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 *RegistryApi* | [**apiV1RegistryCredentialsPost**](docs/RegistryApi.md#apiv1registrycredentialspost) | **POST** /api/v1/registry/credentials | Get registry credentials for uploads
 *SandboxRootfsApi* | [**apiV1SandboxRootfsSnapshotsSnapshotIdDelete**](docs/SandboxRootfsApi.md#apiv1sandboxrootfssnapshotssnapshotiddelete) | **DELETE** /api/v1/sandbox-rootfs-snapshots/{snapshot_id} | Delete sandbox rootfs snapshot
 *SandboxRootfsApi* | [**apiV1SandboxRootfsSnapshotsSnapshotIdGet**](docs/SandboxRootfsApi.md#apiv1sandboxrootfssnapshotssnapshotidget) | **GET** /api/v1/sandbox-rootfs-snapshots/{snapshot_id} | Get sandbox rootfs snapshot
-*SandboxRootfsApi* | [**apiV1SandboxesIdForkPost**](docs/SandboxRootfsApi.md#apiv1sandboxesidforkpost) | **POST** /api/v1/sandboxes/{id}/fork | Fork sandbox rootfs
+*SandboxRootfsApi* | [**apiV1SandboxesIdForkPost**](docs/SandboxRootfsApi.md#apiv1sandboxesidforkpost) | **POST** /api/v1/sandboxes/{id}/fork | Fork a sandbox
 *SandboxRootfsApi* | [**apiV1SandboxesIdRootfsRebasePut**](docs/SandboxRootfsApi.md#apiv1sandboxesidrootfsrebaseput) | **PUT** /api/v1/sandboxes/{id}/rootfs/rebase | Rebase a paused sandbox rootfs
 *SandboxRootfsApi* | [**apiV1SandboxesIdRootfsRestorePost**](docs/SandboxRootfsApi.md#apiv1sandboxesidrootfsrestorepost) | **POST** /api/v1/sandboxes/{id}/rootfs/restore | Restore sandbox rootfs from snapshot
 *SandboxRootfsApi* | [**apiV1SandboxesIdSnapshotsGet**](docs/SandboxRootfsApi.md#apiv1sandboxesidsnapshotsget) | **GET** /api/v1/sandboxes/{id}/snapshots | List sandbox rootfs snapshots
@@ -330,6 +330,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxAuditRequest](docs/SandboxAuditRequest.md)
 - [SandboxAuditResource](docs/SandboxAuditResource.md)
 - [SandboxConfig](docs/SandboxConfig.md)
+- [SandboxExecutionStateRequest](docs/SandboxExecutionStateRequest.md)
 - [SandboxFunction](docs/SandboxFunction.md)
 - [SandboxFunctionSource](docs/SandboxFunctionSource.md)
 - [SandboxLifecycleStatus](docs/SandboxLifecycleStatus.md)

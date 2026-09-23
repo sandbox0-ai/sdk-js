@@ -175,6 +175,7 @@ docs/SandboxAuditProducer.md
 docs/SandboxAuditRequest.md
 docs/SandboxAuditResource.md
 docs/SandboxConfig.md
+docs/SandboxExecutionStateRequest.md
 docs/SandboxFunction.md
 docs/SandboxFunctionSource.md
 docs/SandboxLifecycleStatus.md
@@ -527,6 +528,7 @@ src/models/SandboxAuditProducer.ts
 src/models/SandboxAuditRequest.ts
 src/models/SandboxAuditResource.ts
 src/models/SandboxConfig.ts
+src/models/SandboxExecutionStateRequest.ts
 src/models/SandboxFunction.ts
 src/models/SandboxFunctionSource.ts
 src/models/SandboxLifecycleStatus.ts

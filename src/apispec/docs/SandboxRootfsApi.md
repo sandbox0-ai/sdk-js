@@ -6,7 +6,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 |------------- | ------------- | -------------|
 | [**apiV1SandboxRootfsSnapshotsSnapshotIdDelete**](SandboxRootfsApi.md#apiv1sandboxrootfssnapshotssnapshotiddelete) | **DELETE** /api/v1/sandbox-rootfs-snapshots/{snapshot_id} | Delete sandbox rootfs snapshot |
 | [**apiV1SandboxRootfsSnapshotsSnapshotIdGet**](SandboxRootfsApi.md#apiv1sandboxrootfssnapshotssnapshotidget) | **GET** /api/v1/sandbox-rootfs-snapshots/{snapshot_id} | Get sandbox rootfs snapshot |
-| [**apiV1SandboxesIdForkPost**](SandboxRootfsApi.md#apiv1sandboxesidforkpost) | **POST** /api/v1/sandboxes/{id}/fork | Fork sandbox rootfs |
+| [**apiV1SandboxesIdForkPost**](SandboxRootfsApi.md#apiv1sandboxesidforkpost) | **POST** /api/v1/sandboxes/{id}/fork | Fork a sandbox |
 | [**apiV1SandboxesIdRootfsRebasePut**](SandboxRootfsApi.md#apiv1sandboxesidrootfsrebaseput) | **PUT** /api/v1/sandboxes/{id}/rootfs/rebase | Rebase a paused sandbox rootfs |
 | [**apiV1SandboxesIdRootfsRestorePost**](SandboxRootfsApi.md#apiv1sandboxesidrootfsrestorepost) | **POST** /api/v1/sandboxes/{id}/rootfs/restore | Restore sandbox rootfs from snapshot |
 | [**apiV1SandboxesIdSnapshotsGet**](SandboxRootfsApi.md#apiv1sandboxesidsnapshotsget) | **GET** /api/v1/sandboxes/{id}/snapshots | List sandbox rootfs snapshots |
@@ -160,9 +160,9 @@ example().catch(console.error);
 
 > SuccessForkSandboxResponse apiV1SandboxesIdForkPost(id, idempotencyKey, forkSandboxRequest)
 
-Fork sandbox rootfs
+Fork a sandbox
 
-Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes. 
+Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes. Set memory&#x3D;true to retain execution state as well. Memory forks require a stable Idempotency-Key. While capture or parent restoration is pending, retry 503 responses with that same key and request. A successful response always contains a committed paused child.
 
 ### Example
 
@@ -184,7 +184,7 @@ async function example() {
   const body = {
     // string
     id: id_example,
-    // string | Optional key for retrying the fork without creating a duplicate child sandbox. (optional)
+    // string | Key for retrying the fork without creating a duplicate child sandbox. Required when memory=true; reuse it across pending responses and transport failures. (optional)
     idempotencyKey: idempotencyKey_example,
     // ForkSandboxRequest (optional)
     forkSandboxRequest: ...,
@@ -208,7 +208,7 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | `string` |  | [Defaults to `undefined`] |
-| **idempotencyKey** | `string` | Optional key for retrying the fork without creating a duplicate child sandbox. | [Optional] [Defaults to `undefined`] |
+| **idempotencyKey** | `string` | Key for retrying the fork without creating a duplicate child sandbox. Required when memory&#x3D;true; reuse it across pending responses and transport failures. | [Optional] [Defaults to `undefined`] |
 | **forkSandboxRequest** | [ForkSandboxRequest](ForkSandboxRequest.md) |  | [Optional] |
 
 ### Return type
@@ -228,6 +228,7 @@ example().catch(console.error);
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **400** | Invalid request |  -  |
 | **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **201** | Sandbox forked |  -  |
 | **409** | Source sandbox is not running or paused, another lifecycle operation is active, or rootfs state is unavailable |  -  |

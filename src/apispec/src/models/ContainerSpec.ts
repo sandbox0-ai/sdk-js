@@ -53,7 +53,7 @@ export interface ContainerSpec {
      */
     resources: ResourceQuota;
     /**
-     * Immutable gVisor guest privilege class. Privileged capabilities remain confined by runsc and do not expose host devices.
+     * New templates and sandboxes use privileged. Standard remains valid for existing sandbox records and resume. Privileged capabilities remain confined by runsc and do not expose host devices.
      * @type {string}
      * @memberof ContainerSpec
      */

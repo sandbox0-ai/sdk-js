@@ -19,6 +19,7 @@ export { Sandbox } from "./sandbox";
 export {
   APIError,
   SandboxWaitTimeoutError,
+  SandboxLifecycleFailedError,
   TemplateCreationFailedError,
   TemplateWaitTimeoutError,
 } from "./errors";

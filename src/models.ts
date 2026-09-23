@@ -201,7 +201,12 @@ export interface SandboxListResult {
   hasMore: boolean;
 }
 
-export interface SandboxLifecycleWaitOptions {
+export interface SandboxExecutionStateOptions {
+  /** Preserve or restore process memory. Defaults to filesystem-only behavior. */
+  memory?: boolean;
+}
+
+export interface SandboxLifecycleWaitOptions extends SandboxExecutionStateOptions {
   /** Maximum polling duration. Defaults to 60 seconds. */
   timeoutMs?: number;
   /** Delay between observations. Defaults to 500 milliseconds. */

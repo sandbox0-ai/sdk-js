@@ -398,9 +398,11 @@ example().catch(console.error);
 
 ## apiV1SandboxesIdPausePost
 
-> SuccessPauseSandboxResponse apiV1SandboxesIdPausePost(id)
+> SuccessPauseSandboxResponse apiV1SandboxesIdPausePost(id, sandboxExecutionStateRequest)
 
 Pause a sandbox
+
+The default checkpoints only the writable RootFS. Set memory&#x3D;true to also retain process execution state before releasing the runtime. A 202 response means checkpoint publication and cleanup are still pending.
 
 ### Example
 
@@ -422,6 +424,8 @@ async function example() {
   const body = {
     // string
     id: id_example,
+    // SandboxExecutionStateRequest (optional)
+    sandboxExecutionStateRequest: ...,
   } satisfies ApiV1SandboxesIdPausePostRequest;
 
   try {
@@ -442,6 +446,7 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | `string` |  | [Defaults to `undefined`] |
+| **sandboxExecutionStateRequest** | [SandboxExecutionStateRequest](SandboxExecutionStateRequest.md) |  | [Optional] |
 
 ### Return type
 
@@ -453,13 +458,14 @@ example().catch(console.error);
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: `application/json`
 - **Accept**: `application/json`
 
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **400** | Invalid request |  -  |
 | **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Sandbox paused |  -  |
 | **202** | Sandbox pause accepted and checkpoint cleanup is still in progress |  -  |
@@ -856,9 +862,11 @@ example().catch(console.error);
 
 ## apiV1SandboxesIdResumePost
 
-> SuccessResumeSandboxResponse apiV1SandboxesIdResumePost(id)
+> SuccessResumeSandboxResponse apiV1SandboxesIdResumePost(id, sandboxExecutionStateRequest)
 
 Resume a sandbox
+
+The default starts a new process runtime from the committed RootFS. Set memory&#x3D;true to restore a retained execution image. Missing or incompatible memory is an error; it never falls back to a filesystem-only resume. A disconnected request may continue through background recovery.
 
 ### Example
 
@@ -880,6 +888,8 @@ async function example() {
   const body = {
     // string
     id: id_example,
+    // SandboxExecutionStateRequest (optional)
+    sandboxExecutionStateRequest: ...,
   } satisfies ApiV1SandboxesIdResumePostRequest;
 
   try {
@@ -900,6 +910,7 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | `string` |  | [Defaults to `undefined`] |
+| **sandboxExecutionStateRequest** | [SandboxExecutionStateRequest](SandboxExecutionStateRequest.md) |  | [Optional] |
 
 ### Return type
 
@@ -911,13 +922,14 @@ example().catch(console.error);
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: `application/json`
 - **Accept**: `application/json`
 
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **400** | Invalid request |  -  |
 | **401** | Authentication is required or the bearer credentials are invalid |  -  |
 | **200** | Sandbox resumed |  -  |
 | **409** | Sandbox lifecycle state conflicts with this operation |  -  |

@@ -31,6 +31,12 @@ import {
  */
 export interface ForkSandboxRequest {
     /**
+     * Preserve process execution state together with RootFS. Requires Idempotency-Key. A paused source must have a retained memory image; a running source is captured and resumed before completion. Unsupported or unavailable memory never falls back to filesystem-only.
+     * @type {boolean}
+     * @memberof ForkSandboxRequest
+     */
+    memory?: boolean;
+    /**
      * 
      * @type {ForkSandboxConfig}
      * @memberof ForkSandboxRequest
@@ -55,6 +61,7 @@ export function ForkSandboxRequestFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
+        'memory': json['memory'] == null ? undefined : json['memory'],
         'config': json['config'] == null ? undefined : ForkSandboxConfigFromJSON(json['config']),
     };
 }
@@ -70,6 +77,7 @@ export function ForkSandboxRequestToJSONTyped(value?: ForkSandboxRequest | null,
 
     return {
         
+        'memory': value['memory'],
         'config': ForkSandboxConfigToJSON(value['config']),
     };
 }

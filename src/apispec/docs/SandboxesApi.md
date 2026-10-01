@@ -782,6 +782,8 @@ example().catch(console.error);
 | **200** | Sandbox updated |  -  |
 | **400** | Invalid request |  -  |
 | **404** | Not found |  -  |
+| **409** | Another lifecycle or a different resource resize owns the sandbox |  -  |
+| **503** | Resource resize is durably pending; retry the same memory limit |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
@@ -866,7 +868,7 @@ example().catch(console.error);
 
 Resume a sandbox
 
-The default starts a new process runtime from the committed RootFS. Set memory&#x3D;true to restore a retained execution image. Missing or incompatible memory is an error; it never falls back to a filesystem-only resume. A disconnected request may continue through background recovery.
+The default starts a new process runtime from the committed RootFS. Set memory&#x3D;true to prefer a retained execution image. Missing or incompatible memory falls back to the committed RootFS. A failed memory target is physically reclaimed before a filesystem-only replacement starts. A response with resumed&#x3D;false means durable fallback is pending; poll sandbox status until running. A disconnected request may continue through background recovery.
 
 ### Example
 

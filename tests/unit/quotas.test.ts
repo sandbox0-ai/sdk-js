@@ -22,7 +22,7 @@ describe("Quotas", () => {
           team_id: "team-1",
           dimension: url.pathname.endsWith("/api_requests")
             ? "api_requests"
-            : "active_sandboxes",
+            : "paused_sandboxes",
           kind: url.pathname.endsWith("/api_requests") ? "rate" : "capacity",
           limit_value: 100,
           interval_ms: url.pathname.endsWith("/api_requests") ? 1000 : null,
@@ -55,7 +55,7 @@ describe("Quotas", () => {
       "/api/v1/quotas/api_requests",
     ]);
     assert.deepEqual(requestedAuth, ["Bearer test-token", "Bearer test-token"]);
-    assert.equal(quotas[0]?.dimension, QuotaDimension.ActiveSandboxes);
+    assert.equal(quotas[0]?.dimension, QuotaDimension.PausedSandboxes);
     assert.equal(quotas[0]?.current, 3);
     assert.equal(apiRequests.dimension, QuotaDimension.ApiRequests);
     assert.equal(apiRequests.current, null);

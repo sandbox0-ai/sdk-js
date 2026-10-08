@@ -19,6 +19,7 @@
  */
 export const QuotaDimension = {
     ActiveSandboxes: 'active_sandboxes',
+    PausedSandboxes: 'paused_sandboxes',
     SandboxClaims: 'sandbox_claims',
     ApiRequests: 'api_requests',
     NetworkEgressBytes: 'network_egress_bytes',

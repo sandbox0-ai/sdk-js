@@ -14,12 +14,16 @@
 
 
 /**
- * 
+ * snapshots_per_sandbox limits retained public snapshots independently on
+ * each sandbox (default 10). Excess snapshots are automatically removed,
+ * oldest first. Its capacity current value is the highest snapshot count
+ * on any sandbox in the team, rather than the team's total snapshot count.
  * @export
  */
 export const QuotaDimension = {
     ActiveSandboxes: 'active_sandboxes',
     PausedSandboxes: 'paused_sandboxes',
+    SnapshotsPerSandbox: 'snapshots_per_sandbox',
     SandboxClaims: 'sandbox_claims',
     ApiRequests: 'api_requests',
     NetworkEgressBytes: 'network_egress_bytes',

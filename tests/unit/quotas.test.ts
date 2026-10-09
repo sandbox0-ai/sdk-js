@@ -4,6 +4,25 @@ import { describe, it } from "node:test";
 import { Client, QuotaDimension } from "../../src/index.ts";
 
 describe("Quotas", () => {
+  it("decodes and requests per-sandbox snapshot quota", async () => {
+    const client = new Client({
+      token: "test-token",
+      baseUrl: "http://example.test",
+      fetch: async (input) => {
+        assert.equal(new URL(String(input)).pathname, "/api/v1/quotas/snapshots_per_sandbox");
+        return new Response(JSON.stringify({ success: true, data: {
+          team_id: "team-1", dimension: "snapshots_per_sandbox", kind: "capacity",
+          limit_value: 10, current: 7, remaining: 3, unlimited: false,
+          interval_ms: null, burst_value: null, unit: "count", source: "region_default",
+        } }), { headers: { "content-type": "application/json" } });
+      },
+    });
+    const quota = await client.quotas.get(QuotaDimension.SnapshotsPerSandbox);
+    assert.equal(quota.dimension, QuotaDimension.SnapshotsPerSandbox);
+    assert.equal(quota.limitValue, 10);
+    assert.equal(quota.current, 7);
+  });
+
   it("lists and gets the current team's quota status", async () => {
     const requestedPaths: string[] = [];
     const requestedAuth: string[] = [];

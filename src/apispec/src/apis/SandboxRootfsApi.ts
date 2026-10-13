@@ -392,7 +392,7 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates an immutable snapshot record from the source sandbox writable rootfs. A paused source is snapshotted from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the snapshot operation completes. 
+     * Creates an immutable snapshot record from the source sandbox writable rootfs. A paused source is snapshotted from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the snapshot operation completes. Each sandbox retains at most its team\'s snapshots_per_sandbox quota (default 10). Creating a snapshot automatically removes the oldest excess public snapshots. Internal template-build snapshots are excluded.
      * Create sandbox rootfs snapshot
      */
     async apiV1SandboxesIdSnapshotsPostRaw(requestParameters: ApiV1SandboxesIdSnapshotsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRootFSSnapshotResponse>> {
@@ -433,7 +433,7 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates an immutable snapshot record from the source sandbox writable rootfs. A paused source is snapshotted from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the snapshot operation completes. 
+     * Creates an immutable snapshot record from the source sandbox writable rootfs. A paused source is snapshotted from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the snapshot operation completes. Each sandbox retains at most its team\'s snapshots_per_sandbox quota (default 10). Creating a snapshot automatically removes the oldest excess public snapshots. Internal template-build snapshots are excluded.
      * Create sandbox rootfs snapshot
      */
     async apiV1SandboxesIdSnapshotsPost(requestParameters: ApiV1SandboxesIdSnapshotsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRootFSSnapshotResponse> {

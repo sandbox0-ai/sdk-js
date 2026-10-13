@@ -741,7 +741,7 @@ export class SandboxesApi extends runtime.BaseAPI {
     }
 
     /**
-     * The default starts a new process runtime from the committed RootFS. Set memory=true to restore a retained execution image. Missing or incompatible memory is an error; it never falls back to a filesystem-only resume. A disconnected request may continue through background recovery.
+     * The default starts a new process runtime from the committed RootFS. Set memory=true to prefer a retained execution image. Missing or incompatible memory falls back to the committed RootFS. A failed memory target is physically reclaimed before a filesystem-only replacement starts. A response with resumed=false means durable fallback is pending; poll sandbox status until running. A disconnected request may continue through background recovery.
      * Resume a sandbox
      */
     async apiV1SandboxesIdResumePostRaw(requestParameters: ApiV1SandboxesIdResumePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessResumeSandboxResponse>> {
@@ -782,7 +782,7 @@ export class SandboxesApi extends runtime.BaseAPI {
     }
 
     /**
-     * The default starts a new process runtime from the committed RootFS. Set memory=true to restore a retained execution image. Missing or incompatible memory is an error; it never falls back to a filesystem-only resume. A disconnected request may continue through background recovery.
+     * The default starts a new process runtime from the committed RootFS. Set memory=true to prefer a retained execution image. Missing or incompatible memory falls back to the committed RootFS. A failed memory target is physically reclaimed before a filesystem-only replacement starts. A response with resumed=false means durable fallback is pending; poll sandbox status until running. A disconnected request may continue through background recovery.
      * Resume a sandbox
      */
     async apiV1SandboxesIdResumePost(requestParameters: ApiV1SandboxesIdResumePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessResumeSandboxResponse> {

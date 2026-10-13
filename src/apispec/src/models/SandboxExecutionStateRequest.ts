@@ -20,7 +20,7 @@ import { mapValues } from '../runtime';
  */
 export interface SandboxExecutionStateRequest {
     /**
-     * Explicitly preserve or restore process memory and execution state. Omitted or false retains the existing filesystem-only behavior. Memory failures are reported without a cold fallback.
+     * On pause, retain process memory and execution state; capture failures remain errors. On resume, prefer retained memory and fall back to the committed RootFS if memory is missing, incompatible, or cannot be restored. Omitted or false uses filesystem-only behavior.
      * @type {boolean}
      * @memberof SandboxExecutionStateRequest
      */

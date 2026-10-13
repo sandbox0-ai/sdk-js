@@ -18,6 +18,20 @@ pnpm add sandbox0
 
 Streaming APIs prefer a runtime-native `globalThis.WebSocket` when a Node-compatible host exposes one, and fall back to the `ws` package on older Node runtimes. This keeps the main SDK entry compatible with SandFunc-style runtimes that expose a standard outbound WebSocket client without requiring raw socket access in user code.
 
+## RootFS capacity
+
+Template `resources.ephemeralStorage` sets the initial RootFS filesystem capacity
+for image imports: the default is `8Gi`, and supported values are `300Mi` through
+`1Ti`, aligned to 4096 bytes. On deployments with automatic growth enabled, XFS
+expands online within the configured sparse-device ceiling while the sandbox's
+processes continue running. Existing generations retain their committed geometry.
+
+Persistent blocks reside in regional object storage. Compute nodes retain bounded
+caches and write journals; slow or unavailable storage can apply write backpressure.
+The initial size is distinct from stored data usage and service storage quotas.
+Automatic growth requires operator enablement; see the
+[deployment guide](https://github.com/sandbox0-ai/sandbox0/blob/main/deploy/nomad/rootfs-autogrow.md).
+
 ## Configuration
 
 | Environment Variable | Required | Default                   | Description          |

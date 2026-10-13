@@ -26,7 +26,7 @@ export interface ResourceQuota {
      */
     memory: string;
     /**
-     * Immutable RootFS block-device size. Defaults to 8Gi when omitted; it must be an exact byte quantity between 300Mi and 1Ti and aligned to 4096 bytes.
+     * Initial RootFS filesystem capacity for image imports. Defaults to 8Gi when omitted; it must be an exact byte quantity between 300Mi and 1Ti and aligned to 4096 bytes. Deployments with automatic growth use a larger sparse device and expand the filesystem online; fixed-size deployments use this value as the device capacity. Existing generations retain their committed geometry.
      * @type {string}
      * @memberof ResourceQuota
      */

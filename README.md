@@ -2,6 +2,11 @@
 
 The official JavaScript/TypeScript SDK for Sandbox0, providing typed models and ergonomic high-level APIs for managing secure code execution sandboxes.
 
+> This SDK remains open source. Current Sandbox0 runtime development is closed source.
+> Sandbox0 Cloud is the supported service. Self-hosting is no longer supported.
+> Bring Your Own Cloud (BYOC) is planned and is not available yet.
+> See [deployment options](https://sandbox0.ai/docs/sandbox/deployment).
+
 ## Installation
 
 ```bash

@@ -20,6 +20,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 Delete file or directory
 
+Works during filesystem-only pauses without starting compute. Offline deletion returns 409 conflict while a memory checkpoint is retained.
+
 ### Example
 
 ```ts
@@ -93,7 +95,7 @@ example().catch(console.error);
 
 Read file content
 
-Use query params: - path&#x3D;/tmp/a.txt: target file path When &#x60;Accept&#x60; or &#x60;Content-Type&#x60; is &#x60;application/json&#x60;, returns a base64 JSON payload.
+Use query params: - path&#x3D;/tmp/a.txt: target file path When &#x60;Accept&#x60; or &#x60;Content-Type&#x60; is &#x60;application/json&#x60;, returns a base64 JSON payload. Reads the persistent RootFS while paused without starting or resuming compute, including memory-paused sandboxes.
 
 ### Example
 
@@ -168,7 +170,7 @@ example().catch(console.error);
 
 List directory entries
 
-Use query params: - path&#x3D;/tmp: target directory path
+Use query params: - path&#x3D;/workspace: target directory path Also works on the committed RootFS while paused, without resuming compute.
 
 ### Example
 
@@ -243,6 +245,8 @@ example().catch(console.error);
 
 Move a file or directory
 
+Works during a filesystem-only pause without starting compute. A retained memory checkpoint prevents offline mutations (409 conflict).
+
 ### Example
 
 ```ts
@@ -316,7 +320,7 @@ example().catch(console.error);
 
 Write file or create directory
 
-Use &#x60;path&#x60; query param and &#x60;mkdir&#x3D;true&#x60; to create directories, otherwise writes file content.
+Use &#x60;path&#x60; query param and &#x60;mkdir&#x3D;true&#x60; to create directories, otherwise writes file content (maximum 100 MiB). Works during filesystem-only pauses without starting compute. Offline mutations return 409 conflict while a memory checkpoint is retained.
 
 ### Example
 
@@ -401,7 +405,7 @@ example().catch(console.error);
 
 Stat a file
 
-Use query params: - path&#x3D;/tmp/a.txt: target file path
+Use query params: - path&#x3D;/workspace/a.txt: target file path Also works on the committed RootFS while paused, without resuming compute.
 
 ### Example
 
@@ -476,7 +480,7 @@ example().catch(console.error);
 
 File watch WebSocket
 
-Upgrades to WebSocket for file watch events. Client messages: - { \&quot;action\&quot;: \&quot;subscribe\&quot;, \&quot;path\&quot;: \&quot;/tmp\&quot;, \&quot;recursive\&quot;: false } - { \&quot;action\&quot;: \&quot;unsubscribe\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot; } Server messages: - { \&quot;type\&quot;: \&quot;subscribed\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot;, \&quot;path\&quot;: \&quot;/tmp\&quot; } - { \&quot;type\&quot;: \&quot;event\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot;, \&quot;event\&quot;: \&quot;write\&quot;, \&quot;path\&quot;: \&quot;/tmp/a.txt\&quot; } - { \&quot;type\&quot;: \&quot;unsubscribed\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot; } - { \&quot;type\&quot;: \&quot;error\&quot;, \&quot;error\&quot;: \&quot;message\&quot; }
+Upgrades to WebSocket for file watch events. Requires a running guest and follows auto_resume; offline file access does not provide watch events. Client messages: - { \&quot;action\&quot;: \&quot;subscribe\&quot;, \&quot;path\&quot;: \&quot;/tmp\&quot;, \&quot;recursive\&quot;: false } - { \&quot;action\&quot;: \&quot;unsubscribe\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot; } Server messages: - { \&quot;type\&quot;: \&quot;subscribed\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot;, \&quot;path\&quot;: \&quot;/tmp\&quot; } - { \&quot;type\&quot;: \&quot;event\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot;, \&quot;event\&quot;: \&quot;write\&quot;, \&quot;path\&quot;: \&quot;/tmp/a.txt\&quot; } - { \&quot;type\&quot;: \&quot;unsubscribed\&quot;, \&quot;watch_id\&quot;: \&quot;watch-id\&quot; } - { \&quot;type\&quot;: \&quot;error\&quot;, \&quot;error\&quot;: \&quot;message\&quot; }
 
 ### Example
 

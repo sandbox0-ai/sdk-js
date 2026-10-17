@@ -23,6 +23,23 @@ pnpm add sandbox0
 
 Streaming APIs prefer a runtime-native `globalThis.WebSocket` when a Node-compatible host exposes one, and fall back to the `ws` package on older Node runtimes. This keeps the main SDK entry compatible with SandFunc-style runtimes that expose a standard outbound WebSocket client without requiring raw socket access in user code.
 
+## Files while compute is paused
+
+Use the existing file methods without starting or resuming compute:
+
+```typescript
+const sandbox = client.sandbox(sandboxId);
+const content = await sandbox.readFile('/workspace/output.txt');
+await sandbox.writeFile('/workspace/input.txt', 'next task');
+```
+
+Read, stat, and list work during filesystem-only and memory pauses. Write,
+mkdir, move, and delete work during filesystem-only pauses; retained memory
+checkpoints reject offline edits with a conflict. File calls do not trigger
+`auto_resume`, and no SDK upgrade or new endpoint is needed. Watch and SSH
+still require a running runtime. See [file access](https://sandbox0.ai/docs/sandbox/files).
+
+
 ## RootFS capacity
 
 Template `resources.ephemeralStorage` sets the initial RootFS filesystem capacity

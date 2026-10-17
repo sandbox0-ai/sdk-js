@@ -5365,10 +5365,11 @@ paths:
     post:
       tags: [files]
       summary: Move a file or directory
+      description: Works during a filesystem-only pause without starting compute. A retained memory checkpoint prevents offline mutations (409 conflict).
       security:
         - bearerAuth: []
-      x-upstream-service: procd
-      x-upstream-path: /api/v1/files/move
+      x-upstream-service: cluster-gateway
+      x-upstream-path: /api/v1/sandboxes/{id}/files/move
       parameters:
         - $ref: "#/components/parameters/SandboxID"
       requestBody:
@@ -5391,7 +5392,7 @@ paths:
       tags: [files]
       summary: File watch WebSocket
       description: |
-        Upgrades to WebSocket for file watch events.
+        Upgrades to WebSocket for file watch events. Requires a running guest and follows auto_resume; offline file access does not provide watch events.
         Client messages:
         - { "action": "subscribe", "path": "/tmp", "recursive": false }
         - { "action": "unsubscribe", "watch_id": "watch-id" }
@@ -5424,10 +5425,11 @@ paths:
         Use query params:
         - path=/tmp/a.txt: target file path
         When `Accept` or `Content-Type` is `application/json`, returns a base64 JSON payload.
+        Reads the persistent RootFS while paused without starting or resuming compute, including memory-paused sandboxes.
       security:
         - bearerAuth: []
-      x-upstream-service: procd
-      x-upstream-path: /api/v1/files
+      x-upstream-service: cluster-gateway
+      x-upstream-path: /api/v1/sandboxes/{id}/files
       parameters:
         - $ref: "#/components/parameters/SandboxID"
         - $ref: "#/components/parameters/FilePath"
@@ -5452,11 +5454,11 @@ paths:
     post:
       tags: [files]
       summary: Write file or create directory
-      description: Use `path` query param and `mkdir=true` to create directories, otherwise writes file content.
+      description: Use `path` query param and `mkdir=true` to create directories, otherwise writes file content (maximum 100 MiB). Works during filesystem-only pauses without starting compute. Offline mutations return 409 conflict while a memory checkpoint is retained.
       security:
         - bearerAuth: []
-      x-upstream-service: procd
-      x-upstream-path: /api/v1/files
+      x-upstream-service: cluster-gateway
+      x-upstream-path: /api/v1/sandboxes/{id}/files
       parameters:
         - $ref: "#/components/parameters/SandboxID"
         - $ref: "#/components/parameters/FilePath"
@@ -5487,10 +5489,11 @@ paths:
     delete:
       tags: [files]
       summary: Delete file or directory
+      description: Works during filesystem-only pauses without starting compute. Offline deletion returns 409 conflict while a memory checkpoint is retained.
       security:
         - bearerAuth: []
-      x-upstream-service: procd
-      x-upstream-path: /api/v1/files
+      x-upstream-service: cluster-gateway
+      x-upstream-path: /api/v1/sandboxes/{id}/files
       parameters:
         - $ref: "#/components/parameters/SandboxID"
         - $ref: "#/components/parameters/FilePath"
@@ -5509,11 +5512,12 @@ paths:
       summary: Stat a file
       description: |
         Use query params:
-        - path=/tmp/a.txt: target file path
+        - path=/workspace/a.txt: target file path
+        Also works on the committed RootFS while paused, without resuming compute.
       security:
         - bearerAuth: []
-      x-upstream-service: procd
-      x-upstream-path: /api/v1/files/stat
+      x-upstream-service: cluster-gateway
+      x-upstream-path: /api/v1/sandboxes/{id}/files/stat
       parameters:
         - $ref: "#/components/parameters/SandboxID"
         - $ref: "#/components/parameters/FilePath"
@@ -5532,11 +5536,12 @@ paths:
       summary: List directory entries
       description: |
         Use query params:
-        - path=/tmp: target directory path
+        - path=/workspace: target directory path
+        Also works on the committed RootFS while paused, without resuming compute.
       security:
         - bearerAuth: []
-      x-upstream-service: procd
-      x-upstream-path: /api/v1/files/list
+      x-upstream-service: cluster-gateway
+      x-upstream-path: /api/v1/sandboxes/{id}/files/list
       parameters:
         - $ref: "#/components/parameters/SandboxID"
         - $ref: "#/components/parameters/FilePath"

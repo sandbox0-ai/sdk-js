@@ -89,6 +89,7 @@ export interface ApiV1SandboxesIdFilesWatchGetRequest {
 export class FilesApi extends runtime.BaseAPI {
 
     /**
+     * Works during filesystem-only pauses without starting compute. Offline deletion returns 409 conflict while a memory checkpoint is retained.
      * Delete file or directory
      */
     async apiV1SandboxesIdFilesDeleteRaw(requestParameters: ApiV1SandboxesIdFilesDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessDeletedResponse>> {
@@ -137,6 +138,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Works during filesystem-only pauses without starting compute. Offline deletion returns 409 conflict while a memory checkpoint is retained.
      * Delete file or directory
      */
     async apiV1SandboxesIdFilesDelete(requestParameters: ApiV1SandboxesIdFilesDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessDeletedResponse> {
@@ -145,7 +147,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Use query params: - path=/tmp/a.txt: target file path When `Accept` or `Content-Type` is `application/json`, returns a base64 JSON payload.
+     * Use query params: - path=/tmp/a.txt: target file path When `Accept` or `Content-Type` is `application/json`, returns a base64 JSON payload. Reads the persistent RootFS while paused without starting or resuming compute, including memory-paused sandboxes.
      * Read file content
      */
     async apiV1SandboxesIdFilesGetRaw(requestParameters: ApiV1SandboxesIdFilesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Blob>> {
@@ -194,7 +196,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Use query params: - path=/tmp/a.txt: target file path When `Accept` or `Content-Type` is `application/json`, returns a base64 JSON payload.
+     * Use query params: - path=/tmp/a.txt: target file path When `Accept` or `Content-Type` is `application/json`, returns a base64 JSON payload. Reads the persistent RootFS while paused without starting or resuming compute, including memory-paused sandboxes.
      * Read file content
      */
     async apiV1SandboxesIdFilesGet(requestParameters: ApiV1SandboxesIdFilesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Blob> {
@@ -203,7 +205,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Use query params: - path=/tmp: target directory path
+     * Use query params: - path=/workspace: target directory path Also works on the committed RootFS while paused, without resuming compute.
      * List directory entries
      */
     async apiV1SandboxesIdFilesListGetRaw(requestParameters: ApiV1SandboxesIdFilesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFileListResponse>> {
@@ -252,7 +254,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Use query params: - path=/tmp: target directory path
+     * Use query params: - path=/workspace: target directory path Also works on the committed RootFS while paused, without resuming compute.
      * List directory entries
      */
     async apiV1SandboxesIdFilesListGet(requestParameters: ApiV1SandboxesIdFilesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFileListResponse> {
@@ -261,6 +263,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Works during a filesystem-only pause without starting compute. A retained memory checkpoint prevents offline mutations (409 conflict).
      * Move a file or directory
      */
     async apiV1SandboxesIdFilesMovePostRaw(requestParameters: ApiV1SandboxesIdFilesMovePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessMovedResponse>> {
@@ -308,6 +311,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Works during a filesystem-only pause without starting compute. A retained memory checkpoint prevents offline mutations (409 conflict).
      * Move a file or directory
      */
     async apiV1SandboxesIdFilesMovePost(requestParameters: ApiV1SandboxesIdFilesMovePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessMovedResponse> {
@@ -316,7 +320,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Use `path` query param and `mkdir=true` to create directories, otherwise writes file content.
+     * Use `path` query param and `mkdir=true` to create directories, otherwise writes file content (maximum 100 MiB). Works during filesystem-only pauses without starting compute. Offline mutations return 409 conflict while a memory checkpoint is retained.
      * Write file or create directory
      */
     async apiV1SandboxesIdFilesPostRaw(requestParameters: ApiV1SandboxesIdFilesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessWrittenResponse>> {
@@ -376,7 +380,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Use `path` query param and `mkdir=true` to create directories, otherwise writes file content.
+     * Use `path` query param and `mkdir=true` to create directories, otherwise writes file content (maximum 100 MiB). Works during filesystem-only pauses without starting compute. Offline mutations return 409 conflict while a memory checkpoint is retained.
      * Write file or create directory
      */
     async apiV1SandboxesIdFilesPost(requestParameters: ApiV1SandboxesIdFilesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessWrittenResponse> {
@@ -385,7 +389,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Use query params: - path=/tmp/a.txt: target file path
+     * Use query params: - path=/workspace/a.txt: target file path Also works on the committed RootFS while paused, without resuming compute.
      * Stat a file
      */
     async apiV1SandboxesIdFilesStatGetRaw(requestParameters: ApiV1SandboxesIdFilesStatGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFileStatResponse>> {
@@ -434,7 +438,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Use query params: - path=/tmp/a.txt: target file path
+     * Use query params: - path=/workspace/a.txt: target file path Also works on the committed RootFS while paused, without resuming compute.
      * Stat a file
      */
     async apiV1SandboxesIdFilesStatGet(requestParameters: ApiV1SandboxesIdFilesStatGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFileStatResponse> {
@@ -443,7 +447,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Upgrades to WebSocket for file watch events. Client messages: - { \"action\": \"subscribe\", \"path\": \"/tmp\", \"recursive\": false } - { \"action\": \"unsubscribe\", \"watch_id\": \"watch-id\" } Server messages: - { \"type\": \"subscribed\", \"watch_id\": \"watch-id\", \"path\": \"/tmp\" } - { \"type\": \"event\", \"watch_id\": \"watch-id\", \"event\": \"write\", \"path\": \"/tmp/a.txt\" } - { \"type\": \"unsubscribed\", \"watch_id\": \"watch-id\" } - { \"type\": \"error\", \"error\": \"message\" }
+     * Upgrades to WebSocket for file watch events. Requires a running guest and follows auto_resume; offline file access does not provide watch events. Client messages: - { \"action\": \"subscribe\", \"path\": \"/tmp\", \"recursive\": false } - { \"action\": \"unsubscribe\", \"watch_id\": \"watch-id\" } Server messages: - { \"type\": \"subscribed\", \"watch_id\": \"watch-id\", \"path\": \"/tmp\" } - { \"type\": \"event\", \"watch_id\": \"watch-id\", \"event\": \"write\", \"path\": \"/tmp/a.txt\" } - { \"type\": \"unsubscribed\", \"watch_id\": \"watch-id\" } - { \"type\": \"error\", \"error\": \"message\" }
      * File watch WebSocket
      */
     async apiV1SandboxesIdFilesWatchGetRaw(requestParameters: ApiV1SandboxesIdFilesWatchGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -481,7 +485,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Upgrades to WebSocket for file watch events. Client messages: - { \"action\": \"subscribe\", \"path\": \"/tmp\", \"recursive\": false } - { \"action\": \"unsubscribe\", \"watch_id\": \"watch-id\" } Server messages: - { \"type\": \"subscribed\", \"watch_id\": \"watch-id\", \"path\": \"/tmp\" } - { \"type\": \"event\", \"watch_id\": \"watch-id\", \"event\": \"write\", \"path\": \"/tmp/a.txt\" } - { \"type\": \"unsubscribed\", \"watch_id\": \"watch-id\" } - { \"type\": \"error\", \"error\": \"message\" }
+     * Upgrades to WebSocket for file watch events. Requires a running guest and follows auto_resume; offline file access does not provide watch events. Client messages: - { \"action\": \"subscribe\", \"path\": \"/tmp\", \"recursive\": false } - { \"action\": \"unsubscribe\", \"watch_id\": \"watch-id\" } Server messages: - { \"type\": \"subscribed\", \"watch_id\": \"watch-id\", \"path\": \"/tmp\" } - { \"type\": \"event\", \"watch_id\": \"watch-id\", \"event\": \"write\", \"path\": \"/tmp/a.txt\" } - { \"type\": \"unsubscribed\", \"watch_id\": \"watch-id\" } - { \"type\": \"error\", \"error\": \"message\" }
      * File watch WebSocket
      */
     async apiV1SandboxesIdFilesWatchGet(requestParameters: ApiV1SandboxesIdFilesWatchGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {

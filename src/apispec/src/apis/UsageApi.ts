@@ -37,7 +37,7 @@ export interface ApiV1UsageWindowsGetRequest {
 export class UsageApi extends runtime.BaseAPI {
 
     /**
-     * Returns immutable, closed usage windows belonging to the authenticated team. The opaque cursor can be retained and reused to incrementally import newly recorded windows. 
+     * Returns immutable, closed usage windows belonging to the authenticated team. The opaque cursor can be retained and reused to incrementally import newly recorded windows.
      * List usage windows for the current team
      */
     async apiV1UsageWindowsGetRaw(requestParameters: ApiV1UsageWindowsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessUsageWindowsResponse>> {
@@ -79,7 +79,7 @@ export class UsageApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns immutable, closed usage windows belonging to the authenticated team. The opaque cursor can be retained and reused to incrementally import newly recorded windows. 
+     * Returns immutable, closed usage windows belonging to the authenticated team. The opaque cursor can be retained and reused to incrementally import newly recorded windows.
      * List usage windows for the current team
      */
     async apiV1UsageWindowsGet(requestParameters: ApiV1UsageWindowsGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessUsageWindowsResponse> {

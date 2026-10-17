@@ -2,6 +2,38 @@ import assert from "node:assert/strict";
 import { it } from "node:test";
 import { Client, APIError } from "../../src/index.ts";
 
+it("conditional fork keeps the original generation/key and rejects invalid inputs before I/O", async () => {
+  let calls=0;
+  const client=new Client({token:"test-token",fetch:async (_url,init)=>{
+    calls++;
+    assert.deepEqual(JSON.parse(String(init?.body)),{expected_runtime_generation:0});
+    assert.equal(new Headers(init?.headers).get("Idempotency-Key"),"fork-generation-zero");
+    return Response.json({success:false,error:{code:"unavailable",message:"pending"}},{status:503});
+  }});
+  await assert.rejects(client.sandboxes.fork("source",{expectedRuntimeGeneration:0}),/idempotencyKey/);
+  for(const generation of [-1,1.5,NaN,Number.MAX_SAFE_INTEGER+1,null]){
+    await assert.rejects(client.sandboxes.fork("source",{expectedRuntimeGeneration:generation as number},{idempotencyKey:"key"}),/generation/);
+  }
+  await assert.rejects(client.sandboxes.fork("source",{memory:true,expectedRuntimeGeneration:Number.MAX_SAFE_INTEGER},{idempotencyKey:"key"}),/generation/);
+  assert.equal(calls,0);
+  for(let retry=0;retry<2;retry++)await assert.rejects(client.sandboxes.fork("source",{expectedRuntimeGeneration:0},{idempotencyKey:"fork-generation-zero"}),APIError);
+  assert.equal(calls,2);
+});
+
+for (const autoResume of [undefined, false, true]) {
+  it(`fork preserves explicit autoResume=${autoResume} through generated wire serialization`, async () => {
+    let calls = 0;
+    const client = new Client({token:"test-token",baseUrl:"https://example.test",fetch:async (_url,init) => {
+      calls++;
+      assert.deepEqual(JSON.parse(String(init?.body)), {config:autoResume===undefined?{}:{auto_resume:autoResume}});
+      assert.equal(new Headers(init?.headers).get("Idempotency-Key"),"fork-wake-policy");
+      return Response.json({success:true,data:{source_sandbox_id:"sb_1",sandbox:{id:"child",paused:true,status:"paused",runtime_generation:0,auto_resume:autoResume??true}}});
+    }});
+    await client.sandboxes.fork("sb_1",{config:{autoResume}},{idempotencyKey:"fork-wake-policy"});
+    assert.equal(calls,1);
+  });
+}
+
 for (const action of ["pause", "resume"] as const) {
   for (const memory of [undefined, false, true]) {
     it(`${action} serializes explicit memory=${memory} through the generated client`, async () => {

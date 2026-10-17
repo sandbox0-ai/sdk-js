@@ -1,7 +1,7 @@
 
 # NetworkEgressPolicy
 
-Egress rule set interpreted by the selected network mode. In `allow-all`, only `denied*` fields are enforced. In `block-all`, only `allowed*` fields are enforced. `trafficRules` is a rule-based alternative and must not be combined with the legacy `allowed*`/`denied*` fields. 
+Egress rule set interpreted by the selected network mode. In `allow-all`, only `denied*` fields are enforced. In `block-all`, only `allowed*` fields are enforced. `trafficRules` is a rule-based alternative and must not be combined with the legacy `allowed*`/`denied*` fields.
 
 ## Properties
 

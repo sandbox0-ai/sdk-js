@@ -15,6 +15,7 @@
 
 import * as runtime from '../runtime';
 import type {
+  ConditionalExecutionSessionRequest,
   CreateExecutionSessionAttemptRequest,
   ErrorEnvelope,
   ExecutionSessionDesiredStateRequest,
@@ -31,6 +32,8 @@ import type {
   SuccessResizedResponse,
 } from '../models/index';
 import {
+    ConditionalExecutionSessionRequestFromJSON,
+    ConditionalExecutionSessionRequestToJSON,
     CreateExecutionSessionAttemptRequestFromJSON,
     CreateExecutionSessionAttemptRequestToJSON,
     ErrorEnvelopeFromJSON,
@@ -61,6 +64,19 @@ import {
     SuccessResizedResponseToJSON,
 } from '../models/index';
 
+export interface ApiV1SandboxesIdSessionsConditionalLookupGetRequest {
+    id: string;
+    runtimeGeneration: number;
+    idempotencyKey: string;
+    creationRuntimeGeneration?: number;
+}
+
+export interface ApiV1SandboxesIdSessionsConditionalPostRequest {
+    id: string;
+    idempotencyKey: string;
+    conditionalExecutionSessionRequest: ConditionalExecutionSessionRequest;
+}
+
 export interface ApiV1SandboxesIdSessionsGetRequest {
     id: string;
 }
@@ -75,6 +91,16 @@ export interface ApiV1SandboxesIdSessionsSessionIdAttemptsPostRequest {
     id: string;
     sessionId: string;
     createExecutionSessionAttemptRequest?: CreateExecutionSessionAttemptRequest;
+}
+
+export interface ApiV1SandboxesIdSessionsSessionIdConditionalWsGetRequest {
+    id: string;
+    sessionId: string;
+    idempotencyKey: string;
+    runtimeGeneration: number;
+    attemptId: string;
+    creationRuntimeGeneration?: number;
+    after?: number;
 }
 
 export interface ApiV1SandboxesIdSessionsSessionIdDeleteRequest {
@@ -141,6 +167,147 @@ export interface ApiV1SandboxesIdSessionsSessionIdWsGetRequest {
  * 
  */
 export class SessionsApi extends runtime.BaseAPI {
+
+    /**
+     * Read-only receipt lookup in an exact currently running generation. Never auto-resumes, creates a session, starts an attempt or repairs state. Both the gateway and supervisor verify the sandbox and runtime generation. Only conditional creations are eligible. A session_not_found response means that key was absent at observation time, not permission to create or proof that an earlier request cannot still finish. Other 404 replies may indicate unsupported servers. Clients must not fall back to ordinary queries or creation. The returned receipt is not lifecycle/storage authority, current credential admission, or permission to attach later. For a memory-restored original attempt, explicitly supply an earlier creation_runtime_generation. Omission retains same-generation semantics. The supervisor requires the exact original conditional creation and a still-running attempt from that origin in the requested current runtime. This does not verify external memory lineage or credential qualification; applications must verify those independently before adoption. Never use failure as permission to create a new attempt or fall back to cold restart.
+     * Find a conditional session by its original creation key
+     */
+    async apiV1SandboxesIdSessionsConditionalLookupGetRaw(requestParameters: ApiV1SandboxesIdSessionsConditionalLookupGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessExecutionSessionResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1SandboxesIdSessionsConditionalLookupGet().'
+            );
+        }
+
+        if (requestParameters['runtimeGeneration'] == null) {
+            throw new runtime.RequiredError(
+                'runtimeGeneration',
+                'Required parameter "runtimeGeneration" was null or undefined when calling apiV1SandboxesIdSessionsConditionalLookupGet().'
+            );
+        }
+
+        if (requestParameters['idempotencyKey'] == null) {
+            throw new runtime.RequiredError(
+                'idempotencyKey',
+                'Required parameter "idempotencyKey" was null or undefined when calling apiV1SandboxesIdSessionsConditionalLookupGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['creationRuntimeGeneration'] != null) {
+            queryParameters['creation_runtime_generation'] = requestParameters['creationRuntimeGeneration'];
+        }
+
+        if (requestParameters['runtimeGeneration'] != null) {
+            queryParameters['runtime_generation'] = requestParameters['runtimeGeneration'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (requestParameters['idempotencyKey'] != null) {
+            headerParameters['Idempotency-Key'] = String(requestParameters['idempotencyKey']);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/sessions/conditional/lookup`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessExecutionSessionResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Read-only receipt lookup in an exact currently running generation. Never auto-resumes, creates a session, starts an attempt or repairs state. Both the gateway and supervisor verify the sandbox and runtime generation. Only conditional creations are eligible. A session_not_found response means that key was absent at observation time, not permission to create or proof that an earlier request cannot still finish. Other 404 replies may indicate unsupported servers. Clients must not fall back to ordinary queries or creation. The returned receipt is not lifecycle/storage authority, current credential admission, or permission to attach later. For a memory-restored original attempt, explicitly supply an earlier creation_runtime_generation. Omission retains same-generation semantics. The supervisor requires the exact original conditional creation and a still-running attempt from that origin in the requested current runtime. This does not verify external memory lineage or credential qualification; applications must verify those independently before adoption. Never use failure as permission to create a new attempt or fall back to cold restart.
+     * Find a conditional session by its original creation key
+     */
+    async apiV1SandboxesIdSessionsConditionalLookupGet(requestParameters: ApiV1SandboxesIdSessionsConditionalLookupGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessExecutionSessionResponse> {
+        const response = await this.apiV1SandboxesIdSessionsConditionalLookupGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Requires a currently running sandbox with the exact sandbox identity and runtime generation. Never auto-resumes. The gateway checks regional state and the supervisor checks identity atomically through initial process startup. A stale idempotent retry fails after runtime replacement. This condition governs creation; the session lifecycle policy still governs later attempts and recovery. Older servers return an unsupported route; clients must not fall back to unconditional creation.
+     * Create an execution session in an exact runtime generation
+     */
+    async apiV1SandboxesIdSessionsConditionalPostRaw(requestParameters: ApiV1SandboxesIdSessionsConditionalPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessExecutionSessionResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1SandboxesIdSessionsConditionalPost().'
+            );
+        }
+
+        if (requestParameters['idempotencyKey'] == null) {
+            throw new runtime.RequiredError(
+                'idempotencyKey',
+                'Required parameter "idempotencyKey" was null or undefined when calling apiV1SandboxesIdSessionsConditionalPost().'
+            );
+        }
+
+        if (requestParameters['conditionalExecutionSessionRequest'] == null) {
+            throw new runtime.RequiredError(
+                'conditionalExecutionSessionRequest',
+                'Required parameter "conditionalExecutionSessionRequest" was null or undefined when calling apiV1SandboxesIdSessionsConditionalPost().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (requestParameters['idempotencyKey'] != null) {
+            headerParameters['Idempotency-Key'] = String(requestParameters['idempotencyKey']);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/sessions/conditional`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ConditionalExecutionSessionRequestToJSON(requestParameters['conditionalExecutionSessionRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessExecutionSessionResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Requires a currently running sandbox with the exact sandbox identity and runtime generation. Never auto-resumes. The gateway checks regional state and the supervisor checks identity atomically through initial process startup. A stale idempotent retry fails after runtime replacement. This condition governs creation; the session lifecycle policy still governs later attempts and recovery. Older servers return an unsupported route; clients must not fall back to unconditional creation.
+     * Create an execution session in an exact runtime generation
+     */
+    async apiV1SandboxesIdSessionsConditionalPost(requestParameters: ApiV1SandboxesIdSessionsConditionalPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessExecutionSessionResponse> {
+        const response = await this.apiV1SandboxesIdSessionsConditionalPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Lists durable process-backed sessions in the sandbox.
@@ -306,6 +473,101 @@ export class SessionsApi extends runtime.BaseAPI {
     async apiV1SandboxesIdSessionsSessionIdAttemptsPost(requestParameters: ApiV1SandboxesIdSessionsSessionIdAttemptsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessExecutionSessionResponse> {
         const response = await this.apiV1SandboxesIdSessionsSessionIdAttemptsPostRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Requires the original conditional creation key, exact runtime generation and attempt. Never resumes, creates or falls back to an ordinary attachment. A generation change revokes the connection; every control message rechecks identity. Replay excludes other attempts. Closing the socket does not stop the process or close its input. This is process control, not lifecycle, storage or credential admission. For a memory-restored original attempt, explicitly supply an earlier creation_runtime_generation. Omission retains same-generation semantics. The supervisor requires the exact original conditional creation and a still-running attempt from that origin in the requested current runtime. This does not verify external memory lineage or credential qualification; applications must verify those independently before adoption. Never use failure as permission to create a new attempt or fall back to cold restart.
+     * Attach to one conditional execution session attempt
+     */
+    async apiV1SandboxesIdSessionsSessionIdConditionalWsGetRaw(requestParameters: ApiV1SandboxesIdSessionsSessionIdConditionalWsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling apiV1SandboxesIdSessionsSessionIdConditionalWsGet().'
+            );
+        }
+
+        if (requestParameters['sessionId'] == null) {
+            throw new runtime.RequiredError(
+                'sessionId',
+                'Required parameter "sessionId" was null or undefined when calling apiV1SandboxesIdSessionsSessionIdConditionalWsGet().'
+            );
+        }
+
+        if (requestParameters['idempotencyKey'] == null) {
+            throw new runtime.RequiredError(
+                'idempotencyKey',
+                'Required parameter "idempotencyKey" was null or undefined when calling apiV1SandboxesIdSessionsSessionIdConditionalWsGet().'
+            );
+        }
+
+        if (requestParameters['runtimeGeneration'] == null) {
+            throw new runtime.RequiredError(
+                'runtimeGeneration',
+                'Required parameter "runtimeGeneration" was null or undefined when calling apiV1SandboxesIdSessionsSessionIdConditionalWsGet().'
+            );
+        }
+
+        if (requestParameters['attemptId'] == null) {
+            throw new runtime.RequiredError(
+                'attemptId',
+                'Required parameter "attemptId" was null or undefined when calling apiV1SandboxesIdSessionsSessionIdConditionalWsGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['creationRuntimeGeneration'] != null) {
+            queryParameters['creation_runtime_generation'] = requestParameters['creationRuntimeGeneration'];
+        }
+
+        if (requestParameters['runtimeGeneration'] != null) {
+            queryParameters['runtime_generation'] = requestParameters['runtimeGeneration'];
+        }
+
+        if (requestParameters['attemptId'] != null) {
+            queryParameters['attempt_id'] = requestParameters['attemptId'];
+        }
+
+        if (requestParameters['after'] != null) {
+            queryParameters['after'] = requestParameters['after'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (requestParameters['idempotencyKey'] != null) {
+            headerParameters['Idempotency-Key'] = String(requestParameters['idempotencyKey']);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/sessions/{session_id}/conditional/ws`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"session_id"}}`, encodeURIComponent(String(requestParameters['sessionId'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Requires the original conditional creation key, exact runtime generation and attempt. Never resumes, creates or falls back to an ordinary attachment. A generation change revokes the connection; every control message rechecks identity. Replay excludes other attempts. Closing the socket does not stop the process or close its input. This is process control, not lifecycle, storage or credential admission. For a memory-restored original attempt, explicitly supply an earlier creation_runtime_generation. Omission retains same-generation semantics. The supervisor requires the exact original conditional creation and a still-running attempt from that origin in the requested current runtime. This does not verify external memory lineage or credential qualification; applications must verify those independently before adoption. Never use failure as permission to create a new attempt or fall back to cold restart.
+     * Attach to one conditional execution session attempt
+     */
+    async apiV1SandboxesIdSessionsSessionIdConditionalWsGet(requestParameters: ApiV1SandboxesIdSessionsSessionIdConditionalWsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.apiV1SandboxesIdSessionsSessionIdConditionalWsGetRaw(requestParameters, initOverrides);
     }
 
     /**

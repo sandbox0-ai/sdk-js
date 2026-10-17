@@ -1,12 +1,15 @@
 
 # SandboxExecutionStateRequest
 
+Resume execution-state selection. Conditional memory resume requires all three body fields together with Idempotency-Key.
 
 ## Properties
 
 Name | Type
 ------------ | -------------
 `memory` | boolean
+`expectedRuntimeGeneration` | number
+`checkpointId` | string
 
 ## Example
 
@@ -16,6 +19,8 @@ import type { SandboxExecutionStateRequest } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "memory": null,
+  "expectedRuntimeGeneration": null,
+  "checkpointId": null,
 } satisfies SandboxExecutionStateRequest
 
 console.log(example)

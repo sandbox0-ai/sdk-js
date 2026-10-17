@@ -14,17 +14,29 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ * Resume execution-state selection. Conditional memory resume requires all three body fields together with Idempotency-Key.
  * @export
  * @interface SandboxExecutionStateRequest
  */
 export interface SandboxExecutionStateRequest {
     /**
-     * On pause, retain process memory and execution state; capture failures remain errors. On resume, prefer retained memory and fall back to the committed RootFS if memory is missing, incompatible, or cannot be restored. Omitted or false uses filesystem-only behavior.
+     * Require the retained execution image. Missing, incompatible, or failed memory restoration remains an error and never falls back to new processes. Omitted or false explicitly selects filesystem-only behavior.
      * @type {boolean}
      * @memberof SandboxExecutionStateRequest
      */
     memory?: boolean;
+    /**
+     * Exact paused source generation. Zero is valid for a never-run memory fork. Requires memory=true, checkpoint_id and Idempotency-Key.
+     * @type {number}
+     * @memberof SandboxExecutionStateRequest
+     */
+    expectedRuntimeGeneration?: number;
+    /**
+     * Exact retained capture operation ID, returned as operation_id by a completed conditional memory pause. Requires memory=true, expected_runtime_generation and Idempotency-Key.
+     * @type {string}
+     * @memberof SandboxExecutionStateRequest
+     */
+    checkpointId?: string;
 }
 
 /**
@@ -45,6 +57,8 @@ export function SandboxExecutionStateRequestFromJSONTyped(json: any, ignoreDiscr
     return {
         
         'memory': json['memory'] == null ? undefined : json['memory'],
+        'expectedRuntimeGeneration': json['expected_runtime_generation'] == null ? undefined : json['expected_runtime_generation'],
+        'checkpointId': json['checkpoint_id'] == null ? undefined : json['checkpoint_id'],
     };
 }
 
@@ -60,6 +74,8 @@ export function SandboxExecutionStateRequestToJSONTyped(value?: SandboxExecution
     return {
         
         'memory': value['memory'],
+        'expected_runtime_generation': value['expectedRuntimeGeneration'],
+        'checkpoint_id': value['checkpointId'],
     };
 }
 

@@ -1,7 +1,7 @@
 
 # WebhookConfig
 
-Per-sandbox webhook configuration. Retries can deliver the same event more than once, so consumers should deduplicate by event_id and must not assume every unavailable endpoint eventually receives every event. Sandbox0 persists delivery state outside the workspace, retries transient failures for up to 24 hours, and never waits for the external endpoint before completing sandbox cleanup. 
+Per-sandbox webhook configuration. Retries can deliver the same event more than once, so consumers should deduplicate by event_id and must not assume every unavailable endpoint eventually receives every event. Sandbox0 persists delivery state outside the workspace, retries transient failures for up to 24 hours, and never waits for the external endpoint before completing sandbox cleanup.
 
 ## Properties
 

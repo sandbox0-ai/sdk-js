@@ -32,6 +32,12 @@ export interface SandboxRootFSSnapshot {
      */
     sandboxId: string;
     /**
+     * Immutable storage generation captured by this snapshot. Use this exact value as snapshot_generation_id for conditional recovery; never substitute the sandbox's current head. May be absent on older servers, which cannot supply a conditional recovery target.
+     * @type {string}
+     * @memberof SandboxRootFSSnapshot
+     */
+    generationId?: string;
+    /**
      * 
      * @type {string}
      * @memberof SandboxRootFSSnapshot
@@ -79,6 +85,7 @@ export function SandboxRootFSSnapshotFromJSONTyped(json: any, ignoreDiscriminato
         
         'id': json['id'],
         'sandboxId': json['sandbox_id'],
+        'generationId': json['generation_id'] == null ? undefined : json['generation_id'],
         'name': json['name'] == null ? undefined : json['name'],
         'description': json['description'] == null ? undefined : json['description'],
         'createdAt': (new Date(json['created_at'])),
@@ -99,6 +106,7 @@ export function SandboxRootFSSnapshotToJSONTyped(value?: SandboxRootFSSnapshot |
         
         'id': value['id'],
         'sandbox_id': value['sandboxId'],
+        'generation_id': value['generationId'],
         'name': value['name'],
         'description': value['description'],
         'created_at': value['createdAt'].toISOString(),

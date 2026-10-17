@@ -6,6 +6,10 @@
 
 Name | Type
 ------------ | -------------
+`operationId` | string
+`checkpointId` | string
+`fromRuntimeGeneration` | number
+`runtimeGeneration` | number
 `sandboxId` | string
 `resumed` | boolean
 `restoredMemory` | string
@@ -17,6 +21,10 @@ import type { ResumeSandboxResponse } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
+  "operationId": null,
+  "checkpointId": null,
+  "fromRuntimeGeneration": null,
+  "runtimeGeneration": null,
   "sandboxId": null,
   "resumed": null,
   "restoredMemory": null,

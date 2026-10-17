@@ -24,6 +24,165 @@ tags:
   - name: quotas
   - name: usage
 paths:
+  /api/v1/sandboxes/{id}/memory-operations/lookup:
+    get:
+      operationId: lookupSandboxMemoryOperation
+      tags: [sandboxes]
+      summary: Read the exact conditional memory lifecycle result
+      description: >-
+        Requires sandbox:read and the original caller's Idempotency-Key. The authenticated
+        team, user, sandbox and action derive the same request identity as conditional pause
+        or resume. Performs no lifecycle mutation, guest access, quota admission or retry.
+        A missing request returns 404 and never proves cancellation. Historical terminal
+        results remain readable while their evidence is retained, including after later lifecycles; current only compares the owner
+        snapshot and is not a lease or permission to mutate it. Source process health is
+        not implied. A physically resolved failed restore consumes result_runtime_generation
+        while retaining the checkpoint; it must never be retried as a new intent implicitly.
+      security:
+      - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/memory-operations/lookup
+      parameters:
+      - $ref: '#/components/parameters/SandboxID'
+      - name: Idempotency-Key
+        in: header
+        required: true
+        schema:
+          type: string
+          pattern: '^[A-Za-z0-9._:-]{1,255}$'
+      - name: action
+        in: query
+        required: true
+        schema:
+          type: string
+          enum: [pause, resume]
+      - name: expected_runtime_generation
+        in: query
+        required: true
+        description: Original source generation. Pause requires at least 1; resume accepts 0 for a never-run fork and must be below the maximum.
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+      - name: checkpoint_id
+        in: query
+        required: false
+        description: Required for resume and forbidden for pause. Must equal the original retained checkpoint.
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 256
+          pattern: '^[!-~]+$'
+      responses:
+        '200':
+          description: Exact request observation. Cache-Control no-store. No mutation authority.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessSandboxMemoryOperationResponse'
+        '400':
+          description: Invalid or ambiguous query or key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: sandbox:read permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '404':
+          description: Sandbox or exact original request not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '409':
+          description: Request coordinates or retained evidence do not match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '503':
+          description: Observation authority unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /api/v1/sandboxes/{id}/memory-restoration:
+    get:
+      operationId: getSandboxMemoryRestoration
+      tags:
+      - sandboxes
+      summary: Read committed same-sandbox memory restoration lineage
+      description: Requires sandbox:read. Returns external checkpoint/migration restore lineage for the exact
+        current runtime generation after physical retirement commits. No guest execution or lifecycle mutation.
+        This is not a session-health or credential-clean attestation. Missing, pending or incompatible authority
+        is an error; never authorizes cold launch or key re-publication.
+      security:
+      - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/memory-restoration
+      parameters:
+      - $ref: '#/components/parameters/SandboxID'
+      - name: runtime_generation
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      responses:
+        '200':
+          description: 'Committed restoration lineage. Cache-Control: no-store.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessSandboxMemoryRestorationResponse'
+        '400':
+          description: Invalid generation or query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: sandbox:read permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '404':
+          description: Sandbox not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '409':
+          description: Current memory restoration authority is missing, incomplete or changed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '503':
+          description: External authority temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
   /healthz:
     get:
       tags: [health]
@@ -1932,19 +2091,28 @@ paths:
     post:
       tags: [sandboxes]
       summary: Pause a sandbox
-      description: The default checkpoints only the writable RootFS. Set memory=true to also retain process execution state before releasing the runtime. A 202 response means checkpoint publication and cleanup are still pending.
+      description: The default checkpoints only the writable RootFS. Set memory=true to also retain process execution state before releasing the runtime. A 202 response means checkpoint publication and cleanup are still pending. For conditional memory pause, send expected_runtime_generation and Idempotency-Key together with memory=true. Retries bind the same source generation and checkpoint operation; mismatched or aborted operations conflict.
       security:
         - bearerAuth: []
       x-upstream-service: manager
       x-upstream-path: /api/v1/sandboxes/{id}/pause
       parameters:
         - $ref: "#/components/parameters/SandboxID"
+        - name: Idempotency-Key
+          in: header
+          required: false
+          description: Required with expected_runtime_generation for conditional memory pause. Reuse the same key for retries; a new attempt after a safe cancellation requires a new key.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+            pattern: '^[A-Za-z0-9._:-]{1,255}$'
       requestBody:
         required: false
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SandboxExecutionStateRequest"
+              $ref: "#/components/schemas/SandboxPauseRequest"
       responses:
         "400":
           $ref: "#/components/responses/BadRequest"
@@ -1990,13 +2158,22 @@ paths:
     post:
       tags: [sandboxes]
       summary: Resume a sandbox
-      description: The default starts a new process runtime from the committed RootFS. Set memory=true to prefer a retained execution image. Missing or incompatible memory falls back to the committed RootFS. A failed memory target is physically reclaimed before a filesystem-only replacement starts. A response with resumed=false means durable fallback is pending; poll sandbox status until running. A disconnected request may continue through background recovery.
+      description: The default starts a new process runtime from the committed RootFS. Set memory=true to require a retained execution image. Missing, incompatible, or failed memory restoration returns an error and never authorizes a filesystem-only replacement. Accepted memory operations may continue through background recovery after a disconnected request. For conditional memory resume, send memory=true, expected_runtime_generation, checkpoint_id and Idempotency-Key together. Keep the same authenticated identity, key, checkpoint and source generation on retries. A successful conditional response proves this request committed its exact restore; unrelated running state or a later lifecycle conflicts. An aborted request cannot create a new restore attempt.
       security:
         - bearerAuth: []
       x-upstream-service: manager
       x-upstream-path: /api/v1/sandboxes/{id}/resume
       parameters:
         - $ref: "#/components/parameters/SandboxID"
+        - name: Idempotency-Key
+          in: header
+          required: false
+          description: Required with expected_runtime_generation and checkpoint_id for conditional memory resume. Reuse the same key on retries. A new attempt after safe terminal cleanup requires a new explicit key and the exact then-current paused generation.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+            pattern: '^[A-Za-z0-9._:-]{1,255}$'
       requestBody:
         required: false
         content:
@@ -2040,6 +2217,978 @@ paths:
                 $ref: "#/components/schemas/ErrorEnvelope"
         "404":
           description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/snapshot-restore:
+    post:
+      operationId: restoreSandboxSnapshot
+      tags: [sandboxes]
+      summary: Restore a selected snapshot and start a fresh runtime
+      description: |-
+        Explicitly discards source process state and replaces its writable RootFS
+        with the exact selected snapshot generation. Requires sandbox:write,
+        discard_process_state=true and a stable Idempotency-Key bound to the source
+        runtime generation and snapshot identity. Admission pins the selected data,
+        including across later snapshot expiry or deletion. External final capture
+        retains projected credential custody before source retirement. Head replacement
+        and cold resume admission commit together. A duplicate returns the original
+        operation and cannot restore again. Request timeout does not cancel accepted
+        work; recover its acknowledgement by request_key. Completion proves external
+        runtime launch, not guest application health. Never use as a memory fallback.
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/snapshot-restore
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+            pattern: '^[A-Za-z0-9._:-]+$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SandboxSnapshotRestoreRequest"
+      responses:
+        "200":
+          description: Recorded terminal snapshot restore result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxSnapshotRestoreOperationResponse"
+        "202":
+          description: Durable snapshot restore accepted; completion is asynchronous
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxSnapshotRestoreOperationResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Required sandbox permission missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox or snapshot restore operation not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Request key or source generation conflicts with durable authority
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Snapshot restore control plane temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/snapshot-restore-operations:
+    get:
+      operationId: findSandboxSnapshotRestoreOperation
+      tags: [sandboxes]
+      summary: Find a snapshot restore by its original request key
+      description: Read-only acknowledgement recovery. Requires sandbox:read. Does not execute in the guest or submit a new snapshot restore.
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/snapshot-restore-operations
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: request_key
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+            pattern: '^[A-Za-z0-9._:-]+$'
+      responses:
+        "200":
+          description: Recorded snapshot restore operation; no guest call or automatic resume
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxSnapshotRestoreOperationResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Required sandbox permission missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox or snapshot restore operation not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Request key or source generation conflicts with durable authority
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Snapshot restore control plane temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}/final-capture:
+    get:
+      operationId: getSandboxSnapshotRestoreFinalCapture
+      tags:
+      - sandboxes
+      summary: Get retained cold-restart credential custody
+      description: Requires sandbox:read. Reads durable metadata independently of procd. Pending has no capture ID.
+        Stopped identifies one immutable externally stopped source. Acknowledged means the owner receipt is durable;
+        released permits ordinary retirement. This is not a completed restart or a credential-content digest.
+      security:
+      - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}/final-capture
+      parameters:
+      - $ref: '#/components/parameters/SandboxID'
+      - name: operation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+      responses:
+        '200':
+          description: 'Retained metadata or transient file result. Cache-Control: no-store.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessSandboxRestartFinalCaptureResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: Required sandbox permission missing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '404':
+          description: Restart capture not found; never an absent-file or logout result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '409':
+          description: Capture is not stopped, is acknowledged, or differs from its source or receipt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '503':
+          description: Snapshot restore control plane temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}/final-capture/namespaces/{namespace}/{name}:
+    get:
+      operationId: readSandboxSnapshotRestoreFinalCaptureFile
+      tags:
+      - sandboxes
+      summary: Read a file from the exact stopped restart source
+      description: Requires sandbox:read and the exact capture_id from status. Never reads live or guest storage,
+        creates files, or resumes execution. found=false attests an absent file only after retained backing and external
+        absence are verified. Missing journals, mounts, authority and routes are errors, never logout. Read closes
+        after acknowledgement. Responses must not be logged or cached.
+      security:
+      - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}/final-capture/namespaces/{namespace}/{name}
+      parameters:
+      - $ref: '#/components/parameters/SandboxID'
+      - name: operation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+      - $ref: '#/components/parameters/ManagedFileNamespace'
+      - $ref: '#/components/parameters/ManagedFileName'
+      - name: capture_id
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{64}$
+      responses:
+        '200':
+          description: 'Retained metadata or transient file result. Cache-Control: no-store.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessSandboxRestartFinalCaptureFileResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: Required sandbox permission missing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '404':
+          description: Restart capture not found; never an absent-file or logout result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '409':
+          description: Capture is not stopped, is acknowledged, or differs from its source or receipt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '503':
+          description: Snapshot restore control plane temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}/final-capture/acknowledgement:
+    post:
+      operationId: acknowledgeSandboxSnapshotRestoreFinalCapture
+      tags:
+      - sandboxes
+      summary: Commit the owner receipt for final restart credentials
+      description: Requires sandbox:write. Submit only after final credential or authenticated logout custody is durably
+        committed by the owner. This permits irreversible cleanup of the old projection. Retry the same capture_id
+        and receipt_id after a lost reply; another receipt conflicts. This schedules retirement, not immediate replacement
+        success.
+      security:
+      - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}/final-capture/acknowledgement
+      parameters:
+      - $ref: '#/components/parameters/SandboxID'
+      - name: operation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+      responses:
+        '200':
+          description: 'Retained metadata or transient file result. Cache-Control: no-store.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessSandboxRestartFinalCaptureResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: Required sandbox permission missing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '404':
+          description: Restart capture not found; never an absent-file or logout result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '409':
+          description: Capture is not stopped, is acknowledged, or differs from its source or receipt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '503':
+          description: Snapshot restore control plane temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SandboxRestartFinalCaptureAcknowledgement'
+  /api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}:
+    get:
+      operationId: getSandboxSnapshotRestoreOperation
+      tags: [sandboxes]
+      summary: Get durable restart state and bounded retry diagnostics
+      description: Requires sandbox:read. Available independently of procd. A succeeded operation reports its historical replacement generation; later lifecycle activity does not cause another restart or make this an application-health report.
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: operation_id
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+      responses:
+        "200":
+          description: Recorded snapshot restore operation; no guest call or automatic resume
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxSnapshotRestoreOperationResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Required sandbox permission missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox or snapshot restore operation not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Request key or source generation conflicts with durable authority
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Snapshot restore control plane temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/restart:
+    post:
+      operationId: restartSandbox
+      tags: [sandboxes]
+      summary: Explicitly replace a sandbox runtime and discard process state
+      description: |-
+        Preserves the writable RootFS through external publication and writer fencing,
+        ends the old processes, and starts a fresh runtime. This is not a reconnect,
+        memory restore, or snapshot rollback. Requires sandbox:write and a stable
+        Idempotency-Key bound to expected_runtime_generation. A duplicate returns
+        the original operation and never restarts a newer generation. Request
+        timeout does not cancel committed work. Find the operation by request_key
+        if its acknowledgement was lost. Completion proves runtime replacement,
+        not guest application health. Never use this as an automatic memory fallback.
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/restart
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+            pattern: '^[A-Za-z0-9._:-]+$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SandboxRestartRequest"
+      responses:
+        "200":
+          description: Recorded terminal restart result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxRestartOperationResponse"
+        "202":
+          description: Durable restart accepted; completion is asynchronous
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxRestartOperationResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Required sandbox permission missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox or restart operation not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Request key or source generation conflicts with durable authority
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Restart control plane temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/restart-operations:
+    get:
+      operationId: findSandboxRestartOperation
+      tags: [sandboxes]
+      summary: Find a restart by its original request key
+      description: Read-only acknowledgement recovery. Requires sandbox:read. Does not execute in the guest or submit a new restart.
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/restart-operations
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: request_key
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+            pattern: '^[A-Za-z0-9._:-]+$'
+      responses:
+        "200":
+          description: Recorded restart operation; no guest call or automatic resume
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxRestartOperationResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Required sandbox permission missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox or restart operation not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Request key or source generation conflicts with durable authority
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Restart control plane temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/restart-operations/{operation_id}/final-capture:
+    get:
+      operationId: getSandboxRestartFinalCapture
+      tags:
+      - sandboxes
+      summary: Get retained cold-restart credential custody
+      description: Requires sandbox:read. Reads durable metadata independently of procd. Pending has no capture ID.
+        Stopped identifies one immutable externally stopped source. Acknowledged means the owner receipt is durable;
+        released permits ordinary retirement. This is not a completed restart or a credential-content digest.
+      security:
+      - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/restart-operations/{operation_id}/final-capture
+      parameters:
+      - $ref: '#/components/parameters/SandboxID'
+      - name: operation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+      responses:
+        '200':
+          description: 'Retained metadata or transient file result. Cache-Control: no-store.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessSandboxRestartFinalCaptureResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: Required sandbox permission missing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '404':
+          description: Restart capture not found; never an absent-file or logout result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '409':
+          description: Capture is not stopped, is acknowledged, or differs from its source or receipt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '503':
+          description: Restart control plane temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /api/v1/sandboxes/{id}/restart-operations/{operation_id}/final-capture/namespaces/{namespace}/{name}:
+    get:
+      operationId: readSandboxRestartFinalCaptureFile
+      tags:
+      - sandboxes
+      summary: Read a file from the exact stopped restart source
+      description: Requires sandbox:read and the exact capture_id from status. Never reads live or guest storage,
+        creates files, or resumes execution. found=false attests an absent file only after retained backing and external
+        absence are verified. Missing journals, mounts, authority and routes are errors, never logout. Read closes
+        after acknowledgement. Responses must not be logged or cached.
+      security:
+      - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/restart-operations/{operation_id}/final-capture/namespaces/{namespace}/{name}
+      parameters:
+      - $ref: '#/components/parameters/SandboxID'
+      - name: operation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+      - $ref: '#/components/parameters/ManagedFileNamespace'
+      - $ref: '#/components/parameters/ManagedFileName'
+      - name: capture_id
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{64}$
+      responses:
+        '200':
+          description: 'Retained metadata or transient file result. Cache-Control: no-store.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessSandboxRestartFinalCaptureFileResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: Required sandbox permission missing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '404':
+          description: Restart capture not found; never an absent-file or logout result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '409':
+          description: Capture is not stopped, is acknowledged, or differs from its source or receipt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '503':
+          description: Restart control plane temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /api/v1/sandboxes/{id}/restart-operations/{operation_id}/final-capture/acknowledgement:
+    post:
+      operationId: acknowledgeSandboxRestartFinalCapture
+      tags:
+      - sandboxes
+      summary: Commit the owner receipt for final restart credentials
+      description: Requires sandbox:write. Submit only after final credential or authenticated logout custody is durably
+        committed by the owner. This permits irreversible cleanup of the old projection. Retry the same capture_id
+        and receipt_id after a lost reply; another receipt conflicts. This schedules retirement, not immediate replacement
+        success.
+      security:
+      - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/restart-operations/{operation_id}/final-capture/acknowledgement
+      parameters:
+      - $ref: '#/components/parameters/SandboxID'
+      - name: operation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+      responses:
+        '200':
+          description: 'Retained metadata or transient file result. Cache-Control: no-store.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessSandboxRestartFinalCaptureResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: Required sandbox permission missing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '404':
+          description: Restart capture not found; never an absent-file or logout result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '409':
+          description: Capture is not stopped, is acknowledged, or differs from its source or receipt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '503':
+          description: Restart control plane temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SandboxRestartFinalCaptureAcknowledgement'
+  /api/v1/sandboxes/{id}/restart-operations/{operation_id}:
+    get:
+      operationId: getSandboxRestartOperation
+      tags: [sandboxes]
+      summary: Get durable restart state and bounded retry diagnostics
+      description: Requires sandbox:read. Available independently of procd. A succeeded operation reports its historical replacement generation; later lifecycle activity does not cause another restart or make this an application-health report.
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/restart-operations/{operation_id}
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: operation_id
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+      responses:
+        "200":
+          description: Recorded restart operation; no guest call or automatic resume
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxRestartOperationResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Required sandbox permission missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox or restart operation not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Request key or source generation conflicts with durable authority
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Restart control plane temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/snapshots/capture:
+    get:
+      operationId: getCapturedSandboxRootFSSnapshot
+      tags: [sandbox-rootfs]
+      summary: Read the original generation-conditioned snapshot receipt
+      description: |-
+        Reads only the capture identified by the authenticated caller, original
+        Idempotency-Key and expected runtime generation. Does not admit, dispatch,
+        retry, cancel or repair work. Completed receipts can be read after the
+        source changes generation or pauses. A 404 is not proof of cancellation
+        and must not clear an outstanding operation fence. A missing, expired or
+        deleted retained snapshot is never replaced with a new capture.
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/snapshots/capture
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+            pattern: '^[A-Za-z0-9._:-]+$'
+        - name: expected_runtime_generation
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+            maximum: 9007199254740991
+      responses:
+        "200":
+          description: The original immutable snapshot is available
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxRootFSSnapshotResponse"
+        "400":
+          description: Invalid generation or key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: Sandbox read permission is required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Owned sandbox or original capture not found; not proof of cancellation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Original coordinates conflict or retained snapshot is no longer available
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Original capture pending or observation temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    post:
+      operationId: captureSandboxRootFSSnapshot
+      tags: [sandbox-rootfs]
+      summary: Capture a generation-conditioned running RootFS snapshot
+      description: |-
+        Captures one immutable RootFS snapshot from the expected running runtime
+        generation without stopping its processes. Admission checks the generation
+        while locking the external source and exact writer. Reuse the same key,
+        generation and metadata after uncertainty: an accepted capture retains its
+        original transaction and returns its original snapshot when completed,
+        even if the source subsequently changes generation or pauses. A new capture
+        of a paused or mismatched source is rejected. No guest execution, automatic
+        resume, process restart or memory checkpoint fallback is performed.
+        This distinct endpoint fails closed on servers without conditional capture.
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/snapshots/capture
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+            pattern: '^[A-Za-z0-9._:-]+$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CaptureSandboxRootFSSnapshotRequest"
+      responses:
+        "201":
+          description: The original immutable snapshot is available
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxRootFSSnapshotResponse"
+        "400":
+          description: Invalid generation, key or snapshot metadata
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          description: Owned sandbox not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Source generation, writer, operation identity or retained capture conflicts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Capture outcome is unavailable; retain the original request for reconciliation
           content:
             application/json:
               schema:
@@ -2119,6 +3268,126 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/health:
+    get:
+      operationId: getSandboxHealth
+      tags: [sandboxes]
+      summary: Observe independent runtime, execution, terminal and storage health
+      description: >-
+        Requires sandbox:read. Reads owner-scoped regional authority and bounded independent
+        node and guest diagnostics without automatic resume, restart or credential preparation.
+        Guest diagnostics may execute a fixed short shell command and allocate a temporary PTY;
+        they create no platform session. No probe runs for a paused runtime or a pending lifecycle.
+        Each observation has its own source and time. Guest results are advisory and cannot
+        establish runtime or storage authority. Unknown means insufficient evidence, not success.
+        A valid launch receipt is not current process liveness; RootFS identity and writer lease
+        are not successful storage IO or a guarantee of uncommitted-write durability.
+        Storage IO currently remains unknown. Authority is rechecked after probes so a changed
+        generation or lifecycle cannot inherit a successful old-runtime observation.
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/health
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+      responses:
+        "200":
+          description: Independent observations, including degraded or unknown health; Cache-Control no-store
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxHealthResponse"
+        "400":
+          description: Unexpected query parameters or request body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Required sandbox read permission missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox not found in the authenticated team
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Regional health authority temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/rootfs/identity:
+    get:
+      operationId: getSandboxRootFSIdentity
+      tags: [sandbox-rootfs]
+      summary: Read external runtime and RootFS identity
+      description: >-
+        Requires sandbox:read. Reads one owner-scoped control-plane database snapshot without
+        guest execution, node probing or automatic resume. Binds runtime coordinates to the
+        durable filesystem, committed head and immutable image digest. This is provenance,
+        not current storage liveness, an uncommitted-write guarantee or credential-clean
+        attestation. A later lifecycle can invalidate the observation; mutations must still
+        condition on the expected runtime generation and their own admission evidence.
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/rootfs/identity
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+      responses:
+        "200":
+          description: External identity observation; Cache-Control no-store
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxRootFSIdentityResponse"
+        "400":
+          description: Unexpected query parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Required sandbox read permission missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox not found in the authenticated team
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Durable RootFS identity has not been initialized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: External identity authority temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
   /api/v1/sandboxes/{id}/rootfs/restore:
     post:
       tags: [sandbox-rootfs]
@@ -2156,7 +3425,295 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/fork-launch:
+    post:
+      operationId: launchSandboxRootFSFork
+      tags: [sandbox-rootfs]
+      summary: Launch the original never-run RootFS fork
+      description: |-
+        Binds the original authenticated caller and Idempotency-Key to a first
+        cold launch of the child at generation zero. Supply the original fork
+        operation and the child's observed filesystem, head and writer epoch.
+        The child must retain its original birth configuration, or its one
+        externally committed credential-free network isolation preparation;
+        all other fields and automatic-wake disablement must remain unchanged.
+        Memory forks and ordinary resumes are excluded. Retries must
+        keep the same key and conditions; never refresh them after uncertainty.
+        Requires sandbox:write. Admission is durable before node dispatch;
+        manager recovery continues the exact lifecycle after a timeout or lost
+        reply. No guest command or terminal is required. A 503 does not prove
+        that admission failed; use GET with the original key and conditions.
+        Completed history survives later lifecycles. Current only compares
+        the owner/lifecycle snapshot, not runtime health or a lease. Aborted
+        does not prove physical absence. This is not credential admission.
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/fork-launch
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+            pattern: '^[A-Za-z0-9._:-]+$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SandboxRootFSForkLaunchRequest"
+      responses:
+        "200":
+          description: Original launch observation; completed or logically aborted history may no longer be current
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxRootFSForkLaunchResponse"
+        "202":
+          description: Original first launch remains durably pending
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxRootFSForkLaunchResponse"
+        "400":
+          description: Malformed or missing original conditions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Required sandbox permission is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Owned child or original request not found; not cancellation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Original conditions or retained authority conflict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "429":
+          description: Active sandbox quota is exhausted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Control plane temporarily unavailable; preserve the original request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    get:
+      operationId: getSandboxRootFSForkLaunch
+      tags: [sandbox-rootfs]
+      summary: Read the original first fork launch result
+      description: |-
+        Binds the original authenticated caller and Idempotency-Key to a first
+        cold launch of the child at generation zero. Supply the original fork
+        operation and the child's observed filesystem, head and writer epoch.
+        The child must retain its original birth configuration, or its one
+        externally committed credential-free network isolation preparation;
+        all other fields and automatic-wake disablement must remain unchanged.
+        Memory forks and ordinary resumes are excluded. Retries must
+        keep the same key and conditions; never refresh them after uncertainty.
+        Requires sandbox:read. This is a read-only historical lookup and never
+        admits, retries, wakes or contacts a guest. A 404 is not cancellation.
+        Completed history survives later lifecycles. Current only compares
+        the owner/lifecycle snapshot, not runtime health or a lease. Aborted
+        does not prove physical absence. This is not credential admission.
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/fork-launch
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+            pattern: '^[A-Za-z0-9._:-]+$'
+        - name: fork_operation_id
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 512
+            pattern: '^[A-Za-z0-9._:-]+$'
+        - name: filesystem_id
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 512
+            pattern: '^[A-Za-z0-9._:-]+$'
+        - name: head_generation_id
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 512
+            pattern: '^[A-Za-z0-9._:-]+$'
+        - name: writer_epoch
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+            maximum: 9007199254740991
+      responses:
+        "200":
+          description: Original launch observation; completed or logically aborted history may no longer be current
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxRootFSForkLaunchResponse"
+        "400":
+          description: Malformed or missing original conditions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "403":
+          description: Required sandbox permission is missing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Owned child or original request not found; not cancellation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Original conditions or retained authority conflict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "429":
+          description: Active sandbox quota is exhausted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Control plane temporarily unavailable; preserve the original request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
   /api/v1/sandboxes/{id}/fork:
+    get:
+      operationId: getSandboxRootFSFork
+      tags: [sandbox-rootfs]
+      summary: Read original RootFS fork destination provenance
+      description: |-
+        Reads one external database observation for the original authenticated
+        caller, Idempotency-Key and source runtime generation, including zero.
+        Does not submit, retry, cancel or repair work, contact the guest or resume
+        a runtime. Requires sandbox:read. A 404 is not proof of cancellation.
+        Only RootFS forks qualify: memory forks are rejected. The child must
+        remain paused, never run, and retain its original claim and durable head.
+        Configuration must match birth or the one externally committed
+        credential-free network isolation preparation; other changes are rejected.
+        Running-source forks must retain their checkpoint
+        proof; paused-source forks must retain the source filesystem binding.
+        Later source generations or a retained source tombstone do not create
+        a new capture. This is not a credential-safety attestation or a state
+        reservation; subsequent mutations require their own identity conditions.
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/fork
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+            pattern: '^[A-Za-z0-9._:-]+$'
+        - name: expected_runtime_generation
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 0
+            maximum: 9007199254740991
+      responses:
+        "200":
+          description: The original committed fork child is unchanged and never run
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessSandboxRootFSForkObservationResponse"
+        "400":
+          description: Invalid generation or key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: Sandbox read permission is required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Owned sandbox or original fork not found; not proof of cancellation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Coordinates conflict, memory fork, or retained child evidence no longer matches
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Original fork pending or observation temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
     post:
       tags: [sandbox-rootfs]
       summary: Fork a sandbox
@@ -2165,7 +3722,7 @@ paths:
         source is forked from its current rootfs head. A running source is briefly
         barriered and checkpointed first; the source sandbox remains running after
         the fork operation completes. Set memory=true to retain execution state as
-        well. Memory forks require a stable Idempotency-Key. While capture or parent
+        well. Memory forks and requests with expected_runtime_generation require a stable Idempotency-Key. While capture or parent
         restoration is pending, retry 503 responses with that same key and request.
         A successful response always contains a committed paused child.
       security:
@@ -2180,7 +3737,7 @@ paths:
           schema:
             type: string
             maxLength: 255
-          description: Key for retrying the fork without creating a duplicate child sandbox. Required when memory=true; reuse it across pending responses and transport failures.
+          description: Key for retrying the fork without creating a duplicate child sandbox. Required when memory=true or expected_runtime_generation is supplied; reuse it and the original generation across pending responses and transport failures.
       requestBody:
         required: false
         content:
@@ -2346,6 +3903,395 @@ paths:
                 $ref: "#/components/schemas/SuccessRefreshResponse"
         "404":
           description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/managed-files:
+    get:
+      operationId: inspectSandboxManagedFiles
+      tags: [sandboxes]
+      summary: Inspect the current runtime-only managed file projection
+      description: Uses node-owned storage outside persistent RootFS without executing in the guest. This describes only managed files and does not attest that historical or user-created RootFS files contain no credentials.
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/managed-files
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - $ref: "#/components/parameters/ManagedFileRuntimeGeneration"
+      responses:
+        "200":
+          description: Exact runtime projection operation completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessManagedFilesStateResponse"
+        "400":
+          description: Invalid name, generation, sequence or content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: Sandbox read or write permission is required for this operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox or managed file not found. Only error.code managed_file_not_found identifies an absent file after verified backing and runtime custody; a generic 404 can mean an unsupported route and must not be treated as an empty credential.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Generation or mutation sequence changed, lifecycle is in progress, or the runtime has no managed projection. error.code managed_files_unsupported identifies the legacy layout requiring explicit migration; conflict identifies authority or sequence changes. Reconcile before another mutation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Exact external runtime authority is unavailable. A mutation may have consumed its sequence; inspect and read before retrying.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/managed-files/{name}:
+    get:
+      operationId: readSandboxManagedFile
+      tags: [sandboxes]
+      summary: Read a managed runtime file
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/managed-files/{name}
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - $ref: "#/components/parameters/ManagedFileRuntimeGeneration"
+        - $ref: "#/components/parameters/ManagedFileName"
+      responses:
+        "200":
+          description: Exact runtime projection operation completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessManagedFileReadResponse"
+        "400":
+          description: Invalid name, generation, sequence or content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: Sandbox read or write permission is required for this operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox or managed file not found. Only error.code managed_file_not_found identifies an absent file after verified backing and runtime custody; a generic 404 can mean an unsupported route and must not be treated as an empty credential.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Generation or mutation sequence changed, lifecycle is in progress, or the runtime has no managed projection. error.code managed_files_unsupported identifies the legacy layout requiring explicit migration; conflict identifies authority or sequence changes. Reconcile before another mutation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Exact external runtime authority is unavailable. A mutation may have consumed its sequence; inspect and read before retrying.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    put:
+      operationId: writeSandboxManagedFile
+      tags: [sandboxes]
+      summary: Replace a managed runtime file conditionally
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/managed-files/{name}
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - $ref: "#/components/parameters/ManagedFileRuntimeGeneration"
+        - $ref: "#/components/parameters/ManagedFileName"
+      description: The expected mutation sequence is consumed before file I/O. An ambiguous response must be reconciled with inspect/read; never automatically retry with a newly fetched sequence. The sequence orders platform requests, not native guest refreshes.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ManagedFileWriteRequest"
+      responses:
+        "200":
+          description: Exact runtime projection operation completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessManagedFilesStateResponse"
+        "400":
+          description: Invalid name, generation, sequence or content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: Sandbox read or write permission is required for this operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox or managed file not found. Only error.code managed_file_not_found identifies an absent file after verified backing and runtime custody; a generic 404 can mean an unsupported route and must not be treated as an empty credential.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Generation or mutation sequence changed, lifecycle is in progress, or the runtime has no managed projection. error.code managed_files_unsupported identifies the legacy layout requiring explicit migration; conflict identifies authority or sequence changes. Reconcile before another mutation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Exact external runtime authority is unavailable. A mutation may have consumed its sequence; inspect and read before retrying.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    delete:
+      operationId: deleteSandboxManagedFile
+      tags: [sandboxes]
+      summary: Delete a managed runtime file conditionally
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/managed-files/{name}
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - $ref: "#/components/parameters/ManagedFileRuntimeGeneration"
+        - $ref: "#/components/parameters/ManagedFileName"
+        - name: expected_mutation_sequence
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/ManagedFileMutationSequence"
+      description: Deletion consumes the expected sequence before I/O, including when the reply is lost. Inspect/read to reconcile ambiguous results before issuing a new mutation.
+      responses:
+        "200":
+          description: Exact runtime projection operation completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessManagedFilesStateResponse"
+        "400":
+          description: Invalid name, generation, sequence or content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: Sandbox read or write permission is required for this operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox or managed file not found. Only error.code managed_file_not_found identifies an absent file after verified backing and runtime custody; a generic 404 can mean an unsupported route and must not be treated as an empty credential.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Generation or mutation sequence changed, lifecycle is in progress, or the runtime has no managed projection. error.code managed_files_unsupported identifies the legacy layout requiring explicit migration; conflict identifies authority or sequence changes. Reconcile before another mutation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Exact external runtime authority is unavailable. A mutation may have consumed its sequence; inspect and read before retrying.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/managed-file-namespaces/{namespace}/{name}:
+    get:
+      operationId: readSandboxNamespacedManagedFile
+      tags: [sandboxes]
+      summary: Read a namespaced managed runtime file
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/managed-file-namespaces/{namespace}/{name}
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - $ref: "#/components/parameters/ManagedFileRuntimeGeneration"
+        - $ref: "#/components/parameters/ManagedFileName"
+        - $ref: "#/components/parameters/ManagedFileNamespace"
+      responses:
+        "200":
+          description: Exact runtime projection operation completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessManagedFileReadResponse"
+        "400":
+          description: Invalid name, generation, sequence or content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: Sandbox read or write permission is required for this operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox or managed file not found. Only error.code managed_file_not_found identifies an absent file after verified backing and runtime custody; a generic 404 can mean an unsupported route and must not be treated as an empty credential.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Generation or mutation sequence changed, lifecycle is in progress, or the runtime has no managed projection. error.code managed_files_unsupported identifies the legacy layout requiring explicit migration; conflict identifies authority or sequence changes. Reconcile before another mutation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Exact external runtime authority is unavailable. A mutation may have consumed its sequence; inspect and read before retrying.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    put:
+      operationId: writeSandboxNamespacedManagedFile
+      tags: [sandboxes]
+      summary: Replace a namespaced managed runtime file conditionally
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/managed-file-namespaces/{namespace}/{name}
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - $ref: "#/components/parameters/ManagedFileRuntimeGeneration"
+        - $ref: "#/components/parameters/ManagedFileName"
+        - $ref: "#/components/parameters/ManagedFileNamespace"
+      description: The expected mutation sequence is consumed before file I/O. An ambiguous response must be reconciled with inspect/read; never automatically retry with a newly fetched sequence. The sequence orders platform requests, not native guest refreshes.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ManagedFileWriteRequest"
+      responses:
+        "200":
+          description: Exact runtime projection operation completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessManagedFilesStateResponse"
+        "400":
+          description: Invalid name, generation, sequence or content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: Sandbox read or write permission is required for this operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox or managed file not found. Only error.code managed_file_not_found identifies an absent file after verified backing and runtime custody; a generic 404 can mean an unsupported route and must not be treated as an empty credential.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Generation or mutation sequence changed, lifecycle is in progress, or the runtime has no managed projection. error.code managed_files_unsupported identifies the legacy layout requiring explicit migration; conflict identifies authority or sequence changes. Reconcile before another mutation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Exact external runtime authority is unavailable. A mutation may have consumed its sequence; inspect and read before retrying.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    delete:
+      operationId: deleteSandboxNamespacedManagedFile
+      tags: [sandboxes]
+      summary: Delete a namespaced managed runtime file conditionally
+      security:
+        - bearerAuth: []
+      x-upstream-service: manager
+      x-upstream-path: /api/v1/sandboxes/{id}/managed-file-namespaces/{namespace}/{name}
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - $ref: "#/components/parameters/ManagedFileRuntimeGeneration"
+        - $ref: "#/components/parameters/ManagedFileName"
+        - $ref: "#/components/parameters/ManagedFileNamespace"
+        - name: expected_mutation_sequence
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/ManagedFileMutationSequence"
+      description: Deletion consumes the expected sequence before I/O, including when the reply is lost. Inspect/read to reconcile ambiguous results before issuing a new mutation.
+      responses:
+        "200":
+          description: Exact runtime projection operation completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessManagedFilesStateResponse"
+        "400":
+          description: Invalid name, generation, sequence or content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: Sandbox read or write permission is required for this operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Sandbox or managed file not found. Only error.code managed_file_not_found identifies an absent file after verified backing and runtime custody; a generic 404 can mean an unsupported route and must not be treated as an empty credential.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Generation or mutation sequence changed, lifecycle is in progress, or the runtime has no managed projection. error.code managed_files_unsupported identifies the legacy layout requiring explicit migration; conflict identifies authority or sequence changes. Reconcile before another mutation.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: Exact external runtime authority is unavailable. A mutation may have consumed its sequence; inspect and read before retrying.
           content:
             application/json:
               schema:
@@ -2885,6 +4831,151 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SuccessExecutionSessionResponse"
+  /api/v1/sandboxes/{id}/sessions/conditional/lookup:
+    get:
+      tags: [sessions]
+      summary: Find a conditional session by its original creation key
+      description: >-
+        Read-only receipt lookup in an exact currently running generation. Never
+        auto-resumes, creates a session, starts an attempt or repairs state. Both
+        the gateway and supervisor verify the sandbox and runtime generation.
+        Only conditional creations are eligible. A session_not_found response
+        means that key was absent at observation time, not permission to create
+        or proof that an earlier request cannot still finish. Other 404 replies
+        may indicate unsupported servers. Clients must not fall back to ordinary
+        queries or creation. The returned receipt is not lifecycle/storage
+        authority, current credential admission, or permission to attach later.
+        For a memory-restored original attempt, explicitly supply an earlier
+        creation_runtime_generation. Omission retains same-generation semantics.
+        The supervisor requires the exact original conditional creation and a
+        still-running attempt from that origin in the requested current runtime.
+        This does not verify external memory lineage or credential qualification;
+        applications must verify those independently before adoption. Never use
+        failure as permission to create a new attempt or fall back to cold restart.
+      security:
+        - bearerAuth: []
+      x-upstream-service: procd
+      x-upstream-path: /api/v1/sessions/conditional/lookup
+      parameters:
+        - name: creation_runtime_generation
+          in: query
+          required: false
+          description: Explicit origin for a restored original attempt; must be less than runtime_generation. Omit for ordinary same-generation lookup or attachment.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+        - $ref: "#/components/parameters/SandboxID"
+        - name: runtime_generation
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+        - name: Idempotency-Key
+          in: header
+          required: true
+          description: The original conditional creation key; lookup does not submit it.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+      responses:
+        "200":
+          description: Existing conditional session observed in the specified generation
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                enum: [no-store]
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessExecutionSessionResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: NotFound
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Runtime unavailable, identity changed, or key belongs to another creation identity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "503":
+          description: External routing or supervisor is unavailable; no state changed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /api/v1/sandboxes/{id}/sessions/conditional:
+    post:
+      tags: [sessions]
+      summary: Create an execution session in an exact runtime generation
+      description: >-
+        Requires a currently running sandbox with the exact sandbox identity and
+        runtime generation. Never auto-resumes. The gateway checks regional state
+        and the supervisor checks identity atomically through initial process
+        startup. A stale idempotent retry fails after runtime replacement. This
+        condition governs creation; the session lifecycle policy still governs
+        later attempts and recovery. Older servers return an unsupported route;
+        clients must not fall back to unconditional creation.
+      security:
+        - bearerAuth: []
+      x-upstream-service: procd
+      x-upstream-path: /api/v1/sessions/conditional
+      parameters:
+        - $ref: "#/components/parameters/SandboxID"
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+          description: Stable creation identity; reuse only with the exact request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConditionalExecutionSessionRequest"
+      responses:
+        "200":
+          description: Existing session returned for an exact idempotent retry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessExecutionSessionResponse"
+        "201":
+          description: Execution session created in the requested runtime
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessExecutionSessionResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          description: Runtime unavailable, identity changed, or idempotency conflict; never auto-resumed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
   /api/v1/sandboxes/{id}/sessions/{session_id}:
     get:
       tags: [sessions]
@@ -3182,6 +5273,90 @@ paths:
             format: int64
             minimum: 0
       responses:
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "101":
+          description: Switching Protocols
+  /api/v1/sandboxes/{id}/sessions/{session_id}/conditional/ws:
+    get:
+      tags: [sessions]
+      summary: Attach to one conditional execution session attempt
+      description: |
+        Requires the original conditional creation key, exact runtime generation and attempt.
+        Never resumes, creates or falls back to an ordinary attachment. A generation change
+        revokes the connection; every control message rechecks identity. Replay excludes
+        other attempts. Closing the socket does not stop the process or close its input.
+        This is process control, not lifecycle, storage or credential admission.
+        For a memory-restored original attempt, explicitly supply an earlier
+        creation_runtime_generation. Omission retains same-generation semantics.
+        The supervisor requires the exact original conditional creation and a
+        still-running attempt from that origin in the requested current runtime.
+        This does not verify external memory lineage or credential qualification;
+        applications must verify those independently before adoption. Never use
+        failure as permission to create a new attempt or fall back to cold restart.
+      security:
+        - bearerAuth: []
+      x-upstream-service: procd
+      x-upstream-path: /api/v1/sessions/{session_id}/conditional/ws
+      x-websocket:
+        inbound:
+          $ref: "#/components/schemas/ExecutionSessionWebSocketRequest"
+        outbound:
+          $ref: "#/components/schemas/ExecutionSessionWebSocketResponse"
+      parameters:
+        - name: creation_runtime_generation
+          in: query
+          required: false
+          description: Explicit origin for a restored original attempt; must be less than runtime_generation. Omit for ordinary same-generation lookup or attachment.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+        - $ref: "#/components/parameters/SandboxID"
+        - $ref: "#/components/parameters/SessionID"
+        - name: Idempotency-Key
+          in: header
+          required: true
+          description: Original conditional creation key.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: runtime_generation
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+        - name: attempt_id
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+        - name: after
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+            minimum: 0
+      responses:
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          description: Session or conditional attachment endpoint does not exist. Do not fall back.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "409":
+          description: Conditional creation, runtime or attempt identity differs or is unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "101":
@@ -3773,6 +5948,35 @@ components:
       scheme: bearer
       bearerFormat: JWT
   parameters:
+    ManagedFileRuntimeGeneration:
+      name: runtime_generation
+      in: query
+      required: true
+      description: Exact current runtime generation to access; never auto-resumes a sandbox.
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+    ManagedFileNamespace:
+      name: namespace
+      in: path
+      required: true
+      description: Single directory within the runtime projection. Writes create a missing directory on the same tmpfs; reads never create it. Names must be ASCII, excluding dot, dot-dot and the reserved .s0-write- prefix. Symlinks, submounts and directory replacement during access fail closed. Requires a namespace-capable node; never falls back to the root directory. The mutation sequence is shared across all directories.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        pattern: '^[A-Za-z0-9._-]+$'
+    ManagedFileName:
+      name: name
+      in: path
+      required: true
+      description: One ASCII file name; dot, dot-dot and the reserved .s0-write- prefix are rejected. No guest or host paths are accepted.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+        pattern: '^[A-Za-z0-9._-]+$'
     SandboxID:
       name: id
       in: path
@@ -3887,6 +6091,120 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorEnvelope"
   schemas:
+    SandboxMemoryOperation:
+      type: object
+      additionalProperties: false
+      required: [sandbox_id, operation_id, checkpoint_id, action, from_runtime_generation, lifecycle_epoch, state, current]
+      properties:
+        sandbox_id:
+          type: string
+        operation_id:
+          type: string
+          description: Authenticated caller request ID, never the internal restore worker operation ID.
+          pattern: '^idem-[a-f0-9]{64}$'
+        checkpoint_id:
+          type: string
+          minLength: 1
+          maxLength: 256
+        action:
+          type: string
+          enum: [pause, resume]
+        from_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+        lifecycle_epoch:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9007199254740991
+          description: Original operation epoch. Bind subsequent current-identity checks to this epoch; current is only a read snapshot.
+        result_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9007199254740991
+          description: Present only for completed or physically resolved failed resume; equals source plus one in both cases.
+        state:
+          type: string
+          enum: [pending, completed, canceled, failed]
+        reason:
+          type: string
+          enum: [before_capture, capture_failed, before_restore, restore_failed]
+          description: Present only for canceled or failed. A failed capture never attests that the source survived.
+        current:
+          type: boolean
+          description: Whether this terminal result still matches the owner snapshot. False for pending and capture failure. Never a new lease or execution authorization.
+    SuccessSandboxMemoryOperationResponse:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          $ref: '#/components/schemas/SandboxMemoryOperation'
+    ManagedFileMutationSequence:
+      type: string
+      pattern: '^(0|[1-9][0-9]{0,19})$'
+      description: Canonical decimal uint64 platform mutation counter. It is not a content hash and does not change on native guest writes.
+    ManagedFilesState:
+      type: object
+      required: [runtime_generation, mutation_sequence, size_bytes, guest_path]
+      properties:
+        runtime_generation:
+          type: integer
+          format: int64
+        mutation_sequence:
+          $ref: "#/components/schemas/ManagedFileMutationSequence"
+        size_bytes:
+          type: integer
+          format: int64
+          description: Capacity of this runtime's node-owned noswap tmpfs; excluded from durable RootFS.
+        guest_path:
+          type: string
+          enum: [/run/sandbox0/credentials]
+          description: Initial guest bind path. Guest pivot or mount changes do not redirect platform writes.
+    ManagedFileReadResponse:
+      allOf:
+        - $ref: "#/components/schemas/ManagedFilesState"
+        - type: object
+          required: [content]
+          properties:
+            content:
+              type: string
+              format: byte
+              maxLength: 5592408
+              description: Base64-encoded file bytes, at most 4 MiB decoded. Treat as sensitive and do not log.
+    ManagedFileWriteRequest:
+      type: object
+      additionalProperties: false
+      required: [expected_mutation_sequence, content]
+      properties:
+        expected_mutation_sequence:
+          $ref: "#/components/schemas/ManagedFileMutationSequence"
+        content:
+          type: string
+          format: byte
+          maxLength: 5592408
+          description: Base64-encoded file bytes, at most 4 MiB decoded. Empty content is permitted.
+    SuccessManagedFilesStateResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          required: [data]
+          properties:
+            data:
+              $ref: "#/components/schemas/ManagedFilesState"
+    SuccessManagedFileReadResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          required: [data]
+          properties:
+            data:
+              $ref: "#/components/schemas/ManagedFileReadResponse"
     Error:
       type: object
       properties:
@@ -5448,6 +7766,24 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/Sandbox"
+    CaptureSandboxRootFSSnapshotRequest:
+      type: object
+      additionalProperties: false
+      required: [expected_runtime_generation]
+      properties:
+        expected_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9007199254740991
+          description: Exact source runtime generation; retries bind the originally admitted generation.
+        name:
+          type: string
+        description:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
     CreateSandboxRootFSSnapshotRequest:
       type: object
       description: |
@@ -5469,6 +7805,11 @@ components:
           type: string
         sandbox_id:
           type: string
+        generation_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+          description: Immutable storage generation captured by this snapshot. Use this exact value as snapshot_generation_id for conditional recovery; never substitute the sandbox's current head. May be absent on older servers, which cannot supply a conditional recovery target.
         name:
           type: string
         description:
@@ -5507,10 +7848,170 @@ components:
         status:
           $ref: "#/components/schemas/SandboxLifecycleStatus"
       required: [sandbox_id, snapshot_id, status]
+    SandboxRootFSForkLaunchRequest:
+      type: object
+      additionalProperties: false
+      required: [fork_operation_id, filesystem_id, head_generation_id, writer_epoch]
+      properties:
+        fork_operation_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+          pattern: '^[A-Za-z0-9._:-]+$'
+        filesystem_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+          pattern: '^[A-Za-z0-9._:-]+$'
+        head_generation_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+          pattern: '^[A-Za-z0-9._:-]+$'
+        writer_epoch:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9007199254740991
+    SandboxRootFSForkLaunch:
+      type: object
+      additionalProperties: false
+      required: [operation_id, sandbox_id, fork_operation_id, filesystem_id, head_generation_id, writer_epoch, lifecycle_epoch, runtime_generation, state, current]
+      properties:
+        operation_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+        sandbox_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+        fork_operation_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+        filesystem_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+        head_generation_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+        writer_epoch:
+          description: Original pre-admission writer epoch, not a current writer lease
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9007199254740991
+        lifecycle_epoch:
+          type: integer
+          format: int64
+          enum: [1]
+        runtime_generation:
+          description: Zero while pending or aborted; one when completed
+          type: integer
+          format: int64
+          enum: [0, 1]
+        state:
+          type: string
+          enum: [pending, completed, aborted]
+        current:
+          type: boolean
+        launch_digest:
+          description: Present only for completed history; digest of retained external launch proof
+          type: string
+          pattern: '^[a-f0-9]{64}$'
+        completed_at:
+          description: Present only for completed history
+          type: string
+          format: date-time
+    SuccessSandboxRootFSForkLaunchResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          required: [data]
+          properties:
+            data:
+              $ref: "#/components/schemas/SandboxRootFSForkLaunch"
+    SandboxRootFSForkObservation:
+      type: object
+      additionalProperties: false
+      required: [operation_id, source_sandbox_id, target_sandbox_id, source_runtime_generation, source_filesystem_id, source_head_generation_id, target_filesystem_id, target_head_generation_id, base_artifact_digest, source_oci_digest, writer_epoch, managed_files_size_bytes, auto_resume, automatic_routes, sandbox_created_at, filesystem_created_at, observed_at]
+      properties:
+        operation_id:
+          type: string
+          minLength: 1
+        source_sandbox_id:
+          type: string
+          minLength: 1
+        target_sandbox_id:
+          type: string
+          minLength: 1
+        source_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+        source_filesystem_id:
+          type: string
+          minLength: 1
+        source_head_generation_id:
+          type: string
+          minLength: 1
+        target_filesystem_id:
+          type: string
+          minLength: 1
+        target_head_generation_id:
+          type: string
+          minLength: 1
+        base_artifact_digest:
+          type: string
+          minLength: 1
+        source_oci_digest:
+          type: string
+          minLength: 1
+        writer_epoch:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9007199254740991
+        managed_files_size_bytes:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+        auto_resume:
+          type: boolean
+        automatic_routes:
+          type: boolean
+        sandbox_created_at:
+          type: string
+          format: date-time
+        filesystem_created_at:
+          type: string
+          format: date-time
+        observed_at:
+          type: string
+          format: date-time
+    SuccessSandboxRootFSForkObservationResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          required: [data]
+          properties:
+            data:
+              $ref: "#/components/schemas/SandboxRootFSForkObservation"
     ForkSandboxRequest:
       type: object
       additionalProperties: false
       properties:
+        expected_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9007199254740991
+          description: Optional exact source runtime generation. Requires a stable Idempotency-Key. First admission checks the source under its lifecycle lock; retries compare the original accepted capture, even after the parent resumes. Zero is valid for a never-run paused source. With memory=true the value must be below the maximum. Keep the original value and key after an uncertain response.
         memory:
           type: boolean
           default: false
@@ -5525,6 +8026,9 @@ components:
       type: object
       additionalProperties: false
       properties:
+        auto_resume:
+          type: boolean
+          description: Override automatic resume for the child at creation. Omit to inherit the source setting. False also disables resume on all inherited ingress routes atomically; the child still permits an explicit resume. Retries with the same Idempotency-Key must retain any explicit override.
         ttl:
           type: integer
           format: int32
@@ -6219,17 +8723,596 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/SandboxRuntimeMetricsCatalogResponse"
-    SandboxExecutionStateRequest:
+    SandboxHealthObservation:
+      type: object
+      additionalProperties: false
+      required: [state, reason, source, observed_at]
+      properties:
+        state:
+          type: string
+          enum: [available, unavailable, unknown]
+          x-enum-varnames: [HealthAvailable, HealthUnavailable, HealthUnknown]
+        reason:
+          type: string
+          enum: [launch_unobserved, runtime_liveness_unobserved, rootfs_identity_uninitialized, writer_unobserved, storage_io_unobserved, runtime_unavailable_for_diagnostics, rootfs_identity_present, lifecycle_transition, runtime_not_requested, runtime_slot_missing, runtime_slot_inactive, runtime_heartbeat_expired, external_launch_unverified, external_launch_authority_present, current_writer_lease_present, current_writer_lease_unverified, diagnostic_probe_busy, diagnostic_runtime_changed, external_runtime_unavailable, diagnostics_not_configured, diagnostic_address_unavailable, diagnostic_auth_unavailable, guest_diagnostics_unavailable, command_completed, command_start_failed, command_failed, probe_timeout, probe_canceled, runsc_running, runsc_stopped, runsc_absent, runsc_unavailable, runtime_identity_changed]
+          x-enum-varnames: [HealthReasonLaunchUnobserved, HealthReasonRuntimeLivenessUnobserved, HealthReasonRootfsIdentityUninitialized, HealthReasonWriterUnobserved, HealthReasonStorageIoUnobserved, HealthReasonRuntimeUnavailableForDiagnostics, HealthReasonRootfsIdentityPresent, HealthReasonLifecycleTransition, HealthReasonRuntimeNotRequested, HealthReasonRuntimeSlotMissing, HealthReasonRuntimeSlotInactive, HealthReasonRuntimeHeartbeatExpired, HealthReasonExternalLaunchUnverified, HealthReasonExternalLaunchAuthorityPresent, HealthReasonCurrentWriterLeasePresent, HealthReasonCurrentWriterLeaseUnverified, HealthReasonDiagnosticProbeBusy, HealthReasonDiagnosticRuntimeChanged, HealthReasonExternalRuntimeUnavailable, HealthReasonDiagnosticsNotConfigured, HealthReasonDiagnosticAddressUnavailable, HealthReasonDiagnosticAuthUnavailable, HealthReasonGuestDiagnosticsUnavailable, HealthReasonCommandCompleted, HealthReasonCommandStartFailed, HealthReasonCommandFailed, HealthReasonProbeTimeout, HealthReasonProbeCanceled, HealthReasonRunscRunning, HealthReasonRunscStopped, HealthReasonRunscAbsent, HealthReasonRunscUnavailable, HealthReasonRuntimeIdentityChanged]
+          description: Fixed explanation code; no raw backend error or guest output.
+        source:
+          type: string
+          enum: [none, regional_authority, node_runtime, guest_diagnostic]
+          x-enum-varnames: [HealthSourceNone, HealthSourceRegionalAuthority, HealthSourceNodeRuntime, HealthSourceGuestDiagnostic]
+          description: Evidence origin. Guest evidence and its clock are workload-controlled and advisory.
+        observed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Original observation time, including cached guest observations; null when unobserved.
+    SandboxRuntimeHealth:
+      type: object
+      additionalProperties: false
+      required: [launch_authority, liveness]
+      properties:
+        launch_authority:
+          $ref: "#/components/schemas/SandboxHealthObservation"
+        liveness:
+          $ref: "#/components/schemas/SandboxHealthObservation"
+    SandboxStorageHealth:
+      type: object
+      additionalProperties: false
+      required: [identity, writer_authority, io]
+      properties:
+        identity:
+          $ref: "#/components/schemas/SandboxHealthObservation"
+        writer_authority:
+          $ref: "#/components/schemas/SandboxHealthObservation"
+        io:
+          $ref: "#/components/schemas/SandboxHealthObservation"
+    SandboxHealth:
+      type: object
+      additionalProperties: false
+      required: [sandbox_id, runtime_generation, lifecycle_epoch, desired_state, active_lifecycle, observed_at, runtime, execution, terminal, storage]
+      properties:
+        sandbox_id:
+          type: string
+          minLength: 1
+        runtime_generation:
+          type: integer
+          format: int64
+          minimum: 0
+        lifecycle_epoch:
+          type: integer
+          format: int64
+          minimum: 0
+        desired_state:
+          type: string
+          enum: [active, paused, terminated]
+          x-enum-varnames: [HealthDesiredActive, HealthDesiredPaused, HealthDesiredTerminated]
+        active_lifecycle:
+          type: boolean
+        observed_at:
+          type: string
+          format: date-time
+          description: Latest regional authority snapshot time; individual checks retain their own observation time.
+        runtime:
+          $ref: "#/components/schemas/SandboxRuntimeHealth"
+        execution:
+          $ref: "#/components/schemas/SandboxHealthObservation"
+        terminal:
+          $ref: "#/components/schemas/SandboxHealthObservation"
+        storage:
+          $ref: "#/components/schemas/SandboxStorageHealth"
+    SuccessSandboxHealthResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          required: [data]
+          properties:
+            data:
+              $ref: "#/components/schemas/SandboxHealth"
+    SandboxMemoryRestorationStep:
+      type: object
+      additionalProperties: false
+      required:
+      - operation_id
+      - capture_operation_id
+      - from_runtime_generation
+      - to_runtime_generation
+      - restore_id
+      - managed_files_size_bytes
+      properties:
+        operation_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+        capture_operation_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+        from_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+        to_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+        restore_id:
+          type: string
+          pattern: ^[a-f0-9]{64}$
+          description: Opaque committed restore identity, never an execution grant.
+        managed_files_size_bytes:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 67108864
+          description: Zero for a legacy image without managed-file projection. Nonzero means the exact projected
+            backing was required by the restored assignment.
+    SandboxMemoryRestoration:
+      type: object
+      additionalProperties: false
+      required:
+      - sandbox_id
+      - runtime_generation
+      - runtime_compatibility_digest
+      - filesystem_id
+      - steps
+      - observed_at
+      properties:
+        sandbox_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+        runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+        runtime_compatibility_digest:
+          type: string
+          pattern: ^sha256:[a-f0-9]{64}$
+        filesystem_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+        steps:
+          type: array
+          minItems: 1
+          maxItems: 64
+          items:
+            $ref: '#/components/schemas/SandboxMemoryRestorationStep'
+          description: Oldest to newest contiguous memory restorations. Capture generation can precede failed
+            restore attempts; do not infer from generation + 1. Bind the first capture generation to owned
+            publication/session history.
+        observed_at:
+          type: string
+          format: date-time
+    SuccessSandboxMemoryRestorationResponse:
+      type: object
+      required:
+      - success
+      - data
+      properties:
+        success:
+          type: boolean
+          enum:
+          - true
+        data:
+          $ref: '#/components/schemas/SandboxMemoryRestoration'
+    SandboxRootFSIdentity:
+      type: object
+      additionalProperties: false
+      required: [sandbox_id, runtime_generation, lifecycle_epoch, desired_state, managed_files_size_bytes, filesystem_id, head_generation_id, writer_epoch, base_artifact_digest, source_oci_digest, has_imported_filesystem, active_lifecycle, sandbox_created_at, filesystem_created_at, observed_at]
+      properties:
+        sandbox_id:
+          type: string
+          minLength: 1
+          description: Observed sandbox identity.
+        runtime_generation:
+          type: integer
+          format: int64
+          minimum: 0
+          description: Exact runtime generation at observation; zero is possible before first launch.
+        lifecycle_epoch:
+          type: integer
+          format: int64
+          minimum: 0
+          description: Control-plane lifecycle epoch at observation.
+        desired_state:
+          type: string
+          minLength: 1
+          enum: [active, paused, terminated]
+          x-enum-varnames: [RootFSIdentityActive, RootFSIdentityPaused, RootFSIdentityTerminated]
+          description: Requested lifecycle state, not a guest health result.
+        managed_files_size_bytes:
+          type: integer
+          format: int64
+          minimum: 0
+          description: Assigned external credential projection capacity; zero means legacy layout. Capacity is not credential safety evidence.
+        filesystem_id:
+          type: string
+          minLength: 1
+          description: Opaque durable filesystem identity.
+        head_generation_id:
+          type: string
+          minLength: 1
+          description: Last committed RootFS generation; live uncommitted writes are not represented.
+        writer_epoch:
+          type: integer
+          format: int64
+          minimum: 0
+          description: Durable writer fence epoch; this does not prove a writer is currently alive.
+        base_artifact_digest:
+          type: string
+          minLength: 1
+          description: Immutable base artifact digest.
+        source_oci_digest:
+          type: string
+          minLength: 1
+          description: Immutable OCI source digest of the committed head.
+        runtime_compatibility_digest:
+          type: string
+          pattern: '^sha256:[a-f0-9]{64}$'
+          description: Immutable runtime scheduling-class digest from the current active slot and matching external launch proof. Omitted during lifecycle transitions or when launch authority is absent, stale or mismatched. Binds the admitted runsc version and execution configuration; it is not a live Sentry observation or credential-safety attestation.
+        retained_runtime_compatibility_digest:
+          type: string
+          pattern: '^sha256:[a-f0-9]{64}$'
+          description: Runtime scheduling class of the exact retained external launch for recovery preflight, even after driver or writer lease expiry. Requires matching current sandbox generation, filesystem head/writer epoch, consumed writer grant and unreleased active resource lease. Omitted when that custody is absent, superseded, retired or transitioning. Does not establish current execution, permit ordinary credential access or authorize restart by itself; explicit restart still binds and fences the source before final capture.
+        has_imported_filesystem:
+          type: boolean
+          description: True for retained import ancestry or a head owned by another filesystem. False alone never proves pristine or credential-clean history.
+        active_lifecycle:
+          type: boolean
+          description: A lifecycle transaction was in progress at observation.
+        sandbox_created_at:
+          type: string
+          format: date-time
+          description: Control-plane sandbox creation time.
+        filesystem_created_at:
+          type: string
+          format: date-time
+          description: Durable filesystem creation time.
+        observed_at:
+          type: string
+          format: date-time
+          description: Database statement observation timestamp.
+    SuccessSandboxRootFSIdentityResponse:
+      allOf:
+        - $ref: "#/components/schemas/SuccessEnvelope"
+        - type: object
+          required: [data]
+          properties:
+            data:
+              $ref: "#/components/schemas/SandboxRootFSIdentity"
+    SandboxRestartFinalCapture:
+      type: object
+      additionalProperties: false
+      required:
+      - operation_id
+      - sandbox_id
+      - from_runtime_generation
+      - state
+      properties:
+        operation_id:
+          type: string
+        sandbox_id:
+          type: string
+        from_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+        state:
+          type: string
+          enum:
+          - pending
+          - stopped
+          - acknowledged
+          - released
+          x-enum-varnames:
+          - RestartCapturePending
+          - RestartCaptureStopped
+          - RestartCaptureAcknowledged
+          - RestartCaptureReleased
+        capture_id:
+          type: string
+          pattern: ^[a-f0-9]{64}$
+          description: Opaque immutable stopped-source identity, absent only while pending. No credential-content digest.
+        stopped_at:
+          type: string
+          format: date-time
+        receipt_id:
+          type: string
+          pattern: ^[A-Za-z0-9._:-]{1,255}$
+          description: Committed owner receipt, present only after acknowledgement.
+    SandboxRestartFinalCaptureAcknowledgement:
+      type: object
+      additionalProperties: false
+      required:
+      - capture_id
+      - receipt_id
+      properties:
+        capture_id:
+          type: string
+          pattern: ^[a-f0-9]{64}$
+        receipt_id:
+          type: string
+          pattern: ^[A-Za-z0-9._:-]{1,255}$
+    SandboxRestartFinalCaptureFile:
+      type: object
+      additionalProperties: false
+      required:
+      - operation_id
+      - capture_id
+      - runtime_generation
+      - mutation_sequence
+      - size_bytes
+      - found
+      - content
+      properties:
+        operation_id:
+          type: string
+        capture_id:
+          type: string
+          pattern: ^[a-f0-9]{64}$
+        runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+        mutation_sequence:
+          type: string
+          pattern: ^(0|[1-9][0-9]*)$
+        size_bytes:
+          type: integer
+          format: int64
+          minimum: 1048576
+          maximum: 67108864
+        found:
+          type: boolean
+        content:
+          type: string
+          format: byte
+          description: Base64 content, at most 4 MiB decoded. Empty when found=false; found=true also permits an empty
+            file. Never log or persist this response without owner encryption.
+    SuccessSandboxRestartFinalCaptureResponse:
+      type: object
+      required:
+      - success
+      - data
+      properties:
+        success:
+          type: boolean
+          enum:
+          - true
+        data:
+          $ref: '#/components/schemas/SandboxRestartFinalCapture'
+    SuccessSandboxRestartFinalCaptureFileResponse:
+      type: object
+      required:
+      - success
+      - data
+      properties:
+        success:
+          type: boolean
+          enum:
+          - true
+        data:
+          $ref: '#/components/schemas/SandboxRestartFinalCaptureFile'
+    SandboxRestartRequest:
+      type: object
+      additionalProperties: false
+      required: [expected_runtime_generation]
+      properties:
+        expected_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9223372036854775806
+          description: Exact observed source runtime generation. Zero is allowed for a never-run paused sandbox. A changed source requires a new explicit request, never an automatic retry with a fresh generation.
+    SandboxSnapshotRestoreRequest:
+      type: object
+      additionalProperties: false
+      required: [expected_runtime_generation, snapshot_id, snapshot_generation_id, discard_process_state]
+      properties:
+        expected_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9007199254740990
+        snapshot_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+          pattern: '^\S(?:.*\S)?$'
+        snapshot_generation_id:
+          type: string
+          minLength: 1
+          maxLength: 512
+          pattern: '^\S(?:.*\S)?$'
+        discard_process_state:
+          type: boolean
+          enum: [true]
+          description: Explicit acknowledgement that old processes end and the selected snapshot replaces the current writable RootFS.
+    SandboxSnapshotRestoreOperation:
+      type: object
+      additionalProperties: false
+      required: [id, sandbox_id, request_key, from_runtime_generation, state, created_at, updated_at, snapshot_id, snapshot_generation_id, discard_process_state]
+      properties:
+        snapshot_id:
+          type: string
+          description: Immutable snapshot selected when the operation was admitted; it may since have expired or been deleted.
+        snapshot_generation_id:
+          type: string
+          description: Exact snapshot generation fixed at admission.
+        discard_process_state:
+          type: boolean
+          enum: [true]
+        restored_rootfs_generation_id:
+          type: string
+          description: Present after the head replacement and cold resume child commit together. This alone does not prove the new runtime launched.
+        id:
+          type: string
+        sandbox_id:
+          type: string
+        request_key:
+          type: string
+        from_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9007199254740990
+        state:
+          type: string
+          enum: [pausing, paused, resuming, succeeded, superseded, failed]
+          x-enum-varnames: [SandboxSnapshotRestoreStatePausing, SandboxSnapshotRestoreStatePaused, SandboxSnapshotRestoreStateResuming, SandboxSnapshotRestoreStateSucceeded, SandboxSnapshotRestoreStateSuperseded, SandboxSnapshotRestoreStateFailed]
+          description: Paused means an admitted paused source awaiting resume; only succeeded proves replacement. Failed and superseded are terminal and are never replayed.
+        result_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+          description: Present only after committed replacement, even if a later lifecycle changes the current runtime.
+        reason:
+          type: string
+          enum: [source_changed, pause_aborted, resume_aborted]
+          x-enum-varnames: [SandboxSnapshotRestoreReasonSourceChanged, SandboxSnapshotRestoreReasonPauseAborted, SandboxSnapshotRestoreReasonResumeAborted]
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        finished_at:
+          type: string
+          format: date-time
+        retry:
+          $ref: "#/components/schemas/SandboxRestartRetryObservation"
+    SuccessSandboxSnapshotRestoreOperationResponse:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          $ref: "#/components/schemas/SandboxSnapshotRestoreOperation"
+    SandboxRestartOperation:
+      type: object
+      additionalProperties: false
+      required: [id, sandbox_id, request_key, from_runtime_generation, state, created_at, updated_at]
+      properties:
+        id:
+          type: string
+        sandbox_id:
+          type: string
+        request_key:
+          type: string
+        from_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 0
+        state:
+          type: string
+          enum: [pausing, paused, resuming, succeeded, superseded, failed]
+          x-enum-varnames: [SandboxRestartStatePausing, SandboxRestartStatePaused, SandboxRestartStateResuming, SandboxRestartStateSucceeded, SandboxRestartStateSuperseded, SandboxRestartStateFailed]
+          description: Paused means an admitted paused source awaiting resume; only succeeded proves replacement. Failed and superseded are terminal and are never replayed.
+        result_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+          description: Present only after committed replacement, even if a later lifecycle changes the current runtime.
+        reason:
+          type: string
+          enum: [source_changed, pause_aborted, resume_aborted]
+          x-enum-varnames: [SandboxRestartReasonSourceChanged, SandboxRestartReasonPauseAborted, SandboxRestartReasonResumeAborted]
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        finished_at:
+          type: string
+          format: date-time
+        retry:
+          $ref: "#/components/schemas/SandboxRestartRetryObservation"
+    SandboxRestartRetryObservation:
+      type: object
+      additionalProperties: false
+      required: [attempts]
+      properties:
+        attempts:
+          type: integer
+          format: int64
+          minimum: 0
+        observed_at:
+          type: string
+          format: date-time
+        observed_stage:
+          type: string
+          enum: [pausing, paused, resuming, succeeded, superseded, failed]
+          x-enum-varnames: [SandboxRestartObservedPausing, SandboxRestartObservedPaused, SandboxRestartObservedResuming, SandboxRestartObservedSucceeded, SandboxRestartObservedSuperseded, SandboxRestartObservedFailed]
+        next_attempt_at:
+          type: string
+          format: date-time
+        blocked_reason:
+          type: string
+          enum: [retirement_pending, quota_exceeded, capacity_unavailable, runtime_unavailable, storage_not_writable, attempt_timed_out, control_plane_unavailable, launch_pending]
+          x-enum-varnames: [SandboxRestartBlockedRetirementPending, SandboxRestartBlockedQuotaExceeded, SandboxRestartBlockedCapacityUnavailable, SandboxRestartBlockedRuntimeUnavailable, SandboxRestartBlockedStorageNotWritable, SandboxRestartBlockedAttemptTimedOut, SandboxRestartBlockedControlPlaneUnavailable, SandboxRestartBlockedLaunchPending]
+          description: Fixed diagnostic code for the current stage. storage_not_writable means the host could not provide a writable RootFS and does not identify the underlying cause or authorize repair. No raw node errors, credentials, or topology are exposed.
+    SuccessSandboxRestartOperationResponse:
+      type: object
+      required: [success, data]
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+        data:
+          $ref: "#/components/schemas/SandboxRestartOperation"
+    SandboxPauseRequest:
       type: object
       additionalProperties: false
       properties:
         memory:
           type: boolean
           default: false
-          description: On pause, retain process memory and execution state; capture failures remain errors. On resume, prefer retained memory and fall back to the committed RootFS if memory is missing, incompatible, or cannot be restored. Omitted or false uses filesystem-only behavior.
+          description: Require retained process memory and execution state. Capture failure never falls back to filesystem-only pause.
+        expected_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9007199254740991
+          description: Pause only this source runtime generation. Requires memory=true and Idempotency-Key; stale requests never pause a successor.
+    SandboxExecutionStateRequest:
+      type: object
+      additionalProperties: false
+      description: Resume execution-state selection. Conditional memory resume requires all three body fields together with Idempotency-Key.
+      properties:
+        memory:
+          type: boolean
+          default: false
+          description: Require the retained execution image. Missing, incompatible, or failed memory restoration remains an error and never falls back to new processes. Omitted or false explicitly selects filesystem-only behavior.
+        expected_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9007199254740990
+          description: Exact paused source generation. Zero is valid for a never-run memory fork. Requires memory=true, checkpoint_id and Idempotency-Key.
+        checkpoint_id:
+          type: string
+          minLength: 1
+          maxLength: 256
+          pattern: '^[!-~]{1,256}$'
+          description: Exact retained capture operation ID, returned as operation_id by a completed conditional memory pause. Requires memory=true, expected_runtime_generation and Idempotency-Key.
     PauseSandboxResponse:
       type: object
       properties:
+        operation_id:
+          type: string
+          pattern: '^idem-[a-f0-9]{64}$'
+          description: Exact checkpoint operation accepted for a conditional memory pause; stable across retries.
+        runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9007199254740991
+          description: Source runtime generation bound by the conditional memory pause.
         sandbox_id:
           type: string
         paused:
@@ -6248,11 +9331,33 @@ components:
     ResumeSandboxResponse:
       type: object
       properties:
+        operation_id:
+          type: string
+          pattern: '^idem-[a-f0-9]{64}$'
+          description: Authenticated caller request for this conditional memory restore, distinct from the capture operation and internal worker lifecycle.
+        checkpoint_id:
+          type: string
+          minLength: 1
+          maxLength: 256
+          pattern: '^[!-~]{1,256}$'
+          description: Exact retained capture restored by this conditional request.
+        from_runtime_generation:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9007199254740990
+          description: Source generation bound by this conditional request.
+        runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9007199254740991
+          description: Committed restored runtime generation, exactly one greater than from_runtime_generation. These conditional result coordinates are not a current process or storage health attestation.
         sandbox_id:
           type: string
         resumed:
           type: boolean
-          description: True after a command-ready runtime has committed. False means an accepted durable resume is still pending (memory retry, cleanup, or RootFS fallback); poll sandbox status until running.
+          description: True after the requested runtime has committed. Memory restoration never implicitly starts filesystem-only replacement processes.
         restored_memory:
           type: string
       required: [sandbox_id, resumed]
@@ -6434,6 +9539,21 @@ components:
           format: int64
           minimum: 0
           default: 86400
+    ConditionalExecutionSessionRequest:
+      type: object
+      required: [sandbox_id, runtime_generation, spec]
+      properties:
+        sandbox_id:
+          type: string
+          minLength: 1
+          description: Must equal the sandbox path identity and active supervisor owner.
+        runtime_generation:
+          type: integer
+          format: int64
+          minimum: 1
+          description: Exact current runtime generation; never interpreted as a minimum.
+        spec:
+          $ref: "#/components/schemas/ExecutionSessionSpec"
     ExecutionSessionSpec:
       type: object
       description: Generic process-backed session specification. The supervisor does not interpret application protocols.

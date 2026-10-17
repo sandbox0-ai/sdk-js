@@ -1,7 +1,7 @@
 
 # TemplateCreationStatus
 
-Asynchronous creation status for templates built from a sandbox. Traditional image-based templates omit this object and are ready immediately after creation. Ready means the regional template source has been committed and the claim API may consume it. 
+Asynchronous creation status for templates built from a sandbox. Traditional image-based templates omit this object and are ready immediately after creation. Ready means the regional template source has been committed and the claim API may consume it.
 
 ## Properties
 

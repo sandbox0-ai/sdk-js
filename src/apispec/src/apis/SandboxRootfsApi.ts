@@ -15,19 +15,26 @@
 
 import * as runtime from '../runtime';
 import type {
+  CaptureSandboxRootFSSnapshotRequest,
   CreateSandboxRootFSSnapshotRequest,
   ErrorEnvelope,
   ForkSandboxRequest,
   RebaseSandboxRootFSRequest,
   RestoreSandboxRootFSRequest,
+  SandboxRootFSForkLaunchRequest,
   SuccessDeletedResponse,
   SuccessForkSandboxResponse,
   SuccessRebaseSandboxRootFSResponse,
   SuccessRestoreSandboxRootFSResponse,
+  SuccessSandboxRootFSForkLaunchResponse,
+  SuccessSandboxRootFSForkObservationResponse,
+  SuccessSandboxRootFSIdentityResponse,
   SuccessSandboxRootFSSnapshotListResponse,
   SuccessSandboxRootFSSnapshotResponse,
 } from '../models/index';
 import {
+    CaptureSandboxRootFSSnapshotRequestFromJSON,
+    CaptureSandboxRootFSSnapshotRequestToJSON,
     CreateSandboxRootFSSnapshotRequestFromJSON,
     CreateSandboxRootFSSnapshotRequestToJSON,
     ErrorEnvelopeFromJSON,
@@ -38,6 +45,8 @@ import {
     RebaseSandboxRootFSRequestToJSON,
     RestoreSandboxRootFSRequestFromJSON,
     RestoreSandboxRootFSRequestToJSON,
+    SandboxRootFSForkLaunchRequestFromJSON,
+    SandboxRootFSForkLaunchRequestToJSON,
     SuccessDeletedResponseFromJSON,
     SuccessDeletedResponseToJSON,
     SuccessForkSandboxResponseFromJSON,
@@ -46,6 +55,12 @@ import {
     SuccessRebaseSandboxRootFSResponseToJSON,
     SuccessRestoreSandboxRootFSResponseFromJSON,
     SuccessRestoreSandboxRootFSResponseToJSON,
+    SuccessSandboxRootFSForkLaunchResponseFromJSON,
+    SuccessSandboxRootFSForkLaunchResponseToJSON,
+    SuccessSandboxRootFSForkObservationResponseFromJSON,
+    SuccessSandboxRootFSForkObservationResponseToJSON,
+    SuccessSandboxRootFSIdentityResponseFromJSON,
+    SuccessSandboxRootFSIdentityResponseToJSON,
     SuccessSandboxRootFSSnapshotListResponseFromJSON,
     SuccessSandboxRootFSSnapshotListResponseToJSON,
     SuccessSandboxRootFSSnapshotResponseFromJSON,
@@ -83,6 +98,43 @@ export interface ApiV1SandboxesIdSnapshotsGetRequest {
 export interface ApiV1SandboxesIdSnapshotsPostRequest {
     id: string;
     createSandboxRootFSSnapshotRequest?: CreateSandboxRootFSSnapshotRequest;
+}
+
+export interface CaptureSandboxRootFSSnapshotOperationRequest {
+    id: string;
+    idempotencyKey: string;
+    captureSandboxRootFSSnapshotRequest: CaptureSandboxRootFSSnapshotRequest;
+}
+
+export interface GetCapturedSandboxRootFSSnapshotRequest {
+    id: string;
+    idempotencyKey: string;
+    expectedRuntimeGeneration: number;
+}
+
+export interface GetSandboxRootFSForkRequest {
+    id: string;
+    idempotencyKey: string;
+    expectedRuntimeGeneration: number;
+}
+
+export interface GetSandboxRootFSForkLaunchRequest {
+    id: string;
+    idempotencyKey: string;
+    forkOperationId: string;
+    filesystemId: string;
+    headGenerationId: string;
+    writerEpoch: number;
+}
+
+export interface GetSandboxRootFSIdentityRequest {
+    id: string;
+}
+
+export interface LaunchSandboxRootFSForkRequest {
+    id: string;
+    idempotencyKey: string;
+    sandboxRootFSForkLaunchRequest: SandboxRootFSForkLaunchRequest;
 }
 
 /**
@@ -181,7 +233,7 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes. Set memory=true to retain execution state as well. Memory forks require a stable Idempotency-Key. While capture or parent restoration is pending, retry 503 responses with that same key and request. A successful response always contains a committed paused child.
+     * Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes. Set memory=true to retain execution state as well. Memory forks and requests with expected_runtime_generation require a stable Idempotency-Key. While capture or parent restoration is pending, retry 503 responses with that same key and request. A successful response always contains a committed paused child.
      * Fork a sandbox
      */
     async apiV1SandboxesIdForkPostRaw(requestParameters: ApiV1SandboxesIdForkPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessForkSandboxResponse>> {
@@ -226,7 +278,7 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes. Set memory=true to retain execution state as well. Memory forks require a stable Idempotency-Key. While capture or parent restoration is pending, retry 503 responses with that same key and request. A successful response always contains a committed paused child.
+     * Forks the source sandbox writable rootfs into a new paused sandbox. A paused source is forked from its current rootfs head. A running source is briefly barriered and checkpointed first; the source sandbox remains running after the fork operation completes. Set memory=true to retain execution state as well. Memory forks and requests with expected_runtime_generation require a stable Idempotency-Key. While capture or parent restoration is pending, retry 503 responses with that same key and request. A successful response always contains a committed paused child.
      * Fork a sandbox
      */
     async apiV1SandboxesIdForkPost(requestParameters: ApiV1SandboxesIdForkPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessForkSandboxResponse> {
@@ -235,7 +287,7 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Applies the paused sandbox\'s file-level changes to an already-attested immutable Base artifact. The operation keeps the sandbox paused, publishes one durable block-COW generation, and retains the previous generation for the requested bounded rollback window. 
+     * Applies the paused sandbox\'s file-level changes to an already-attested immutable Base artifact. The operation keeps the sandbox paused, publishes one durable block-COW generation, and retains the previous generation for the requested bounded rollback window.
      * Rebase a paused sandbox rootfs
      */
     async apiV1SandboxesIdRootfsRebasePutRaw(requestParameters: ApiV1SandboxesIdRootfsRebasePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessRebaseSandboxRootFSResponse>> {
@@ -283,7 +335,7 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Applies the paused sandbox\'s file-level changes to an already-attested immutable Base artifact. The operation keeps the sandbox paused, publishes one durable block-COW generation, and retains the previous generation for the requested bounded rollback window. 
+     * Applies the paused sandbox\'s file-level changes to an already-attested immutable Base artifact. The operation keeps the sandbox paused, publishes one durable block-COW generation, and retains the previous generation for the requested bounded rollback window.
      * Rebase a paused sandbox rootfs
      */
     async apiV1SandboxesIdRootfsRebasePut(requestParameters: ApiV1SandboxesIdRootfsRebasePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessRebaseSandboxRootFSResponse> {
@@ -438,6 +490,429 @@ export class SandboxRootfsApi extends runtime.BaseAPI {
      */
     async apiV1SandboxesIdSnapshotsPost(requestParameters: ApiV1SandboxesIdSnapshotsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRootFSSnapshotResponse> {
         const response = await this.apiV1SandboxesIdSnapshotsPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Captures one immutable RootFS snapshot from the expected running runtime generation without stopping its processes. Admission checks the generation while locking the external source and exact writer. Reuse the same key, generation and metadata after uncertainty: an accepted capture retains its original transaction and returns its original snapshot when completed, even if the source subsequently changes generation or pauses. A new capture of a paused or mismatched source is rejected. No guest execution, automatic resume, process restart or memory checkpoint fallback is performed. This distinct endpoint fails closed on servers without conditional capture.
+     * Capture a generation-conditioned running RootFS snapshot
+     */
+    async captureSandboxRootFSSnapshotRaw(requestParameters: CaptureSandboxRootFSSnapshotOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRootFSSnapshotResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling captureSandboxRootFSSnapshot().'
+            );
+        }
+
+        if (requestParameters['idempotencyKey'] == null) {
+            throw new runtime.RequiredError(
+                'idempotencyKey',
+                'Required parameter "idempotencyKey" was null or undefined when calling captureSandboxRootFSSnapshot().'
+            );
+        }
+
+        if (requestParameters['captureSandboxRootFSSnapshotRequest'] == null) {
+            throw new runtime.RequiredError(
+                'captureSandboxRootFSSnapshotRequest',
+                'Required parameter "captureSandboxRootFSSnapshotRequest" was null or undefined when calling captureSandboxRootFSSnapshot().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (requestParameters['idempotencyKey'] != null) {
+            headerParameters['Idempotency-Key'] = String(requestParameters['idempotencyKey']);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/snapshots/capture`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CaptureSandboxRootFSSnapshotRequestToJSON(requestParameters['captureSandboxRootFSSnapshotRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRootFSSnapshotResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Captures one immutable RootFS snapshot from the expected running runtime generation without stopping its processes. Admission checks the generation while locking the external source and exact writer. Reuse the same key, generation and metadata after uncertainty: an accepted capture retains its original transaction and returns its original snapshot when completed, even if the source subsequently changes generation or pauses. A new capture of a paused or mismatched source is rejected. No guest execution, automatic resume, process restart or memory checkpoint fallback is performed. This distinct endpoint fails closed on servers without conditional capture.
+     * Capture a generation-conditioned running RootFS snapshot
+     */
+    async captureSandboxRootFSSnapshot(requestParameters: CaptureSandboxRootFSSnapshotOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRootFSSnapshotResponse> {
+        const response = await this.captureSandboxRootFSSnapshotRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Reads only the capture identified by the authenticated caller, original Idempotency-Key and expected runtime generation. Does not admit, dispatch, retry, cancel or repair work. Completed receipts can be read after the source changes generation or pauses. A 404 is not proof of cancellation and must not clear an outstanding operation fence. A missing, expired or deleted retained snapshot is never replaced with a new capture.
+     * Read the original generation-conditioned snapshot receipt
+     */
+    async getCapturedSandboxRootFSSnapshotRaw(requestParameters: GetCapturedSandboxRootFSSnapshotRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRootFSSnapshotResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getCapturedSandboxRootFSSnapshot().'
+            );
+        }
+
+        if (requestParameters['idempotencyKey'] == null) {
+            throw new runtime.RequiredError(
+                'idempotencyKey',
+                'Required parameter "idempotencyKey" was null or undefined when calling getCapturedSandboxRootFSSnapshot().'
+            );
+        }
+
+        if (requestParameters['expectedRuntimeGeneration'] == null) {
+            throw new runtime.RequiredError(
+                'expectedRuntimeGeneration',
+                'Required parameter "expectedRuntimeGeneration" was null or undefined when calling getCapturedSandboxRootFSSnapshot().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['expectedRuntimeGeneration'] != null) {
+            queryParameters['expected_runtime_generation'] = requestParameters['expectedRuntimeGeneration'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (requestParameters['idempotencyKey'] != null) {
+            headerParameters['Idempotency-Key'] = String(requestParameters['idempotencyKey']);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/snapshots/capture`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRootFSSnapshotResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Reads only the capture identified by the authenticated caller, original Idempotency-Key and expected runtime generation. Does not admit, dispatch, retry, cancel or repair work. Completed receipts can be read after the source changes generation or pauses. A 404 is not proof of cancellation and must not clear an outstanding operation fence. A missing, expired or deleted retained snapshot is never replaced with a new capture.
+     * Read the original generation-conditioned snapshot receipt
+     */
+    async getCapturedSandboxRootFSSnapshot(requestParameters: GetCapturedSandboxRootFSSnapshotRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRootFSSnapshotResponse> {
+        const response = await this.getCapturedSandboxRootFSSnapshotRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Reads one external database observation for the original authenticated caller, Idempotency-Key and source runtime generation, including zero. Does not submit, retry, cancel or repair work, contact the guest or resume a runtime. Requires sandbox:read. A 404 is not proof of cancellation. Only RootFS forks qualify: memory forks are rejected. The child must remain paused, never run, and retain its original claim and durable head. Configuration must match birth or the one externally committed credential-free network isolation preparation; other changes are rejected. Running-source forks must retain their checkpoint proof; paused-source forks must retain the source filesystem binding. Later source generations or a retained source tombstone do not create a new capture. This is not a credential-safety attestation or a state reservation; subsequent mutations require their own identity conditions.
+     * Read original RootFS fork destination provenance
+     */
+    async getSandboxRootFSForkRaw(requestParameters: GetSandboxRootFSForkRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRootFSForkObservationResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getSandboxRootFSFork().'
+            );
+        }
+
+        if (requestParameters['idempotencyKey'] == null) {
+            throw new runtime.RequiredError(
+                'idempotencyKey',
+                'Required parameter "idempotencyKey" was null or undefined when calling getSandboxRootFSFork().'
+            );
+        }
+
+        if (requestParameters['expectedRuntimeGeneration'] == null) {
+            throw new runtime.RequiredError(
+                'expectedRuntimeGeneration',
+                'Required parameter "expectedRuntimeGeneration" was null or undefined when calling getSandboxRootFSFork().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['expectedRuntimeGeneration'] != null) {
+            queryParameters['expected_runtime_generation'] = requestParameters['expectedRuntimeGeneration'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (requestParameters['idempotencyKey'] != null) {
+            headerParameters['Idempotency-Key'] = String(requestParameters['idempotencyKey']);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/fork`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRootFSForkObservationResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Reads one external database observation for the original authenticated caller, Idempotency-Key and source runtime generation, including zero. Does not submit, retry, cancel or repair work, contact the guest or resume a runtime. Requires sandbox:read. A 404 is not proof of cancellation. Only RootFS forks qualify: memory forks are rejected. The child must remain paused, never run, and retain its original claim and durable head. Configuration must match birth or the one externally committed credential-free network isolation preparation; other changes are rejected. Running-source forks must retain their checkpoint proof; paused-source forks must retain the source filesystem binding. Later source generations or a retained source tombstone do not create a new capture. This is not a credential-safety attestation or a state reservation; subsequent mutations require their own identity conditions.
+     * Read original RootFS fork destination provenance
+     */
+    async getSandboxRootFSFork(requestParameters: GetSandboxRootFSForkRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRootFSForkObservationResponse> {
+        const response = await this.getSandboxRootFSForkRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Binds the original authenticated caller and Idempotency-Key to a first cold launch of the child at generation zero. Supply the original fork operation and the child\'s observed filesystem, head and writer epoch. The child must retain its original birth configuration, or its one externally committed credential-free network isolation preparation; all other fields and automatic-wake disablement must remain unchanged. Memory forks and ordinary resumes are excluded. Retries must keep the same key and conditions; never refresh them after uncertainty. Requires sandbox:read. This is a read-only historical lookup and never admits, retries, wakes or contacts a guest. A 404 is not cancellation. Completed history survives later lifecycles. Current only compares the owner/lifecycle snapshot, not runtime health or a lease. Aborted does not prove physical absence. This is not credential admission.
+     * Read the original first fork launch result
+     */
+    async getSandboxRootFSForkLaunchRaw(requestParameters: GetSandboxRootFSForkLaunchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRootFSForkLaunchResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getSandboxRootFSForkLaunch().'
+            );
+        }
+
+        if (requestParameters['idempotencyKey'] == null) {
+            throw new runtime.RequiredError(
+                'idempotencyKey',
+                'Required parameter "idempotencyKey" was null or undefined when calling getSandboxRootFSForkLaunch().'
+            );
+        }
+
+        if (requestParameters['forkOperationId'] == null) {
+            throw new runtime.RequiredError(
+                'forkOperationId',
+                'Required parameter "forkOperationId" was null or undefined when calling getSandboxRootFSForkLaunch().'
+            );
+        }
+
+        if (requestParameters['filesystemId'] == null) {
+            throw new runtime.RequiredError(
+                'filesystemId',
+                'Required parameter "filesystemId" was null or undefined when calling getSandboxRootFSForkLaunch().'
+            );
+        }
+
+        if (requestParameters['headGenerationId'] == null) {
+            throw new runtime.RequiredError(
+                'headGenerationId',
+                'Required parameter "headGenerationId" was null or undefined when calling getSandboxRootFSForkLaunch().'
+            );
+        }
+
+        if (requestParameters['writerEpoch'] == null) {
+            throw new runtime.RequiredError(
+                'writerEpoch',
+                'Required parameter "writerEpoch" was null or undefined when calling getSandboxRootFSForkLaunch().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['forkOperationId'] != null) {
+            queryParameters['fork_operation_id'] = requestParameters['forkOperationId'];
+        }
+
+        if (requestParameters['filesystemId'] != null) {
+            queryParameters['filesystem_id'] = requestParameters['filesystemId'];
+        }
+
+        if (requestParameters['headGenerationId'] != null) {
+            queryParameters['head_generation_id'] = requestParameters['headGenerationId'];
+        }
+
+        if (requestParameters['writerEpoch'] != null) {
+            queryParameters['writer_epoch'] = requestParameters['writerEpoch'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (requestParameters['idempotencyKey'] != null) {
+            headerParameters['Idempotency-Key'] = String(requestParameters['idempotencyKey']);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/fork-launch`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRootFSForkLaunchResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Binds the original authenticated caller and Idempotency-Key to a first cold launch of the child at generation zero. Supply the original fork operation and the child\'s observed filesystem, head and writer epoch. The child must retain its original birth configuration, or its one externally committed credential-free network isolation preparation; all other fields and automatic-wake disablement must remain unchanged. Memory forks and ordinary resumes are excluded. Retries must keep the same key and conditions; never refresh them after uncertainty. Requires sandbox:read. This is a read-only historical lookup and never admits, retries, wakes or contacts a guest. A 404 is not cancellation. Completed history survives later lifecycles. Current only compares the owner/lifecycle snapshot, not runtime health or a lease. Aborted does not prove physical absence. This is not credential admission.
+     * Read the original first fork launch result
+     */
+    async getSandboxRootFSForkLaunch(requestParameters: GetSandboxRootFSForkLaunchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRootFSForkLaunchResponse> {
+        const response = await this.getSandboxRootFSForkLaunchRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Requires sandbox:read. Reads one owner-scoped control-plane database snapshot without guest execution, node probing or automatic resume. Binds runtime coordinates to the durable filesystem, committed head and immutable image digest. This is provenance, not current storage liveness, an uncommitted-write guarantee or credential-clean attestation. A later lifecycle can invalidate the observation; mutations must still condition on the expected runtime generation and their own admission evidence.
+     * Read external runtime and RootFS identity
+     */
+    async getSandboxRootFSIdentityRaw(requestParameters: GetSandboxRootFSIdentityRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRootFSIdentityResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getSandboxRootFSIdentity().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/rootfs/identity`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRootFSIdentityResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Requires sandbox:read. Reads one owner-scoped control-plane database snapshot without guest execution, node probing or automatic resume. Binds runtime coordinates to the durable filesystem, committed head and immutable image digest. This is provenance, not current storage liveness, an uncommitted-write guarantee or credential-clean attestation. A later lifecycle can invalidate the observation; mutations must still condition on the expected runtime generation and their own admission evidence.
+     * Read external runtime and RootFS identity
+     */
+    async getSandboxRootFSIdentity(requestParameters: GetSandboxRootFSIdentityRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRootFSIdentityResponse> {
+        const response = await this.getSandboxRootFSIdentityRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Binds the original authenticated caller and Idempotency-Key to a first cold launch of the child at generation zero. Supply the original fork operation and the child\'s observed filesystem, head and writer epoch. The child must retain its original birth configuration, or its one externally committed credential-free network isolation preparation; all other fields and automatic-wake disablement must remain unchanged. Memory forks and ordinary resumes are excluded. Retries must keep the same key and conditions; never refresh them after uncertainty. Requires sandbox:write. Admission is durable before node dispatch; manager recovery continues the exact lifecycle after a timeout or lost reply. No guest command or terminal is required. A 503 does not prove that admission failed; use GET with the original key and conditions. Completed history survives later lifecycles. Current only compares the owner/lifecycle snapshot, not runtime health or a lease. Aborted does not prove physical absence. This is not credential admission.
+     * Launch the original never-run RootFS fork
+     */
+    async launchSandboxRootFSForkRaw(requestParameters: LaunchSandboxRootFSForkRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRootFSForkLaunchResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling launchSandboxRootFSFork().'
+            );
+        }
+
+        if (requestParameters['idempotencyKey'] == null) {
+            throw new runtime.RequiredError(
+                'idempotencyKey',
+                'Required parameter "idempotencyKey" was null or undefined when calling launchSandboxRootFSFork().'
+            );
+        }
+
+        if (requestParameters['sandboxRootFSForkLaunchRequest'] == null) {
+            throw new runtime.RequiredError(
+                'sandboxRootFSForkLaunchRequest',
+                'Required parameter "sandboxRootFSForkLaunchRequest" was null or undefined when calling launchSandboxRootFSFork().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (requestParameters['idempotencyKey'] != null) {
+            headerParameters['Idempotency-Key'] = String(requestParameters['idempotencyKey']);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/fork-launch`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SandboxRootFSForkLaunchRequestToJSON(requestParameters['sandboxRootFSForkLaunchRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRootFSForkLaunchResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Binds the original authenticated caller and Idempotency-Key to a first cold launch of the child at generation zero. Supply the original fork operation and the child\'s observed filesystem, head and writer epoch. The child must retain its original birth configuration, or its one externally committed credential-free network isolation preparation; all other fields and automatic-wake disablement must remain unchanged. Memory forks and ordinary resumes are excluded. Retries must keep the same key and conditions; never refresh them after uncertainty. Requires sandbox:write. Admission is durable before node dispatch; manager recovery continues the exact lifecycle after a timeout or lost reply. No guest command or terminal is required. A 503 does not prove that admission failed; use GET with the original key and conditions. Completed history survives later lifecycles. Current only compares the owner/lifecycle snapshot, not runtime health or a lease. Aborted does not prove physical absence. This is not credential admission.
+     * Launch the original never-run RootFS fork
+     */
+    async launchSandboxRootFSFork(requestParameters: LaunchSandboxRootFSForkRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRootFSForkLaunchResponse> {
+        const response = await this.launchSandboxRootFSForkRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

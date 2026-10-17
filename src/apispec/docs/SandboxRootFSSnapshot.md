@@ -8,6 +8,7 @@ Name | Type
 ------------ | -------------
 `id` | string
 `sandboxId` | string
+`generationId` | string
 `name` | string
 `description` | string
 `createdAt` | Date
@@ -22,6 +23,7 @@ import type { SandboxRootFSSnapshot } from 'sandbox0'
 const example = {
   "id": null,
   "sandboxId": null,
+  "generationId": null,
   "name": null,
   "description": null,
   "createdAt": null,

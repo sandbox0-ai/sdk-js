@@ -17,24 +17,38 @@ import * as runtime from '../runtime';
 import type {
   ClaimRequest,
   ErrorEnvelope,
+  ManagedFileWriteRequest,
   SandboxExecutionStateRequest,
   SandboxLifecycleStatus,
   SandboxNetworkPolicy,
+  SandboxPauseRequest,
   SandboxPreviewCreateRequest,
   SandboxPreviewRenewRequest,
   SandboxRefreshRequest,
+  SandboxRestartFinalCaptureAcknowledgement,
+  SandboxRestartRequest,
   SandboxServicesUpdateRequest,
+  SandboxSnapshotRestoreRequest,
   SandboxUpdateRequest,
   SuccessClaimResponse,
+  SuccessManagedFileReadResponse,
+  SuccessManagedFilesStateResponse,
   SuccessMessageResponse,
   SuccessPauseSandboxResponse,
   SuccessRefreshResponse,
   SuccessResumeSandboxResponse,
+  SuccessSandboxHealthResponse,
   SuccessSandboxListResponse,
+  SuccessSandboxMemoryOperationResponse,
+  SuccessSandboxMemoryRestorationResponse,
   SuccessSandboxNetworkPolicyResponse,
   SuccessSandboxPreviewResponse,
   SuccessSandboxResponse,
+  SuccessSandboxRestartFinalCaptureFileResponse,
+  SuccessSandboxRestartFinalCaptureResponse,
+  SuccessSandboxRestartOperationResponse,
   SuccessSandboxServicesResponse,
+  SuccessSandboxSnapshotRestoreOperationResponse,
   SuccessSandboxStatusResponse,
 } from '../models/index';
 import {
@@ -42,24 +56,38 @@ import {
     ClaimRequestToJSON,
     ErrorEnvelopeFromJSON,
     ErrorEnvelopeToJSON,
+    ManagedFileWriteRequestFromJSON,
+    ManagedFileWriteRequestToJSON,
     SandboxExecutionStateRequestFromJSON,
     SandboxExecutionStateRequestToJSON,
     SandboxLifecycleStatusFromJSON,
     SandboxLifecycleStatusToJSON,
     SandboxNetworkPolicyFromJSON,
     SandboxNetworkPolicyToJSON,
+    SandboxPauseRequestFromJSON,
+    SandboxPauseRequestToJSON,
     SandboxPreviewCreateRequestFromJSON,
     SandboxPreviewCreateRequestToJSON,
     SandboxPreviewRenewRequestFromJSON,
     SandboxPreviewRenewRequestToJSON,
     SandboxRefreshRequestFromJSON,
     SandboxRefreshRequestToJSON,
+    SandboxRestartFinalCaptureAcknowledgementFromJSON,
+    SandboxRestartFinalCaptureAcknowledgementToJSON,
+    SandboxRestartRequestFromJSON,
+    SandboxRestartRequestToJSON,
     SandboxServicesUpdateRequestFromJSON,
     SandboxServicesUpdateRequestToJSON,
+    SandboxSnapshotRestoreRequestFromJSON,
+    SandboxSnapshotRestoreRequestToJSON,
     SandboxUpdateRequestFromJSON,
     SandboxUpdateRequestToJSON,
     SuccessClaimResponseFromJSON,
     SuccessClaimResponseToJSON,
+    SuccessManagedFileReadResponseFromJSON,
+    SuccessManagedFileReadResponseToJSON,
+    SuccessManagedFilesStateResponseFromJSON,
+    SuccessManagedFilesStateResponseToJSON,
     SuccessMessageResponseFromJSON,
     SuccessMessageResponseToJSON,
     SuccessPauseSandboxResponseFromJSON,
@@ -68,19 +96,45 @@ import {
     SuccessRefreshResponseToJSON,
     SuccessResumeSandboxResponseFromJSON,
     SuccessResumeSandboxResponseToJSON,
+    SuccessSandboxHealthResponseFromJSON,
+    SuccessSandboxHealthResponseToJSON,
     SuccessSandboxListResponseFromJSON,
     SuccessSandboxListResponseToJSON,
+    SuccessSandboxMemoryOperationResponseFromJSON,
+    SuccessSandboxMemoryOperationResponseToJSON,
+    SuccessSandboxMemoryRestorationResponseFromJSON,
+    SuccessSandboxMemoryRestorationResponseToJSON,
     SuccessSandboxNetworkPolicyResponseFromJSON,
     SuccessSandboxNetworkPolicyResponseToJSON,
     SuccessSandboxPreviewResponseFromJSON,
     SuccessSandboxPreviewResponseToJSON,
     SuccessSandboxResponseFromJSON,
     SuccessSandboxResponseToJSON,
+    SuccessSandboxRestartFinalCaptureFileResponseFromJSON,
+    SuccessSandboxRestartFinalCaptureFileResponseToJSON,
+    SuccessSandboxRestartFinalCaptureResponseFromJSON,
+    SuccessSandboxRestartFinalCaptureResponseToJSON,
+    SuccessSandboxRestartOperationResponseFromJSON,
+    SuccessSandboxRestartOperationResponseToJSON,
     SuccessSandboxServicesResponseFromJSON,
     SuccessSandboxServicesResponseToJSON,
+    SuccessSandboxSnapshotRestoreOperationResponseFromJSON,
+    SuccessSandboxSnapshotRestoreOperationResponseToJSON,
     SuccessSandboxStatusResponseFromJSON,
     SuccessSandboxStatusResponseToJSON,
 } from '../models/index';
+
+export interface AcknowledgeSandboxRestartFinalCaptureRequest {
+    id: string;
+    operationId: string;
+    sandboxRestartFinalCaptureAcknowledgement: SandboxRestartFinalCaptureAcknowledgement;
+}
+
+export interface AcknowledgeSandboxSnapshotRestoreFinalCaptureRequest {
+    id: string;
+    operationId: string;
+    sandboxRestartFinalCaptureAcknowledgement: SandboxRestartFinalCaptureAcknowledgement;
+}
 
 export interface ApiV1SandboxesGetRequest {
     status?: SandboxLifecycleStatus;
@@ -109,7 +163,8 @@ export interface ApiV1SandboxesIdNetworkPutRequest {
 
 export interface ApiV1SandboxesIdPausePostRequest {
     id: string;
-    sandboxExecutionStateRequest?: SandboxExecutionStateRequest;
+    idempotencyKey?: string;
+    sandboxPauseRequest?: SandboxPauseRequest;
 }
 
 export interface ApiV1SandboxesIdPreviewsPostRequest {
@@ -140,6 +195,7 @@ export interface ApiV1SandboxesIdRefreshPostRequest {
 
 export interface ApiV1SandboxesIdResumePostRequest {
     id: string;
+    idempotencyKey?: string;
     sandboxExecutionStateRequest?: SandboxExecutionStateRequest;
 }
 
@@ -160,10 +216,263 @@ export interface ApiV1SandboxesPostRequest {
     claimRequest: ClaimRequest;
 }
 
+export interface DeleteSandboxManagedFileRequest {
+    id: string;
+    runtimeGeneration: number;
+    name: string;
+    expectedMutationSequence: string;
+}
+
+export interface DeleteSandboxNamespacedManagedFileRequest {
+    id: string;
+    runtimeGeneration: number;
+    name: string;
+    namespace: string;
+    expectedMutationSequence: string;
+}
+
+export interface FindSandboxRestartOperationRequest {
+    id: string;
+    requestKey: string;
+}
+
+export interface FindSandboxSnapshotRestoreOperationRequest {
+    id: string;
+    requestKey: string;
+}
+
+export interface GetSandboxHealthRequest {
+    id: string;
+}
+
+export interface GetSandboxMemoryRestorationRequest {
+    id: string;
+    runtimeGeneration: number;
+}
+
+export interface GetSandboxRestartFinalCaptureRequest {
+    id: string;
+    operationId: string;
+}
+
+export interface GetSandboxRestartOperationRequest {
+    id: string;
+    operationId: string;
+}
+
+export interface GetSandboxSnapshotRestoreFinalCaptureRequest {
+    id: string;
+    operationId: string;
+}
+
+export interface GetSandboxSnapshotRestoreOperationRequest {
+    id: string;
+    operationId: string;
+}
+
+export interface InspectSandboxManagedFilesRequest {
+    id: string;
+    runtimeGeneration: number;
+}
+
+export interface LookupSandboxMemoryOperationRequest {
+    id: string;
+    idempotencyKey: string;
+    action: LookupSandboxMemoryOperationActionEnum;
+    expectedRuntimeGeneration: number;
+    checkpointId?: string;
+}
+
+export interface ReadSandboxManagedFileRequest {
+    id: string;
+    runtimeGeneration: number;
+    name: string;
+}
+
+export interface ReadSandboxNamespacedManagedFileRequest {
+    id: string;
+    runtimeGeneration: number;
+    name: string;
+    namespace: string;
+}
+
+export interface ReadSandboxRestartFinalCaptureFileRequest {
+    id: string;
+    operationId: string;
+    namespace: string;
+    name: string;
+    captureId: string;
+}
+
+export interface ReadSandboxSnapshotRestoreFinalCaptureFileRequest {
+    id: string;
+    operationId: string;
+    namespace: string;
+    name: string;
+    captureId: string;
+}
+
+export interface RestartSandboxRequest {
+    id: string;
+    idempotencyKey: string;
+    sandboxRestartRequest: SandboxRestartRequest;
+}
+
+export interface RestoreSandboxSnapshotRequest {
+    id: string;
+    idempotencyKey: string;
+    sandboxSnapshotRestoreRequest: SandboxSnapshotRestoreRequest;
+}
+
+export interface WriteSandboxManagedFileRequest {
+    id: string;
+    runtimeGeneration: number;
+    name: string;
+    managedFileWriteRequest: ManagedFileWriteRequest;
+}
+
+export interface WriteSandboxNamespacedManagedFileRequest {
+    id: string;
+    runtimeGeneration: number;
+    name: string;
+    namespace: string;
+    managedFileWriteRequest: ManagedFileWriteRequest;
+}
+
 /**
  * 
  */
 export class SandboxesApi extends runtime.BaseAPI {
+
+    /**
+     * Requires sandbox:write. Submit only after final credential or authenticated logout custody is durably committed by the owner. This permits irreversible cleanup of the old projection. Retry the same capture_id and receipt_id after a lost reply; another receipt conflicts. This schedules retirement, not immediate replacement success.
+     * Commit the owner receipt for final restart credentials
+     */
+    async acknowledgeSandboxRestartFinalCaptureRaw(requestParameters: AcknowledgeSandboxRestartFinalCaptureRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRestartFinalCaptureResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling acknowledgeSandboxRestartFinalCapture().'
+            );
+        }
+
+        if (requestParameters['operationId'] == null) {
+            throw new runtime.RequiredError(
+                'operationId',
+                'Required parameter "operationId" was null or undefined when calling acknowledgeSandboxRestartFinalCapture().'
+            );
+        }
+
+        if (requestParameters['sandboxRestartFinalCaptureAcknowledgement'] == null) {
+            throw new runtime.RequiredError(
+                'sandboxRestartFinalCaptureAcknowledgement',
+                'Required parameter "sandboxRestartFinalCaptureAcknowledgement" was null or undefined when calling acknowledgeSandboxRestartFinalCapture().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/restart-operations/{operation_id}/final-capture/acknowledgement`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"operation_id"}}`, encodeURIComponent(String(requestParameters['operationId'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SandboxRestartFinalCaptureAcknowledgementToJSON(requestParameters['sandboxRestartFinalCaptureAcknowledgement']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRestartFinalCaptureResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Requires sandbox:write. Submit only after final credential or authenticated logout custody is durably committed by the owner. This permits irreversible cleanup of the old projection. Retry the same capture_id and receipt_id after a lost reply; another receipt conflicts. This schedules retirement, not immediate replacement success.
+     * Commit the owner receipt for final restart credentials
+     */
+    async acknowledgeSandboxRestartFinalCapture(requestParameters: AcknowledgeSandboxRestartFinalCaptureRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRestartFinalCaptureResponse> {
+        const response = await this.acknowledgeSandboxRestartFinalCaptureRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Requires sandbox:write. Submit only after final credential or authenticated logout custody is durably committed by the owner. This permits irreversible cleanup of the old projection. Retry the same capture_id and receipt_id after a lost reply; another receipt conflicts. This schedules retirement, not immediate replacement success.
+     * Commit the owner receipt for final restart credentials
+     */
+    async acknowledgeSandboxSnapshotRestoreFinalCaptureRaw(requestParameters: AcknowledgeSandboxSnapshotRestoreFinalCaptureRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRestartFinalCaptureResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling acknowledgeSandboxSnapshotRestoreFinalCapture().'
+            );
+        }
+
+        if (requestParameters['operationId'] == null) {
+            throw new runtime.RequiredError(
+                'operationId',
+                'Required parameter "operationId" was null or undefined when calling acknowledgeSandboxSnapshotRestoreFinalCapture().'
+            );
+        }
+
+        if (requestParameters['sandboxRestartFinalCaptureAcknowledgement'] == null) {
+            throw new runtime.RequiredError(
+                'sandboxRestartFinalCaptureAcknowledgement',
+                'Required parameter "sandboxRestartFinalCaptureAcknowledgement" was null or undefined when calling acknowledgeSandboxSnapshotRestoreFinalCapture().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}/final-capture/acknowledgement`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"operation_id"}}`, encodeURIComponent(String(requestParameters['operationId'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SandboxRestartFinalCaptureAcknowledgementToJSON(requestParameters['sandboxRestartFinalCaptureAcknowledgement']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRestartFinalCaptureResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Requires sandbox:write. Submit only after final credential or authenticated logout custody is durably committed by the owner. This permits irreversible cleanup of the old projection. Retry the same capture_id and receipt_id after a lost reply; another receipt conflicts. This schedules retirement, not immediate replacement success.
+     * Commit the owner receipt for final restart credentials
+     */
+    async acknowledgeSandboxSnapshotRestoreFinalCapture(requestParameters: AcknowledgeSandboxSnapshotRestoreFinalCaptureRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRestartFinalCaptureResponse> {
+        const response = await this.acknowledgeSandboxSnapshotRestoreFinalCaptureRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * List all sandboxes for the authenticated team. In multi-cluster mode, this endpoint aggregates results from all enabled clusters.
@@ -415,7 +724,7 @@ export class SandboxesApi extends runtime.BaseAPI {
     }
 
     /**
-     * The default checkpoints only the writable RootFS. Set memory=true to also retain process execution state before releasing the runtime. A 202 response means checkpoint publication and cleanup are still pending.
+     * The default checkpoints only the writable RootFS. Set memory=true to also retain process execution state before releasing the runtime. A 202 response means checkpoint publication and cleanup are still pending. For conditional memory pause, send expected_runtime_generation and Idempotency-Key together with memory=true. Retries bind the same source generation and checkpoint operation; mismatched or aborted operations conflict.
      * Pause a sandbox
      */
     async apiV1SandboxesIdPausePostRaw(requestParameters: ApiV1SandboxesIdPausePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessPauseSandboxResponse>> {
@@ -431,6 +740,10 @@ export class SandboxesApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
+
+        if (requestParameters['idempotencyKey'] != null) {
+            headerParameters['Idempotency-Key'] = String(requestParameters['idempotencyKey']);
+        }
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -449,14 +762,14 @@ export class SandboxesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SandboxExecutionStateRequestToJSON(requestParameters['sandboxExecutionStateRequest']),
+            body: SandboxPauseRequestToJSON(requestParameters['sandboxPauseRequest']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SuccessPauseSandboxResponseFromJSON(jsonValue));
     }
 
     /**
-     * The default checkpoints only the writable RootFS. Set memory=true to also retain process execution state before releasing the runtime. A 202 response means checkpoint publication and cleanup are still pending.
+     * The default checkpoints only the writable RootFS. Set memory=true to also retain process execution state before releasing the runtime. A 202 response means checkpoint publication and cleanup are still pending. For conditional memory pause, send expected_runtime_generation and Idempotency-Key together with memory=true. Retries bind the same source generation and checkpoint operation; mismatched or aborted operations conflict.
      * Pause a sandbox
      */
     async apiV1SandboxesIdPausePost(requestParameters: ApiV1SandboxesIdPausePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessPauseSandboxResponse> {
@@ -465,7 +778,7 @@ export class SandboxesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates a short-lived, sandbox-runtime-bound authorization for previewing a loopback HTTP server through the region public exposure domain. The returned URL performs a one-time browser bootstrap and then redirects to a clean same-origin URL. This does not publish or modify sandbox services. 
+     * Creates a short-lived, sandbox-runtime-bound authorization for previewing a loopback HTTP server through the region public exposure domain. The returned URL performs a one-time browser bootstrap and then redirects to a clean same-origin URL. This does not publish or modify sandbox services.
      * Create a private sandbox preview grant
      */
     async apiV1SandboxesIdPreviewsPostRaw(requestParameters: ApiV1SandboxesIdPreviewsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxPreviewResponse>> {
@@ -513,7 +826,7 @@ export class SandboxesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates a short-lived, sandbox-runtime-bound authorization for previewing a loopback HTTP server through the region public exposure domain. The returned URL performs a one-time browser bootstrap and then redirects to a clean same-origin URL. This does not publish or modify sandbox services. 
+     * Creates a short-lived, sandbox-runtime-bound authorization for previewing a loopback HTTP server through the region public exposure domain. The returned URL performs a one-time browser bootstrap and then redirects to a clean same-origin URL. This does not publish or modify sandbox services.
      * Create a private sandbox preview grant
      */
     async apiV1SandboxesIdPreviewsPost(requestParameters: ApiV1SandboxesIdPreviewsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxPreviewResponse> {
@@ -741,7 +1054,7 @@ export class SandboxesApi extends runtime.BaseAPI {
     }
 
     /**
-     * The default starts a new process runtime from the committed RootFS. Set memory=true to prefer a retained execution image. Missing or incompatible memory falls back to the committed RootFS. A failed memory target is physically reclaimed before a filesystem-only replacement starts. A response with resumed=false means durable fallback is pending; poll sandbox status until running. A disconnected request may continue through background recovery.
+     * The default starts a new process runtime from the committed RootFS. Set memory=true to require a retained execution image. Missing, incompatible, or failed memory restoration returns an error and never authorizes a filesystem-only replacement. Accepted memory operations may continue through background recovery after a disconnected request. For conditional memory resume, send memory=true, expected_runtime_generation, checkpoint_id and Idempotency-Key together. Keep the same authenticated identity, key, checkpoint and source generation on retries. A successful conditional response proves this request committed its exact restore; unrelated running state or a later lifecycle conflicts. An aborted request cannot create a new restore attempt.
      * Resume a sandbox
      */
     async apiV1SandboxesIdResumePostRaw(requestParameters: ApiV1SandboxesIdResumePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessResumeSandboxResponse>> {
@@ -757,6 +1070,10 @@ export class SandboxesApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
+
+        if (requestParameters['idempotencyKey'] != null) {
+            headerParameters['Idempotency-Key'] = String(requestParameters['idempotencyKey']);
+        }
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -782,7 +1099,7 @@ export class SandboxesApi extends runtime.BaseAPI {
     }
 
     /**
-     * The default starts a new process runtime from the committed RootFS. Set memory=true to prefer a retained execution image. Missing or incompatible memory falls back to the committed RootFS. A failed memory target is physically reclaimed before a filesystem-only replacement starts. A response with resumed=false means durable fallback is pending; poll sandbox status until running. A disconnected request may continue through background recovery.
+     * The default starts a new process runtime from the committed RootFS. Set memory=true to require a retained execution image. Missing, incompatible, or failed memory restoration returns an error and never authorizes a filesystem-only replacement. Accepted memory operations may continue through background recovery after a disconnected request. For conditional memory resume, send memory=true, expected_runtime_generation, checkpoint_id and Idempotency-Key together. Keep the same authenticated identity, key, checkpoint and source generation on retries. A successful conditional response proves this request committed its exact restore; unrelated running state or a later lifecycle conflicts. An aborted request cannot create a new restore attempt.
      * Resume a sandbox
      */
     async apiV1SandboxesIdResumePost(requestParameters: ApiV1SandboxesIdResumePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessResumeSandboxResponse> {
@@ -986,4 +1303,1354 @@ export class SandboxesApi extends runtime.BaseAPI {
         return await response.value();
     }
 
+    /**
+     * Deletion consumes the expected sequence before I/O, including when the reply is lost. Inspect/read to reconcile ambiguous results before issuing a new mutation.
+     * Delete a managed runtime file conditionally
+     */
+    async deleteSandboxManagedFileRaw(requestParameters: DeleteSandboxManagedFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessManagedFilesStateResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteSandboxManagedFile().'
+            );
+        }
+
+        if (requestParameters['runtimeGeneration'] == null) {
+            throw new runtime.RequiredError(
+                'runtimeGeneration',
+                'Required parameter "runtimeGeneration" was null or undefined when calling deleteSandboxManagedFile().'
+            );
+        }
+
+        if (requestParameters['name'] == null) {
+            throw new runtime.RequiredError(
+                'name',
+                'Required parameter "name" was null or undefined when calling deleteSandboxManagedFile().'
+            );
+        }
+
+        if (requestParameters['expectedMutationSequence'] == null) {
+            throw new runtime.RequiredError(
+                'expectedMutationSequence',
+                'Required parameter "expectedMutationSequence" was null or undefined when calling deleteSandboxManagedFile().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['runtimeGeneration'] != null) {
+            queryParameters['runtime_generation'] = requestParameters['runtimeGeneration'];
+        }
+
+        if (requestParameters['expectedMutationSequence'] != null) {
+            queryParameters['expected_mutation_sequence'] = requestParameters['expectedMutationSequence'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/managed-files/{name}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"name"}}`, encodeURIComponent(String(requestParameters['name'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessManagedFilesStateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Deletion consumes the expected sequence before I/O, including when the reply is lost. Inspect/read to reconcile ambiguous results before issuing a new mutation.
+     * Delete a managed runtime file conditionally
+     */
+    async deleteSandboxManagedFile(requestParameters: DeleteSandboxManagedFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessManagedFilesStateResponse> {
+        const response = await this.deleteSandboxManagedFileRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Deletion consumes the expected sequence before I/O, including when the reply is lost. Inspect/read to reconcile ambiguous results before issuing a new mutation.
+     * Delete a namespaced managed runtime file conditionally
+     */
+    async deleteSandboxNamespacedManagedFileRaw(requestParameters: DeleteSandboxNamespacedManagedFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessManagedFilesStateResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling deleteSandboxNamespacedManagedFile().'
+            );
+        }
+
+        if (requestParameters['runtimeGeneration'] == null) {
+            throw new runtime.RequiredError(
+                'runtimeGeneration',
+                'Required parameter "runtimeGeneration" was null or undefined when calling deleteSandboxNamespacedManagedFile().'
+            );
+        }
+
+        if (requestParameters['name'] == null) {
+            throw new runtime.RequiredError(
+                'name',
+                'Required parameter "name" was null or undefined when calling deleteSandboxNamespacedManagedFile().'
+            );
+        }
+
+        if (requestParameters['namespace'] == null) {
+            throw new runtime.RequiredError(
+                'namespace',
+                'Required parameter "namespace" was null or undefined when calling deleteSandboxNamespacedManagedFile().'
+            );
+        }
+
+        if (requestParameters['expectedMutationSequence'] == null) {
+            throw new runtime.RequiredError(
+                'expectedMutationSequence',
+                'Required parameter "expectedMutationSequence" was null or undefined when calling deleteSandboxNamespacedManagedFile().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['runtimeGeneration'] != null) {
+            queryParameters['runtime_generation'] = requestParameters['runtimeGeneration'];
+        }
+
+        if (requestParameters['expectedMutationSequence'] != null) {
+            queryParameters['expected_mutation_sequence'] = requestParameters['expectedMutationSequence'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/managed-file-namespaces/{namespace}/{name}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"name"}}`, encodeURIComponent(String(requestParameters['name'])));
+        urlPath = urlPath.replace(`{${"namespace"}}`, encodeURIComponent(String(requestParameters['namespace'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessManagedFilesStateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Deletion consumes the expected sequence before I/O, including when the reply is lost. Inspect/read to reconcile ambiguous results before issuing a new mutation.
+     * Delete a namespaced managed runtime file conditionally
+     */
+    async deleteSandboxNamespacedManagedFile(requestParameters: DeleteSandboxNamespacedManagedFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessManagedFilesStateResponse> {
+        const response = await this.deleteSandboxNamespacedManagedFileRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Read-only acknowledgement recovery. Requires sandbox:read. Does not execute in the guest or submit a new restart.
+     * Find a restart by its original request key
+     */
+    async findSandboxRestartOperationRaw(requestParameters: FindSandboxRestartOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRestartOperationResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling findSandboxRestartOperation().'
+            );
+        }
+
+        if (requestParameters['requestKey'] == null) {
+            throw new runtime.RequiredError(
+                'requestKey',
+                'Required parameter "requestKey" was null or undefined when calling findSandboxRestartOperation().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['requestKey'] != null) {
+            queryParameters['request_key'] = requestParameters['requestKey'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/restart-operations`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRestartOperationResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Read-only acknowledgement recovery. Requires sandbox:read. Does not execute in the guest or submit a new restart.
+     * Find a restart by its original request key
+     */
+    async findSandboxRestartOperation(requestParameters: FindSandboxRestartOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRestartOperationResponse> {
+        const response = await this.findSandboxRestartOperationRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Read-only acknowledgement recovery. Requires sandbox:read. Does not execute in the guest or submit a new snapshot restore.
+     * Find a snapshot restore by its original request key
+     */
+    async findSandboxSnapshotRestoreOperationRaw(requestParameters: FindSandboxSnapshotRestoreOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxSnapshotRestoreOperationResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling findSandboxSnapshotRestoreOperation().'
+            );
+        }
+
+        if (requestParameters['requestKey'] == null) {
+            throw new runtime.RequiredError(
+                'requestKey',
+                'Required parameter "requestKey" was null or undefined when calling findSandboxSnapshotRestoreOperation().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['requestKey'] != null) {
+            queryParameters['request_key'] = requestParameters['requestKey'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/snapshot-restore-operations`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxSnapshotRestoreOperationResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Read-only acknowledgement recovery. Requires sandbox:read. Does not execute in the guest or submit a new snapshot restore.
+     * Find a snapshot restore by its original request key
+     */
+    async findSandboxSnapshotRestoreOperation(requestParameters: FindSandboxSnapshotRestoreOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxSnapshotRestoreOperationResponse> {
+        const response = await this.findSandboxSnapshotRestoreOperationRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Requires sandbox:read. Reads owner-scoped regional authority and bounded independent node and guest diagnostics without automatic resume, restart or credential preparation. Guest diagnostics may execute a fixed short shell command and allocate a temporary PTY; they create no platform session. No probe runs for a paused runtime or a pending lifecycle. Each observation has its own source and time. Guest results are advisory and cannot establish runtime or storage authority. Unknown means insufficient evidence, not success. A valid launch receipt is not current process liveness; RootFS identity and writer lease are not successful storage IO or a guarantee of uncommitted-write durability. Storage IO currently remains unknown. Authority is rechecked after probes so a changed generation or lifecycle cannot inherit a successful old-runtime observation.
+     * Observe independent runtime, execution, terminal and storage health
+     */
+    async getSandboxHealthRaw(requestParameters: GetSandboxHealthRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxHealthResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getSandboxHealth().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/health`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxHealthResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Requires sandbox:read. Reads owner-scoped regional authority and bounded independent node and guest diagnostics without automatic resume, restart or credential preparation. Guest diagnostics may execute a fixed short shell command and allocate a temporary PTY; they create no platform session. No probe runs for a paused runtime or a pending lifecycle. Each observation has its own source and time. Guest results are advisory and cannot establish runtime or storage authority. Unknown means insufficient evidence, not success. A valid launch receipt is not current process liveness; RootFS identity and writer lease are not successful storage IO or a guarantee of uncommitted-write durability. Storage IO currently remains unknown. Authority is rechecked after probes so a changed generation or lifecycle cannot inherit a successful old-runtime observation.
+     * Observe independent runtime, execution, terminal and storage health
+     */
+    async getSandboxHealth(requestParameters: GetSandboxHealthRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxHealthResponse> {
+        const response = await this.getSandboxHealthRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Requires sandbox:read. Returns external checkpoint/migration restore lineage for the exact current runtime generation after physical retirement commits. No guest execution or lifecycle mutation. This is not a session-health or credential-clean attestation. Missing, pending or incompatible authority is an error; never authorizes cold launch or key re-publication.
+     * Read committed same-sandbox memory restoration lineage
+     */
+    async getSandboxMemoryRestorationRaw(requestParameters: GetSandboxMemoryRestorationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxMemoryRestorationResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getSandboxMemoryRestoration().'
+            );
+        }
+
+        if (requestParameters['runtimeGeneration'] == null) {
+            throw new runtime.RequiredError(
+                'runtimeGeneration',
+                'Required parameter "runtimeGeneration" was null or undefined when calling getSandboxMemoryRestoration().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['runtimeGeneration'] != null) {
+            queryParameters['runtime_generation'] = requestParameters['runtimeGeneration'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/memory-restoration`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxMemoryRestorationResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Requires sandbox:read. Returns external checkpoint/migration restore lineage for the exact current runtime generation after physical retirement commits. No guest execution or lifecycle mutation. This is not a session-health or credential-clean attestation. Missing, pending or incompatible authority is an error; never authorizes cold launch or key re-publication.
+     * Read committed same-sandbox memory restoration lineage
+     */
+    async getSandboxMemoryRestoration(requestParameters: GetSandboxMemoryRestorationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxMemoryRestorationResponse> {
+        const response = await this.getSandboxMemoryRestorationRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Requires sandbox:read. Reads durable metadata independently of procd. Pending has no capture ID. Stopped identifies one immutable externally stopped source. Acknowledged means the owner receipt is durable; released permits ordinary retirement. This is not a completed restart or a credential-content digest.
+     * Get retained cold-restart credential custody
+     */
+    async getSandboxRestartFinalCaptureRaw(requestParameters: GetSandboxRestartFinalCaptureRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRestartFinalCaptureResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getSandboxRestartFinalCapture().'
+            );
+        }
+
+        if (requestParameters['operationId'] == null) {
+            throw new runtime.RequiredError(
+                'operationId',
+                'Required parameter "operationId" was null or undefined when calling getSandboxRestartFinalCapture().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/restart-operations/{operation_id}/final-capture`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"operation_id"}}`, encodeURIComponent(String(requestParameters['operationId'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRestartFinalCaptureResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Requires sandbox:read. Reads durable metadata independently of procd. Pending has no capture ID. Stopped identifies one immutable externally stopped source. Acknowledged means the owner receipt is durable; released permits ordinary retirement. This is not a completed restart or a credential-content digest.
+     * Get retained cold-restart credential custody
+     */
+    async getSandboxRestartFinalCapture(requestParameters: GetSandboxRestartFinalCaptureRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRestartFinalCaptureResponse> {
+        const response = await this.getSandboxRestartFinalCaptureRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Requires sandbox:read. Available independently of procd. A succeeded operation reports its historical replacement generation; later lifecycle activity does not cause another restart or make this an application-health report.
+     * Get durable restart state and bounded retry diagnostics
+     */
+    async getSandboxRestartOperationRaw(requestParameters: GetSandboxRestartOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRestartOperationResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getSandboxRestartOperation().'
+            );
+        }
+
+        if (requestParameters['operationId'] == null) {
+            throw new runtime.RequiredError(
+                'operationId',
+                'Required parameter "operationId" was null or undefined when calling getSandboxRestartOperation().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/restart-operations/{operation_id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"operation_id"}}`, encodeURIComponent(String(requestParameters['operationId'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRestartOperationResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Requires sandbox:read. Available independently of procd. A succeeded operation reports its historical replacement generation; later lifecycle activity does not cause another restart or make this an application-health report.
+     * Get durable restart state and bounded retry diagnostics
+     */
+    async getSandboxRestartOperation(requestParameters: GetSandboxRestartOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRestartOperationResponse> {
+        const response = await this.getSandboxRestartOperationRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Requires sandbox:read. Reads durable metadata independently of procd. Pending has no capture ID. Stopped identifies one immutable externally stopped source. Acknowledged means the owner receipt is durable; released permits ordinary retirement. This is not a completed restart or a credential-content digest.
+     * Get retained cold-restart credential custody
+     */
+    async getSandboxSnapshotRestoreFinalCaptureRaw(requestParameters: GetSandboxSnapshotRestoreFinalCaptureRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRestartFinalCaptureResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getSandboxSnapshotRestoreFinalCapture().'
+            );
+        }
+
+        if (requestParameters['operationId'] == null) {
+            throw new runtime.RequiredError(
+                'operationId',
+                'Required parameter "operationId" was null or undefined when calling getSandboxSnapshotRestoreFinalCapture().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}/final-capture`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"operation_id"}}`, encodeURIComponent(String(requestParameters['operationId'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRestartFinalCaptureResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Requires sandbox:read. Reads durable metadata independently of procd. Pending has no capture ID. Stopped identifies one immutable externally stopped source. Acknowledged means the owner receipt is durable; released permits ordinary retirement. This is not a completed restart or a credential-content digest.
+     * Get retained cold-restart credential custody
+     */
+    async getSandboxSnapshotRestoreFinalCapture(requestParameters: GetSandboxSnapshotRestoreFinalCaptureRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRestartFinalCaptureResponse> {
+        const response = await this.getSandboxSnapshotRestoreFinalCaptureRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Requires sandbox:read. Available independently of procd. A succeeded operation reports its historical replacement generation; later lifecycle activity does not cause another restart or make this an application-health report.
+     * Get durable restart state and bounded retry diagnostics
+     */
+    async getSandboxSnapshotRestoreOperationRaw(requestParameters: GetSandboxSnapshotRestoreOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxSnapshotRestoreOperationResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getSandboxSnapshotRestoreOperation().'
+            );
+        }
+
+        if (requestParameters['operationId'] == null) {
+            throw new runtime.RequiredError(
+                'operationId',
+                'Required parameter "operationId" was null or undefined when calling getSandboxSnapshotRestoreOperation().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"operation_id"}}`, encodeURIComponent(String(requestParameters['operationId'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxSnapshotRestoreOperationResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Requires sandbox:read. Available independently of procd. A succeeded operation reports its historical replacement generation; later lifecycle activity does not cause another restart or make this an application-health report.
+     * Get durable restart state and bounded retry diagnostics
+     */
+    async getSandboxSnapshotRestoreOperation(requestParameters: GetSandboxSnapshotRestoreOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxSnapshotRestoreOperationResponse> {
+        const response = await this.getSandboxSnapshotRestoreOperationRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Uses node-owned storage outside persistent RootFS without executing in the guest. This describes only managed files and does not attest that historical or user-created RootFS files contain no credentials.
+     * Inspect the current runtime-only managed file projection
+     */
+    async inspectSandboxManagedFilesRaw(requestParameters: InspectSandboxManagedFilesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessManagedFilesStateResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling inspectSandboxManagedFiles().'
+            );
+        }
+
+        if (requestParameters['runtimeGeneration'] == null) {
+            throw new runtime.RequiredError(
+                'runtimeGeneration',
+                'Required parameter "runtimeGeneration" was null or undefined when calling inspectSandboxManagedFiles().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['runtimeGeneration'] != null) {
+            queryParameters['runtime_generation'] = requestParameters['runtimeGeneration'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/managed-files`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessManagedFilesStateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Uses node-owned storage outside persistent RootFS without executing in the guest. This describes only managed files and does not attest that historical or user-created RootFS files contain no credentials.
+     * Inspect the current runtime-only managed file projection
+     */
+    async inspectSandboxManagedFiles(requestParameters: InspectSandboxManagedFilesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessManagedFilesStateResponse> {
+        const response = await this.inspectSandboxManagedFilesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Requires sandbox:read and the original caller\'s Idempotency-Key. The authenticated team, user, sandbox and action derive the same request identity as conditional pause or resume. Performs no lifecycle mutation, guest access, quota admission or retry. A missing request returns 404 and never proves cancellation. Historical terminal results remain readable while their evidence is retained, including after later lifecycles; current only compares the owner snapshot and is not a lease or permission to mutate it. Source process health is not implied. A physically resolved failed restore consumes result_runtime_generation while retaining the checkpoint; it must never be retried as a new intent implicitly.
+     * Read the exact conditional memory lifecycle result
+     */
+    async lookupSandboxMemoryOperationRaw(requestParameters: LookupSandboxMemoryOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxMemoryOperationResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling lookupSandboxMemoryOperation().'
+            );
+        }
+
+        if (requestParameters['idempotencyKey'] == null) {
+            throw new runtime.RequiredError(
+                'idempotencyKey',
+                'Required parameter "idempotencyKey" was null or undefined when calling lookupSandboxMemoryOperation().'
+            );
+        }
+
+        if (requestParameters['action'] == null) {
+            throw new runtime.RequiredError(
+                'action',
+                'Required parameter "action" was null or undefined when calling lookupSandboxMemoryOperation().'
+            );
+        }
+
+        if (requestParameters['expectedRuntimeGeneration'] == null) {
+            throw new runtime.RequiredError(
+                'expectedRuntimeGeneration',
+                'Required parameter "expectedRuntimeGeneration" was null or undefined when calling lookupSandboxMemoryOperation().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['action'] != null) {
+            queryParameters['action'] = requestParameters['action'];
+        }
+
+        if (requestParameters['expectedRuntimeGeneration'] != null) {
+            queryParameters['expected_runtime_generation'] = requestParameters['expectedRuntimeGeneration'];
+        }
+
+        if (requestParameters['checkpointId'] != null) {
+            queryParameters['checkpoint_id'] = requestParameters['checkpointId'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (requestParameters['idempotencyKey'] != null) {
+            headerParameters['Idempotency-Key'] = String(requestParameters['idempotencyKey']);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/memory-operations/lookup`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxMemoryOperationResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Requires sandbox:read and the original caller\'s Idempotency-Key. The authenticated team, user, sandbox and action derive the same request identity as conditional pause or resume. Performs no lifecycle mutation, guest access, quota admission or retry. A missing request returns 404 and never proves cancellation. Historical terminal results remain readable while their evidence is retained, including after later lifecycles; current only compares the owner snapshot and is not a lease or permission to mutate it. Source process health is not implied. A physically resolved failed restore consumes result_runtime_generation while retaining the checkpoint; it must never be retried as a new intent implicitly.
+     * Read the exact conditional memory lifecycle result
+     */
+    async lookupSandboxMemoryOperation(requestParameters: LookupSandboxMemoryOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxMemoryOperationResponse> {
+        const response = await this.lookupSandboxMemoryOperationRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Read a managed runtime file
+     */
+    async readSandboxManagedFileRaw(requestParameters: ReadSandboxManagedFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessManagedFileReadResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling readSandboxManagedFile().'
+            );
+        }
+
+        if (requestParameters['runtimeGeneration'] == null) {
+            throw new runtime.RequiredError(
+                'runtimeGeneration',
+                'Required parameter "runtimeGeneration" was null or undefined when calling readSandboxManagedFile().'
+            );
+        }
+
+        if (requestParameters['name'] == null) {
+            throw new runtime.RequiredError(
+                'name',
+                'Required parameter "name" was null or undefined when calling readSandboxManagedFile().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['runtimeGeneration'] != null) {
+            queryParameters['runtime_generation'] = requestParameters['runtimeGeneration'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/managed-files/{name}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"name"}}`, encodeURIComponent(String(requestParameters['name'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessManagedFileReadResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Read a managed runtime file
+     */
+    async readSandboxManagedFile(requestParameters: ReadSandboxManagedFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessManagedFileReadResponse> {
+        const response = await this.readSandboxManagedFileRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Read a namespaced managed runtime file
+     */
+    async readSandboxNamespacedManagedFileRaw(requestParameters: ReadSandboxNamespacedManagedFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessManagedFileReadResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling readSandboxNamespacedManagedFile().'
+            );
+        }
+
+        if (requestParameters['runtimeGeneration'] == null) {
+            throw new runtime.RequiredError(
+                'runtimeGeneration',
+                'Required parameter "runtimeGeneration" was null or undefined when calling readSandboxNamespacedManagedFile().'
+            );
+        }
+
+        if (requestParameters['name'] == null) {
+            throw new runtime.RequiredError(
+                'name',
+                'Required parameter "name" was null or undefined when calling readSandboxNamespacedManagedFile().'
+            );
+        }
+
+        if (requestParameters['namespace'] == null) {
+            throw new runtime.RequiredError(
+                'namespace',
+                'Required parameter "namespace" was null or undefined when calling readSandboxNamespacedManagedFile().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['runtimeGeneration'] != null) {
+            queryParameters['runtime_generation'] = requestParameters['runtimeGeneration'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/managed-file-namespaces/{namespace}/{name}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"name"}}`, encodeURIComponent(String(requestParameters['name'])));
+        urlPath = urlPath.replace(`{${"namespace"}}`, encodeURIComponent(String(requestParameters['namespace'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessManagedFileReadResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Read a namespaced managed runtime file
+     */
+    async readSandboxNamespacedManagedFile(requestParameters: ReadSandboxNamespacedManagedFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessManagedFileReadResponse> {
+        const response = await this.readSandboxNamespacedManagedFileRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Requires sandbox:read and the exact capture_id from status. Never reads live or guest storage, creates files, or resumes execution. found=false attests an absent file only after retained backing and external absence are verified. Missing journals, mounts, authority and routes are errors, never logout. Read closes after acknowledgement. Responses must not be logged or cached.
+     * Read a file from the exact stopped restart source
+     */
+    async readSandboxRestartFinalCaptureFileRaw(requestParameters: ReadSandboxRestartFinalCaptureFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRestartFinalCaptureFileResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling readSandboxRestartFinalCaptureFile().'
+            );
+        }
+
+        if (requestParameters['operationId'] == null) {
+            throw new runtime.RequiredError(
+                'operationId',
+                'Required parameter "operationId" was null or undefined when calling readSandboxRestartFinalCaptureFile().'
+            );
+        }
+
+        if (requestParameters['namespace'] == null) {
+            throw new runtime.RequiredError(
+                'namespace',
+                'Required parameter "namespace" was null or undefined when calling readSandboxRestartFinalCaptureFile().'
+            );
+        }
+
+        if (requestParameters['name'] == null) {
+            throw new runtime.RequiredError(
+                'name',
+                'Required parameter "name" was null or undefined when calling readSandboxRestartFinalCaptureFile().'
+            );
+        }
+
+        if (requestParameters['captureId'] == null) {
+            throw new runtime.RequiredError(
+                'captureId',
+                'Required parameter "captureId" was null or undefined when calling readSandboxRestartFinalCaptureFile().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['captureId'] != null) {
+            queryParameters['capture_id'] = requestParameters['captureId'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/restart-operations/{operation_id}/final-capture/namespaces/{namespace}/{name}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"operation_id"}}`, encodeURIComponent(String(requestParameters['operationId'])));
+        urlPath = urlPath.replace(`{${"namespace"}}`, encodeURIComponent(String(requestParameters['namespace'])));
+        urlPath = urlPath.replace(`{${"name"}}`, encodeURIComponent(String(requestParameters['name'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRestartFinalCaptureFileResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Requires sandbox:read and the exact capture_id from status. Never reads live or guest storage, creates files, or resumes execution. found=false attests an absent file only after retained backing and external absence are verified. Missing journals, mounts, authority and routes are errors, never logout. Read closes after acknowledgement. Responses must not be logged or cached.
+     * Read a file from the exact stopped restart source
+     */
+    async readSandboxRestartFinalCaptureFile(requestParameters: ReadSandboxRestartFinalCaptureFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRestartFinalCaptureFileResponse> {
+        const response = await this.readSandboxRestartFinalCaptureFileRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Requires sandbox:read and the exact capture_id from status. Never reads live or guest storage, creates files, or resumes execution. found=false attests an absent file only after retained backing and external absence are verified. Missing journals, mounts, authority and routes are errors, never logout. Read closes after acknowledgement. Responses must not be logged or cached.
+     * Read a file from the exact stopped restart source
+     */
+    async readSandboxSnapshotRestoreFinalCaptureFileRaw(requestParameters: ReadSandboxSnapshotRestoreFinalCaptureFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRestartFinalCaptureFileResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling readSandboxSnapshotRestoreFinalCaptureFile().'
+            );
+        }
+
+        if (requestParameters['operationId'] == null) {
+            throw new runtime.RequiredError(
+                'operationId',
+                'Required parameter "operationId" was null or undefined when calling readSandboxSnapshotRestoreFinalCaptureFile().'
+            );
+        }
+
+        if (requestParameters['namespace'] == null) {
+            throw new runtime.RequiredError(
+                'namespace',
+                'Required parameter "namespace" was null or undefined when calling readSandboxSnapshotRestoreFinalCaptureFile().'
+            );
+        }
+
+        if (requestParameters['name'] == null) {
+            throw new runtime.RequiredError(
+                'name',
+                'Required parameter "name" was null or undefined when calling readSandboxSnapshotRestoreFinalCaptureFile().'
+            );
+        }
+
+        if (requestParameters['captureId'] == null) {
+            throw new runtime.RequiredError(
+                'captureId',
+                'Required parameter "captureId" was null or undefined when calling readSandboxSnapshotRestoreFinalCaptureFile().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['captureId'] != null) {
+            queryParameters['capture_id'] = requestParameters['captureId'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}/final-capture/namespaces/{namespace}/{name}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"operation_id"}}`, encodeURIComponent(String(requestParameters['operationId'])));
+        urlPath = urlPath.replace(`{${"namespace"}}`, encodeURIComponent(String(requestParameters['namespace'])));
+        urlPath = urlPath.replace(`{${"name"}}`, encodeURIComponent(String(requestParameters['name'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRestartFinalCaptureFileResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Requires sandbox:read and the exact capture_id from status. Never reads live or guest storage, creates files, or resumes execution. found=false attests an absent file only after retained backing and external absence are verified. Missing journals, mounts, authority and routes are errors, never logout. Read closes after acknowledgement. Responses must not be logged or cached.
+     * Read a file from the exact stopped restart source
+     */
+    async readSandboxSnapshotRestoreFinalCaptureFile(requestParameters: ReadSandboxSnapshotRestoreFinalCaptureFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRestartFinalCaptureFileResponse> {
+        const response = await this.readSandboxSnapshotRestoreFinalCaptureFileRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Preserves the writable RootFS through external publication and writer fencing, ends the old processes, and starts a fresh runtime. This is not a reconnect, memory restore, or snapshot rollback. Requires sandbox:write and a stable Idempotency-Key bound to expected_runtime_generation. A duplicate returns the original operation and never restarts a newer generation. Request timeout does not cancel committed work. Find the operation by request_key if its acknowledgement was lost. Completion proves runtime replacement, not guest application health. Never use this as an automatic memory fallback.
+     * Explicitly replace a sandbox runtime and discard process state
+     */
+    async restartSandboxRaw(requestParameters: RestartSandboxRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxRestartOperationResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling restartSandbox().'
+            );
+        }
+
+        if (requestParameters['idempotencyKey'] == null) {
+            throw new runtime.RequiredError(
+                'idempotencyKey',
+                'Required parameter "idempotencyKey" was null or undefined when calling restartSandbox().'
+            );
+        }
+
+        if (requestParameters['sandboxRestartRequest'] == null) {
+            throw new runtime.RequiredError(
+                'sandboxRestartRequest',
+                'Required parameter "sandboxRestartRequest" was null or undefined when calling restartSandbox().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (requestParameters['idempotencyKey'] != null) {
+            headerParameters['Idempotency-Key'] = String(requestParameters['idempotencyKey']);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/restart`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SandboxRestartRequestToJSON(requestParameters['sandboxRestartRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxRestartOperationResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Preserves the writable RootFS through external publication and writer fencing, ends the old processes, and starts a fresh runtime. This is not a reconnect, memory restore, or snapshot rollback. Requires sandbox:write and a stable Idempotency-Key bound to expected_runtime_generation. A duplicate returns the original operation and never restarts a newer generation. Request timeout does not cancel committed work. Find the operation by request_key if its acknowledgement was lost. Completion proves runtime replacement, not guest application health. Never use this as an automatic memory fallback.
+     * Explicitly replace a sandbox runtime and discard process state
+     */
+    async restartSandbox(requestParameters: RestartSandboxRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxRestartOperationResponse> {
+        const response = await this.restartSandboxRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Explicitly discards source process state and replaces its writable RootFS with the exact selected snapshot generation. Requires sandbox:write, discard_process_state=true and a stable Idempotency-Key bound to the source runtime generation and snapshot identity. Admission pins the selected data, including across later snapshot expiry or deletion. External final capture retains projected credential custody before source retirement. Head replacement and cold resume admission commit together. A duplicate returns the original operation and cannot restore again. Request timeout does not cancel accepted work; recover its acknowledgement by request_key. Completion proves external runtime launch, not guest application health. Never use as a memory fallback.
+     * Restore a selected snapshot and start a fresh runtime
+     */
+    async restoreSandboxSnapshotRaw(requestParameters: RestoreSandboxSnapshotRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessSandboxSnapshotRestoreOperationResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling restoreSandboxSnapshot().'
+            );
+        }
+
+        if (requestParameters['idempotencyKey'] == null) {
+            throw new runtime.RequiredError(
+                'idempotencyKey',
+                'Required parameter "idempotencyKey" was null or undefined when calling restoreSandboxSnapshot().'
+            );
+        }
+
+        if (requestParameters['sandboxSnapshotRestoreRequest'] == null) {
+            throw new runtime.RequiredError(
+                'sandboxSnapshotRestoreRequest',
+                'Required parameter "sandboxSnapshotRestoreRequest" was null or undefined when calling restoreSandboxSnapshot().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (requestParameters['idempotencyKey'] != null) {
+            headerParameters['Idempotency-Key'] = String(requestParameters['idempotencyKey']);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/snapshot-restore`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SandboxSnapshotRestoreRequestToJSON(requestParameters['sandboxSnapshotRestoreRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessSandboxSnapshotRestoreOperationResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Explicitly discards source process state and replaces its writable RootFS with the exact selected snapshot generation. Requires sandbox:write, discard_process_state=true and a stable Idempotency-Key bound to the source runtime generation and snapshot identity. Admission pins the selected data, including across later snapshot expiry or deletion. External final capture retains projected credential custody before source retirement. Head replacement and cold resume admission commit together. A duplicate returns the original operation and cannot restore again. Request timeout does not cancel accepted work; recover its acknowledgement by request_key. Completion proves external runtime launch, not guest application health. Never use as a memory fallback.
+     * Restore a selected snapshot and start a fresh runtime
+     */
+    async restoreSandboxSnapshot(requestParameters: RestoreSandboxSnapshotRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessSandboxSnapshotRestoreOperationResponse> {
+        const response = await this.restoreSandboxSnapshotRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * The expected mutation sequence is consumed before file I/O. An ambiguous response must be reconciled with inspect/read; never automatically retry with a newly fetched sequence. The sequence orders platform requests, not native guest refreshes.
+     * Replace a managed runtime file conditionally
+     */
+    async writeSandboxManagedFileRaw(requestParameters: WriteSandboxManagedFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessManagedFilesStateResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling writeSandboxManagedFile().'
+            );
+        }
+
+        if (requestParameters['runtimeGeneration'] == null) {
+            throw new runtime.RequiredError(
+                'runtimeGeneration',
+                'Required parameter "runtimeGeneration" was null or undefined when calling writeSandboxManagedFile().'
+            );
+        }
+
+        if (requestParameters['name'] == null) {
+            throw new runtime.RequiredError(
+                'name',
+                'Required parameter "name" was null or undefined when calling writeSandboxManagedFile().'
+            );
+        }
+
+        if (requestParameters['managedFileWriteRequest'] == null) {
+            throw new runtime.RequiredError(
+                'managedFileWriteRequest',
+                'Required parameter "managedFileWriteRequest" was null or undefined when calling writeSandboxManagedFile().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['runtimeGeneration'] != null) {
+            queryParameters['runtime_generation'] = requestParameters['runtimeGeneration'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/managed-files/{name}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"name"}}`, encodeURIComponent(String(requestParameters['name'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ManagedFileWriteRequestToJSON(requestParameters['managedFileWriteRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessManagedFilesStateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * The expected mutation sequence is consumed before file I/O. An ambiguous response must be reconciled with inspect/read; never automatically retry with a newly fetched sequence. The sequence orders platform requests, not native guest refreshes.
+     * Replace a managed runtime file conditionally
+     */
+    async writeSandboxManagedFile(requestParameters: WriteSandboxManagedFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessManagedFilesStateResponse> {
+        const response = await this.writeSandboxManagedFileRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * The expected mutation sequence is consumed before file I/O. An ambiguous response must be reconciled with inspect/read; never automatically retry with a newly fetched sequence. The sequence orders platform requests, not native guest refreshes.
+     * Replace a namespaced managed runtime file conditionally
+     */
+    async writeSandboxNamespacedManagedFileRaw(requestParameters: WriteSandboxNamespacedManagedFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessManagedFilesStateResponse>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling writeSandboxNamespacedManagedFile().'
+            );
+        }
+
+        if (requestParameters['runtimeGeneration'] == null) {
+            throw new runtime.RequiredError(
+                'runtimeGeneration',
+                'Required parameter "runtimeGeneration" was null or undefined when calling writeSandboxNamespacedManagedFile().'
+            );
+        }
+
+        if (requestParameters['name'] == null) {
+            throw new runtime.RequiredError(
+                'name',
+                'Required parameter "name" was null or undefined when calling writeSandboxNamespacedManagedFile().'
+            );
+        }
+
+        if (requestParameters['namespace'] == null) {
+            throw new runtime.RequiredError(
+                'namespace',
+                'Required parameter "namespace" was null or undefined when calling writeSandboxNamespacedManagedFile().'
+            );
+        }
+
+        if (requestParameters['managedFileWriteRequest'] == null) {
+            throw new runtime.RequiredError(
+                'managedFileWriteRequest',
+                'Required parameter "managedFileWriteRequest" was null or undefined when calling writeSandboxNamespacedManagedFile().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['runtimeGeneration'] != null) {
+            queryParameters['runtime_generation'] = requestParameters['runtimeGeneration'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("bearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/api/v1/sandboxes/{id}/managed-file-namespaces/{namespace}/{name}`;
+        urlPath = urlPath.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id'])));
+        urlPath = urlPath.replace(`{${"name"}}`, encodeURIComponent(String(requestParameters['name'])));
+        urlPath = urlPath.replace(`{${"namespace"}}`, encodeURIComponent(String(requestParameters['namespace'])));
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ManagedFileWriteRequestToJSON(requestParameters['managedFileWriteRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SuccessManagedFilesStateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * The expected mutation sequence is consumed before file I/O. An ambiguous response must be reconciled with inspect/read; never automatically retry with a newly fetched sequence. The sequence orders platform requests, not native guest refreshes.
+     * Replace a namespaced managed runtime file conditionally
+     */
+    async writeSandboxNamespacedManagedFile(requestParameters: WriteSandboxNamespacedManagedFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessManagedFilesStateResponse> {
+        const response = await this.writeSandboxNamespacedManagedFileRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
 }
+
+/**
+ * @export
+ */
+export const LookupSandboxMemoryOperationActionEnum = {
+    Pause: 'pause',
+    Resume: 'resume'
+} as const;
+export type LookupSandboxMemoryOperationActionEnum = typeof LookupSandboxMemoryOperationActionEnum[keyof typeof LookupSandboxMemoryOperationActionEnum];

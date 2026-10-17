@@ -27,7 +27,7 @@ import type {
 } from "./models";
 import { ensureData, ensureModel } from "./response";
 import { Sandbox } from "./sandbox";
-import { WebSocketClient, type WebSocketRawData } from "./ws_client";
+import { WebSocketClient, WebSocketUpgradeError, type WebSocketRawData } from "./ws_client";
 
 function getClient(sandbox: Sandbox): Client {
   return (sandbox as any).client as Client;
@@ -37,6 +37,10 @@ declare module "./sandbox" {
   interface Sandbox {
     listSessions(): Promise<ExecutionSession[]>;
     createSession(spec: ExecutionSessionSpec, options?: SessionCreateOptions): Promise<ExecutionSession>;
+    /** Read-only original creation receipt; never auto-resumes or creates. */
+    findConditionalSession(creationKey: string, runtimeGeneration: number): Promise<ExecutionSession>;
+    findRestoredConditionalSession(creationKey: string, runtimeGeneration: number, creationRuntimeGeneration: number): Promise<ExecutionSession>;
+    connectRestoredConditionalSession(sessionId: string, creationKey: string, runtimeGeneration: number, creationRuntimeGeneration: number, attemptId: string, options?: SessionWebSocketOptions): Promise<ExecutionSessionConnection>;
     getSession(sessionId: string): Promise<ExecutionSession>;
     updateSession(sessionId: string, spec: ExecutionSessionSpec): Promise<ExecutionSession>;
     deleteSession(sessionId: string): Promise<SuccessDeletedResponse>;
@@ -47,6 +51,7 @@ declare module "./sandbox" {
     resizeSessionTerminal(sessionId: string, request: ExecutionSessionTerminalResizeRequest): Promise<SuccessResizedResponse>;
     listSessionEvents(sessionId: string, options?: SessionEventOptions): Promise<ExecutionSessionEventPage>;
     watchSessionEvents(sessionId: string, options?: SessionEventStreamOptions): Promise<SessionEventStream>;
+    connectConditionalSession(sessionId: string, creationKey: string, runtimeGeneration: number, attemptId: string, options?: SessionWebSocketOptions): Promise<ExecutionSessionConnection>;
     connectSession(sessionId: string, options?: SessionWebSocketOptions): Promise<ExecutionSessionConnection>;
   }
 }
@@ -63,6 +68,19 @@ Sandbox.prototype.createSession = async function (
   spec: ExecutionSessionSpec,
   options?: SessionCreateOptions,
 ): Promise<ExecutionSession> {
+  if (options?.runtimeGeneration !== undefined) {
+    if (!Number.isSafeInteger(options.runtimeGeneration) || options.runtimeGeneration <= 0 ||
+        !options.idempotencyKey?.trim() || options.idempotencyKey.length > 255) {
+      throw new Error("Conditional session creation requires a positive safe runtime generation and idempotency key");
+    }
+    const response = await wrapApiCall(() => getClient(this).apispec.sessions.apiV1SandboxesIdSessionsConditionalPost({
+      id: this.id, idempotencyKey: options.idempotencyKey!,
+      conditionalExecutionSessionRequest: { sandboxId: this.id, runtimeGeneration: options.runtimeGeneration!, spec },
+    }));
+    const session = ensureData(response, "conditional create session returned empty response");
+    if (session.runtimeGeneration !== options.runtimeGeneration) throw new Error("Conditional session response has a different runtime generation; reconcile before retrying");
+    return session;
+  }
   const response = await wrapApiCall(() =>
     getClient(this).apispec.sessions.apiV1SandboxesIdSessionsPost({
       id: this.id,
@@ -71,6 +89,39 @@ Sandbox.prototype.createSession = async function (
     }),
   );
   return ensureData(response, "create session returned empty response");
+};
+
+Sandbox.prototype.findConditionalSession = async function (
+  this: Sandbox, creationKey: string, runtimeGeneration: number,
+): Promise<ExecutionSession> {
+  if (!Number.isSafeInteger(runtimeGeneration) || runtimeGeneration <= 0 ||
+      !creationKey?.trim() || creationKey.length > 255) {
+    throw new Error("Conditional session lookup requires a positive safe runtime generation and original creation key");
+  }
+  const response = await wrapApiCall(() => getClient(this).apispec.sessions.apiV1SandboxesIdSessionsConditionalLookupGet({
+    id: this.id, runtimeGeneration, idempotencyKey: creationKey,
+  }));
+  const session = ensureData(response, "conditional session lookup returned empty response");
+  if (session.runtimeGeneration !== runtimeGeneration) throw new Error("Conditional session response has a different runtime generation; reconcile before retrying");
+  return session;
+};
+
+/** Explicit restored original attempt; external lineage and credential admission are caller responsibilities. */
+Sandbox.prototype.findRestoredConditionalSession = async function (
+  this: Sandbox, creationKey: string, runtimeGeneration: number, creationRuntimeGeneration: number,
+): Promise<ExecutionSession> {
+  if (!Number.isSafeInteger(creationRuntimeGeneration) || creationRuntimeGeneration <= 0 || creationRuntimeGeneration >= runtimeGeneration) throw new Error("Restored lookup requires an earlier positive safe creation generation");
+  if (!Number.isSafeInteger(runtimeGeneration) || runtimeGeneration <= 0 ||
+      !creationKey?.trim() || creationKey.length > 255) {
+    throw new Error("Conditional session lookup requires a positive safe runtime generation and original creation key");
+  }
+  const response = await wrapApiCall(() => getClient(this).apispec.sessions.apiV1SandboxesIdSessionsConditionalLookupGet({
+    id: this.id, runtimeGeneration, creationRuntimeGeneration, idempotencyKey: creationKey,
+  }));
+  const session = ensureData(response, "conditional session lookup returned empty response");
+  if (session.runtimeGeneration !== runtimeGeneration) throw new Error("Conditional session response has a different runtime generation; reconcile before retrying");
+  if (session.phase !== "running" || !session.attempt || session.attempt.runtimeGeneration !== creationRuntimeGeneration || session.attempt.finishedAt !== undefined) throw new Error("Restored lookup requires the running original attempt");
+  return session;
 };
 
 Sandbox.prototype.getSession = async function (
@@ -236,6 +287,62 @@ Sandbox.prototype.connectSession = async function (
   }
   const socket = await WebSocketClient.connect(wsUrl.toString(), { headers: await client.wsHeaders() });
   await socket.waitForOpen();
+  return new ExecutionSessionConnection(socket);
+};
+
+/** Exact conditional attachment; no retry, auto-resume or ordinary fallback. */
+Sandbox.prototype.connectConditionalSession = async function (
+  this: Sandbox, sessionId: string, creationKey: string, runtimeGeneration: number,
+  attemptId: string, options?: SessionWebSocketOptions,
+): Promise<ExecutionSessionConnection> {
+  if (!sessionId || !attemptId || !creationKey.trim() || creationKey.length > 255 ||
+      !Number.isSafeInteger(runtimeGeneration) || runtimeGeneration <= 0 ||
+      (options?.after !== undefined && (!Number.isSafeInteger(options.after) || options.after < 0))) {
+    throw new Error("Conditional attachment requires session, creation key, positive safe generation, attempt and nonnegative safe cursor");
+  }
+  const client = getClient(this);
+  const path = `/api/v1/sandboxes/${encodeURIComponent(this.id)}/sessions/${encodeURIComponent(sessionId)}/conditional/ws`;
+  const wsUrl = new URL(client.websocketUrl(path));
+  wsUrl.searchParams.set("runtime_generation", String(runtimeGeneration));
+  wsUrl.searchParams.set("attempt_id", attemptId);
+  if (options?.after !== undefined) wsUrl.searchParams.set("after", String(options.after));
+  const headers = { ...await client.wsHeaders(), "Idempotency-Key": creationKey };
+  const socket = await WebSocketClient.connect(wsUrl.toString(), { headers, singleAttempt: true });
+  try { await socket.waitForOpen(); }
+  catch (error) {
+    if (error instanceof WebSocketUpgradeError) throw new APIError({statusCode:error.statusCode,
+      code:error.statusCode===410 ? "event_cursor_expired" : undefined, message:"Conditional session attachment rejected"});
+    throw error;
+  }
+  return new ExecutionSessionConnection(socket);
+};
+
+/** Explicit restored attachment; never retries or creates. */
+Sandbox.prototype.connectRestoredConditionalSession = async function (
+  this: Sandbox, sessionId: string, creationKey: string, runtimeGeneration: number, creationRuntimeGeneration: number,
+  attemptId: string, options?: SessionWebSocketOptions,
+): Promise<ExecutionSessionConnection> {
+  if (!Number.isSafeInteger(creationRuntimeGeneration) || creationRuntimeGeneration <= 0 || creationRuntimeGeneration >= runtimeGeneration) throw new Error("Restored attachment requires an earlier positive safe creation generation");
+  if (!sessionId || !attemptId || !creationKey.trim() || creationKey.length > 255 ||
+      !Number.isSafeInteger(runtimeGeneration) || runtimeGeneration <= 0 ||
+      (options?.after !== undefined && (!Number.isSafeInteger(options.after) || options.after < 0))) {
+    throw new Error("Conditional attachment requires session, creation key, positive safe generation, attempt and nonnegative safe cursor");
+  }
+  const client = getClient(this);
+  const path = `/api/v1/sandboxes/${encodeURIComponent(this.id)}/sessions/${encodeURIComponent(sessionId)}/conditional/ws`;
+  const wsUrl = new URL(client.websocketUrl(path));
+  wsUrl.searchParams.set("runtime_generation", String(runtimeGeneration));
+  wsUrl.searchParams.set("creation_runtime_generation", String(creationRuntimeGeneration));
+  wsUrl.searchParams.set("attempt_id", attemptId);
+  if (options?.after !== undefined) wsUrl.searchParams.set("after", String(options.after));
+  const headers = { ...await client.wsHeaders(), "Idempotency-Key": creationKey };
+  const socket = await WebSocketClient.connect(wsUrl.toString(), { headers, singleAttempt: true });
+  try { await socket.waitForOpen(); }
+  catch (error) {
+    if (error instanceof WebSocketUpgradeError) throw new APIError({statusCode:error.statusCode,
+      code:error.statusCode===410 ? "event_cursor_expired" : undefined, message:"Conditional session attachment rejected"});
+    throw error;
+  }
   return new ExecutionSessionConnection(socket);
 };
 

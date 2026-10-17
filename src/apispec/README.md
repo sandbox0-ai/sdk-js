@@ -110,6 +110,14 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SandboxRootfsApi* | [**apiV1SandboxesIdRootfsRestorePost**](docs/SandboxRootfsApi.md#apiv1sandboxesidrootfsrestorepost) | **POST** /api/v1/sandboxes/{id}/rootfs/restore | Restore sandbox rootfs from snapshot
 *SandboxRootfsApi* | [**apiV1SandboxesIdSnapshotsGet**](docs/SandboxRootfsApi.md#apiv1sandboxesidsnapshotsget) | **GET** /api/v1/sandboxes/{id}/snapshots | List sandbox rootfs snapshots
 *SandboxRootfsApi* | [**apiV1SandboxesIdSnapshotsPost**](docs/SandboxRootfsApi.md#apiv1sandboxesidsnapshotspost) | **POST** /api/v1/sandboxes/{id}/snapshots | Create sandbox rootfs snapshot
+*SandboxRootfsApi* | [**captureSandboxRootFSSnapshot**](docs/SandboxRootfsApi.md#capturesandboxrootfssnapshotoperation) | **POST** /api/v1/sandboxes/{id}/snapshots/capture | Capture a generation-conditioned running RootFS snapshot
+*SandboxRootfsApi* | [**getCapturedSandboxRootFSSnapshot**](docs/SandboxRootfsApi.md#getcapturedsandboxrootfssnapshot) | **GET** /api/v1/sandboxes/{id}/snapshots/capture | Read the original generation-conditioned snapshot receipt
+*SandboxRootfsApi* | [**getSandboxRootFSFork**](docs/SandboxRootfsApi.md#getsandboxrootfsfork) | **GET** /api/v1/sandboxes/{id}/fork | Read original RootFS fork destination provenance
+*SandboxRootfsApi* | [**getSandboxRootFSForkLaunch**](docs/SandboxRootfsApi.md#getsandboxrootfsforklaunch) | **GET** /api/v1/sandboxes/{id}/fork-launch | Read the original first fork launch result
+*SandboxRootfsApi* | [**getSandboxRootFSIdentity**](docs/SandboxRootfsApi.md#getsandboxrootfsidentity) | **GET** /api/v1/sandboxes/{id}/rootfs/identity | Read external runtime and RootFS identity
+*SandboxRootfsApi* | [**launchSandboxRootFSFork**](docs/SandboxRootfsApi.md#launchsandboxrootfsfork) | **POST** /api/v1/sandboxes/{id}/fork-launch | Launch the original never-run RootFS fork
+*SandboxesApi* | [**acknowledgeSandboxRestartFinalCapture**](docs/SandboxesApi.md#acknowledgesandboxrestartfinalcapture) | **POST** /api/v1/sandboxes/{id}/restart-operations/{operation_id}/final-capture/acknowledgement | Commit the owner receipt for final restart credentials
+*SandboxesApi* | [**acknowledgeSandboxSnapshotRestoreFinalCapture**](docs/SandboxesApi.md#acknowledgesandboxsnapshotrestorefinalcapture) | **POST** /api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}/final-capture/acknowledgement | Commit the owner receipt for final restart credentials
 *SandboxesApi* | [**apiV1SandboxesGet**](docs/SandboxesApi.md#apiv1sandboxesget) | **GET** /api/v1/sandboxes | List sandboxes
 *SandboxesApi* | [**apiV1SandboxesIdDelete**](docs/SandboxesApi.md#apiv1sandboxesiddelete) | **DELETE** /api/v1/sandboxes/{id} | Delete (terminate) a sandbox
 *SandboxesApi* | [**apiV1SandboxesIdGet**](docs/SandboxesApi.md#apiv1sandboxesidget) | **GET** /api/v1/sandboxes/{id} | Get sandbox by ID
@@ -126,9 +134,32 @@ All URIs are relative to *https://api.sandbox0.ai*
 *SandboxesApi* | [**apiV1SandboxesIdServicesPut**](docs/SandboxesApi.md#apiv1sandboxesidservicesput) | **PUT** /api/v1/sandboxes/{id}/services | Replace sandbox services
 *SandboxesApi* | [**apiV1SandboxesIdStatusGet**](docs/SandboxesApi.md#apiv1sandboxesidstatusget) | **GET** /api/v1/sandboxes/{id}/status | Get sandbox status
 *SandboxesApi* | [**apiV1SandboxesPost**](docs/SandboxesApi.md#apiv1sandboxespost) | **POST** /api/v1/sandboxes | Create (claim) a sandbox
+*SandboxesApi* | [**deleteSandboxManagedFile**](docs/SandboxesApi.md#deletesandboxmanagedfile) | **DELETE** /api/v1/sandboxes/{id}/managed-files/{name} | Delete a managed runtime file conditionally
+*SandboxesApi* | [**deleteSandboxNamespacedManagedFile**](docs/SandboxesApi.md#deletesandboxnamespacedmanagedfile) | **DELETE** /api/v1/sandboxes/{id}/managed-file-namespaces/{namespace}/{name} | Delete a namespaced managed runtime file conditionally
+*SandboxesApi* | [**findSandboxRestartOperation**](docs/SandboxesApi.md#findsandboxrestartoperation) | **GET** /api/v1/sandboxes/{id}/restart-operations | Find a restart by its original request key
+*SandboxesApi* | [**findSandboxSnapshotRestoreOperation**](docs/SandboxesApi.md#findsandboxsnapshotrestoreoperation) | **GET** /api/v1/sandboxes/{id}/snapshot-restore-operations | Find a snapshot restore by its original request key
+*SandboxesApi* | [**getSandboxHealth**](docs/SandboxesApi.md#getsandboxhealth) | **GET** /api/v1/sandboxes/{id}/health | Observe independent runtime, execution, terminal and storage health
+*SandboxesApi* | [**getSandboxMemoryRestoration**](docs/SandboxesApi.md#getsandboxmemoryrestoration) | **GET** /api/v1/sandboxes/{id}/memory-restoration | Read committed same-sandbox memory restoration lineage
+*SandboxesApi* | [**getSandboxRestartFinalCapture**](docs/SandboxesApi.md#getsandboxrestartfinalcapture) | **GET** /api/v1/sandboxes/{id}/restart-operations/{operation_id}/final-capture | Get retained cold-restart credential custody
+*SandboxesApi* | [**getSandboxRestartOperation**](docs/SandboxesApi.md#getsandboxrestartoperation) | **GET** /api/v1/sandboxes/{id}/restart-operations/{operation_id} | Get durable restart state and bounded retry diagnostics
+*SandboxesApi* | [**getSandboxSnapshotRestoreFinalCapture**](docs/SandboxesApi.md#getsandboxsnapshotrestorefinalcapture) | **GET** /api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}/final-capture | Get retained cold-restart credential custody
+*SandboxesApi* | [**getSandboxSnapshotRestoreOperation**](docs/SandboxesApi.md#getsandboxsnapshotrestoreoperation) | **GET** /api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id} | Get durable restart state and bounded retry diagnostics
+*SandboxesApi* | [**inspectSandboxManagedFiles**](docs/SandboxesApi.md#inspectsandboxmanagedfiles) | **GET** /api/v1/sandboxes/{id}/managed-files | Inspect the current runtime-only managed file projection
+*SandboxesApi* | [**lookupSandboxMemoryOperation**](docs/SandboxesApi.md#lookupsandboxmemoryoperation) | **GET** /api/v1/sandboxes/{id}/memory-operations/lookup | Read the exact conditional memory lifecycle result
+*SandboxesApi* | [**readSandboxManagedFile**](docs/SandboxesApi.md#readsandboxmanagedfile) | **GET** /api/v1/sandboxes/{id}/managed-files/{name} | Read a managed runtime file
+*SandboxesApi* | [**readSandboxNamespacedManagedFile**](docs/SandboxesApi.md#readsandboxnamespacedmanagedfile) | **GET** /api/v1/sandboxes/{id}/managed-file-namespaces/{namespace}/{name} | Read a namespaced managed runtime file
+*SandboxesApi* | [**readSandboxRestartFinalCaptureFile**](docs/SandboxesApi.md#readsandboxrestartfinalcapturefile) | **GET** /api/v1/sandboxes/{id}/restart-operations/{operation_id}/final-capture/namespaces/{namespace}/{name} | Read a file from the exact stopped restart source
+*SandboxesApi* | [**readSandboxSnapshotRestoreFinalCaptureFile**](docs/SandboxesApi.md#readsandboxsnapshotrestorefinalcapturefile) | **GET** /api/v1/sandboxes/{id}/snapshot-restore-operations/{operation_id}/final-capture/namespaces/{namespace}/{name} | Read a file from the exact stopped restart source
+*SandboxesApi* | [**restartSandbox**](docs/SandboxesApi.md#restartsandbox) | **POST** /api/v1/sandboxes/{id}/restart | Explicitly replace a sandbox runtime and discard process state
+*SandboxesApi* | [**restoreSandboxSnapshot**](docs/SandboxesApi.md#restoresandboxsnapshot) | **POST** /api/v1/sandboxes/{id}/snapshot-restore | Restore a selected snapshot and start a fresh runtime
+*SandboxesApi* | [**writeSandboxManagedFile**](docs/SandboxesApi.md#writesandboxmanagedfile) | **PUT** /api/v1/sandboxes/{id}/managed-files/{name} | Replace a managed runtime file conditionally
+*SandboxesApi* | [**writeSandboxNamespacedManagedFile**](docs/SandboxesApi.md#writesandboxnamespacedmanagedfile) | **PUT** /api/v1/sandboxes/{id}/managed-file-namespaces/{namespace}/{name} | Replace a namespaced managed runtime file conditionally
+*SessionsApi* | [**apiV1SandboxesIdSessionsConditionalLookupGet**](docs/SessionsApi.md#apiv1sandboxesidsessionsconditionallookupget) | **GET** /api/v1/sandboxes/{id}/sessions/conditional/lookup | Find a conditional session by its original creation key
+*SessionsApi* | [**apiV1SandboxesIdSessionsConditionalPost**](docs/SessionsApi.md#apiv1sandboxesidsessionsconditionalpost) | **POST** /api/v1/sandboxes/{id}/sessions/conditional | Create an execution session in an exact runtime generation
 *SessionsApi* | [**apiV1SandboxesIdSessionsGet**](docs/SessionsApi.md#apiv1sandboxesidsessionsget) | **GET** /api/v1/sandboxes/{id}/sessions | List execution sessions
 *SessionsApi* | [**apiV1SandboxesIdSessionsPost**](docs/SessionsApi.md#apiv1sandboxesidsessionspost) | **POST** /api/v1/sandboxes/{id}/sessions | Create an execution session
 *SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdAttemptsPost**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionidattemptspost) | **POST** /api/v1/sandboxes/{id}/sessions/{session_id}/attempts | Create a new execution session attempt
+*SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdConditionalWsGet**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionidconditionalwsget) | **GET** /api/v1/sandboxes/{id}/sessions/{session_id}/conditional/ws | Attach to one conditional execution session attempt
 *SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdDelete**](docs/SessionsApi.md#apiv1sandboxesidsessionssessioniddelete) | **DELETE** /api/v1/sandboxes/{id}/sessions/{session_id} | Delete an execution session
 *SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdDesiredStatePut**](docs/SessionsApi.md#apiv1sandboxesidsessionssessioniddesiredstateput) | **PUT** /api/v1/sandboxes/{id}/sessions/{session_id}/desired-state | Set execution session desired state
 *SessionsApi* | [**apiV1SandboxesIdSessionsSessionIdEventsGet**](docs/SessionsApi.md#apiv1sandboxesidsessionssessionideventsget) | **GET** /api/v1/sandboxes/{id}/sessions/{session_id}/events | List execution session events
@@ -173,9 +204,11 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [ApiV1SandboxesIdFilesGet200Response](docs/ApiV1SandboxesIdFilesGet200Response.md)
 - [AuthProvider](docs/AuthProvider.md)
 - [CachePolicySpec](docs/CachePolicySpec.md)
+- [CaptureSandboxRootFSSnapshotRequest](docs/CaptureSandboxRootFSSnapshotRequest.md)
 - [ChangePasswordRequest](docs/ChangePasswordRequest.md)
 - [ClaimRequest](docs/ClaimRequest.md)
 - [ClaimResponse](docs/ClaimResponse.md)
+- [ConditionalExecutionSessionRequest](docs/ConditionalExecutionSessionRequest.md)
 - [ContainerSpec](docs/ContainerSpec.md)
 - [ContextExecResponse](docs/ContextExecResponse.md)
 - [ContextInputRequest](docs/ContextInputRequest.md)
@@ -275,6 +308,9 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [LoginResponse](docs/LoginResponse.md)
 - [MCPProtocolRule](docs/MCPProtocolRule.md)
 - [MCPToolPolicy](docs/MCPToolPolicy.md)
+- [ManagedFileReadResponse](docs/ManagedFileReadResponse.md)
+- [ManagedFileWriteRequest](docs/ManagedFileWriteRequest.md)
+- [ManagedFilesState](docs/ManagedFilesState.md)
 - [ModelError](docs/ModelError.md)
 - [MoveFileRequest](docs/MoveFileRequest.md)
 - [NetworkEgressPolicy](docs/NetworkEgressPolicy.md)
@@ -333,7 +369,12 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxExecutionStateRequest](docs/SandboxExecutionStateRequest.md)
 - [SandboxFunction](docs/SandboxFunction.md)
 - [SandboxFunctionSource](docs/SandboxFunctionSource.md)
+- [SandboxHealth](docs/SandboxHealth.md)
+- [SandboxHealthObservation](docs/SandboxHealthObservation.md)
 - [SandboxLifecycleStatus](docs/SandboxLifecycleStatus.md)
+- [SandboxMemoryOperation](docs/SandboxMemoryOperation.md)
+- [SandboxMemoryRestoration](docs/SandboxMemoryRestoration.md)
+- [SandboxMemoryRestorationStep](docs/SandboxMemoryRestorationStep.md)
 - [SandboxNetworkPolicy](docs/SandboxNetworkPolicy.md)
 - [SandboxObservabilityEvent](docs/SandboxObservabilityEvent.md)
 - [SandboxObservabilityEventType](docs/SandboxObservabilityEventType.md)
@@ -344,14 +385,26 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxObservabilityOutcome](docs/SandboxObservabilityOutcome.md)
 - [SandboxObservabilityWatchLine](docs/SandboxObservabilityWatchLine.md)
 - [SandboxObservabilityWatchLineData](docs/SandboxObservabilityWatchLineData.md)
+- [SandboxPauseRequest](docs/SandboxPauseRequest.md)
 - [SandboxPreviewCreateRequest](docs/SandboxPreviewCreateRequest.md)
 - [SandboxPreviewGrant](docs/SandboxPreviewGrant.md)
 - [SandboxPreviewRenewRequest](docs/SandboxPreviewRenewRequest.md)
 - [SandboxRefreshRequest](docs/SandboxRefreshRequest.md)
 - [SandboxResourceConfig](docs/SandboxResourceConfig.md)
 - [SandboxResourceUsage](docs/SandboxResourceUsage.md)
+- [SandboxRestartFinalCapture](docs/SandboxRestartFinalCapture.md)
+- [SandboxRestartFinalCaptureAcknowledgement](docs/SandboxRestartFinalCaptureAcknowledgement.md)
+- [SandboxRestartFinalCaptureFile](docs/SandboxRestartFinalCaptureFile.md)
+- [SandboxRestartOperation](docs/SandboxRestartOperation.md)
+- [SandboxRestartRequest](docs/SandboxRestartRequest.md)
+- [SandboxRestartRetryObservation](docs/SandboxRestartRetryObservation.md)
+- [SandboxRootFSForkLaunch](docs/SandboxRootFSForkLaunch.md)
+- [SandboxRootFSForkLaunchRequest](docs/SandboxRootFSForkLaunchRequest.md)
+- [SandboxRootFSForkObservation](docs/SandboxRootFSForkObservation.md)
+- [SandboxRootFSIdentity](docs/SandboxRootFSIdentity.md)
 - [SandboxRootFSSnapshot](docs/SandboxRootFSSnapshot.md)
 - [SandboxRootFSSnapshotList](docs/SandboxRootFSSnapshotList.md)
+- [SandboxRuntimeHealth](docs/SandboxRuntimeHealth.md)
 - [SandboxRuntimeMetricDescriptor](docs/SandboxRuntimeMetricDescriptor.md)
 - [SandboxRuntimeMetricFreshness](docs/SandboxRuntimeMetricFreshness.md)
 - [SandboxRuntimeMetricFreshnessStatus](docs/SandboxRuntimeMetricFreshnessStatus.md)
@@ -368,7 +421,10 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SandboxRuntimeMetricsResponse](docs/SandboxRuntimeMetricsResponse.md)
 - [SandboxSSHConnection](docs/SandboxSSHConnection.md)
 - [SandboxServicesUpdateRequest](docs/SandboxServicesUpdateRequest.md)
+- [SandboxSnapshotRestoreOperation](docs/SandboxSnapshotRestoreOperation.md)
+- [SandboxSnapshotRestoreRequest](docs/SandboxSnapshotRestoreRequest.md)
 - [SandboxStatus](docs/SandboxStatus.md)
+- [SandboxStorageHealth](docs/SandboxStorageHealth.md)
 - [SandboxSummary](docs/SandboxSummary.md)
 - [SandboxTemplateSpec](docs/SandboxTemplateSpec.md)
 - [SandboxTemplateStatus](docs/SandboxTemplateStatus.md)
@@ -419,6 +475,8 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessIdentityListResponse](docs/SuccessIdentityListResponse.md)
 - [SuccessIdentityListResponseAllOfData](docs/SuccessIdentityListResponseAllOfData.md)
 - [SuccessLoginResponse](docs/SuccessLoginResponse.md)
+- [SuccessManagedFileReadResponse](docs/SuccessManagedFileReadResponse.md)
+- [SuccessManagedFilesStateResponse](docs/SuccessManagedFilesStateResponse.md)
 - [SuccessMessageResponse](docs/SuccessMessageResponse.md)
 - [SuccessMessageResponseAllOfData](docs/SuccessMessageResponseAllOfData.md)
 - [SuccessMovedResponse](docs/SuccessMovedResponse.md)
@@ -437,19 +495,29 @@ All URIs are relative to *https://api.sandbox0.ai*
 - [SuccessSSHPublicKeyListResponse](docs/SuccessSSHPublicKeyListResponse.md)
 - [SuccessSSHPublicKeyListResponseAllOfData](docs/SuccessSSHPublicKeyListResponseAllOfData.md)
 - [SuccessSSHPublicKeyResponse](docs/SuccessSSHPublicKeyResponse.md)
+- [SuccessSandboxHealthResponse](docs/SuccessSandboxHealthResponse.md)
 - [SuccessSandboxListResponse](docs/SuccessSandboxListResponse.md)
 - [SuccessSandboxListResponseAllOfData](docs/SuccessSandboxListResponseAllOfData.md)
+- [SuccessSandboxMemoryOperationResponse](docs/SuccessSandboxMemoryOperationResponse.md)
+- [SuccessSandboxMemoryRestorationResponse](docs/SuccessSandboxMemoryRestorationResponse.md)
 - [SuccessSandboxNetworkPolicyResponse](docs/SuccessSandboxNetworkPolicyResponse.md)
 - [SuccessSandboxObservabilityEventsResponse](docs/SuccessSandboxObservabilityEventsResponse.md)
 - [SuccessSandboxObservabilityLogsResponse](docs/SuccessSandboxObservabilityLogsResponse.md)
 - [SuccessSandboxPreviewResponse](docs/SuccessSandboxPreviewResponse.md)
 - [SuccessSandboxResponse](docs/SuccessSandboxResponse.md)
+- [SuccessSandboxRestartFinalCaptureFileResponse](docs/SuccessSandboxRestartFinalCaptureFileResponse.md)
+- [SuccessSandboxRestartFinalCaptureResponse](docs/SuccessSandboxRestartFinalCaptureResponse.md)
+- [SuccessSandboxRestartOperationResponse](docs/SuccessSandboxRestartOperationResponse.md)
+- [SuccessSandboxRootFSForkLaunchResponse](docs/SuccessSandboxRootFSForkLaunchResponse.md)
+- [SuccessSandboxRootFSForkObservationResponse](docs/SuccessSandboxRootFSForkObservationResponse.md)
+- [SuccessSandboxRootFSIdentityResponse](docs/SuccessSandboxRootFSIdentityResponse.md)
 - [SuccessSandboxRootFSSnapshotListResponse](docs/SuccessSandboxRootFSSnapshotListResponse.md)
 - [SuccessSandboxRootFSSnapshotResponse](docs/SuccessSandboxRootFSSnapshotResponse.md)
 - [SuccessSandboxRuntimeMetricsCatalogResponse](docs/SuccessSandboxRuntimeMetricsCatalogResponse.md)
 - [SuccessSandboxRuntimeMetricsResponse](docs/SuccessSandboxRuntimeMetricsResponse.md)
 - [SuccessSandboxServicesResponse](docs/SuccessSandboxServicesResponse.md)
 - [SuccessSandboxServicesResponseAllOfData](docs/SuccessSandboxServicesResponseAllOfData.md)
+- [SuccessSandboxSnapshotRestoreOperationResponse](docs/SuccessSandboxSnapshotRestoreOperationResponse.md)
 - [SuccessSandboxStatusResponse](docs/SuccessSandboxStatusResponse.md)
 - [SuccessSignaledResponse](docs/SuccessSignaledResponse.md)
 - [SuccessSignaledResponseAllOfData](docs/SuccessSignaledResponseAllOfData.md)

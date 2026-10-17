@@ -340,7 +340,7 @@ describe("Sandboxes resource", () => {
         data: pauseObservations[Math.min(pauseGetCalls++, pauseObservations.length - 1)],
       }),
       pause: async (request: unknown) => {
-        assert.deepStrictEqual(request, {id: "sb_1", sandboxExecutionStateRequest: {memory: true}});
+        assert.deepStrictEqual(request, {id: "sb_1", sandboxPauseRequest: {memory: true}});
         pauseCalls += 1;
         return { data: { sandboxId: "sb_1", paused: false, status: "running" } };
       },

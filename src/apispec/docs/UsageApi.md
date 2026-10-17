@@ -14,7 +14,7 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 List usage windows for the current team
 
-Returns immutable, closed usage windows belonging to the authenticated team. The opaque cursor can be retained and reused to incrementally import newly recorded windows. 
+Returns immutable, closed usage windows belonging to the authenticated team. The opaque cursor can be retained and reused to incrementally import newly recorded windows.
 
 ### Example
 
@@ -27,7 +27,7 @@ import type { ApiV1UsageWindowsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });

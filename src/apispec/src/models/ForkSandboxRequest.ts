@@ -31,6 +31,12 @@ import {
  */
 export interface ForkSandboxRequest {
     /**
+     * Optional exact source runtime generation. Requires a stable Idempotency-Key. First admission checks the source under its lifecycle lock; retries compare the original accepted capture, even after the parent resumes. Zero is valid for a never-run paused source. With memory=true the value must be below the maximum. Keep the original value and key after an uncertain response.
+     * @type {number}
+     * @memberof ForkSandboxRequest
+     */
+    expectedRuntimeGeneration?: number;
+    /**
      * Preserve process execution state together with RootFS. Requires Idempotency-Key. A paused source must have a retained memory image; a running source is captured and resumed before completion. Unsupported or unavailable memory never falls back to filesystem-only.
      * @type {boolean}
      * @memberof ForkSandboxRequest
@@ -61,6 +67,7 @@ export function ForkSandboxRequestFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
+        'expectedRuntimeGeneration': json['expected_runtime_generation'] == null ? undefined : json['expected_runtime_generation'],
         'memory': json['memory'] == null ? undefined : json['memory'],
         'config': json['config'] == null ? undefined : ForkSandboxConfigFromJSON(json['config']),
     };
@@ -77,6 +84,7 @@ export function ForkSandboxRequestToJSONTyped(value?: ForkSandboxRequest | null,
 
     return {
         
+        'expected_runtime_generation': value['expectedRuntimeGeneration'],
         'memory': value['memory'],
         'config': ForkSandboxConfigToJSON(value['config']),
     };

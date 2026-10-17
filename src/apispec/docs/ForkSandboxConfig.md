@@ -6,6 +6,7 @@
 
 Name | Type
 ------------ | -------------
+`autoResume` | boolean
 `ttl` | number
 `hardTtl` | number
 
@@ -16,6 +17,7 @@ import type { ForkSandboxConfig } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
+  "autoResume": null,
   "ttl": null,
   "hardTtl": null,
 } satisfies ForkSandboxConfig

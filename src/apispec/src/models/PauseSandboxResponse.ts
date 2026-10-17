@@ -35,6 +35,18 @@ import {
  */
 export interface PauseSandboxResponse {
     /**
+     * Exact checkpoint operation accepted for a conditional memory pause; stable across retries.
+     * @type {string}
+     * @memberof PauseSandboxResponse
+     */
+    operationId?: string;
+    /**
+     * Source runtime generation bound by the conditional memory pause.
+     * @type {number}
+     * @memberof PauseSandboxResponse
+     */
+    runtimeGeneration?: number;
+    /**
      * 
      * @type {string}
      * @memberof PauseSandboxResponse
@@ -93,6 +105,8 @@ export function PauseSandboxResponseFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
+        'operationId': json['operation_id'] == null ? undefined : json['operation_id'],
+        'runtimeGeneration': json['runtime_generation'] == null ? undefined : json['runtime_generation'],
         'sandboxId': json['sandbox_id'],
         'paused': json['paused'],
         'status': json['status'] == null ? undefined : SandboxLifecycleStatusFromJSON(json['status']),
@@ -113,6 +127,8 @@ export function PauseSandboxResponseToJSONTyped(value?: PauseSandboxResponse | n
 
     return {
         
+        'operation_id': value['operationId'],
+        'runtime_generation': value['runtimeGeneration'],
         'sandbox_id': value['sandboxId'],
         'paused': value['paused'],
         'status': SandboxLifecycleStatusToJSON(value['status']),

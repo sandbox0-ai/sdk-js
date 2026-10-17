@@ -145,6 +145,8 @@ export interface SandboxObservabilityWatchStream
 export interface SessionCreateOptions {
   /** Allows a create request to be retried without creating a duplicate session. */
   idempotencyKey?: string;
+  /** Exact running generation. Requires idempotencyKey; never auto-resumes or falls back. */
+  runtimeGeneration?: number;
 }
 
 export interface SessionEventOptions {

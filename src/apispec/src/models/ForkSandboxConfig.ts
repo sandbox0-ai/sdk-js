@@ -20,6 +20,12 @@ import { mapValues } from '../runtime';
  */
 export interface ForkSandboxConfig {
     /**
+     * Override automatic resume for the child at creation. Omit to inherit the source setting. False also disables resume on all inherited ingress routes atomically; the child still permits an explicit resume. Retries with the same Idempotency-Key must retain any explicit override.
+     * @type {boolean}
+     * @memberof ForkSandboxConfig
+     */
+    autoResume?: boolean;
+    /**
      * Runtime soft time-to-live in seconds for the forked sandbox. Omit to inherit the source setting. Set 0 to disable soft expiration.
      * @type {number}
      * @memberof ForkSandboxConfig
@@ -50,6 +56,7 @@ export function ForkSandboxConfigFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
+        'autoResume': json['auto_resume'] == null ? undefined : json['auto_resume'],
         'ttl': json['ttl'] == null ? undefined : json['ttl'],
         'hardTtl': json['hard_ttl'] == null ? undefined : json['hard_ttl'],
     };
@@ -66,6 +73,7 @@ export function ForkSandboxConfigToJSONTyped(value?: ForkSandboxConfig | null, i
 
     return {
         
+        'auto_resume': value['autoResume'],
         'ttl': value['ttl'],
         'hard_ttl': value['hardTtl'],
     };

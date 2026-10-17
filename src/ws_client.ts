@@ -35,6 +35,8 @@ const READY_STATE = {
 type WebSocketClientOptions = {
   headers?: Record<string, string>;
   connectTimeoutMs?: number;
+  /** Use the explicit ws transport: native runtimes may retry authentication. */
+  singleAttempt?: boolean;
   resolveWebSocketConstructor?: (options: WebSocketClientOptions) => Promise<WebSocketConstructor>;
 };
 
@@ -43,6 +45,7 @@ export class WebSocketClient {
   private readonly pendingSends: string[] = [];
   private closePending = false;
   private readonly connectTimeoutMs: number;
+  private upgradeStatus?: number;
 
   static async connect(url: string, options: WebSocketClientOptions = {}): Promise<WebSocketClient> {
     const socket = await createWebSocket(url, options);
@@ -52,6 +55,13 @@ export class WebSocketClient {
   private constructor(socket: WebSocketLike, options: WebSocketClientOptions = {}) {
     this.connectTimeoutMs = options.connectTimeoutMs ?? 10000;
     this.socket = socket;
+    if (options.singleAttempt && "on" in socket) {
+      // Keep only the status. Do not retain response headers, bodies or URLs.
+      socket.once("unexpected-response", (_request, response) => {
+        this.upgradeStatus = response.statusCode;
+        socket.close();
+      });
+    }
     addOpenListener(this.socket, () => {
       this.flushPendingSends();
       if (this.closePending) {
@@ -84,7 +94,9 @@ export class WebSocketClient {
       };
       const onError = (err: Error) => {
         cleanup();
-        reject(err instanceof Error ? err : new Error("websocket error"));
+        reject(this.upgradeStatus === undefined
+          ? (err instanceof Error ? err : new Error("websocket error"))
+          : new WebSocketUpgradeError(this.upgradeStatus));
       };
       const onClose = () => {
         cleanup();
@@ -182,6 +194,11 @@ export class WebSocketClient {
   }
 }
 
+/** Internal status-only failure for an explicit, single HTTP upgrade. */
+export class WebSocketUpgradeError extends Error {
+  constructor(readonly statusCode: number) { super("WebSocket upgrade rejected"); }
+}
+
 async function createWebSocket(url: string, options: WebSocketClientOptions): Promise<WebSocketLike> {
   const resolveConstructor = options.resolveWebSocketConstructor ?? defaultResolveWebSocketConstructor;
   const WebSocketCtor = await resolveConstructor(options);
@@ -195,7 +212,7 @@ async function createWebSocket(url: string, options: WebSocketClientOptions): Pr
 }
 
 async function defaultResolveWebSocketConstructor(options: WebSocketClientOptions): Promise<WebSocketConstructor> {
-  if (typeof globalThis.WebSocket === "function" && (!options.headers || isNodeLikeRuntime())) {
+  if (!options.singleAttempt && typeof globalThis.WebSocket === "function" && (!options.headers || isNodeLikeRuntime())) {
     return globalThis.WebSocket as unknown as WebSocketConstructor;
   }
 

@@ -20,13 +20,37 @@ import { mapValues } from '../runtime';
  */
 export interface ResumeSandboxResponse {
     /**
+     * Authenticated caller request for this conditional memory restore, distinct from the capture operation and internal worker lifecycle.
+     * @type {string}
+     * @memberof ResumeSandboxResponse
+     */
+    operationId?: string;
+    /**
+     * Exact retained capture restored by this conditional request.
+     * @type {string}
+     * @memberof ResumeSandboxResponse
+     */
+    checkpointId?: string;
+    /**
+     * Source generation bound by this conditional request.
+     * @type {number}
+     * @memberof ResumeSandboxResponse
+     */
+    fromRuntimeGeneration?: number;
+    /**
+     * Committed restored runtime generation, exactly one greater than from_runtime_generation. These conditional result coordinates are not a current process or storage health attestation.
+     * @type {number}
+     * @memberof ResumeSandboxResponse
+     */
+    runtimeGeneration?: number;
+    /**
      * 
      * @type {string}
      * @memberof ResumeSandboxResponse
      */
     sandboxId: string;
     /**
-     * True after a command-ready runtime has committed. False means an accepted durable resume is still pending (memory retry, cleanup, or RootFS fallback); poll sandbox status until running.
+     * True after the requested runtime has committed. Memory restoration never implicitly starts filesystem-only replacement processes.
      * @type {boolean}
      * @memberof ResumeSandboxResponse
      */
@@ -58,6 +82,10 @@ export function ResumeSandboxResponseFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
+        'operationId': json['operation_id'] == null ? undefined : json['operation_id'],
+        'checkpointId': json['checkpoint_id'] == null ? undefined : json['checkpoint_id'],
+        'fromRuntimeGeneration': json['from_runtime_generation'] == null ? undefined : json['from_runtime_generation'],
+        'runtimeGeneration': json['runtime_generation'] == null ? undefined : json['runtime_generation'],
         'sandboxId': json['sandbox_id'],
         'resumed': json['resumed'],
         'restoredMemory': json['restored_memory'] == null ? undefined : json['restored_memory'],
@@ -75,6 +103,10 @@ export function ResumeSandboxResponseToJSONTyped(value?: ResumeSandboxResponse |
 
     return {
         
+        'operation_id': value['operationId'],
+        'checkpoint_id': value['checkpointId'],
+        'from_runtime_generation': value['fromRuntimeGeneration'],
+        'runtime_generation': value['runtimeGeneration'],
         'sandbox_id': value['sandboxId'],
         'resumed': value['resumed'],
         'restored_memory': value['restoredMemory'],

@@ -4,9 +4,12 @@ All URIs are relative to *https://api.sandbox0.ai*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
+| [**apiV1SandboxesIdSessionsConditionalLookupGet**](SessionsApi.md#apiv1sandboxesidsessionsconditionallookupget) | **GET** /api/v1/sandboxes/{id}/sessions/conditional/lookup | Find a conditional session by its original creation key |
+| [**apiV1SandboxesIdSessionsConditionalPost**](SessionsApi.md#apiv1sandboxesidsessionsconditionalpost) | **POST** /api/v1/sandboxes/{id}/sessions/conditional | Create an execution session in an exact runtime generation |
 | [**apiV1SandboxesIdSessionsGet**](SessionsApi.md#apiv1sandboxesidsessionsget) | **GET** /api/v1/sandboxes/{id}/sessions | List execution sessions |
 | [**apiV1SandboxesIdSessionsPost**](SessionsApi.md#apiv1sandboxesidsessionspost) | **POST** /api/v1/sandboxes/{id}/sessions | Create an execution session |
 | [**apiV1SandboxesIdSessionsSessionIdAttemptsPost**](SessionsApi.md#apiv1sandboxesidsessionssessionidattemptspost) | **POST** /api/v1/sandboxes/{id}/sessions/{session_id}/attempts | Create a new execution session attempt |
+| [**apiV1SandboxesIdSessionsSessionIdConditionalWsGet**](SessionsApi.md#apiv1sandboxesidsessionssessionidconditionalwsget) | **GET** /api/v1/sandboxes/{id}/sessions/{session_id}/conditional/ws | Attach to one conditional execution session attempt |
 | [**apiV1SandboxesIdSessionsSessionIdDelete**](SessionsApi.md#apiv1sandboxesidsessionssessioniddelete) | **DELETE** /api/v1/sandboxes/{id}/sessions/{session_id} | Delete an execution session |
 | [**apiV1SandboxesIdSessionsSessionIdDesiredStatePut**](SessionsApi.md#apiv1sandboxesidsessionssessioniddesiredstateput) | **PUT** /api/v1/sandboxes/{id}/sessions/{session_id}/desired-state | Set execution session desired state |
 | [**apiV1SandboxesIdSessionsSessionIdEventsGet**](SessionsApi.md#apiv1sandboxesidsessionssessionideventsget) | **GET** /api/v1/sandboxes/{id}/sessions/{session_id}/events | List execution session events |
@@ -18,6 +21,173 @@ All URIs are relative to *https://api.sandbox0.ai*
 | [**apiV1SandboxesIdSessionsSessionIdTerminalPut**](SessionsApi.md#apiv1sandboxesidsessionssessionidterminalput) | **PUT** /api/v1/sandboxes/{id}/sessions/{session_id}/terminal | Resize an execution session terminal |
 | [**apiV1SandboxesIdSessionsSessionIdWsGet**](SessionsApi.md#apiv1sandboxesidsessionssessionidwsget) | **GET** /api/v1/sandboxes/{id}/sessions/{session_id}/ws | Attach to an execution session with WebSocket |
 
+
+
+## apiV1SandboxesIdSessionsConditionalLookupGet
+
+> SuccessExecutionSessionResponse apiV1SandboxesIdSessionsConditionalLookupGet(id, runtimeGeneration, idempotencyKey, creationRuntimeGeneration)
+
+Find a conditional session by its original creation key
+
+Read-only receipt lookup in an exact currently running generation. Never auto-resumes, creates a session, starts an attempt or repairs state. Both the gateway and supervisor verify the sandbox and runtime generation. Only conditional creations are eligible. A session_not_found response means that key was absent at observation time, not permission to create or proof that an earlier request cannot still finish. Other 404 replies may indicate unsupported servers. Clients must not fall back to ordinary queries or creation. The returned receipt is not lifecycle/storage authority, current credential admission, or permission to attach later. For a memory-restored original attempt, explicitly supply an earlier creation_runtime_generation. Omission retains same-generation semantics. The supervisor requires the exact original conditional creation and a still-running attempt from that origin in the requested current runtime. This does not verify external memory lineage or credential qualification; applications must verify those independently before adoption. Never use failure as permission to create a new attempt or fall back to cold restart.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  SessionsApi,
+} from 'sandbox0';
+import type { ApiV1SandboxesIdSessionsConditionalLookupGetRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SessionsApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // number
+    runtimeGeneration: 789,
+    // string | The original conditional creation key; lookup does not submit it.
+    idempotencyKey: idempotencyKey_example,
+    // number | Explicit origin for a restored original attempt; must be less than runtime_generation. Omit for ordinary same-generation lookup or attachment. (optional)
+    creationRuntimeGeneration: 789,
+  } satisfies ApiV1SandboxesIdSessionsConditionalLookupGetRequest;
+
+  try {
+    const data = await api.apiV1SandboxesIdSessionsConditionalLookupGet(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **runtimeGeneration** | `number` |  | [Defaults to `undefined`] |
+| **idempotencyKey** | `string` | The original conditional creation key; lookup does not submit it. | [Defaults to `undefined`] |
+| **creationRuntimeGeneration** | `number` | Explicit origin for a restored original attempt; must be less than runtime_generation. Omit for ordinary same-generation lookup or attachment. | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+[**SuccessExecutionSessionResponse**](SuccessExecutionSessionResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Existing conditional session observed in the specified generation |  * Cache-Control -  <br>  |
+| **400** | Invalid request |  -  |
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
+| **403** | Forbidden |  -  |
+| **404** | NotFound |  -  |
+| **409** | Runtime unavailable, identity changed, or key belongs to another creation identity |  -  |
+| **503** | External routing or supervisor is unavailable; no state changed |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## apiV1SandboxesIdSessionsConditionalPost
+
+> SuccessExecutionSessionResponse apiV1SandboxesIdSessionsConditionalPost(id, idempotencyKey, conditionalExecutionSessionRequest)
+
+Create an execution session in an exact runtime generation
+
+Requires a currently running sandbox with the exact sandbox identity and runtime generation. Never auto-resumes. The gateway checks regional state and the supervisor checks identity atomically through initial process startup. A stale idempotent retry fails after runtime replacement. This condition governs creation; the session lifecycle policy still governs later attempts and recovery. Older servers return an unsupported route; clients must not fall back to unconditional creation.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  SessionsApi,
+} from 'sandbox0';
+import type { ApiV1SandboxesIdSessionsConditionalPostRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SessionsApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // string | Stable creation identity; reuse only with the exact request.
+    idempotencyKey: idempotencyKey_example,
+    // ConditionalExecutionSessionRequest
+    conditionalExecutionSessionRequest: ...,
+  } satisfies ApiV1SandboxesIdSessionsConditionalPostRequest;
+
+  try {
+    const data = await api.apiV1SandboxesIdSessionsConditionalPost(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **idempotencyKey** | `string` | Stable creation identity; reuse only with the exact request. | [Defaults to `undefined`] |
+| **conditionalExecutionSessionRequest** | [ConditionalExecutionSessionRequest](ConditionalExecutionSessionRequest.md) |  | |
+
+### Return type
+
+[**SuccessExecutionSessionResponse**](SuccessExecutionSessionResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Existing session returned for an exact idempotent retry |  -  |
+| **201** | Execution session created in the requested runtime |  -  |
+| **400** | Invalid request |  -  |
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
+| **409** | Runtime unavailable, identity changed, or idempotency conflict; never auto-resumed |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
 ## apiV1SandboxesIdSessionsGet
@@ -39,7 +209,7 @@ import type { ApiV1SandboxesIdSessionsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -111,7 +281,7 @@ import type { ApiV1SandboxesIdSessionsPostRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -190,7 +360,7 @@ import type { ApiV1SandboxesIdSessionsSessionIdAttemptsPostRequest } from 'sandb
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -249,6 +419,99 @@ example().catch(console.error);
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
+## apiV1SandboxesIdSessionsSessionIdConditionalWsGet
+
+> apiV1SandboxesIdSessionsSessionIdConditionalWsGet(id, sessionId, idempotencyKey, runtimeGeneration, attemptId, creationRuntimeGeneration, after)
+
+Attach to one conditional execution session attempt
+
+Requires the original conditional creation key, exact runtime generation and attempt. Never resumes, creates or falls back to an ordinary attachment. A generation change revokes the connection; every control message rechecks identity. Replay excludes other attempts. Closing the socket does not stop the process or close its input. This is process control, not lifecycle, storage or credential admission. For a memory-restored original attempt, explicitly supply an earlier creation_runtime_generation. Omission retains same-generation semantics. The supervisor requires the exact original conditional creation and a still-running attempt from that origin in the requested current runtime. This does not verify external memory lineage or credential qualification; applications must verify those independently before adoption. Never use failure as permission to create a new attempt or fall back to cold restart.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  SessionsApi,
+} from 'sandbox0';
+import type { ApiV1SandboxesIdSessionsSessionIdConditionalWsGetRequest } from 'sandbox0';
+
+async function example() {
+  console.log("🚀 Testing sandbox0 SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: bearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SessionsApi(config);
+
+  const body = {
+    // string
+    id: id_example,
+    // string
+    sessionId: sessionId_example,
+    // string | Original conditional creation key.
+    idempotencyKey: idempotencyKey_example,
+    // number
+    runtimeGeneration: 789,
+    // string
+    attemptId: attemptId_example,
+    // number | Explicit origin for a restored original attempt; must be less than runtime_generation. Omit for ordinary same-generation lookup or attachment. (optional)
+    creationRuntimeGeneration: 789,
+    // number (optional)
+    after: 789,
+  } satisfies ApiV1SandboxesIdSessionsSessionIdConditionalWsGetRequest;
+
+  try {
+    const data = await api.apiV1SandboxesIdSessionsSessionIdConditionalWsGet(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | `string` |  | [Defaults to `undefined`] |
+| **sessionId** | `string` |  | [Defaults to `undefined`] |
+| **idempotencyKey** | `string` | Original conditional creation key. | [Defaults to `undefined`] |
+| **runtimeGeneration** | `number` |  | [Defaults to `undefined`] |
+| **attemptId** | `string` |  | [Defaults to `undefined`] |
+| **creationRuntimeGeneration** | `number` | Explicit origin for a restored original attempt; must be less than runtime_generation. Omit for ordinary same-generation lookup or attachment. | [Optional] [Defaults to `undefined`] |
+| **after** | `number` |  | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+`void` (Empty response body)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **400** | Invalid request |  -  |
+| **404** | Session or conditional attachment endpoint does not exist. Do not fall back. |  -  |
+| **409** | Conditional creation, runtime or attempt identity differs or is unavailable. |  -  |
+| **401** | Authentication is required or the bearer credentials are invalid |  -  |
+| **101** | Switching Protocols |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
 ## apiV1SandboxesIdSessionsSessionIdDelete
 
 > SuccessDeletedResponse apiV1SandboxesIdSessionsSessionIdDelete(id, sessionId)
@@ -266,7 +529,7 @@ import type { ApiV1SandboxesIdSessionsSessionIdDeleteRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -339,7 +602,7 @@ import type { ApiV1SandboxesIdSessionsSessionIdDesiredStatePutRequest } from 'sa
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -417,7 +680,7 @@ import type { ApiV1SandboxesIdSessionsSessionIdEventsGetRequest } from 'sandbox0
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -499,7 +762,7 @@ import type { ApiV1SandboxesIdSessionsSessionIdEventsStreamGetRequest } from 'sa
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -578,7 +841,7 @@ import type { ApiV1SandboxesIdSessionsSessionIdGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -653,7 +916,7 @@ import type { ApiV1SandboxesIdSessionsSessionIdInputsPostRequest } from 'sandbox
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -731,7 +994,7 @@ import type { ApiV1SandboxesIdSessionsSessionIdPutRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -807,7 +1070,7 @@ import type { ApiV1SandboxesIdSessionsSessionIdSignalsPostRequest } from 'sandbo
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -883,7 +1146,7 @@ import type { ApiV1SandboxesIdSessionsSessionIdTerminalPutRequest } from 'sandbo
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });
@@ -961,7 +1224,7 @@ import type { ApiV1SandboxesIdSessionsSessionIdWsGetRequest } from 'sandbox0';
 
 async function example() {
   console.log("🚀 Testing sandbox0 SDK...");
-  const config = new Configuration({ 
+  const config = new Configuration({
     // Configure HTTP bearer authorization: bearerAuth
     accessToken: "YOUR BEARER TOKEN",
   });

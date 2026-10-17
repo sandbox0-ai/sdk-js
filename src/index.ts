@@ -26,8 +26,10 @@ export {
 export { verifyWebhookSignature } from "./webhook_signature";
 export * from "./template_helpers";
 export * from "./models";
+export type { RootFSForkLaunchOptions } from "./fork_launch";
 export * from "./sessions";
 export * from "./sandbox_sessions";
+export * from "./sandbox_managed_files";
 export { Usage, type UsageWindowListOptions } from "./resources/usage";
 export { apis, models, runtime } from "./apispec_compat";
 export * as apispec from "./apispec_compat";
@@ -58,3 +60,11 @@ export type UsageWindow = GeneratedUsageWindow;
 export type UsageWindowPage = GeneratedUsageWindowPage;
 export const SandboxRuntimeMetricName = generatedModels.SandboxRuntimeMetricName;
 export const SandboxRuntimeMetricStatistic = generatedModels.SandboxRuntimeMetricStatistic;
+
+export type { RestartFinalCaptureFile } from "./restart_final_capture";
+
+export type { SandboxMemoryRestoration, SandboxMemoryRestorationStep } from "./apispec/src/models/index";
+export type { SandboxMemoryOperation } from "./apispec/src/models/index";
+export type { MemoryOperationLookupOptions } from "./memory_operation";
+
+export type { SandboxSnapshotRestoreRequest, SandboxSnapshotRestoreOperation } from "./apispec/src/models/index";

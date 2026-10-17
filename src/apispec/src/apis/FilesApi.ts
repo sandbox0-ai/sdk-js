@@ -145,7 +145,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Use query params: - path=/tmp/a.txt: target file path When `Accept` or `Content-Type` is `application/json`, returns a base64 JSON payload. 
+     * Use query params: - path=/tmp/a.txt: target file path When `Accept` or `Content-Type` is `application/json`, returns a base64 JSON payload.
      * Read file content
      */
     async apiV1SandboxesIdFilesGetRaw(requestParameters: ApiV1SandboxesIdFilesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Blob>> {
@@ -194,7 +194,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Use query params: - path=/tmp/a.txt: target file path When `Accept` or `Content-Type` is `application/json`, returns a base64 JSON payload. 
+     * Use query params: - path=/tmp/a.txt: target file path When `Accept` or `Content-Type` is `application/json`, returns a base64 JSON payload.
      * Read file content
      */
     async apiV1SandboxesIdFilesGet(requestParameters: ApiV1SandboxesIdFilesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Blob> {
@@ -203,7 +203,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Use query params: - path=/tmp: target directory path 
+     * Use query params: - path=/tmp: target directory path
      * List directory entries
      */
     async apiV1SandboxesIdFilesListGetRaw(requestParameters: ApiV1SandboxesIdFilesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFileListResponse>> {
@@ -252,7 +252,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Use query params: - path=/tmp: target directory path 
+     * Use query params: - path=/tmp: target directory path
      * List directory entries
      */
     async apiV1SandboxesIdFilesListGet(requestParameters: ApiV1SandboxesIdFilesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFileListResponse> {
@@ -385,7 +385,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Use query params: - path=/tmp/a.txt: target file path 
+     * Use query params: - path=/tmp/a.txt: target file path
      * Stat a file
      */
     async apiV1SandboxesIdFilesStatGetRaw(requestParameters: ApiV1SandboxesIdFilesStatGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SuccessFileStatResponse>> {
@@ -434,7 +434,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Use query params: - path=/tmp/a.txt: target file path 
+     * Use query params: - path=/tmp/a.txt: target file path
      * Stat a file
      */
     async apiV1SandboxesIdFilesStatGet(requestParameters: ApiV1SandboxesIdFilesStatGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SuccessFileStatResponse> {
@@ -443,7 +443,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Upgrades to WebSocket for file watch events. Client messages: - { \"action\": \"subscribe\", \"path\": \"/tmp\", \"recursive\": false } - { \"action\": \"unsubscribe\", \"watch_id\": \"watch-id\" } Server messages: - { \"type\": \"subscribed\", \"watch_id\": \"watch-id\", \"path\": \"/tmp\" } - { \"type\": \"event\", \"watch_id\": \"watch-id\", \"event\": \"write\", \"path\": \"/tmp/a.txt\" } - { \"type\": \"unsubscribed\", \"watch_id\": \"watch-id\" } - { \"type\": \"error\", \"error\": \"message\" } 
+     * Upgrades to WebSocket for file watch events. Client messages: - { \"action\": \"subscribe\", \"path\": \"/tmp\", \"recursive\": false } - { \"action\": \"unsubscribe\", \"watch_id\": \"watch-id\" } Server messages: - { \"type\": \"subscribed\", \"watch_id\": \"watch-id\", \"path\": \"/tmp\" } - { \"type\": \"event\", \"watch_id\": \"watch-id\", \"event\": \"write\", \"path\": \"/tmp/a.txt\" } - { \"type\": \"unsubscribed\", \"watch_id\": \"watch-id\" } - { \"type\": \"error\", \"error\": \"message\" }
      * File watch WebSocket
      */
     async apiV1SandboxesIdFilesWatchGetRaw(requestParameters: ApiV1SandboxesIdFilesWatchGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -481,7 +481,7 @@ export class FilesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Upgrades to WebSocket for file watch events. Client messages: - { \"action\": \"subscribe\", \"path\": \"/tmp\", \"recursive\": false } - { \"action\": \"unsubscribe\", \"watch_id\": \"watch-id\" } Server messages: - { \"type\": \"subscribed\", \"watch_id\": \"watch-id\", \"path\": \"/tmp\" } - { \"type\": \"event\", \"watch_id\": \"watch-id\", \"event\": \"write\", \"path\": \"/tmp/a.txt\" } - { \"type\": \"unsubscribed\", \"watch_id\": \"watch-id\" } - { \"type\": \"error\", \"error\": \"message\" } 
+     * Upgrades to WebSocket for file watch events. Client messages: - { \"action\": \"subscribe\", \"path\": \"/tmp\", \"recursive\": false } - { \"action\": \"unsubscribe\", \"watch_id\": \"watch-id\" } Server messages: - { \"type\": \"subscribed\", \"watch_id\": \"watch-id\", \"path\": \"/tmp\" } - { \"type\": \"event\", \"watch_id\": \"watch-id\", \"event\": \"write\", \"path\": \"/tmp/a.txt\" } - { \"type\": \"unsubscribed\", \"watch_id\": \"watch-id\" } - { \"type\": \"error\", \"error\": \"message\" }
      * File watch WebSocket
      */
     async apiV1SandboxesIdFilesWatchGet(requestParameters: ApiV1SandboxesIdFilesWatchGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {

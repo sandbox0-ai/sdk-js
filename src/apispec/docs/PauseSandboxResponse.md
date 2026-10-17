@@ -6,6 +6,8 @@
 
 Name | Type
 ------------ | -------------
+`operationId` | string
+`runtimeGeneration` | number
 `sandboxId` | string
 `paused` | boolean
 `status` | [SandboxLifecycleStatus](SandboxLifecycleStatus.md)
@@ -20,6 +22,8 @@ import type { PauseSandboxResponse } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
+  "operationId": null,
+  "runtimeGeneration": null,
   "sandboxId": null,
   "paused": null,
   "status": null,

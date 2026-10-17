@@ -203,6 +203,29 @@ The token needs `usage:read`, and the Sandbox0 region must have metering and
 its ClickHouse query projection enabled. `GET /api/v1/quotas` reports current
 operational quota status; it is not a cumulative usage API.
 
+## Independent sandbox health (unreleased)
+
+```typescript
+const health = await client.sandboxes.getHealth(sandboxId, {
+  signal: AbortSignal.timeout(10_000),
+});
+console.log(health.runtime.liveness.state, health.execution.state, health.terminal.state);
+```
+
+Generations outside JavaScript's safe integer range are rejected rather than rounded.
+
+Health is returned as separate runtime launch/liveness, execution, terminal,
+and storage identity/writer/I/O observations. Each includes `state`, a fixed
+`reason`, its evidence `source`, and the original observation time (null when
+unobserved). Guest evidence is advisory. A storage identity or writer lease does
+not prove current storage I/O; that check currently remains `unknown`.
+
+The query may run bounded fixed guest diagnostics, but never resumes or restarts
+a sandbox. Paused sandboxes and active lifecycle transitions skip those probes.
+Unavailable guest diagnostics are a successful observation response, not an API
+failure or a reason to retry a lifecycle mutation. This API requires a server
+version with the health endpoint; SDKs do not fall back to guest commands.
+
 ## Links
 
 - [Documentation](https://sandbox0.ai/docs)
@@ -212,3 +235,78 @@ operational quota status; it is not a cumulative usage API.
 ## License
 
 Apache-2.0
+
+
+Conditional session receipts can be read without auto-resume or process creation:
+`sandbox.findConditionalSession(originalKey, generation)`.
+This uses the distinct `/sessions/conditional/lookup` route and checks the original
+generation. Errors never fall back to ordinary lookup or creation. A missing
+receipt does not authorize replay: an earlier create may still be in flight.
+The result is process information, not credential/storage qualification or proof
+that the process is still running when a later action begins.
+
+### Conditional Session attachment
+
+`sandbox.connectConditionalSession(sessionId, key, generation, attemptId, options)` opens the distinct `/sessions/{session_id}/conditional/ws` endpoint, bound to the original conditional creation key, runtime generation and attempt. It accepts the existing Session WebSocket replay options. Every control message is checked against that binding, and generation handover revokes the connection. Errors never trigger an ordinary attachment, retry or auto-resume. Closing the connection detaches without stopping the process. This is not lifecycle, storage or credential qualification.
+
+### Reconnect an explicitly memory-restored original attempt
+
+```typescript
+const session = await sandbox.findRestoredConditionalSession(originalKey, currentGeneration, creationGeneration);
+const connection = await sandbox.connectRestoredConditionalSession(session.id, originalKey, currentGeneration, creationGeneration, originalAttemptId, {after});
+```
+
+Verify the external memory-restoration lineage and your owned credential/session
+history first. These helpers explicitly send `creation_runtime_generation`, which
+must precede the current generation. They require the original still-running
+attempt and never create a session, restart an attempt, resume the sandbox or
+retry through ordinary endpoints. Existing same-generation helpers remain strict.
+The restored socket can replay the original attempt's earlier-generation events;
+its controls are bound to the current generation and the original attempt ID.
+A subsequent handover revokes the socket. Old gateways that discard the optional
+origin cannot authorize a restored original creation and must return an error.
+
+## Explicit snapshot recovery
+
+Use `client.sandboxes.restoreSnapshot(sandboxId, { expectedRuntimeGeneration: 7, snapshotId, snapshotGenerationId, discardProcessState: true, idempotencyKey })` to explicitly end old processes and replace writable RootFS. Keep every field and the key after an uncertain reply. `findSnapshotRestoreOperation` and `getSnapshotRestoreOperation` observe the original operation without submitting work. Only `succeeded` proves fresh runtime launch; `restoredRootfsGenerationId` alone proves the head change committed.
+
+The `getSnapshotRestoreFinalCapture`, `readSnapshotRestoreFinalCaptureFile` and `acknowledgeSnapshotRestoreFinalCapture` methods preserve stopped-source credential custody. Acknowledge only after durable encrypted owner commit. Helpers never retry, refresh coordinates or fall back to guest execution or disk-only memory recovery. Source and successor generations must be safe integers.
+
+## Read original RootFS fork provenance
+
+```typescript
+const receipt = await client.sandboxes.getRootFSFork(sourceSandboxId, {
+  expectedRuntimeGeneration: 7, idempotencyKey: "original-fork",
+});
+```
+
+Keep the original source sandbox, generation (including zero), key and
+authenticated identity. This performs one GET and never retries or submits a
+fork. Missing, conflicting and pending results remain errors; a 404 is not
+proof of cancellation. The receipt requires the original unchanged, never-run
+paused child and retained storage evidence. Memory forks are excluded. It is
+not a credential-safety attestation or a state reservation; later mutations
+need their own identity conditions.
+
+## Conditional first launch of a RootFS fork
+
+```typescript
+const original = {
+  forkOperationId: receipt.operationId, filesystemId: receipt.targetFilesystemId,
+  headGenerationId: receipt.targetHeadGenerationId, writerEpoch: receipt.writerEpoch,
+  idempotencyKey: "original-child-launch",
+}; // Persist these conditions before submitting.
+const launch = await client.sandboxes.launchRootFSFork(receipt.targetSandboxId, original);
+const observation = await client.sandboxes.getRootFSForkLaunch(receipt.targetSandboxId, {
+  ...original, expectedOperationId: launch.operationId,
+});
+```
+
+Each method sends exactly one request. After a lost reply, query with the same
+original conditions and key, omitting `expectedOperationId` if no receipt was
+received. Never refresh the original writer epoch or fall back to ordinary
+resume. A completed receipt retains its digest and time even when `current` is
+false after later lifecycle changes. `current` is an owner snapshot, not a live
+lease, health check or credential authorization. Pending has no completion
+proof; neither aborted nor 404 proves physical absence. Helpers validate the
+returned identity and state-specific evidence and never poll or retry for you.

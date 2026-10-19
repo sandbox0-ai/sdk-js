@@ -6,6 +6,7 @@
 
 Name | Type
 ------------ | -------------
+`externalMounts` | [Array&lt;ExternalMountBinding&gt;](ExternalMountBinding.md)
 `id` | string
 `templateId` | string
 `teamId` | string
@@ -31,6 +32,7 @@ import type { Sandbox } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
+  "externalMounts": null,
   "id": null,
   "templateId": null,
   "teamId": null,

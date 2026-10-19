@@ -23,6 +23,33 @@ pnpm add sandbox0
 
 Streaming APIs prefer a runtime-native `globalThis.WebSocket` when a Node-compatible host exposes one, and fall back to the `ws` package on older Node runtimes. This keeps the main SDK entry compatible with SandFunc-style runtimes that expose a standard outbound WebSocket client without requiring raw socket access in user code.
 
+## External S3 mounts (pre-release)
+
+Requires a region with external mounts enabled; the feature is not enabled in
+production yet. Create a team-owned `static_s3` credential source using the
+existing credential-source API, then bind its name when claiming a sandbox.
+Credentials belong in the source and stay outside the guest.
+
+```ts
+const sandbox = await client.sandboxes.claim("default", {
+  externalMounts: [{ sourceRef: "customer-data", mountPath: "/data", prefix: "runs/" }],
+});
+const detail = await client.sandboxes.get(sandbox.id);
+// detail.externalMounts contains persisted bindings, including while paused.
+```
+
+Generated `ExternalMountBinding` and `StaticS3SourceSpec` types are exported
+from the package. `client.credentialSources.create` accepts
+`resolverKind: "static_s3"` with `spec.staticS3`.
+
+Bindings are immutable and default to read-only. Writable access also requires
+`allowWrite` on the source. Filesystem pause/resume preserves bindings; memory
+pause/resume and migration with mounts are unsupported. External objects are
+excluded from RootFS snapshots, forks and paused Files API access. Forks drop
+bindings. Sandbox deletion does not delete bucket contents. See
+[external mounts](https://sandbox0.ai/docs/sandbox/external-mounts) for file
+semantics, durability and source setup.
+
 ## Files while compute is paused
 
 Use the existing file methods without starting or resuming compute:

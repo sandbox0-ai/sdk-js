@@ -10,6 +10,7 @@ Name | Type
 `staticTLSClientCertificate` | [StaticTLSClientCertificateSourceSpec](StaticTLSClientCertificateSourceSpec.md)
 `staticUsernamePassword` | [StaticUsernamePasswordSourceSpec](StaticUsernamePasswordSourceSpec.md)
 `staticSSHPrivateKey` | [StaticSSHPrivateKeySourceSpec](StaticSSHPrivateKeySourceSpec.md)
+`staticS3` | [StaticS3SourceSpec](StaticS3SourceSpec.md)
 
 ## Example
 
@@ -22,6 +23,7 @@ const example = {
   "staticTLSClientCertificate": null,
   "staticUsernamePassword": null,
   "staticSSHPrivateKey": null,
+  "staticS3": null,
 } satisfies CredentialSourceWriteSpec
 
 console.log(example)

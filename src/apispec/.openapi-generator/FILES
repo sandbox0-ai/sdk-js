@@ -91,6 +91,7 @@ docs/ExecutionSessionWebSocketRequest.md
 docs/ExecutionSessionWebSocketResize.md
 docs/ExecutionSessionWebSocketResponse.md
 docs/ExecutionSessionWebSocketSignal.md
+docs/ExternalMountBinding.md
 docs/FileContentResponse.md
 docs/FileInfo.md
 docs/FileWatchError.md
@@ -249,6 +250,7 @@ docs/SandboxesApi.md
 docs/SessionsApi.md
 docs/SignalContextRequest.md
 docs/StaticHeadersSourceSpec.md
+docs/StaticS3SourceSpec.md
 docs/StaticSSHPrivateKeySourceSpec.md
 docs/StaticTLSClientCertificateSourceSpec.md
 docs/StaticUsernamePasswordSourceSpec.md
@@ -487,6 +489,7 @@ src/models/ExecutionSessionWebSocketRequest.ts
 src/models/ExecutionSessionWebSocketResize.ts
 src/models/ExecutionSessionWebSocketResponse.ts
 src/models/ExecutionSessionWebSocketSignal.ts
+src/models/ExternalMountBinding.ts
 src/models/FileContentResponse.ts
 src/models/FileInfo.ts
 src/models/FileWatchError.ts
@@ -636,6 +639,7 @@ src/models/SandboxUpdateConfig.ts
 src/models/SandboxUpdateRequest.ts
 src/models/SignalContextRequest.ts
 src/models/StaticHeadersSourceSpec.ts
+src/models/StaticS3SourceSpec.ts
 src/models/StaticSSHPrivateKeySourceSpec.ts
 src/models/StaticTLSClientCertificateSourceSpec.ts
 src/models/StaticUsernamePasswordSourceSpec.ts

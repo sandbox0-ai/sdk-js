@@ -7253,6 +7253,12 @@ components:
     SandboxConfig:
       type: object
       properties:
+        external_mounts:
+          type: array
+          maxItems: 4
+          description: Creation-time bindings to team-owned static_s3 credential sources. Available only in enabled regions. Bindings persist across filesystem pause/resume and cannot be changed by sandbox update. External objects are excluded from RootFS snapshots and forks; forks drop bindings. Memory pause/resume, memory fork and migration with mounts are unsupported.
+          items:
+            $ref: "#/components/schemas/ExternalMountBinding"
         env_vars:
           type: object
           additionalProperties:
@@ -7284,6 +7290,31 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/SandboxAppService"
+    ExternalMountBinding:
+      type: object
+      additionalProperties: false
+      description: Credential-free binding to a team-owned S3 source. Bucket, endpoint and credentials come from the source and are never supplied here or exposed to the guest. At attachment the mount target must be an empty directory without symlink aliases.
+      properties:
+        source_ref:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: Name of an enabled static_s3 source owned by the authenticated team. No whitespace at either end, slash, backslash, NUL or line breaks.
+        mount_path:
+          type: string
+          minLength: 2
+          maxLength: 4096
+          description: Canonical absolute guest directory, at most 4096 UTF-8 bytes. No root, dot components, duplicate slashes, backslash, NUL or line breaks. Must not overlap other mounts, template tmpfs mounts or platform-owned paths such as /tmp, /proc, /sys, /dev, /config and /run/sandbox0.
+        prefix:
+          type: string
+          maxLength: 1023
+          description: Optional canonical relative directory prefix ending in a slash, appended to the source prefix to narrow its scope. The combined S3 key must fit 1024 UTF-8 bytes.
+        access:
+          type: string
+          enum: [read_only, read_write]
+          default: read_only
+          description: read_write additionally requires allowWrite on the source. Omission never grants write access.
+      required: [source_ref, mount_path]
     SandboxResourceConfig:
       type: object
       description: Instance-level sandbox resource override. Sandbox0 exposes memory only and derives CPU from the platform memory-per-CPU ratio.
@@ -7621,6 +7652,13 @@ components:
     Sandbox:
       type: object
       properties:
+        external_mounts:
+          type: array
+          maxItems: 4
+          readOnly: true
+          description: Persisted credential-free external mount bindings. Present while paused as well as running; this is configuration, not a worker health assertion.
+          items:
+            $ref: "#/components/schemas/ExternalMountBinding"
         id:
           type: string
         template_id:
@@ -10952,7 +10990,7 @@ components:
       required: [name, resolverKind, spec]
     CredentialSourceResolverKind:
       type: string
-      enum: [static_headers, static_tls_client_certificate, static_username_password, static_ssh_private_key]
+      enum: [static_headers, static_tls_client_certificate, static_username_password, static_ssh_private_key, static_s3]
     CredentialSourceWriteSpec:
       type: object
       properties:
@@ -10964,6 +11002,47 @@ components:
           $ref: "#/components/schemas/StaticUsernamePasswordSourceSpec"
         staticSSHPrivateKey:
           $ref: "#/components/schemas/StaticSSHPrivateKeySourceSpec"
+        staticS3:
+          $ref: "#/components/schemas/StaticS3SourceSpec"
+    StaticS3SourceSpec:
+      type: object
+      description: Team-owned S3 connection for isolated external mounts. Stored as platform-side secret material; never returned in source metadata or injected into the user sandbox.
+      properties:
+        bucket:
+          type: string
+          minLength: 3
+          maxLength: 63
+        prefix:
+          type: string
+          maxLength: 1023
+          description: Optional canonical directory prefix ending in a slash. Mount bindings may only narrow this scope. The combined S3 key must fit 1024 UTF-8 bytes.
+        region:
+          type: string
+          minLength: 1
+          maxLength: 128
+        endpointUrl:
+          type: string
+          maxLength: 2048
+          description: Optional HTTPS origin for an S3-compatible provider. Private and metadata network addresses are rejected by the worker transport.
+        allowWrite:
+          type: boolean
+          default: false
+          description: Authorizes writable bindings. Omitted or false permits read-only mounts only.
+        accessKey:
+          type: string
+          minLength: 1
+          maxLength: 256
+          writeOnly: true
+        secretKey:
+          type: string
+          minLength: 1
+          maxLength: 4096
+          writeOnly: true
+        sessionToken:
+          type: string
+          maxLength: 65536
+          writeOnly: true
+      required: [bucket, region, accessKey, secretKey]
     StaticHeadersSourceSpec:
       type: object
       properties:

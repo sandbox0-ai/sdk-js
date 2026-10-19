@@ -1,3 +1,5 @@
+import type { ExternalMountBinding } from "sandbox0";
+
 export const WORKSPACE_ROOT = "/workspace";
 
 export type Sandbox0BackendDispose = "keep" | "delete";
@@ -75,6 +77,8 @@ export interface Sandbox0NetworkPolicy {
 }
 
 export interface Sandbox0SandboxConfig {
+  /** Immutable creation-time S3 bindings; requires an enabled region. */
+  externalMounts?: ExternalMountBinding[];
   envVars?: Record<string, string>;
   ttl?: number;
   hardTtl?: number;

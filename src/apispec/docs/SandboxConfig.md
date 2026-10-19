@@ -6,6 +6,7 @@
 
 Name | Type
 ------------ | -------------
+`externalMounts` | [Array&lt;ExternalMountBinding&gt;](ExternalMountBinding.md)
 `envVars` | { [key: string]: string; }
 `resources` | [SandboxResourceConfig](SandboxResourceConfig.md)
 `ttl` | number
@@ -22,6 +23,7 @@ import type { SandboxConfig } from 'sandbox0'
 
 // TODO: Update the object below with actual values
 const example = {
+  "externalMounts": null,
   "envVars": null,
   "resources": null,
   "ttl": null,

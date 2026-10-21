@@ -364,16 +364,22 @@ function binaryToUint8Array(content: Uint8Array | ArrayBuffer | ArrayBufferView)
   return new Uint8Array(content.buffer, content.byteOffset, content.byteLength);
 }
 
-function decodeBytes(bytes: Uint8Array, encoding: BufferEncoding | "utf-8" | "utf8"): string {
+function decodeBytes(bytes: Uint8Array, encoding: string): string {
   if (encoding === "utf-8" || encoding === "utf8") {
     return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+  }
+  if (!Buffer.isEncoding(encoding)) {
+    throw new TypeError(`Unsupported text encoding: ${encoding}`);
   }
   return Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString(encoding);
 }
 
-function encodeString(text: string, encoding: BufferEncoding | "utf-8" | "utf8"): Uint8Array {
+function encodeString(text: string, encoding: string): Uint8Array {
   if (encoding === "utf-8" || encoding === "utf8") {
     return new TextEncoder().encode(text);
+  }
+  if (!Buffer.isEncoding(encoding)) {
+    throw new TypeError(`Unsupported text encoding: ${encoding}`);
   }
   return Buffer.from(text, encoding);
 }

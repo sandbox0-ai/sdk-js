@@ -172,7 +172,7 @@ export interface SandboxReadFileOptions {
 }
 
 export interface SandboxReadTextFileOptions extends SandboxReadFileOptions {
-  encoding?: BufferEncoding | "utf-8" | "utf8";
+  encoding?: string;
   startLine?: number;
   endLine?: number;
 }
@@ -192,7 +192,7 @@ export interface SandboxWriteBinaryFileOptions {
 export interface SandboxWriteTextFileOptions {
   path: string;
   content: string;
-  encoding?: BufferEncoding | "utf-8" | "utf8";
+  encoding?: string;
   abortSignal?: AbortSignal;
 }
 

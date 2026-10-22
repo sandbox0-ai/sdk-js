@@ -34,6 +34,13 @@ import {
     StaticHeadersSourceSpecToJSON,
     StaticHeadersSourceSpecToJSONTyped,
 } from './StaticHeadersSourceSpec';
+import type { StaticS3SourceSpec } from './StaticS3SourceSpec';
+import {
+    StaticS3SourceSpecFromJSON,
+    StaticS3SourceSpecFromJSONTyped,
+    StaticS3SourceSpecToJSON,
+    StaticS3SourceSpecToJSONTyped,
+} from './StaticS3SourceSpec';
 import type { StaticTLSClientCertificateSourceSpec } from './StaticTLSClientCertificateSourceSpec';
 import {
     StaticTLSClientCertificateSourceSpecFromJSON,
@@ -72,6 +79,12 @@ export interface CredentialSourceWriteSpec {
      * @memberof CredentialSourceWriteSpec
      */
     staticSSHPrivateKey?: StaticSSHPrivateKeySourceSpec;
+    /**
+     * 
+     * @type {StaticS3SourceSpec}
+     * @memberof CredentialSourceWriteSpec
+     */
+    staticS3?: StaticS3SourceSpec;
 }
 
 /**
@@ -95,6 +108,7 @@ export function CredentialSourceWriteSpecFromJSONTyped(json: any, ignoreDiscrimi
         'staticTLSClientCertificate': json['staticTLSClientCertificate'] == null ? undefined : StaticTLSClientCertificateSourceSpecFromJSON(json['staticTLSClientCertificate']),
         'staticUsernamePassword': json['staticUsernamePassword'] == null ? undefined : StaticUsernamePasswordSourceSpecFromJSON(json['staticUsernamePassword']),
         'staticSSHPrivateKey': json['staticSSHPrivateKey'] == null ? undefined : StaticSSHPrivateKeySourceSpecFromJSON(json['staticSSHPrivateKey']),
+        'staticS3': json['staticS3'] == null ? undefined : StaticS3SourceSpecFromJSON(json['staticS3']),
     };
 }
 
@@ -113,6 +127,7 @@ export function CredentialSourceWriteSpecToJSONTyped(value?: CredentialSourceWri
         'staticTLSClientCertificate': StaticTLSClientCertificateSourceSpecToJSON(value['staticTLSClientCertificate']),
         'staticUsernamePassword': StaticUsernamePasswordSourceSpecToJSON(value['staticUsernamePassword']),
         'staticSSHPrivateKey': StaticSSHPrivateKeySourceSpecToJSON(value['staticSSHPrivateKey']),
+        'staticS3': StaticS3SourceSpecToJSON(value['staticS3']),
     };
 }
 

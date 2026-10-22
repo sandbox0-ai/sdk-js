@@ -68,3 +68,5 @@ export type { SandboxMemoryOperation } from "./apispec/src/models/index";
 export type { MemoryOperationLookupOptions } from "./memory_operation";
 
 export type { SandboxSnapshotRestoreRequest, SandboxSnapshotRestoreOperation } from "./apispec/src/models/index";
+
+export type { ExternalMountBinding, StaticS3SourceSpec } from "./apispec/src/models/index";

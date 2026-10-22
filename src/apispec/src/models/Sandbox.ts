@@ -27,6 +27,13 @@ import {
     SandboxResourceConfigToJSON,
     SandboxResourceConfigToJSONTyped,
 } from './SandboxResourceConfig';
+import type { ExternalMountBinding } from './ExternalMountBinding';
+import {
+    ExternalMountBindingFromJSON,
+    ExternalMountBindingFromJSONTyped,
+    ExternalMountBindingToJSON,
+    ExternalMountBindingToJSONTyped,
+} from './ExternalMountBinding';
 import type { SandboxLifecycleStatus } from './SandboxLifecycleStatus';
 import {
     SandboxLifecycleStatusFromJSON,
@@ -48,6 +55,12 @@ import {
  * @interface Sandbox
  */
 export interface Sandbox {
+    /**
+     * Persisted credential-free external mount bindings. Present while paused as well as running; this is configuration, not a worker health assertion.
+     * @type {Array<ExternalMountBinding>}
+     * @memberof Sandbox
+     */
+    readonly externalMounts?: Array<ExternalMountBinding>;
     /**
      * 
      * @type {string}
@@ -182,6 +195,7 @@ export function SandboxFromJSONTyped(json: any, ignoreDiscriminator: boolean): S
     }
     return {
         
+        'externalMounts': json['external_mounts'] == null ? undefined : ((json['external_mounts'] as Array<any>).map(ExternalMountBindingFromJSON)),
         'id': json['id'],
         'templateId': json['template_id'],
         'teamId': json['team_id'],
@@ -206,7 +220,7 @@ export function SandboxToJSON(json: any): Sandbox {
     return SandboxToJSONTyped(json, false);
 }
 
-export function SandboxToJSONTyped(value?: Sandbox | null, ignoreDiscriminator: boolean = false): any {
+export function SandboxToJSONTyped(value?: Omit<Sandbox, 'external_mounts'> | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }

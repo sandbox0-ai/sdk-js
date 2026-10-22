@@ -27,6 +27,13 @@ import {
     SandboxResourceConfigToJSON,
     SandboxResourceConfigToJSONTyped,
 } from './SandboxResourceConfig';
+import type { ExternalMountBinding } from './ExternalMountBinding';
+import {
+    ExternalMountBindingFromJSON,
+    ExternalMountBindingFromJSONTyped,
+    ExternalMountBindingToJSON,
+    ExternalMountBindingToJSONTyped,
+} from './ExternalMountBinding';
 import type { SandboxNetworkPolicy } from './SandboxNetworkPolicy';
 import {
     SandboxNetworkPolicyFromJSON,
@@ -48,6 +55,12 @@ import {
  * @interface SandboxConfig
  */
 export interface SandboxConfig {
+    /**
+     * Creation-time bindings to team-owned static_s3 credential sources. Available only in enabled regions. Bindings persist across filesystem pause/resume and cannot be changed by sandbox update. External objects are excluded from RootFS snapshots and forks; forks drop bindings. Memory pause/resume, memory fork and migration with mounts are unsupported.
+     * @type {Array<ExternalMountBinding>}
+     * @memberof SandboxConfig
+     */
+    externalMounts?: Array<ExternalMountBinding>;
     /**
      * 
      * @type {{ [key: string]: string; }}
@@ -120,6 +133,7 @@ export function SandboxConfigFromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
+        'externalMounts': json['external_mounts'] == null ? undefined : ((json['external_mounts'] as Array<any>).map(ExternalMountBindingFromJSON)),
         'envVars': json['env_vars'] == null ? undefined : json['env_vars'],
         'resources': json['resources'] == null ? undefined : SandboxResourceConfigFromJSON(json['resources']),
         'ttl': json['ttl'] == null ? undefined : json['ttl'],
@@ -142,6 +156,7 @@ export function SandboxConfigToJSONTyped(value?: SandboxConfig | null, ignoreDis
 
     return {
         
+        'external_mounts': value['externalMounts'] == null ? undefined : ((value['externalMounts'] as Array<any>).map(ExternalMountBindingToJSON)),
         'env_vars': value['envVars'],
         'resources': SandboxResourceConfigToJSON(value['resources']),
         'ttl': value['ttl'],

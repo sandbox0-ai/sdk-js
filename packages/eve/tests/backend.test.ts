@@ -248,7 +248,7 @@ describe("Sandbox0 Eve backend", () => {
 
     await sandbox0({
       client,
-      config: { ttl: 300 },
+      config: { ttl: 300, externalMounts: [{ sourceRef: "customer-data", mountPath: "/data" }] },
       prewarmSandboxHardTtlSec: null,
     }).prewarm({
       templateKey: "tpl_no_hard_ttl",
@@ -256,7 +256,7 @@ describe("Sandbox0 Eve backend", () => {
       seedFiles: [],
     });
 
-    assert.deepStrictEqual(gotOptions, { config: { ttl: 300 } });
+    assert.deepStrictEqual(gotOptions, { config: { ttl: 300, externalMounts: [{ sourceRef: "customer-data", mountPath: "/data" }] } });
   });
 
   it("throws an Eve-compatible error when a template was not prewarmed", async () => {

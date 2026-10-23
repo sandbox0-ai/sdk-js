@@ -88,6 +88,8 @@ export const SandboxHealthObservationReasonEnum = {
     HealthReasonCommandFailed: 'command_failed',
     HealthReasonProbeTimeout: 'probe_timeout',
     HealthReasonProbeCanceled: 'probe_canceled',
+    HealthReasonStorageIoReady: 'storage_io_ready',
+    HealthReasonStorageIoFailed: 'storage_io_failed',
     HealthReasonRunscRunning: 'runsc_running',
     HealthReasonRunscStopped: 'runsc_stopped',
     HealthReasonRunscAbsent: 'runsc_absent',

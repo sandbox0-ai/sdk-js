@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { Client } from "../../src/index";
+import { Client, models } from "../../src/index";
 
 function observation(state: string, reason: string, source: string) {
   return { state, reason, source, observed_at: source === "none" ? null : "2026-10-15T00:00:01Z" };
@@ -43,6 +43,27 @@ test("health preserves independent evidence in one request", async () => {
   assert.equal(health.execution.observedAt?.toISOString(), "2026-10-15T00:00:01.000Z");
   assert.notEqual(health.execution.observedAt?.getTime(), health.observedAt.getTime());
   assert.equal(calls, 1);
+});
+
+test("health accepts current runtime storage I/O readiness and failure evidence", async () => {
+  assert.equal(models.SandboxHealthObservationReasonEnum.HealthReasonStorageIoReady, "storage_io_ready");
+  assert.equal(models.SandboxHealthObservationReasonEnum.HealthReasonStorageIoFailed, "storage_io_failed");
+  assert.equal(models.SandboxHealthObservationReasonEnum.HealthReasonRunscRunning, "runsc_running");
+  for (const [state, reason] of [["available", "storage_io_ready"], ["unavailable", "storage_io_failed"]]) {
+    let calls = 0;
+    const data = healthData();
+    data.storage.io = observation(state, reason, "node_runtime");
+    const client = new Client({ token: "test", fetch: async () => {
+      calls++;
+      return new Response(JSON.stringify({ success: true, data }), { status: 200 });
+    } });
+    const health = await client.sandboxes.getHealth("sandbox");
+    assert.equal(health.storage.io.state, state);
+    assert.equal(health.storage.io.reason, reason);
+    assert.equal(health.storage.io.source, "node_runtime");
+    assert.equal(health.storage.io.observedAt?.toISOString(), "2026-10-15T00:00:01.000Z");
+    assert.equal(calls, 1);
+  }
 });
 
 test("health rejects malformed or foreign evidence, including generated decoder coercion", async () => {

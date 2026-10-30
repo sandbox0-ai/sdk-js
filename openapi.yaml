@@ -7367,8 +7367,11 @@ components:
       properties:
         type:
           type: string
-          enum: [cmd, manual, function]
+          enum: [cmd, manual, function, service]
           description: Runtime strategy for restarting a service process.
+        service_id:
+          type: string
+          description: For type service, the ID of a different cmd service in the same sandbox whose supervised runtime is shared. References cannot override command, cwd, env_vars or function, and cannot form chains.
         command:
           type: array
           items:

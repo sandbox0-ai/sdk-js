@@ -7,6 +7,7 @@
 Name | Type
 ------------ | -------------
 `type` | string
+`serviceId` | string
 `command` | Array&lt;string&gt;
 `cwd` | string
 `envVars` | { [key: string]: string; }
@@ -20,6 +21,7 @@ import type { SandboxAppServiceRuntime } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "type": null,
+  "serviceId": null,
   "command": null,
   "cwd": null,
   "envVars": null,

@@ -34,6 +34,12 @@ export interface SandboxAppServiceRuntime {
      */
     type: SandboxAppServiceRuntimeTypeEnum;
     /**
+     * For type service, the ID of a different cmd service in the same sandbox whose supervised runtime is shared. References cannot override command, cwd, env_vars or function, and cannot form chains.
+     * @type {string}
+     * @memberof SandboxAppServiceRuntime
+     */
+    serviceId?: string;
+    /**
      * Process argv used when type is cmd.
      * @type {Array<string>}
      * @memberof SandboxAppServiceRuntime
@@ -66,7 +72,8 @@ export interface SandboxAppServiceRuntime {
 export const SandboxAppServiceRuntimeTypeEnum = {
     Cmd: 'cmd',
     Manual: 'manual',
-    Function: 'function'
+    Function: 'function',
+    Service: 'service'
 } as const;
 export type SandboxAppServiceRuntimeTypeEnum = typeof SandboxAppServiceRuntimeTypeEnum[keyof typeof SandboxAppServiceRuntimeTypeEnum];
 
@@ -90,6 +97,7 @@ export function SandboxAppServiceRuntimeFromJSONTyped(json: any, ignoreDiscrimin
     return {
         
         'type': json['type'],
+        'serviceId': json['service_id'] == null ? undefined : json['service_id'],
         'command': json['command'] == null ? undefined : json['command'],
         'cwd': json['cwd'] == null ? undefined : json['cwd'],
         'envVars': json['env_vars'] == null ? undefined : json['env_vars'],
@@ -109,6 +117,7 @@ export function SandboxAppServiceRuntimeToJSONTyped(value?: SandboxAppServiceRun
     return {
         
         'type': value['type'],
+        'service_id': value['serviceId'],
         'command': value['command'],
         'cwd': value['cwd'],
         'env_vars': value['envVars'],

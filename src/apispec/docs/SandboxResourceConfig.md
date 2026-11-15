@@ -1,13 +1,14 @@
 
 # SandboxResourceConfig
 
-Instance-level sandbox resource override. Sandbox0 exposes memory only and derives CPU from the platform memory-per-CPU ratio.
+Instance-level sandbox resource override. CPU is derived from base memory; optional preauthorized memory burst does not increase CPU.
 
 ## Properties
 
 Name | Type
 ------------ | -------------
 `memory` | string
+`memoryBurstPercent` | number
 
 ## Example
 
@@ -17,6 +18,7 @@ import type { SandboxResourceConfig } from 'sandbox0'
 // TODO: Update the object below with actual values
 const example = {
   "memory": null,
+  "memoryBurstPercent": null,
 } satisfies SandboxResourceConfig
 
 console.log(example)

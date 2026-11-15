@@ -7286,11 +7286,22 @@ components:
             $ref: "#/components/schemas/SandboxAppService"
     SandboxResourceConfig:
       type: object
-      description: Instance-level sandbox resource override. Sandbox0 exposes memory only and derives CPU from the platform memory-per-CPU ratio.
+      description: Instance-level sandbox resource override. CPU is derived from base memory; optional preauthorized memory burst does not increase CPU.
       properties:
         memory:
           type: string
-          description: Sandbox memory limit. Must be at least 128Mi and no more than the platform sandbox maximum, which defaults to 16Gi. The same maximum applies to template defaults and every sandbox lifecycle operation.
+          description: Base sandbox memory. Must be at least 128Mi. Base memory plus any burst allowance must not exceed the platform sandbox maximum, which defaults to 16Gi. CPU is derived from this base.
+        memory_burst_percent:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 50
+          description: |
+            Optional preauthorized memory allowance, as a percentage of base memory (0 disables it).
+            With memory 4Gi and memory_burst_percent 50, the hard memory limit may grow from 4Gi
+            to 6Gi under pressure and return to 4Gi when safe; CPU remains derived from 4Gi. This does not preallocate physical RAM or guarantee
+            capacity under host pressure. Automatic burst transitions preserve processes and are billed at the applied memory limit.
+            Explicitly changing the resource configuration uses the existing process-restarting resize.
     SandboxAppServiceRouteAuth:
       type: object
       properties:

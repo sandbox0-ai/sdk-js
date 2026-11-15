@@ -28,14 +28,14 @@ describe("Sandboxes resource", () => {
 
     const sandboxes = new Sandboxes(client);
     const sandbox = await sandboxes.claim("default", {
-      config: { ttl: 300 },
+      config: { ttl: 300, resources: { memoryBurstPercent: 50 } },
       memory: "512Mi",
       snapshotId: "snap_123",
     });
 
     assert.deepStrictEqual(gotRequest, {
       template: "default",
-      config: { ttl: 300, resources: { memory: "512Mi" } },
+      config: { ttl: 300, resources: { memory: "512Mi", memoryBurstPercent: 50 } },
       snapshotId: "snap_123",
     });
     assert.strictEqual(sandbox.id, "sb_123");

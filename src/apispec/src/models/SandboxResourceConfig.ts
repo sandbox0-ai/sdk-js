@@ -14,17 +14,28 @@
 
 import { mapValues } from '../runtime';
 /**
- * Instance-level sandbox resource override. Sandbox0 exposes memory only and derives CPU from the platform memory-per-CPU ratio.
+ * Instance-level sandbox resource override. CPU is derived from base memory; optional preauthorized memory burst does not increase CPU.
  * @export
  * @interface SandboxResourceConfig
  */
 export interface SandboxResourceConfig {
     /**
-     * Sandbox memory limit. Must be at least 128Mi and no more than the platform sandbox maximum, which defaults to 16Gi. The same maximum applies to template defaults and every sandbox lifecycle operation.
+     * Base sandbox memory. Must be at least 128Mi. Base memory plus any burst allowance must not exceed the platform sandbox maximum, which defaults to 16Gi. CPU is derived from this base.
      * @type {string}
      * @memberof SandboxResourceConfig
      */
     memory?: string;
+    /**
+     * Optional preauthorized memory allowance, as a percentage of base memory (0 disables it).
+     * With memory 4Gi and memory_burst_percent 50, the hard memory limit may grow from 4Gi
+     * to 6Gi under pressure and return to 4Gi when safe; CPU remains derived from 4Gi. This does not preallocate physical RAM or guarantee
+     * capacity under host pressure. Automatic burst transitions preserve processes and are billed at the applied memory limit.
+     * Explicitly changing the resource configuration uses the existing process-restarting resize.
+     * 
+     * @type {number}
+     * @memberof SandboxResourceConfig
+     */
+    memoryBurstPercent?: number;
 }
 
 /**
@@ -45,6 +56,7 @@ export function SandboxResourceConfigFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'memory': json['memory'] == null ? undefined : json['memory'],
+        'memoryBurstPercent': json['memory_burst_percent'] == null ? undefined : json['memory_burst_percent'],
     };
 }
 
@@ -60,6 +72,7 @@ export function SandboxResourceConfigToJSONTyped(value?: SandboxResourceConfig |
     return {
         
         'memory': value['memory'],
+        'memory_burst_percent': value['memoryBurstPercent'],
     };
 }
 
